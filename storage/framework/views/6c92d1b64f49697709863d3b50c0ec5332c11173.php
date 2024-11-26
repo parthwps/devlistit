@@ -1,1 +1,0 @@
-<?php echo $__env->make('frontend/car/new_ads_card_list', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /home/u673667181/domains/listit.im/public_html/resources/views/frontend/car/cars_list_ajax.blade.php ENDPATH**/ ?>
