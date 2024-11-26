@@ -1,0 +1,1 @@
+@include('frontend/car/new_ads_card_list')

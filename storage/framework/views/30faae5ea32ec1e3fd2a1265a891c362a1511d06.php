@@ -1,0 +1,373 @@
+<?php $__env->startSection('content'); ?>
+  <div class="mt-2 mb-4">
+    <h2 class="pb-2"><?php echo e(__('Welcome back,')); ?> <?php echo e($authAdmin->first_name . ' ' . $authAdmin->last_name . '!'); ?></h2>
+  </div>
+
+  
+  <?php
+    if (!is_null($roleInfo)) {
+        $rolePermissions = json_decode($roleInfo->permissions);
+    }
+  ?>
+
+  <div class="row dashboard-items">
+    <?php if(is_null($roleInfo) || (!empty($rolePermissions) && in_array('Total Earning', $rolePermissions))): ?>
+      <div class="col-md-4">
+        <a href="<?php echo e(route('admin.payment-log.index')); ?>">
+          <div class="card card-stats card-primary card-round">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-5">
+                  <div class="icon-big text-center">
+                    <i class="fas fa-money-check-alt"></i>
+                  </div>
+                </div>
+
+                <div class="col-7 col-stats">
+                  <div class="numbers">
+                    <p class="card-category"><?php echo e(__('Payment Logs')); ?></p>
+                    <h4 class="card-title"><?php echo e($payment_log); ?>
+
+                    </h4>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+    <?php endif; ?>
+    <!-- <?php if(is_null($roleInfo) || (!empty($rolePermissions) && in_array('Car Management', $rolePermissions))): ?>
+      <div class="col-sm-6 col-md-3">
+        <a href="<?php echo e(route('admin.car_management.car', ['language' => $defaultLang->code])); ?>">
+          <div class="card card-stats card-success card-round">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-5">
+                  <div class="icon-big text-center">
+                    <i class="far fa-car"></i>
+                  </div>
+                </div>
+
+                <div class="col-7 col-stats">
+                  <div class="numbers">
+                    <p class="card-category"><?php echo e(__('Cars')); ?></p>
+                    <h4 class="card-title"><?php echo e($totalCars); ?></h4>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+    <?php endif; ?> -->
+
+<!-- 
+    <?php if(is_null($roleInfo) || (!empty($rolePermissions) && in_array('Shop Management', $rolePermissions))): ?>
+      <div class="col-sm-6 col-md-3">
+        <a href="<?php echo e(route('admin.shop_management.products', ['language' => $defaultLang->code])); ?>">
+          <div class="card card-stats card-primary card-round">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-5">
+                  <div class="icon-big text-center">
+                    <i class="fal fa-box-alt"></i>
+                  </div>
+                </div>
+
+                <div class="col-7 col-stats">
+                  <div class="numbers">
+                    <p class="card-category"><?php echo e(__('Products')); ?></p>
+                    <h4 class="card-title"><?php echo e($totalProduct); ?></h4>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+    <?php endif; ?> 
+
+    <?php if(is_null($roleInfo) || (!empty($rolePermissions) && in_array('Shop Management', $rolePermissions))): ?>
+      <div class="col-sm-6 col-md-3">
+        <a href="<?php echo e(route('admin.shop_management.orders')); ?>">
+          <div class="card card-stats card-warning card-round">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-5">
+                  <div class="icon-big text-center">
+                    <i class="fal fa-shopping-cart"></i>
+                  </div>
+                </div>
+
+                <div class="col-7 col-stats">
+                  <div class="numbers">
+                    <p class="card-category"><?php echo e(__('Orders')); ?></p>
+                    <h4 class="card-title"><?php echo e($totalOrder); ?></h4>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+    <?php endif; ?>
+
+    <?php if(is_null($roleInfo) || (!empty($rolePermissions) && in_array('Blog Management', $rolePermissions))): ?>
+      <div class="col-sm-6 col-md-3">
+        <a href="<?php echo e(route('admin.blog_management.blogs', ['language' => $defaultLang->code])); ?>">
+          <div class="card card-stats card-info card-round">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-5">
+                  <div class="icon-big text-center">
+                    <i class="fal fa-blog"></i>
+                  </div>
+                </div>
+
+                <div class="col-7 col-stats">
+                  <div class="numbers">
+                    <p class="card-category"><?php echo e(__('Blog')); ?></p>
+                    <h4 class="card-title"><?php echo e($totalBlog); ?></h4>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+    <?php endif; ?>-->
+
+    <?php if(is_null($roleInfo) || (!empty($rolePermissions) && in_array('Vendors Management', $rolePermissions))): ?>
+      <div class="col-md-4">
+        <a href="<?php echo e(route('admin.vendor_management.registered_vendor')); ?>">
+          <div class="card card-stats card-secondary card-round">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-5">
+                  <div class="icon-big text-center">
+                    <i class="fas fa-users"></i>
+                  </div>
+                </div>
+                <div class="col-7 col-stats">
+                  <div class="numbers">
+                    <p class="card-category"><?php echo e(__('Sellers')); ?></p>
+                    <h4 class="card-title">
+                      <?php echo e($vendors); ?>
+
+                    </h4>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+    <?php endif; ?>
+
+    <?php if(is_null($roleInfo) || (!empty($rolePermissions) && in_array('User Management', $rolePermissions))): ?>
+      <!--<div class="col-sm-6 col-md-3">-->
+      <!--  <a href="<?php echo e(route('admin.user_management.registered_users')); ?>">-->
+      <!--    <div class="card card-stats card-orchid card-round">-->
+      <!--      <div class="card-body">-->
+      <!--        <div class="row">-->
+      <!--          <div class="col-5">-->
+      <!--            <div class="icon-big text-center">-->
+      <!--              <i class="la flaticon-users"></i>-->
+      <!--            </div>-->
+      <!--          </div>-->
+
+      <!--          <div class="col-7 col-stats">-->
+      <!--            <div class="numbers">-->
+      <!--              <p class="card-category"><?php echo e(__('Users')); ?></p>-->
+      <!--              <h4 class="card-title"><?php echo e($totalUser); ?></h4>-->
+      <!--            </div>-->
+      <!--          </div>-->
+      <!--        </div>-->
+      <!--      </div>-->
+      <!--    </div>-->
+      <!--  </a>-->
+      <!--</div>-->
+    <?php endif; ?>
+
+    <?php if(is_null($roleInfo) || (!empty($rolePermissions) && in_array('User Management', $rolePermissions))): ?>
+      <div class="col-sm-6 col-md-4">
+        <a href="<?php echo e(route('admin.car_management.car')); ?>">
+          <div class="card card-stats card-dark card-round">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-5">
+                  <div class="icon-big text-center">
+                    <i class="fal fa-bell"></i>
+                  </div>
+                </div>
+
+                <div class="col-7 col-stats">
+                  <div class="numbers">
+                    <p class="card-category"><?php echo e(__('Adds Posted')); ?></p>
+                    <h4 class="card-title"><?php echo e($totalCars); ?></h4>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+    <?php endif; ?>
+    
+    
+    
+    <?php if(is_null($roleInfo) && Auth::guard('admin')->check() ): ?>
+    
+      <div class="col-md-4">
+        <a href="<?php echo e(route('admin.car_management.car' , ['language' => 'en' , 'status' => 'sold'])); ?>">
+          <div class="card card-stats card-secondary card-round"  style="    background: #ff211bcf  !important">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-5">
+                  <div class="icon-big text-center">
+                    <i class="fas fa-stars"></i>
+                  </div>
+                </div>
+                <div class="col-7 col-stats">
+                  <div class="numbers">
+                    <p class="card-category">Ads  rating &nbsp;&nbsp; 1 - 3</p>
+                    <h4 class="card-title">
+                      <?php echo e($rating_btw_1_to_3); ?>
+
+                    </h4>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+      
+      
+      <div class="col-md-4">
+        <a href="<?php echo e(route('admin.car_management.car' , ['language' => 'en' , 'status' => 'sold'])); ?>">
+          <div class="card card-stats card-secondary card-round" style="    background: #ff861bcf  !important">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-5">
+                  <div class="icon-big text-center">
+                    <i class="fas fa-stars"></i>
+                  </div>
+                </div>
+                <div class="col-7 col-stats">
+                  <div class="numbers">
+                    <p class="card-category">Ads  rating &nbsp;&nbsp; 4 - 6</p>
+                    <h4 class="card-title">
+                      <?php echo e($rating_btw_4_to_6); ?>
+
+                    </h4>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+      
+      
+      
+      <div class="col-md-4">
+        <a href="<?php echo e(route('admin.car_management.car' , ['language' => 'en' , 'status' => 'sold'])); ?>">
+          <div class="card card-stats card-secondary card-round" style="    background: #34dd00 !important">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-5">
+                  <div class="icon-big text-center">
+                    <i class="fas fa-stars"></i>
+                  </div>
+                </div>
+                <div class="col-7 col-stats">
+                  <div class="numbers">
+                    <p class="card-category">Ads  rating &nbsp;&nbsp; 7 - 10</p>
+                    <h4 class="card-title">
+                      <?php echo e($rating_btw_7_to_10); ?>
+
+                    </h4>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+      
+      
+    <?php endif; ?>
+
+
+    <div class="col-lg-6">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title"><?php echo e(__('Monthly Posted Adds')); ?> (<?php echo e(date('Y')); ?>)</div>
+        </div>
+
+        <div class="card-body">
+          <div class="chart-container">
+            <canvas id="packagePurchaseChart"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-6">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Monthly Registered Users (<?php echo e(date('Y')); ?>)</div>
+        </div>
+
+        <div class="card-body">
+          <div class="chart-container">
+            <canvas id="userChart"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-lg-12">
+      <div class="card">
+             <canvas id="carSalesChart" width="400" height="200"></canvas>
+      </div>
+    </div>
+    
+  </div>
+
+  
+<?php $__env->stopSection(); ?>
+
+<?php $__env->startSection('script'); ?>
+  
+  <script type="text/javascript" src="<?php echo e(asset('assets/js/chart.min.js')); ?>"></script>
+    
+ <script>
+        var ctx = document.getElementById('carSalesChart').getContext('2d');
+        var chartData = <?php echo json_encode($chartData, 15, 512) ?>;
+        
+        var carSalesChart = new Chart(ctx, {
+            type: 'bar',
+            data: chartData,
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+  <script>
+    "use strict";
+    const monthArr = <?php echo json_encode($monthArr) ?>;
+    const packagePurchaseIncomesArr = <?php echo json_encode($packagePurchaseIncomesArr) ?>;
+    const totalUsersArr = <?php echo json_encode($totalUsersArr) ?>;
+  </script>
+
+  <script type="text/javascript" src="<?php echo e(asset('assets/js/chart-init.js?v=0.2')); ?>"></script>
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('backend.layout', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /home/u673667181/domains/listit.im/public_html/resources/views/backend/admin/dashboard.blade.php ENDPATH**/ ?>
