@@ -38,44 +38,44 @@ class UserController extends Controller
         $bs = DB::table('basic_settings')
         ->select('facebook_app_id', 'facebook_app_secret', 'google_client_id', 'google_client_secret')
         ->first();
-        
+
         Config::set('services.facebook.client_id', $bs->facebook_app_id);
         Config::set('services.facebook.client_secret', $bs->facebook_app_secret);
         Config::set('services.facebook.redirect', url('user/login/facebook/callback'));
-        
+
         Config::set('services.google.client_id', $bs->google_client_id);
         Config::set('services.google.client_secret', $bs->google_client_secret);
         Config::set('services.google.redirect', url('login/google/callback'));
       }
-    
+
     function deleteToDraft()
     {
        DraftAd::where('vendor_id', Auth::guard('vendor')->user()->id)->delete();
     }
-    
+
     function saveToDraft(Request $request)
     {
-       $c_value = $request->current_val; 
-       $column_name = $request->column_name; 
-       
+       $c_value = $request->current_val;
+       $column_name = $request->column_name;
+
        if(!empty($column_name))
        {
             $storeAdInDraft = DraftAd::where('vendor_id', Auth::guard('vendor')->user()->id)->first();
-            
-            if ($storeAdInDraft) 
+
+            if ($storeAdInDraft)
             {
                 $storeAdInDraft->$column_name = $c_value;
-            
+
                 $storeAdInDraft->save();
-            } 
-            else 
+            }
+            else
             {
                 DraftAd::create([
                     'vendor_id' => Auth::guard('vendor')->user()->id,
                     $column_name  => $c_value ,
                 ]);
             }
-            
+
             if( $column_name  == 'sub_category_id')
             {
                 return $this->loadingCat($c_value);
@@ -83,17 +83,17 @@ class UserController extends Controller
        }
        else
        {
-           return  $this->loadingCat($c_value); 
+           return  $this->loadingCat($c_value);
        }
-       
+
     }
-    
+
     function loadingCat($c_value)
     {
         $categoryyy = Category::find($c_value);
-        
+
         $categories = Category::where('parent_id' , $c_value)->get(['name' , 'id' ]);
-            
+
         if($categories->count() > 0)
         {
             $output = '<div class="row sub_sub_sub_category" id="sub_cat_'.$categoryyy->id.'" >
@@ -101,24 +101,24 @@ class UserController extends Controller
             <div class="form-group">
             <label>Select Sub Category of '.$categoryyy->name.' *</label>
             <select name="fil_sub_categories[]" class="form-control"  onchange="saveDraftData(this)"><option selected="" disabled="">Select sub Category</option>';
-            
+
             foreach($categories as $category)
             {
                 $output .='<option value="'.$category->id.'">'.$category->name.'</option>';
             }
-            
+
             $output .='</select>
             </div>
             </div>
             <div class="col-lg-4"></div>
             </div>';
-            
+
             return response()->json(['result' => 'ok' , 'output' => $output  , 'cat_id' => $categoryyy->id ]);
         }
         else
         {
             $formData = FormFields::with('form_options')->where('category_field_id' , $c_value)->get();
-            
+
             if( $formData->count() > 0 )
             {
                 $output = '<div class="row ">
@@ -128,66 +128,66 @@ class UserController extends Controller
                 </div>
                 </div>
                 </div> <div class="row" style="    padding-left: 25px;"> <div class="form-group >';
-                
+
             foreach($formData as $list)
             {
-                
+
                     if($list->type == 'input')
                     {
-                        $output .= '<div class="col-md-12 mt-4" > <label class=" us_label mb-2"> '.$list->label.'</label> <input type="text" placeholder="type here ..." name="filters_input_'.strtolower(str_replace(' ' , '_' , $list->label)).'" class="form-control" />'; 
+                        $output .= '<div class="col-md-12 mt-4" > <label class=" us_label mb-2"> '.$list->label.'</label> <input type="text" placeholder="type here ..." name="filters_input_'.strtolower(str_replace(' ' , '_' , $list->label)).'" class="form-control" />';
                     }
-                    
+
                     if($list->type == 'textarea')
                     {
-                        $output .= '<div class="col-md-12 mt-4" > <label class=" us_label mb-2"> '.$list->label.'</label> <textarea name="filters_textarea_'.strtolower(str_replace(' ' , '_' , $list->label) ).'" 
-                        placeholder="type here ..." class="form-control" rows="4"></textarea>'; 
+                        $output .= '<div class="col-md-12 mt-4" > <label class=" us_label mb-2"> '.$list->label.'</label> <textarea name="filters_textarea_'.strtolower(str_replace(' ' , '_' , $list->label) ).'"
+                        placeholder="Please type here ..." class="form-control" rows="4"></textarea>';
                     }
-                
+
                     if($list->type == 'checkbox')
                     {
                         if(!empty($list->form_options))
                         {
                             $output .= '<div class="col-md-12 mt-4" > <label class="us_label mb-2"> '.$list->label.'</label><br>';
-                           
+
                             foreach($list->form_options as $option)
                             {
                                 $output .= '<b>'.$option->value.'</b> : &nbsp;&nbsp;<input type="checkbox" value="'.$option->value.'" style="position: relative;margin-right: 1rem;top: 2.2px;" name="filters_checkbox_'.strtolower(str_replace(' ' , '_' , $list->label) ).'[]"  /> ';
                             }
                         }
                     }
-                    
+
                     if($list->type == 'radio')
                     {
                         if(!empty($list->form_options))
                         {
                             $output .= '<div class="col-md-12 mt-4" > <label class="us_label mb-2"> '.$list->label.'</label><br>';
-                           
+
                             foreach($list->form_options as $option)
                             {
                                 $output .= '<b>'.$option->value.'</b> : &nbsp;&nbsp;<input type="radio" value="'.$option->value.'" style="position: relative;margin-right: 1rem;top: 2.2px;" name="filters_radio_'.strtolower(str_replace(' ' , '_' , $list->label) ).'"  /> ';
                             }
                         }
                     }
-                
+
                     if($list->type == 'select')
                     {
                         if(!empty($list->form_options))
                         {
                             $output .= '<div class="col-md-12 mt-4" > <label class="us_label mb-2"> '.$list->label.'</label><br> <select class="form-control" name="filters_select_'.strtolower(str_replace(' ' , '_' , $list->label) ).'" ><option value="">Select '.$list->label.'</option>';
-                           
+
                             foreach($list->form_options as $option)
                             {
                                 $output .= '<option value="'.$option->value.'">'.$option->value.'</option> ';
                             }
-                            
+
                             $output .= '</select>';
                         }
                     }
-                
+
                 }
-                
+
                 $output .= '</div></div>';
-                
+
                 return response()->json([ 'result' => 'dataonline' , 'output' => $output ]);
             }
             else
@@ -196,7 +196,7 @@ class UserController extends Controller
             }
         }
     }
-    
+
   public function login(Request $request)
   {
     $misc = new MiscellaneousController();
@@ -233,7 +233,7 @@ class UserController extends Controller
         return view('frontend.user.ads.create', $information);
     }
 
-    
+
 
   public function redirectToFacebook()
   {
@@ -252,12 +252,12 @@ class UserController extends Controller
  public function redirectToGoogle()
   {
     return Socialite::driver('google')->redirect();
-    
+
   }
 
   public function handleGoogleCallback()
   {
-     
+
     return $this->authenticationViaProvider('google');
   }
 
@@ -269,30 +269,30 @@ class UserController extends Controller
     } else {
       $redirectURL = route('vendor.dashboard');
     }
-    
+
     $responseData = Socialite::driver($driver)->user();
-    
+
     $userInfo = $responseData->user;
 
     $isUser = Vendor::query()->where('email', '=', $userInfo['email'])->first();
 
 
-    if (!empty($isUser)) 
+    if (!empty($isUser))
     {
       // log in
       if ($isUser->status == 1) {
         Auth::guard('vendor')->login($isUser);
 
         return redirect($redirectURL);
-      } 
-      else 
+      }
+      else
       {
         Session::flash('error', 'Sorry, your account has been deactivated.');
 
         return redirect()->route('page.crash');
       }
-    } 
-    else 
+    }
+    else
     {
       // get user avatar and save it
       $avatar = $responseData->getAvatar();
@@ -301,7 +301,7 @@ class UserController extends Controller
       $avatarName = $responseData->getId() . '.jpg';
       $path = public_path('assets/img/users/');
 
-    
+
       // sign up
       $user = new User();
 
@@ -319,8 +319,8 @@ class UserController extends Controller
         $user->provider = ($driver == 'facebook') ? 'facebook' : 'google';
         $user->provider_id = $userInfo['id'];
         $user->save();
-        
-        
+
+
         $vendor = new Vendor();
         $vendor->username = $user->name.$user->id;
         $vendor->email = $userInfo['email'];
@@ -385,8 +385,8 @@ class UserController extends Controller
 
         return redirect()->back();
       }
-      
-      if ($authUser->status == 0) 
+
+      if ($authUser->status == 0)
       {
         Session::flash('error', 'Sorry, your account has been deactivated');
 
@@ -424,7 +424,7 @@ class UserController extends Controller
     $queryResult['pageHeading'] = $misc->getPageHeading($language);
 
     $queryResult['bgImg'] = $misc->getBreadcrumb();
-    
+
     $queryResult['bs'] = Basic::query()->select('google_recaptcha_status', 'facebook_login_status', 'google_login_status')->first();
 
     return view('frontend.user.forget-password', $queryResult);
@@ -454,7 +454,7 @@ class UserController extends Controller
 
     $validator = Validator::make($request->all(), $rules, $messages);
 
-    if ($validator->fails()) 
+    if ($validator->fails())
     {
       return redirect()->back()->withErrors($validator->errors())->withInput();
     }
@@ -539,9 +539,9 @@ class UserController extends Controller
   public function signup()
   {
       // redirect to the original route qk many user ka system hi khtam kar diya ha srf vendor login or regiter hoga or agy sa vendor ki categories han like trader dealer or nrmal ;) ( - . - )
-      
+
       return redirect()->route('vendor.signup');
-      
+
     $misc = new MiscellaneousController();
 
     $language = $misc->getLanguage();
@@ -764,18 +764,18 @@ class UserController extends Controller
   //add_to_wishlist
   public function add_to_wishlist($id)
   {
-        if (Auth::guard('vendor')->check()) 
+        if (Auth::guard('vendor')->check())
         {
           $user_id = Auth::guard('vendor')->user()->id;
           $check = Wishlist::where('car_id', $id)->where('user_id', $user_id)->first();
-    
-          if (!empty($check)) 
+
+          if (!empty($check))
           {
              Wishlist::where('car_id' , $id)->where('user_id' , $user_id)->delete();
             $notification = array('message' => 'This ad has been removed from your saved ads!', 'alert_type' => 'error');
             return response()->json($notification);
-          } 
-          else 
+          }
+          else
           {
             $add = new Wishlist;
             $add->car_id = $id;
@@ -784,8 +784,8 @@ class UserController extends Controller
             $notification = array('message' => 'This ad has been added to your saved ads', 'alert_type' => 'success');
             return response()->json($notification);
           }
-        } 
-        else 
+        }
+        else
         {
           return response()->json(['alert_type' => 'login']);
         }
@@ -822,23 +822,23 @@ class UserController extends Controller
    public function get_brand_model(Request $request)
     {
        $data = CarModel::where('brand_id', $request->id)->where('status', 1)->get();
-      
+
         if($data->count()>0)
         {
              return $data;
         }
-       
+
        $brand = Brand::find($request->id);
-       
+
        $slugs = Brand::where('slug' , $brand->slug)->pluck('id');
-       
+
        $data = CarModel::whereIn('brand_id', $slugs)->where('status', 1)->get();
-       
+
        foreach($data as $dt)
        {
            DB::table('car_models')->insert(['language_id' => 20 , 'name' => $dt->name , 'slug' => $dt->slug , 'brand_id' => $request->id ]);
        }
-       
+
        return $data;
     }
     public function imagesstore(Request $request)
@@ -846,76 +846,76 @@ class UserController extends Controller
       //echo "hello"; exit;
         $img = $request->file('file');
         $allowedExts = array('jpg', 'png', 'jpeg', 'svg', 'webp');
-        
-        $rules = 
+
+        $rules =
         [
-            'file' => 
+            'file' =>
             [
-                function ($attribute, $value, $fail) use ($img, $allowedExts) 
+                function ($attribute, $value, $fail) use ($img, $allowedExts)
                 {
                     $ext = $img->getClientOriginalExtension();
-                    if (!in_array($ext, $allowedExts)) 
+                    if (!in_array($ext, $allowedExts))
                     {
                         return $fail("Only png, jpg, jpeg images are allowed");
                     }
                 },
             ]
         ];
-        
+
         $validator = Validator::make($request->all(), $rules);
-        
-        if ($validator->fails()) 
+
+        if ($validator->fails())
         {
             $validator->getMessageBag()->add('error', 'true');
             return response()->json($validator->errors());
         }
-        
+
         $filename = uniqid() . '.jpg';
-        
+
         $img->move(public_path('assets/admin/img/car-gallery/'), $filename);
-        
+
         $count = CarImage::whereNull('car_id')->where('user_id' , Auth::guard('vendor')->user()->id )->count();
-        
+
         $pi = new CarImage();
-        
-        if (!empty($request->car_id)) 
+
+        if (!empty($request->car_id))
         {
             $pi->car_id = $request->car_id;
         }
-        
+
         $pi->user_id =  Auth::guard('vendor')->user()->id;
-        
+
         if($count > 0 )
         {
-           $pi->priority = $count + 1;  
+           $pi->priority = $count + 1;
         }
-       
+
         $pi->image = $filename;
-        
+
         $pi->save();
-        
+
         $storeAdInDraft = DraftAd::where('vendor_id', Auth::guard('vendor')->user()->id)->first();
-        
-        if ($storeAdInDraft) 
+
+        if ($storeAdInDraft)
         {
             $images = json_decode($storeAdInDraft->images, true);
-        
+
             $images[] = $filename;
-        
+
             $storeAdInDraft->images = json_encode($images);
-        
+
             $storeAdInDraft->save();
-        } 
-        else 
+        }
+        else
         {
             DraftAd::create([
                 'vendor_id' => Auth::guard('vendor')->user()->id,
                 'images' => json_encode([$filename]),
             ]);
         }
-        
+
         return response()->json(['status' => 'success', 'file_id' => $pi->id]);
-        
+
     }
     public function imagermv(Request $request)
     {
@@ -944,6 +944,6 @@ class UserController extends Controller
         }
     }
     //store
-   
+
 
 }

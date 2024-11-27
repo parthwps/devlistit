@@ -50,49 +50,49 @@ function reportAd(Request $request)
      $user_id      =   Auth::guard('vendor')->user()->id;
      $explaination =   $request->explaination;
      $ad_id        =   $request->ad_id;
-     
+
      $checkpoint = AdReport::where('ad_id' , $ad_id )->where('user_id' , $user_id)->first();
-     
+
      if($checkpoint == false)
      {
-        AdReport::create(['ad_id' => $ad_id ,'user_id' => $user_id ,'reason' => $reasonOption ,'explaination' => $explaination  ]); 
+        AdReport::create(['ad_id' => $ad_id ,'user_id' => $user_id ,'reason' => $reasonOption ,'explaination' => $explaination  ]);
      }
-     
+
      return response()->json(['response' => 'ok']);
 }
-    
+
     function getEngineCapacity(Request $request)
     {
         $engine_sizes = EngineSize::where('status', 1)->get();
         $output = '';
-        
-        
-        $c_value = $request->thisVal; 
-        
-        $column_name = 'fuel'; 
-       
+
+
+        $c_value = $request->thisVal;
+
+        $column_name = 'fuel';
+
        $storeAdInDraft = DraftAd::where('vendor_id', Auth::guard('vendor')->user()->id)->first();
-        
-        if ($storeAdInDraft) 
+
+        if ($storeAdInDraft)
         {
             $storeAdInDraft->$column_name = $c_value;
-        
+
             $storeAdInDraft->save();
-        } 
-        else 
+        }
+        else
         {
             DraftAd::create([
                 'vendor_id' => Auth::guard('vendor')->user()->id,
                 $column_name  => $c_value ,
             ]);
         }
-        
+
         if($request->subcatVal == 48 || $request->subcatVal == 62)
         {
              $output =  '<div class="form-group">
             <label>Engine size (cc) </label>
             <input type="number" class="form-control" id="addCapacity" name="engineCapacity" onfocusout="addnsjfjdfj(this)" />
-            </div>';   
+            </div>';
         }
         else
         {
@@ -102,13 +102,13 @@ function reportAd(Request $request)
                 <label>Engine size (litres)</label>
                 <select name="engineCapacity" id="engine_sizes" class="form-control"  onchange="saveDraftData(this, \'engine\')" >
                 <option value="" >Select</option>';
-                
+
                 foreach ($engine_sizes as $engine)
                 {
                     $output .='<option  value="'.$engine->name.'">'.$engine->name.'</option>';
                 }
-                
-                $output .='</select> </div>'; 
+
+                $output .='</select> </div>';
             }
             else
             {
@@ -118,75 +118,75 @@ function reportAd(Request $request)
                 </div>';
             }
         }
-        
+
         echo $output;
     }
-    
-    
+
+
     function getModel(Request $request)
     {
         $make = $request->make;
-        
+
         $brand = Brand::where('slug' , $make)->first();
-        
+
         $select = '<select class="form-select form-control js-example-basic-single1" onchange="updateUrl()" name="models[]"> <option value="">Select Model</option>';
-        
+
         foreach ($brand->models as $model)
         {
-            $select .= '<option  value="'.$model->slug.'">'.$model->name.'</option>';   
+            $select .= '<option  value="'.$model->slug.'">'.$model->name.'</option>';
         }
-          
+
         $select .= '</select>';
-        
+
         echo $select;
     }
-    
+
     function changeSpotlightStatus()
     {
         $fiveDaysAgo = Carbon::now()->subDays(5);
-        
+
         Car::where(function($query) use ($fiveDaysAgo) {
         $query->whereNull('featured_date')
         ->orWhere('featured_date', '<', $fiveDaysAgo);
         })->update(['is_featured' => 0 ]);
-        
+
         echo 'unlist';
 
     }
-    
+
     function saveSearch(Request $request)
     {
         $search_url = $request->search_url;
         $save_search_name = $request->save_search_name;
         $selectedAlertType = $request->selectedAlertType;
         $search_urls = $this->updatePageParam($search_url);
-        
+
         $check = SaveSearch::where('user_id' , Auth::guard('vendor')->user()->id)->where('save_search_name' , $save_search_name)->first();
-        
+
         if($check == false)
         {
             SaveSearch::create(['search_url' => $search_urls , 'save_search_name' => $save_search_name , 'selectedAlertType' => $selectedAlertType , 'user_id' => Auth::guard('vendor')->user()->id , 'last_save_date' => date('Y-m-d H:i:s')]);
         }
-        
+
         if($check == true)
         {
             SaveSearch::where('id' , $check->id)->update(['search_url' => $search_urls , 'selectedAlertType' => $selectedAlertType,'user_id' => Auth::guard('vendor')->user()->id , 'last_save_date' => date('Y-m-d H:i:s')]);
         }
-        
+
         return response()->json(['response' => 'saved']);
     }
-    
+
     function updatePageParam($url) {
         // Use regular expression to replace page parameter
         return preg_replace('/(\?|&)page=\d+/', '$1page=1', $url);
     }
-    
+
   public function index()
   {
     Cache::flush();
-    
+
     cache()->flush();
-    
+
     $themeVersion = Basic::query()->pluck('theme_version')->first();
 
     $secInfo = Section::query()->first();
@@ -203,34 +203,34 @@ function reportAd(Request $request)
 
     $queryResult['sliderInfos'] = $language->sliderInfo()->orderByDesc('id')->get();
 
-    if ($secInfo->about_section_status == 1) 
+    if ($secInfo->about_section_status == 1)
     {
       $queryResult['aboutSectionImage'] = Basic::query()->pluck('about_section_image')->first();
-      
+
       $queryResult['aboutSecInfo'] = $language->aboutSection()->first();
     }
-    
-    if ($themeVersion == 2) 
+
+    if ($themeVersion == 2)
     {
       $queryResult['categorySectionImage'] = Basic::query()->pluck('category_section_background')->first();
     }
-    
+
     $queryResult['catgorySecInfo'] = CategorySection::where('language_id', $language->id)->first();
-    
+
     $queryResult['featuredSecInfo'] = FeatureSection::where('language_id', $language->id)->first();
 
-    if ($themeVersion == 1) 
+    if ($themeVersion == 1)
     {
       $queryResult['banners'] = Banner::where('language_id', $language->id)->get();
     }
 
-    if ($secInfo->work_process_section_status == 1 && $themeVersion == 2) 
+    if ($secInfo->work_process_section_status == 1 && $themeVersion == 2)
     {
       $queryResult['workProcessSecInfo'] = $language->workProcessSection()->first();
       $queryResult['processes'] = $language->workProcess()->orderBy('serial_number', 'asc')->get();
     }
 
-    if ($secInfo->counter_section_status == 1) 
+    if ($secInfo->counter_section_status == 1)
     {
       $queryResult['counterSectionImage'] = Basic::query()->pluck('counter_section_image')->first();
       $queryResult['counterSectionInfo'] = CounterSection::where('language_id', $language->id)->first();
@@ -245,20 +245,20 @@ function reportAd(Request $request)
     $queryResult['min'] = intval($min);
     $queryResult['max'] = intval($max);
 
-    if ($secInfo->testimonial_section_status == 1) 
+    if ($secInfo->testimonial_section_status == 1)
     {
       $queryResult['testimonialSecInfo'] = $language->testimonialSection()->first();
       $queryResult['testimonials'] = $language->testimonial()->orderByDesc('id')->get();
       $queryResult['testimonialSecImage'] = Basic::query()->pluck('testimonial_section_image')->first();
     }
 
-    if ($themeVersion != 1 && $secInfo->call_to_action_section_status == 1) 
+    if ($themeVersion != 1 && $secInfo->call_to_action_section_status == 1)
     {
       $queryResult['callToActionSectionImage'] = Basic::query()->pluck('call_to_action_section_image')->first();
       $queryResult['callToActionSecInfo'] = $language->callToActionSection()->first();
     }
 
-    if ($secInfo->blog_section_status == 1) 
+    if ($secInfo->blog_section_status == 1)
     {
       $queryResult['blogSecInfo'] = $language->blogSection()->first();
 
@@ -279,11 +279,11 @@ function reportAd(Request $request)
     ->limit(8)
     ->select('cars.*', 'car_contents.slug', 'car_contents.title','car_contents.category_id', 'car_contents.car_model_id', 'car_contents.brand_id')
     ->get();
-    
-    
+
+
    $getFeaturedVendors = Vendor::with([
         'vendor_info',
-        'memberships.package', 
+        'memberships.package',
         'cars' => function ($query) {
             $query->latest()->limit(3);
         }
@@ -299,7 +299,7 @@ function reportAd(Request $request)
     ->first();
 
     $queryResult['getFeaturedVendors'] = $getFeaturedVendors;
-    
+
     $queryResult['car_contents'] = Car::join('car_contents', 'car_contents.car_id', 'cars.id')
     ->join('vendors', 'cars.vendor_id', '=', 'vendors.id')
     ->where([
@@ -310,7 +310,7 @@ function reportAd(Request $request)
     ['car_contents.main_category_id', 24]
     ])
     ->where('car_contents.language_id', $language->id)
-    ->orderBy('cars.created_at', 'desc') 
+    ->orderBy('cars.created_at', 'desc')
     ->limit(8)
     ->select('cars.*', 'car_contents.slug', 'car_contents.title', 'car_contents.category_id', 'car_contents.car_model_id', 'car_contents.brand_id')
     ->get();
@@ -322,7 +322,7 @@ function reportAd(Request $request)
     $queryResult['carlocation'] = CountryArea::where('status', 1)->orderBy('name', 'asc')->get();
     $queryResult['caryear'] = CarYear::where('status', 1)->orderBy('name', 'desc')->get();
     $queryResult['adsprices'] = AdsPrice::where('status', 1)->orderBy('id', 'asc')->get();
-    
+
     // Retrieve popular brands
     $popularBrands = Brand::where('cat_id', 44)
     ->where('status', 1)
@@ -331,14 +331,14 @@ function reportAd(Request $request)
     ->orderBy('name', 'asc')
     ->take(10) // Adjust this number based on what you consider 'popular'
     ->get();
-    
-   
+
+
     $otherBrands = Brand::where('cat_id', 44)
     ->where('status', 1)
     // ->whereNotIn('id', $popularBrands->pluck('id'))
     ->orderBy('name', 'asc')
     ->get();
-    
+
     // Combine results for view
     $queryResult['brands'] = $popularBrands;
     $queryResult['otherBrands'] = $otherBrands;
@@ -348,23 +348,23 @@ function reportAd(Request $request)
 
     $cat_ids = [
       24, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 213, 274, 345
-    ]; 
+    ];
     // Convert $cat_ids array to a comma-separated string
-    $cat_ids_str = implode(',', $cat_ids);               
+    $cat_ids_str = implode(',', $cat_ids);
 
     /* ---- Dealership Cars ----*/
-    $dealershipCarsQuery = "SELECT 
+    $dealershipCarsQuery = "SELECT
                               COUNT(cars.id) AS car_count,
                               CONCAT('Dealership Cars') AS title,
                               CONCAT('dealership_cars') AS custom_cat,
                               CONCAT('dealership_cars.png') AS image_path
-                            FROM 
+                            FROM
                               cars
-                            JOIN 
+                            JOIN
                               vendors ON cars.vendor_id = vendors.id
-                            JOIN 
+                            JOIN
                               car_contents ON cars.id = car_contents.car_id
-                              WHERE 
+                              WHERE
                               car_contents.main_category_id = 24
                               AND
                                vendors.vendor_type = 'dealer'
@@ -379,7 +379,7 @@ function reportAd(Request $request)
     $dealershipCarsCount = DB::select($dealershipCarsQuery);
 
     /* ---- Family Cars ----*/
-    $familyCarsQuery = "SELECT 
+    $familyCarsQuery = "SELECT
                           COUNT(*) AS car_count,
                           'Family Cars' AS title,
                           'family_cars' AS custom_cat,
@@ -400,19 +400,19 @@ function reportAd(Request $request)
 
     $familyCarsCount = DB::select($familyCarsQuery);
 
-    
+
 
     /* ---- First Cars ----*/
-    $firstCarsQuery = "SELECT 
+    $firstCarsQuery = "SELECT
                         COUNT(*) AS car_count,
                         'First Cars' AS title,
                         'first_cars' AS custom_cat,
                         'first_cars.png' AS image_path
                       FROM (
-                        SELECT 
+                        SELECT
                             cars.id, cars.seats, cars.price, cars.road_tax,
-                            CASE 
-                                WHEN cars.engineCapacity LIKE '%L' 
+                            CASE
+                                WHEN cars.engineCapacity LIKE '%L'
                                 THEN CAST(SUBSTRING_INDEX(cars.engineCapacity, 'L', 1) AS DECIMAL(4, 2))
                                 WHEN cars.engineCapacity LIKE '%Kw'
                                 THEN CAST(SUBSTRING_INDEX(cars.engineCapacity, 'Kw', 1) AS DECIMAL(4, 2)) * 0.134
@@ -434,7 +434,7 @@ function reportAd(Request $request)
                             -- AND (cars.price BETWEEN 10000 AND 20000)
                             -- And cars.road_tax <= 300
                     ) AS cars_with_engine_capacity
-                    -- WHERE engine_in_liters IS NOT NULL 
+                    -- WHERE engine_in_liters IS NOT NULL
                     -- AND engine_in_liters >= 1.6
                     ;";
 
@@ -442,7 +442,7 @@ function reportAd(Request $request)
     $firstCarsCount = DB::select($firstCarsQuery);
 
     /* ---- Eco-Friendly Cars ----*/
-    $eco_friendlyCarsQuery = "SELECT 
+    $eco_friendlyCarsQuery = "SELECT
                                 COUNT(*) AS car_count,
                                 'Eco Friendly Cars' AS title,
                                 'eco_friendly_cars' AS custom_cat,
@@ -458,7 +458,7 @@ function reportAd(Request $request)
 
 
     /* ---- Luxury Cars ----*/
-    $luxuryCarsQuery = "SELECT 
+    $luxuryCarsQuery = "SELECT
                           COUNT(*) AS car_count,
                           'Luxury Cars' AS title,
                           'luxury_cars' AS custom_cat,
@@ -481,28 +481,28 @@ function reportAd(Request $request)
     $luxuryCarsCount = DB::select($luxuryCarsQuery);
 
     /* ---- Commercial Cars ----*/
-    $commercialCarsQuery = "SELECT 
+    $commercialCarsQuery = "SELECT
                               categories.slug AS category,
                               COUNT(cars.id) AS car_count,
                               CONCAT('Commercial Cars') AS title,
                               CONCAT('commercial_cars') AS custom_cat,
                               CONCAT('commercial_cars.png') AS image_path
-                            FROM 
+                            FROM
                                 cars
-                            JOIN 
+                            JOIN
                                 car_contents ON cars.id = car_contents.car_id
-                            JOIN 
+                            JOIN
                                 categories ON car_contents.category_id = categories.id
-                            GROUP BY 
+                            GROUP BY
                                 categories.slug
-                            HAVING 
+                            HAVING
                                 categories.slug = 'commercials';
                             ";
 
     $commercialCarsCount = DB::select($commercialCarsQuery);
 
     /* ---- City Cars ----*/
-    $cityCarsQuery = "SELECT 
+    $cityCarsQuery = "SELECT
                         COUNT(*) AS car_count,
                         'City Cars' AS title,
                         'city_cars' AS custom_cat,
@@ -525,8 +525,8 @@ function reportAd(Request $request)
     $cityCarsCount = DB::select($cityCarsQuery);
 
     $lifestyle[] = $dealershipCarsCount[0];
-    $lifestyle[] = $familyCarsCount[0]; 
-    $lifestyle[] = $firstCarsCount[0]; 
+    $lifestyle[] = $familyCarsCount[0];
+    $lifestyle[] = $firstCarsCount[0];
     $lifestyle[] = $eco_friendlyCarsCount[0];
     $lifestyle[] = $luxuryCarsCount[0];
     // $lifestyle[] = $commercialCarsCount[0];
@@ -545,7 +545,7 @@ function reportAd(Request $request)
       return view('frontend.home.index-v3', $queryResult);
     }
   }
-  
+
   function getnewads(Request $request)
   {
       $type = $request->type??null;
@@ -554,7 +554,7 @@ function reportAd(Request $request)
       $mainCatId = $request->categoryId??null;
 
       // return response()->json($mainCatId);
-            
+
     $car_contents = Car::join('car_contents', 'car_contents.car_id', 'cars.id')
     ->join('vendors', 'cars.vendor_id', '=', 'vendors.id')
     ->where([
@@ -567,10 +567,10 @@ function reportAd(Request $request)
     ->when(($mainCatId === null || $mainCatId == '0'), function ($query) {
         return $query->whereNotIn('car_contents.main_category_id', [24, 28, 39]);
     }, function ($query) use ($mainCatId) {
-      
+
         return $query->where('car_contents.main_category_id', $mainCatId);
     });
-    
+
     if ($type && $rightside && $leftside) {
       // Check the type and adjust the query accordingly
       if ($type == 2) {
@@ -588,29 +588,29 @@ function reportAd(Request $request)
       $car_contents = $car_contents->orderBy('cars.created_at', 'desc')
       ->limit(8);
     }
-    
+
     // Execute the query
     $car_contents = $car_contents->select('cars.*', 'car_contents.slug', 'car_contents.title', 'car_contents.category_id', 'car_contents.car_model_id', 'car_contents.brand_id')
     ->get();
-    
+
     // If fetching records for the left side, reverse the collection to maintain consistent ordering
     if ($type && $type != 2) {
       $car_contents = $car_contents->sortByDesc('created_at')->values();
     }
 
-    
+
     if($car_contents->count() == 0 )
     {
-        return response()->json(['response' => 'no_result']);  
+        return response()->json(['response' => 'no_result']);
     }
-      
+
       $lastindex = count($car_contents)-1;
-      
+
       $html =  view('frontend.home.recent-ads-copy', compact('car_contents'))->render();
-   
+
       return response()->json(['response' => 'yes' , 'htmldata' => $html , 'rightside' => $car_contents[$lastindex]->id    , 'leftside' => $car_contents[0]->id  ]);
   }
-  
+
   public function mailtemplate()
   {
     return view('email.mailbody');
@@ -664,13 +664,13 @@ function reportAd(Request $request)
     //print_r($cars);
 
     $html = view('frontend.home.autocomplete', compact('searchTerm','cars'))->render();
-    
-    return response()->json(['code' => 200, 'message' => 'successful.','data' =>$html]); 
+
+    return response()->json(['code' => 200, 'message' => 'successful.','data' =>$html]);
   }
   public function defaultsuggestions(Request $request){
     $html = view('frontend.home.autocompletefilled')->render();
-    
-    return response()->json(['code' => 200, 'message' => 'successful.','data' =>$html]); 
+
+    return response()->json(['code' => 200, 'message' => 'successful.','data' =>$html]);
 
   }
   public function vehicleData(Request $request)
@@ -679,29 +679,29 @@ function reportAd(Request $request)
     //echo "VehicleData"; exit;
         $apiarray = [];
         $categories = Category::where('id', $request->catid)->first();
-        
+
         $check_post = null;
-        
+
     if($request->vehiclereg !=7007)
     {
         $reg_no = $request->vehiclereg;
-        
+
         $formatted_reg_no = str_replace([' ', '-'], '', $reg_no);
 
         $check_post = DB::table('registration_records')
         ->whereRaw('REPLACE(REPLACE(vrm, " ", ""), "-", "") LIKE ?', ['%' . $formatted_reg_no . '%'])
         ->first();
-        
+
         DraftAd::where('vendor_id', Auth::guard('vendor')->user()->id)->delete();
-        
+
         if($check_post)
         {
             $make = $check_post->make;
             $model = $check_post->model;
-            
+
             $check_brand = Brand::where('name', ucfirst(strtolower($make)))->where('cat_id' , $request->catid)->first();
-            
-            if ($check_brand == false) 
+
+            if ($check_brand == false)
             {
                 $new_brand = Brand::create([
                     'language_id' => 20,
@@ -711,16 +711,16 @@ function reportAd(Request $request)
                     'status' => 1,
                     'created_at' => now()
                 ]);
-            
+
                 $check_brand = $new_brand;
             }
-            
+
             if($check_brand)
             {
                     $check_model = CarModel::where('brand_id', $check_brand->id)
                     ->where('name', ucfirst(strtolower($model)))
                     ->first();
-                    
+
                     if (!$check_model) {
                     // Create the CarModel if it doesn't exist
                         CarModel::create([
@@ -733,17 +733,17 @@ function reportAd(Request $request)
                         ]);
                     }
             }
-            
-            
-           $apiarray["response"] = "manually"; 
+
+
+           $apiarray["response"] = "manually";
         }
         else
         {
             $apiarray["response"] = "ItemNotFound";
         }
-        
-    } 
-    else 
+
+    }
+    else
     {
       $apiarray["response"] = "manually";
     }
@@ -753,119 +753,119 @@ function reportAd(Request $request)
     $catID = $request->catid;
     $draft_ad =  DraftAd::where('vendor_id', Auth::guard('vendor')->user()->id)->first();
     $filters = view('vendors.car.vehicledetails', compact('apiarray' , 'catID','categories', 'draft_ad' , 'check_post'))->render();
-    
+
     $filters .=$this->loadingCat($request->catid);
-    
+
     $is_enable = 0;
-    
-    if (in_array('registration_no', json_decode($categories->filters))) 
+
+    if (in_array('registration_no', json_decode($categories->filters)))
     {
         $is_enable = 1;
     }
-    
+
     //echo json_encode($apiarray); exit;
     return response()->json(['code' => 200, 'message' => 'successful.','data' =>$filters , 'is_enable' => $is_enable ]); exit;
     // echo json_encode($cardata);
 
  }
-  
-  
+
+
   function loadingCat($c_value)
     {
-       
+
             $formData = FormFields::with('form_options')->where('category_field_id' , $c_value)->get();
             $output = '';
-            
+
             if( $formData->count() > 0 )
             {
                 $output .= ' <div class="row" style="padding-left: 25px;"> <div class="form-group >';
-                
+
             foreach($formData as $list)
             {
-                
+
                     if($list->type == 'input')
                     {
-                        $output .= '<div class="col-md-12 mt-4" > <label class=" us_label mb-2"> '.$list->label.'</label> <input type="text" placeholder="Please Enter Here" name="filters_input_'.strtolower(str_replace(' ' , '_' , $list->label)).'" class="form-control" />'; 
+                        $output .= '<div class="col-md-12 mt-4" > <label class=" us_label mb-2"> '.$list->label.'</label> <input type="text" placeholder="Please Enter Here" name="filters_input_'.strtolower(str_replace(' ' , '_' , $list->label)).'" class="form-control" />';
                     }
-                    
+
                     if($list->type == 'textarea')
                     {
-                        $output .= '<div class="col-md-12 mt-4" > <label class=" us_label mb-2"> '.$list->label.'</label> <textarea name="filters_textarea_'.strtolower(str_replace(' ' , '_' , $list->label) ).'" 
-                        placeholder="Please Enter Here" class="form-control" rows="4"></textarea>'; 
+                        $output .= '<div class="col-md-12 mt-4" > <label class=" us_label mb-2"> '.$list->label.'</label> <textarea name="filters_textarea_'.strtolower(str_replace(' ' , '_' , $list->label) ).'"
+                        placeholder="Please Enter Here" class="form-control" rows="4"></textarea>';
                     }
-                
+
                     if($list->type == 'checkbox')
                     {
                         if(!empty($list->form_options))
                         {
                             $output .= '<div class="col-md-12 mt-4" > <label class="us_label mb-2"> '.$list->label.'</label><br>';
-                           
+
                             foreach($list->form_options as $option)
                             {
                                 $output .= '<b style="color:gray;">'.$option->value.'</b> : &nbsp;&nbsp;<input type="checkbox" value="'.$option->value.'" style="position: relative;margin-right: 1rem;top: 2.2px;" name="filters_checkbox_'.strtolower(str_replace(' ' , '_' , $list->label) ).'[]"  /> ';
                             }
                         }
                     }
-                    
+
                     if($list->type == 'radio')
                     {
                         if(!empty($list->form_options))
                         {
                             $output .= '<div class="col-md-12 mt-4" > <label class="us_label mb-2"> '.$list->label.'</label><br>';
-                           
+
                             foreach($list->form_options as $option)
                             {
                                 $output .= '<b style="color:gray;">'.$option->value.'</b> : &nbsp;&nbsp;<input type="radio" value="'.$option->value.'" style="position: relative;margin-right: 1rem;top: 2.2px;" name="filters_radio_'.strtolower(str_replace(' ' , '_' , $list->label) ).'"  /> ';
                             }
                         }
                     }
-                
+
                     if($list->type == 'select')
                     {
                         if(!empty($list->form_options))
                         {
                             $output .= '<div class="col-md-12 mt-4" > <label class="us_label mb-2"> '.$list->label.'</label><br> <select class="form-control" name="filters_select_'.strtolower(str_replace(' ' , '_' , $list->label) ).'" ><option value="">Select '.$list->label.'</option>';
-                           
+
                             foreach($list->form_options as $option)
                             {
                                 $output .= '<option value="'.$option->value.'">'.$option->value.'</option> ';
                             }
-                            
+
                             $output .= '</select>';
                         }
                     }
-                
+
                 }
-                
+
                 $output .= '</div></div>';
-                
+
                 return $output;
             }
             else
             {
                 return $output;
             }
-        
+
     }
-    
-    
+
+
   public function tabsData(Request $request)
   {
     $misc = new MiscellaneousController();
     $language = $misc->getLanguage();
     $queryResult['language'] = $language;
     $hmlList = "";
-    
-    
+
+
     $car_categories = Category::where('language_id', $language->id)->where('status', 1)->where('parent_id', $request->catid);
-    
+
     if($request->catid == 0)
     {
         $car_categories = $car_categories->where('id' , '!=' , 24);
     }
-    
+
     $car_categories = $car_categories->orderBy('serial_number', 'asc')->get();
-    
+
    foreach($car_categories as $key => $category)
     {
         $img = ($category->image ? $category->image : 'noicon.png').'';
@@ -876,14 +876,14 @@ function reportAd(Request $request)
                         <h6 class="category-title urbanistFonts mb-10 w-100">
                           <div class="w-100 d-flex justify-content-start justify-content-sm-center align-items-center gap-1">
                             <div class="catImg w-25 w-sm-50 w-md-50 w-lg-50 w-xl-50  w-xxl-50  d-flex justify-content-end align-items-center">
-                            <img class="lazyload blur-up category-icon" 
-                            
+                            <img class="lazyload blur-up category-icon"
+
                           style="    filter: brightness(0) saturate(100%) invert(72%) sepia(72%) saturate(6798%) hue-rotate(193deg)
-                           brightness(95%) contrast(101%);" 
-                              data-src="'.asset('assets/admin/img/car-category/' . $img).'?v=0.1"   
-                              alt="{{ $category->name }}" 
+                           brightness(95%) contrast(101%);"
+                              data-src="'.asset('assets/admin/img/car-category/' . $img).'?v=0.1"
+                              alt="{{ $category->name }}"
                               title="{{ $category->name }}"
-                              id="filterCSS'.$key.'" 
+                              id="filterCSS'.$key.'"
                               >
                             </div>
                             <div class="catImgText w-75 w-sm-50 w-md-50 w-lg-50 w-xl-50  w-xxl-50  ">
@@ -896,7 +896,7 @@ function reportAd(Request $request)
         </a>
         </div>';
     }
-    
+
     return response()->json(['code' => 200, 'message' => 'successful.','data' =>$hmlList]); exit;
   }
   //about
@@ -934,10 +934,15 @@ function reportAd(Request $request)
     return view('frontend.about', $queryResult);
   }
 
+  
+  public function Aboutus(){
+
+    return view('frontend.Aboutus');
+  }
   //offline
   public function offline()
   {
     return view('frontend.offline');
   }
-  
+
 }

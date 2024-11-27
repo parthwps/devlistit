@@ -26,12 +26,12 @@
 <div class="user-dashboard pt-20 pb-60">
 
 <div class="container">
-      
+
   <div class="row gx-xl-5">
-  
+
        @includeIf('vendors.partials.side-custom')
-  <div class="col-md-9">      
-  
+  <div class="col-md-9">
+
   @php
     $current_package = App\Http\Helpers\VendorPermissionHelper::packagePermission(Auth::guard('vendor')->user()->id);
    //echo "<pre>"; print_r($countryArea);
@@ -82,7 +82,7 @@
       @endif
 
       <div class="card">
-        
+
         <div class="card-body">
           <div class="row">
             <div class="col-lg-12 ">
@@ -90,85 +90,10 @@
                 <button type="button" class="close" data-dismiss="alert">×</button>
                 <ul></ul>
               </div>
-              <div class="col-lg-12">
-                <label for="" class="mb-2"><strong>{{ __('Gallery Images') }} **</strong> <br> <small class="text-danger"> load up to <span id="change_text_photo_allow">15</span> images .jpg, .png, & .gif </small></label>
-                  
-                @if($draft_ad == true && !empty($draft_ad->images))
-                  @php
-                      $images = json_decode($draft_ad->images, true);
-                      $items = [];
-                  @endphp
-
-                  @if(count($images) > 0)
-                      <div class="row">
-                          <div class="col-12">
-                              <table class="table table-striped" id="imgtable">
-                                  @foreach($images as $image)
-                                      @php
-                                          $item = \App\Models\Car\CarImage::where('image', $image)->first();
-                                      @endphp
-
-                                      @if($item)
-                                          @php
-                                              $items[] = [
-                                                  'id' => $item->id,
-                                                  'image' => $item->image,
-                                                  'rotation_point' => $item->rotation_point,
-                                                  'priority' => $item->priority,
-                                              ];
-                                          @endphp
-                                      @endif
-                                  @endforeach
-
-                                  @php
-                                      // Sort items by priority
-                                      usort($items, function($a, $b) {
-                                          return $a['priority'] <=> $b['priority'];
-                                      });
-                                  @endphp
-
-                                  @foreach($items as $item)
-                                      <tr class="trdb table-row" id="trdb{{ $item['id'] }}" draggable="true" ondragstart="dragStart(event)" ondrop="drop(event)" ondragover="allowDrop(event)">
-                                          <td>
-                                              <div class="">
-                                                  <img class="thumb-preview wf-150"
-                                                      src="{{ asset('assets/admin/img/car-gallery/' . $item['image']) }}"
-                                                      id="img_{{$item['id']}}"
-                                                      alt="Ad Image"
-                                                      style="height:120px; width:120px; object-fit: cover;transform: rotate({{$item['rotation_point']}}deg);">
-                                              </div>
-                                              
-                                              <div style="text-align: center;margin-bottom: 5px;color: gray;">
-                                                Set Cover  <input class='form-check-input' value="{{ $item['id'] }}" onclick="setCoverPhoto({{ $item['id'] }})" type='radio' name='flexRadioDefault' >
-                                              </div>
-                                          </td>
-                                          <td>
-                                              <i class="fa fa-times" onclick="removethis({{ $item['id'] }})"></i>
-                                              <i class="fa fa-undo rotatebtndb" onclick="rotatePhoto({{ $item['id'] }})"></i>
-                                          </td>
-                                          
-                                      </tr>
-                                  @endforeach
-                              </table>
-                          </div>
-                      </div>
-                  @endif
-                @endif
-
-                  
-                <form action="{{ route('car.imagesstore') }}" id="my-dropzone" enctype="multipart/formdata"
-                  class="dropzone create us_dropzone">
-                  @csrf
-                  <div class="fallback">
-                    <input name="file" type="file" multiple />
-                  </div>
-                </form>
-                <p class="em text-danger mb-0" id="errslider_images"></p>
-              </div>
               <form class = "myajaxform" id="carForm" action="{{ route('vendor.car_management.store_car') }}" method="POST"
                 enctype="multipart/form-data">
                 @csrf
-                
+
                 <div id="sliders">
                     @if(!empty($items) && count($items) > 0 )
                         @foreach($items as $itm)
@@ -176,11 +101,11 @@
                         @endforeach
                     @endif
                 </div>
-                
+
                 <input type="hidden" name="can_car_add" value="1">
                 <input type="hidden" id="defaultImg" name="car_cover_image" value="">
-              
-                <div class="row">
+
+                {{-- <div class="row">
                   <div class="col-lg-8">
                     <div class="form-group ">
                       @php
@@ -198,9 +123,9 @@
                     </div>
                   </div>
                   <div class="col-lg-4"></div>
-                </div>
-                            
-                <div class="row sub_sub_sub_category" id="sub_catgry">
+                </div> --}}
+
+                {{-- <div class="row sub_sub_sub_category" id="sub_catgry">
                   <div class="col-lg-8 ">
                     <div class="form-group">
                         <label>{{ __('Select a Sub Category') }} *</label>
@@ -210,8 +135,8 @@
                     </div>
                   </div>
                   <div class="col-lg-4"></div>
-                </div>
-                            
+                </div> --}}
+
                 <div class="row" id="addTYAP">
                   <div class="col-lg-6 col-sm-6 col-md-6">
                     <div class="form-group">
@@ -229,24 +154,24 @@
                     </div>
                   </div>
                 </div>
-                
-                <div id = "searcfilters" class="row">  
-                                      
-              </div>  
-              <div id = "searcfiltersdata" class="row">  
-                                      
-              </div>  
-               
-            
+
+                <div id = "searcfilters" class="row">
+
+              </div>
+              <div id = "searcfiltersdata" class="row">
+
+              </div>
+
+
                 <div id="accordion" >
                   @foreach ($languages as $language)
                       <div class="">
-                    
+
 
                         <div id="collapse{{ $language->id }}"
                             class="collapse {{ $language->is_default == 1 ? 'show' : '' }}"
                             aria-labelledby="heading{{ $language->id }}" data-parent="#accordion">
-                          <div class="version-body">          
+                          <div class="version-body">
                             <div class="row ">
                               <div class="col-lg-12">
                                 <div class="form-group">
@@ -254,25 +179,44 @@
                                 </div>
                               </div>
                             </div>
-                          
+
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="form-group {{ $language->direction == 1 ? 'rtl text-right' : '' }}">
-                                        <label>{{ __('Ad Title') }} * 
-                                            <span style="font-size: 14px;margin-left: 10px;color: gray;" id="selling_label"> 
-                                                @if($draft_ad == true && !empty($draft_ad->ad_type) && $draft_ad->ad_type == 'Wanted') 
+                                        <label>{{ __('Ad Title') }} *
+                                            <span style="font-size: 14px;margin-left: 10px;color: gray;" id="selling_label">
+                                                @if($draft_ad == true && !empty($draft_ad->ad_type) && $draft_ad->ad_type == 'Wanted')
                                                     What you are looking for?
                                                 @else
-                                                    What you are selling? 
+                                                    What you are selling?
                                                 @endif
                                             </span>
                                         </label>
-                                        <input type="text" class="form-control" 
+                                        <input type="text" class="form-control"
                                         onfocusout="saveDraftData(this , 'ad_title')" value="@if($draft_ad == true && !empty($draft_ad->ad_title)) {{$draft_ad->ad_title}} @endif"  name="{{ $language->code }}_title"
                                         placeholder="Insert your ad Title">
                                         <small><i class="fa fa-info-circle"  aria-hidden="false"></i> Your ad title will be shown in search results</small>
                                     </div>
-                                </div>                         
+                                </div>
+                            </div>
+                            <div class="row">
+                              <div class="col-lg-8">
+                                <div class="form-group ">
+                                  @php
+                                  $categories = App\Models\Car\Category::where('parent_id', 0)->where('status', 1)
+                                        ->get();
+                                  @endphp
+                                  <label>{{ __('Category') }} *</label>
+                                  <select name="en_main_category_id"
+                                    class="form-control " id="adsMaincat"  onchange="saveDraftData(this , 'category_id')">
+                                    <option selected disabled>{{ __('Select a Category') }}</option>
+                                    @foreach ($categories as $category)
+                                      <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                    @endforeach
+                                  </select>
+                                </div>
+                              </div>
+                              <div class="col-lg-4"></div>
                             </div>
 
                             <div class="row">
@@ -285,12 +229,12 @@
                               </div>
                             </div>
                             <div class="row">
-                              <div class="col-lg-6">
+                              {{-- <div class="col-lg-6">
                                 <div class="form-group">
                                   <label>{{ __('Price') }}  &pound;</label>
                                   <input type="number" class="form-control" name="price" id="ad_price" onfocusout="saveDraftData(this , 'price')" value=" @if($draft_ad == true && !empty($draft_ad->price)) {{$draft_ad->price}} @endif" placeholder="Enter Price in  &pound;">
                                 </div>
-                              </div> 
+                              </div> --}}
                               <div class="col-lg-6 ">
                                 <div class="form-group">
                                   <label>{{ __('Optional YouTube Video') }} </label>
@@ -299,7 +243,7 @@
                               </div>
                             </div>
                           </div>
-                         
+
                           <div class="row">
                             <div class="col">
                               @php $currLang = $language; @endphp
@@ -324,9 +268,10 @@
                     </div>
                   @endforeach
             </div>
+
                 <div class="row pt-20">
                 <div class="col-lg-12">
-                <div class="row " >
+                <div class="row">
                 <div class="col-lg-8 ">
                   <div class="form-group">
                     <h4 style="color:gray">{{ __('Contact Details') }} </h4>
@@ -334,7 +279,6 @@
                 </div>
                 </div>
                 </div>
-                
                 </div>
                 <div class="row">
                   <div class="col-lg-6">
@@ -348,32 +292,32 @@
                       <label>{{ __('Email') }}</label>
                       <input type="text" value="{{ $vendor->email }}" class="form-control" name="email" disabled>
                     </div>
-                  </div> 
+                  </div>
                   <div class="col-lg-6">
                     <label style="margin-top: 5px;margin-left: 10px;font-size: 21px;color: #7b7b7b;">{{ __('Phone') }}</label>
                     <div class="form-group input-group" style="margin-top: 8px;">
-                      
+
                       <div class="d-flex" style="    margin-top: -12px;">
                         <div class="custom-select">
                         <div class="select-selected">
-                            
+
                             @php
                                 $ct = $country_codes->firstWhere('country', 'United Kingdom');
-                                
+
                                 $flagUrl = $ct->flag_url;
                                 $flagcode = $ct->code;
                                 $s_code = $ct->short_code;
-                                
+
                                 if(!empty($vendor->country_code))
                                 {
                                     $ct = $country_codes->firstWhere('code', $vendor->country_code);
-                                    
+
                                     $flagUrl = $ct->flag_url;
                                     $flagcode = $ct->code;
                                     $s_code = $ct->short_code;
-                                
+
                                 }
-                                
+
                             @endphp
                         <img src="{{ $flagUrl }}" alt="UK Flag" class="flag">
                         <span class="short_code"> {{$s_code}} </span> ({{ $flagcode }})
@@ -390,12 +334,12 @@
                         @endforeach
                         </div>
                         </div>
-                        
+
                         <input type="hidden" name="c_code" id="c_code" value="{{ !empty(Auth::guard('vendor')->user()->country_code) ? Auth::guard('vendor')->user()->country_code : '+44' }}"/>
-        
-                        <input  type="number" value="{{ $vendor->phone }}" style="height: 40px;margin-top: 10px;    margin-right: 5px;" class="form-control" name="phone" required> 
-                      
-                      
+
+                        <input  type="number" value="{{ $vendor->phone }}" style="height: 40px;margin-top: 10px;    margin-right: 5px;" class="form-control" name="phone" required>
+
+
                        @if ($vendor->phone_verified == 1)
                         <button disabled   class="btn  btn-success2"  style="    height: 40px;
                         margin-top: 10px;
@@ -415,38 +359,40 @@
                         background: transparent;
                         color: #1b87f4;" type="button" title="verify"><i class='fas fa-fingerprint'></i></button>
                         @endif
-                        
+
                         </div>
-                        
+
                      <small style="margin-top: 8px;">Verify your phone number and help reduce fraud and scams on Listit</small>
                       <p id="editErr_phone" class="mt-1 mb-0 text-danger em"></p>
                     </div>
+
                   </div>
-                  
-                  
+
+
+
                    <div class="col-lg-6">
-                       
+
                       <div class="form-group checkbox-xl row">
                           <div> <label>{{ __('Allow contact by') }}</label></div>
                       <div class="col-lg-6">
-                        
+
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="checkbox" name="message_center" id="inlineRadio1" value="yes" required  checked>
                             <label class="form-check-label" for="message_center">Message </label>
                         </div>
                       </div>
-                        
+
                       <div class="col-lg-6">
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="checkbox" name="phone_text" id="inlineRadio2" value="yes" checked>
                             <label class="form-check-label" for="message_center">Phone/Text</label>
                         </div>
                       </div>
-                      
+
                     </div>
                   </div>
-                  
-                  
+
+
                   <div class="col-lg-6" style="display:none;">
                     <div class="form-group">
                      <label>{{ __('Area') }}</label>
@@ -459,18 +405,18 @@
                         @endforeach
                     </select>
                     </div>
-                  </div> 
-                  
+                  </div>
+
                   <div class="row" style="display:none;">
                     <div class="col-lg-8 col-sm-12 col-md-12">
                         <div class="form-group checkbox-xl">
                         <div> <label>{{ __('Are you a professional trader?') }}</label></div>
                           <div class="form-check form-check-inline">
-                            
+
                           <input class="form-check-input traderradio" type="checkbox" name="traderstatus" id="inlineRadio1"     @if ($vendor->trader == 1) checked @endif>
                           <label class="form-check-label" for="message_center">Yes, I'm a trader</label>
                           </div>
-                          
+
                       </div>
                     </div>
                   </div>
@@ -480,8 +426,8 @@
                                   <label>{{ __('Business Name*') }} </label>
                                   <input type="text" value="{{ $vendor->vendor_info->business_name }}" class="form-control" name="business_name">
                                 </div>
-                              </div>                         
-                            
+                              </div>
+
                               <div class="col-lg-12 chkbox" @if ($vendor->trader == 0) style="display: none;" @endif>
                                 <div class="form-group ">
                                   <label>{{ __('Business Address') }} </label>
@@ -490,66 +436,149 @@
                                 </div>
                               </div>
                               <div class="col-lg-8 chkbox" @if ($vendor->trader == 0) style="display: none;" @endif>
-                              <label style="margin-left:8px; font-size: 1.2rem; color: #0d0c1b;">{{ __('VAT Number') }}</label> 
+                              <label style="margin-left:8px; font-size: 1.2rem; color: #0d0c1b;">{{ __('VAT Number') }}</label>
                               <div class="form-group input-group">
-                            
+
                                   <input type="text" value="{{ $vendor->vendor_info->vat_number }}" class="form-control" name="vat_number">
                                   @if ($vendor->vendor_info->vatVerified == 1)
                                   <button disabled  title="Verified"  class="btn btn-success2" type="button"><i class='fa fa-check-circle fa-lg' aria-hidden='true'></i></button>
                                   @endif
                                 </div>
-                              </div>    
-                              </div> 
+                              </div>
+                              </div>
 
-                    <div id = "payplans" class="row">  
-                      
-                      
-                    </div>  
-                    <div id ="packageSelected" class="row"></div> 
-                    <div class="col-lg-12">
-                    <div class="form-group text-center">
-                    <button type="submit" id="CarSubmit" data-can_car_add="{{ $can_car_add }}" class="btn btn-success btn-lg btn-block">
-                    @if($draft_ad == true && !empty($draft_ad->ad_type) && $draft_ad->ad_type == 'Wanted') 
-                    Publish Now
-                    @else
-                    {{ __('Sell Now') }}
-                    @endif
-                  
-                </button></div> </div> 
-                
-                
+
+                    <div id = "payplans" class="row">
+
+
+                    </div>
+
+                    <div id ="packageSelected" class="row">
+
+                    </div>
+
+
+
                   <input type="hidden" id="max_file_upload" name="max_file_upload" value="50" />
 
 
                 </form>
-                </div> 
-               
-                
-             
+                <div class="col-lg-12">
+                  <label for="" class="mb-2"><strong>{{ __('Gallery Images') }} **</strong> <br> <small class="text-danger"> load up to <span id="change_text_photo_allow">15</span> images .jpg, .png, & .gif </small></label>
+
+                  @if($draft_ad == true && !empty($draft_ad->images))
+                    @php
+                        $images = json_decode($draft_ad->images, true);
+                        $items = [];
+                    @endphp
+
+                    @if(count($images) > 0)
+                        <div class="row">
+                            <div class="col-12">
+                                <table class="table table-striped" id="imgtable">
+                                    @foreach($images as $image)
+                                        @php
+                                            $item = \App\Models\Car\CarImage::where('image', $image)->first();
+                                        @endphp
+
+                                        @if($item)
+                                            @php
+                                                $items[] = [
+                                                    'id' => $item->id,
+                                                    'image' => $item->image,
+                                                    'rotation_point' => $item->rotation_point,
+                                                    'priority' => $item->priority,
+                                                ];
+                                            @endphp
+                                        @endif
+                                    @endforeach
+
+                                    @php
+                                        // Sort items by priority
+                                        usort($items, function($a, $b) {
+                                            return $a['priority'] <=> $b['priority'];
+                                        });
+                                    @endphp
+
+                                    @foreach($items as $item)
+                                        <tr class="trdb table-row" id="trdb{{ $item['id'] }}" draggable="true" ondragstart="dragStart(event)" ondrop="drop(event)" ondragover="allowDrop(event)">
+                                            <td>
+                                                <div class="">
+                                                    <img class="thumb-preview wf-150"
+                                                        src="{{ asset('assets/admin/img/car-gallery/' . $item['image']) }}"
+                                                        id="img_{{$item['id']}}"
+                                                        alt="Ad Image"
+                                                        style="height:120px; width:120px; object-fit: cover;transform: rotate({{$item['rotation_point']}}deg);">
+                                                </div>
+
+                                                <div style="text-align: center;margin-bottom: 5px;color: gray;">
+                                                  Set Cover  <input class='form-check-input' value="{{ $item['id'] }}" onclick="setCoverPhoto({{ $item['id'] }})" type='radio' name='flexRadioDefault' >
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <i class="fa fa-times" onclick="removethis({{ $item['id'] }})"></i>
+                                                <i class="fa fa-undo rotatebtndb" onclick="rotatePhoto({{ $item['id'] }})"></i>
+                                            </td>
+
+                                        </tr>
+                                    @endforeach
+                                </table>
+                            </div>
+                        </div>
+                    @endif
+                  @endif
+
+
+                  <form action="{{ route('car.imagesstore') }}" id="my-dropzone" enctype="multipart/formdata"
+                    class="dropzone create us_dropzone">
+                    @csrf
+                    <div class="fallback">
+                      <input name="file" type="file" multiple />
+                    </div>
+                  </form>
+                  <p class="em text-danger mb-0" id="errslider_images"></p>
+                </div>
+                <div class="col-lg-12">
+                  <div class="form-group text-center">
+                  <button type="submit" id="CarSubmit" data-can_car_add="{{ $can_car_add }}" class="btn btn-success btn-lg btn-block">
+                  @if($draft_ad == true && !empty($draft_ad->ad_type) && $draft_ad->ad_type == 'Wanted')
+                  Publish Now
+                  @else
+                  {{ __('Sell Now') }}
+                  @endif
+
+              </button></div> </div>
+
+                </div>
+
+
+
             </div>
           </div>
+
         </div>
-       
+
+
         <div class="card-footer">
           <div class="row">
             <div class="col-12 text-center">
-              
+
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-  
+
   </div>
   </div>
   </div>
-  </div> 
-  
-  
-  
-  
-  
+  </div>
+
+
+
+
+
   <div class="modal fade" id="vintageYearAlertModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -562,7 +591,7 @@
       <div class="modal-body" style="padding-top: inherit;margin-bottom: 1rem;">
        <div id="apendHTML"></div>
       </div>
-     
+
     </div>
   </div>
 </div>
@@ -572,15 +601,15 @@
 <div class="modal fade" id="draftModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
-      
+
       <div class="modal-body">
-          
+
           <h5>
-               <i class="fa fa-info-circle" aria-hidden="true" style="color: #367ede;font-size: 25px;"></i> 
+               <i class="fa fa-info-circle" aria-hidden="true" style="color: #367ede;font-size: 25px;"></i>
                <span style="position: relative;bottom: 3px;font-size: 17px;left: 5px;color:#585858;">
                    You have a draft ad
                </span>
-               
+
                 <a href="javascript:void(0);" class="btn btn-success"  onclick="hidePanel()" style="background: white !important;
                 color: black;
                 text-align: right;
@@ -591,14 +620,14 @@
                 padding-right: 0px;">
                 <i class="fa fa-times" style="font-size: 18px;color:#585858;" aria-hidden="true"></i>
                 </a>
-      
-      
+
+
           </h5>
-          
+
           <div style="margin-bottom: 1rem;margin-top: 1rem;color:gray">
               We've saved some details from the last time you started placing as ad.
           </div>
-          
+
          <div style="display:flex;">
               <button type="button" class="btn btn-secondary" style="    padding: 5px;
     margin-right: 5px;
@@ -612,10 +641,10 @@
     width: 100%;
     font-size: 11px;" onclick="hidePanel()">Continue ad</button>
          </div>
-        
-        
+
+
       </div>
-      
+
     </div>
   </div>
 </div>
@@ -635,7 +664,7 @@
       } else {
           $direction = 'form-group';
       }
-  
+
       $labels .= "<div class='$direction'><input type='text' name='" . $label_name . "' class='form-control' placeholder='Label ($language->name)'></div>";
       $values .= "<div class='$direction'><input type='text' name='$value_name' class='form-control' placeholder='Value ($language->name)'></div>";
   }
@@ -651,9 +680,9 @@
 function hidePanel()
 {
     $('#draftModal').remove();
-    
+
     $('body').css('overflow', 'auto');
-    
+
     $('body').css('padding', '0px');
 }
 
@@ -667,13 +696,13 @@ $(document).ready(function(){
         event.preventDefault();
         event.stopPropagation();
     });
-    
+
     @if($draft_ad == true && !empty($draft_ad->category_id))
         var selectedOption = "{{ $draft_ad->category_id }}";
         $('#adsMaincat').val(selectedOption);
         $('#adsMaincat').change()
     @endif
-    
+
 });
 
 </script>
@@ -711,7 +740,7 @@ option {
 }
 
 .form-check [type="checkbox"]:not(:checked), .form-check [type="checkbox"]:checked {
-  
+
     left: inherit !important;
 }
 
@@ -739,16 +768,16 @@ option {
       -webkit-filter: blur(8px);
       filter: blur(0px);
     }
-    .checkbox-xl .form-check-input 
+    .checkbox-xl .form-check-input
 {
     scale: 1.5;
-    
+
 }
-.checkbox-xl .form-check-label 
+.checkbox-xl .form-check-label
 {
     padding-left: 25px;
-    
-    
+
+
 }
 .form-check .form-check-input{
   margin-left: .0em !important;
@@ -775,11 +804,11 @@ button.rotate-btn {
 
 .rotatebtndb
 {
-     
+
     top: 30px !important;
-   
+
     color: #004eabd6 !important;
-   
+
     cursor: pointer !important;
 }
 
@@ -843,7 +872,7 @@ button.rotate-btn {
 .modal-content {
     background-color: white;
     margin: 15% auto;
-   
+
     border: 1px solid #888;
     width: 80%;
     max-width: 500px;
@@ -871,17 +900,17 @@ button.rotate-btn {
 }
 
 .form-group label, .form-check label {
- color:gray !important;   
+ color:gray !important;
 }
 
 #searcfilters h3
 {
-     color:gray !important;  
+     color:gray !important;
 }
 
 #payplans h4,h2
 {
-        color:gray !important;  
+        color:gray !important;
 }
 
 
@@ -910,7 +939,7 @@ button.rotate-btn {
   }
 }
 
-@media (max-width: 768px) 
+@media (max-width: 768px)
 {
   .custom-col-ad{
     /* border: 1px solid orange !important; */
@@ -918,7 +947,7 @@ button.rotate-btn {
   }
 }
 
-@media (max-width: 575px) 
+@media (max-width: 575px)
 {
   .custom-col-ad{
     /* width:98%; */
@@ -1014,23 +1043,23 @@ button.rotate-btn {
 
 
   <script>
-    
+
     function closeModal()
     {
          $('#vintageYearAlertModal').modal('hide')
     }
-  
-    function checkYearAgo(self) 
+
+    function checkYearAgo(self)
     {
         var year = $(self).val();
-    
-        if (year.length === 4 && !isNaN(year)) 
+
+        if (year.length === 4 && !isNaN(year))
         {
             var currentYear = new Date().getFullYear();
-            
+
             var yearDifference = currentYear - parseInt(year, 10);
-            
-            if (yearDifference >= 30) 
+
+            if (yearDifference >= 30)
             {
                 $('#vintageYearAlertModal').modal('show')
                 $('#apendHTML').html('This vehicle  reg over '+yearDifference+' years ago. So this will be added to the vintage section. All The ads over 30 years ago will be added to vintage section.');
@@ -1045,58 +1074,58 @@ button.rotate-btn {
     var getBrandUrl = "{{ route('user.get-car.brand.model') }}";
     const account_status = "{{ Auth::guard('vendor')->user()->status }}";
     const secret_login = "{{ Session::get('secret_login') }}";
-    
-    
+
+
         var rotationAngle1 = 0;
-    
-    function rotatePhoto(id) 
+
+    function rotatePhoto(id)
 {
     // Find the image element within the file preview element
     var imageElement = $('#img_'+id);
-    
-    
+
+
     if (imageElement.length) {
         // Increment the rotation angle by 90 degrees
         rotationAngle1 += 90;
-    
+
         // Apply the rotation to the image element
         imageElement.css('transform', 'rotate(' + rotationAngle1 + 'deg)');
-    
+
         // Reset rotation to 0 if it reaches 360 degrees
         if (rotationAngle1 === 360) {
             rotationAngle1 = 0;
         }
-        
+
         rotationSave(id, rotationAngle1);
     }
-    
+
     return false;
 }
 
-    
+
      function rotationSave(fileid , rotationEvnt)
     {
         var requestMethid = "POST";
-        
+
         if($('#request_method').val() != '')
         {
-           var requestMethid = "GET"; 
+           var requestMethid = "GET";
         }
-        
+
            $.ajax({
           url: '/customer/ad-management/img-db-rotate',
           type: requestMethid,
           data: {
             fileid: fileid , rotationEvnt:rotationEvnt
           },
-          success: function (data) 
+          success: function (data)
           {
-           
+
           }
-        }); 
+        });
     }
-    
-    function removethis(fileid) 
+
+    function removethis(fileid)
     {
         $.ajax({
           url: removeUrl,
@@ -1110,7 +1139,7 @@ button.rotate-btn {
           }
         });
     }
-    
+
   </script>
 
   <script src="{{ asset('assets/js/car.js?v=9.6') }}"></script>
@@ -1120,5 +1149,5 @@ button.rotate-btn {
   </script>
   <script type="text/javascript" src="{{ asset('assets/js/admin-partial.js?v=0.2') }}"></script>
   <script type="text/javascript" src="{{ asset('assets/js/admin-dropzone.js?v=0.9') }}"></script>
-  
+
 @endsection

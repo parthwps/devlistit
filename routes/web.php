@@ -33,57 +33,57 @@ Route::post('/store-subscriber', 'FrontEnd\MiscellaneousController@storeSubscrib
 Route::get('/get-capacity', 'FrontEnd\HomeController@getEngineCapacity')->name('frontend.getEngineCapacity');
 Route::get('/offline', 'FrontEnd\HomeController@offline')->middleware('change.lang');
 
-Route::get('/page-crash', function () 
+Route::get('/page-crash', function ()
 {
     return view('vendors.auth.crash');
 })->name('page.crash');
 
 Route::get('/site-map', 'FrontEnd\CarController@siteMap');
 
-Route::middleware('change.lang')->group(function () 
+Route::middleware('change.lang')->group(function ()
 {
-    
+
   Route::get('/', 'FrontEnd\HomeController@index')->name('index');
-  
+
   Route::get('/get-model', 'FrontEnd\HomeController@get_model')->name('fronted.get-car.brand.model');
-  
+
   Route::get('/notifyUser', 'FrontEnd\CarController@notifyUser');
 
-  Route::prefix('ads')->group(function () 
+  Route::prefix('ads')->group(function ()
   {
     Route::get('/', 'FrontEnd\CarController@index')->name('frontend.cars');
-    
+
     Route::get('/store-visitor', 'FrontEnd\CarController@store_visitor')->name('frontend.store_visitor');
 
     Route::post('/contact-message', 'FrontEnd\CarController@contact')->name('frontend.car.contact_message');
   });
 
   Route::get('/{cattitle}/{slug}/{id}', 'FrontEnd\CarController@details')->name('frontend.car.details');
-  
+
   Route::get('phone-reavel-count', 'FrontEnd\CarController@phoneRevealCount')->name('phone.reavel.count');
-  
+
   Route::get('ad-impression-count', 'FrontEnd\CarController@adImpressionCount')->name('ad.impression.count');
-  
+
   Route::get('save-ad-to-draft', 'FrontEnd\UserController@saveToDraft')->name('savetodraft');
-  
+
   Route::get('delete-draft', 'FrontEnd\UserController@deleteToDraft')->name('deleteToDraft');
-  
+
   Route::get('addto/{id}', 'FrontEnd\UserController@add_to_wishlist')->name('addto.wishlist');
-  
+
   Route::get('remove/{id}', 'FrontEnd\UserController@remove_wishlist')->name('remove.wishlist');
 
   Route::get('/products', 'FrontEnd\Shop\ProductController@index')->name('shop.products')->middleware('shop.status');
 
-  Route::prefix('/product')->middleware(['shop.status'])->group(function () 
+  Route::prefix('/product')->middleware(['shop.status'])->group(function ()
   {
     Route::get('/{slug}', 'FrontEnd\Shop\ProductController@show')->name('shop.product_details');
 
     Route::get('/{id}/add-to-cart/{quantity}', 'FrontEnd\Shop\ProductController@addToCart')->name('shop.product.add_to_cart');
   });
 
-  Route::prefix('/shop')->middleware(['shop.status'])->group(function () 
+  Route::prefix('/shop')->middleware(['shop.status'])->group(function ()
   {
-      
+
     Route::get('/cart', 'FrontEnd\Shop\ProductController@cart')->name('shop.cart');
 
     Route::post('/update-cart', 'FrontEnd\Shop\ProductController@updateCart')->name('shop.update_cart');
@@ -92,18 +92,18 @@ Route::middleware('change.lang')->group(function ()
 
     Route::get('put-shipping-method-id/{id}', 'FrontEnd\Shop\ProductController@put_shipping_method')->name('put-shipping-method-id');
 
-    Route::prefix('/checkout')->group(function () 
+    Route::prefix('/checkout')->group(function ()
     {
           Route::get('', 'FrontEnd\Shop\ProductController@checkout')->name('shop.checkout');
-    
+
           Route::post('/apply-coupon', 'FrontEnd\Shop\ProductController@applyCoupon');
-    
+
           Route::get('/offline-gateway/{id}/check-attachment', 'FrontEnd\Shop\ProductController@checkAttachment');
     });
 
-    Route::prefix('/purchase-product')->group(function () 
+    Route::prefix('/purchase-product')->group(function ()
     {
-        
+
       Route::post('', 'FrontEnd\Shop\PurchaseProcessController@index')->name('shop.purchase_product');
 
       Route::get('/paypal/notify', 'FrontEnd\PaymentGateway\PayPalController@notify')->name('shop.purchase_product.paypal.notify');
@@ -125,28 +125,28 @@ Route::middleware('change.lang')->group(function ()
       Route::get('/complete/{type?}', 'FrontEnd\Shop\PurchaseProcessController@complete')->name('shop.purchase_product.complete')->middleware('change.lang');
 
       Route::get('/cancel', 'FrontEnd\Shop\PurchaseProcessController@cancel')->name('shop.purchase_product.cancel');
-      
+
     });
 
       Route::post('/product/{id}/store-review', 'FrontEnd\Shop\ProductController@storeReview')->name('shop.product_details.store_review');
-  }); 
+  });
 
-    Route::prefix('customers')->group(function () 
+    Route::prefix('customers')->group(function ()
     {
         Route::get('/', 'FrontEnd\VendorController@index')->name('frontend.vendors');
         Route::post('contact/message', 'FrontEnd\VendorController@contact')->name('vendor.contact.message');
         Route::post('/cat_search_filter', 'Search_Filter@store')->name('Search.Filter');
         Route::get('/test', 'Search_Filter@TEST')->name('test');
     });
-  
+
   Route::post('customer/filter', 'FrontEnd\VendorController@customerFilter')->name('frontend.vendor.customer.filter');
-  
+
   Route::get('customer/{id}', 'FrontEnd\VendorController@details')->name('frontend.vendor.details');
 
-  Route::prefix('/blog')->group(function () 
+  Route::prefix('/blog')->group(function ()
   {
     Route::get('', 'FrontEnd\BlogController@index')->name('blog');
-    
+
     Route::get('/{slug}', 'FrontEnd\BlogController@show')->name('blog_details');
   });
   //Route::get('/store-data', 'FrontEnd\HomeController@storeData');
@@ -155,13 +155,14 @@ Route::middleware('change.lang')->group(function ()
   Route::post('/paypal/make-payment', 'FrontEnd\PayPalController@makePayment');
   Route::get('/email', 'FrontEnd\HomeController@mailtemplate');
   Route::get('/faq', 'FrontEnd\FaqController@faq')->name('faq');
+  Route::get('/Aboutus', 'FrontEnd\HomeController@Aboutus')->name('Aboutus');
   Route::get('/about-us', 'FrontEnd\HomeController@about')->name('about_us');
   Route::get('/tabs-data/{catid}', 'FrontEnd\HomeController@tabsData');
   Route::get('/vehicle-data/{vehiclereg}', 'FrontEnd\HomeController@vehicleData');
   Route::get('/autocomplete/suggestions', 'FrontEnd\HomeController@suggestions');
   Route::get('/autocomplete/defaultsuggestions', 'FrontEnd\HomeController@defaultsuggestions');
-//We offer a monthly CSV download for all makes and models including power details etc for £99 per calendar month (minimum six months)  
-//You can download a sample here: 
+//We offer a monthly CSV download for all makes and models including power details etc for £99 per calendar month (minimum six months)
+//You can download a sample here:
   Route::prefix('/contact')->group(function () {
     Route::get('', 'FrontEnd\ContactController@contact')->name('contact');
 
@@ -186,8 +187,8 @@ Route::prefix('login')->middleware(['guest:web', 'change.lang'])->group(function
   });
 });
 
- 
-   
+
+
 Route::prefix('/user')->middleware(['guest:web', 'change.lang'])->group(function () {
   Route::prefix('/login')->group(function () {
     // user redirect to login page route
@@ -199,12 +200,12 @@ Route::prefix('/user')->middleware(['guest:web', 'change.lang'])->group(function
   // user forget password route
   Route::get('/forget-password', 'FrontEnd\UserController@forgetPassword')->name('user.forget_password');
 
-   
+
     Route::post('/img-remove', 'FrontEnd\UserController@imagermv')->name('user.car.imagermv');
     Route::post('/img-db-remove', 'FrontEnd\UserController@imagedbrmv')->name('user.car.imgdbrmv');
      Route::post('/get-car-brand-model', 'FrontEnd\UserController@get_brand_model')->name('user.get-car.brand.model');
-     
-  
+
+
 
   // send mail to user for forget password route
   Route::post('/send-forget-password-mail', 'FrontEnd\UserController@forgetPasswordMail')->name('user.send_forget_password_mail')->withoutMiddleware('change.lang');
@@ -266,7 +267,7 @@ Route::get('/service-unavailable', 'FrontEnd\MiscellaneousController@serviceUnav
 |--------------------------------------------------------------------------
 */
 
-Route::prefix('/admin')->middleware('guest:admin')->group(function () 
+Route::prefix('/admin')->middleware('guest:admin')->group(function ()
 {
   Route::get('/', 'BackEnd\AdminController@login')->name('admin.login');
 
