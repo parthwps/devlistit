@@ -143,14 +143,18 @@
                       <div class="form-check form-check-inline">
                           <label class="form-check-label" for="inlineRadio3">Ad Type</label>
                       </div>
-                      <div class="form-check form-check-inline">
-                          <input class="form-check-input" type="radio" name="ad_type" id="inlineRadio1" @if($draft_ad == true && empty($draft_ad->ad_type) ) checked @endif @if($draft_ad == true && !empty($draft_ad->ad_type) && $draft_ad->ad_type == 'Sale') checked @endif onchange="saveDraftData(this , 'ad_type')"  value="Sale"   >
+                      <div class=" align-items-center d-flex">
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="radio" name="ad_type" id="inlineRadio1" @if($draft_ad == true && empty($draft_ad->ad_type) ) checked @endif @if($draft_ad == true && !empty($draft_ad->ad_type) && $draft_ad->ad_type == 'Sale') checked @endif onchange="saveDraftData(this , 'ad_type')"  value="Sale"   >&nbsp;
                           <label class="form-check-label" for="ad_type">For Sale</label>
+
                       </div>
                       <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="ad_type" id="inlineRadio2" @if($draft_ad == true && !empty($draft_ad->ad_type) && $draft_ad->ad_type == 'Wanted') checked @endif  onchange="saveDraftData(this , 'ad_type')"   value="Wanted">
+                        <input class="form-check-input" type="radio" name="ad_type" id="inlineRadio2" @if($draft_ad == true && !empty($draft_ad->ad_type) && $draft_ad->ad_type == 'Wanted') checked @endif  onchange="saveDraftData(this , 'ad_type')"   value="Wanted">&nbsp;
                         <label class="form-check-label" for="ad_type">Wanted</label>
                       </div>
+                      </div>
+
                     </div>
                   </div>
                 </div>
@@ -218,7 +222,17 @@
                               </div>
                               <div class="col-lg-4"></div>
                             </div>
-
+                             <div class="row sub_sub_sub_category" id="sub_catgry">
+                                <div class="col-lg-8 ">
+                                  <div class="form-group">
+                                      <label>{{ __('Select a Sub Category') }} *</label>
+                                      <select disabled name="en_category_id" class="form-control  subhidden"  id="adsSubcat" onchange="saveDraftData(this , 'sub_category_id')" >
+                                          <option selected disabled>{{ __('Select Sub Category') }}</option>
+                                      </select>
+                                  </div>
+                                </div>
+                                <div class="col-lg-4"></div>
+                              </div>
                             <div class="row">
                               <div class="col-lg-12">
                                 <div class="form-group {{ $language->direction == 1 ? 'rtl text-right' : '' }}">
