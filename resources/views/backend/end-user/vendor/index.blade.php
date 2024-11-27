@@ -40,7 +40,7 @@
               </button>
 
               <form class="float-right" style="display: flex;width: 100%;" action="{{ route('admin.vendor_management.registered_vendor') }}" method="GET">
-                  
+
                 <div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%;border-radius: 0;">
                     <i class="fa fa-calendar"></i>&nbsp;
                     <span></span> <i class="fa fa-caret-down"></i>
@@ -50,12 +50,12 @@
                 <input name="info" type="text" class="form-control min-230"
                   placeholder="Search By Username or Email ID"
                   value="{{ !empty(request()->input('info')) ? request()->input('info') : '' }}">
-                  
+
                  &nbsp; &nbsp;&nbsp;<input type="submit" class="btn btn-success"  value="Search"/>
               </form>
             </div>
-            
-            
+
+
           </div>
         </div>
 
@@ -161,7 +161,7 @@
                                 <a target="_blank"
                                   href="{{ route('admin.vendor_management.vendor.secret_login', ['id' => $vendor->id]) }}"
                                   class="dropdown-item">
-                                  {{ __('Secret Login') }}
+                                  {{ __('View Dealer Account') }}
                                 </a>
                               </div>
                             </div>
@@ -186,11 +186,11 @@
       </div>
     </div>
   </div>
-  
-    
+
+
 @if(!empty(request()->dateRange))
-<input type="hidden" value="{{$startdate}}" id="startdate" /> 
-<input type="hidden" value="{{$enddate}}" id="enddate" /> 
+<input type="hidden" value="{{$startdate}}" id="startdate" />
+<input type="hidden" value="{{$enddate}}" id="enddate" />
 @endif
 
 
@@ -206,7 +206,7 @@
 <script type="text/javascript">
 
 $(function() {
-    
+
     var startDate = $('#startdate').val();
     var endDate = $('#enddate').val();
 
@@ -226,7 +226,7 @@ $(function() {
         endDate = moment(endDate, dateFormat);
     }
 
-  
+
     function cb(selectedStart, selectedEnd) {
         $('#reportrange span').html(selectedStart.format('MMMM D, YYYY') + ' - ' + selectedEnd.format('MMMM D, YYYY'));
         $('#dateRange').val(selectedStart.format('MMMM D, YYYY') + ' - ' + selectedEnd.format('MMMM D, YYYY'));
