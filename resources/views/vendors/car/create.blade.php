@@ -243,12 +243,12 @@
                               </div>
                             </div>
                             <div class="row">
-                              {{-- <div class="col-lg-6">
+                              <div class="col-lg-6">
                                 <div class="form-group">
                                   <label>{{ __('Price') }}  &pound;</label>
                                   <input type="number" class="form-control" name="price" id="ad_price" onfocusout="saveDraftData(this , 'price')" value=" @if($draft_ad == true && !empty($draft_ad->price)) {{$draft_ad->price}} @endif" placeholder="Enter Price in  &pound;">
                                 </div>
-                              </div> --}}
+                              </div>
                               <div class="col-lg-6 ">
                                 <div class="form-group">
                                   <label>{{ __('Optional YouTube Video') }} </label>
@@ -471,7 +471,16 @@
 
                     </div>
 
+                    <div class="col-lg-12">
+                      <div class="form-group text-center">
+                      <button type="submit" id="CarSubmit" data-can_car_add="{{ $can_car_add }}" class="btn btn-success btn-lg btn-block">
+                      @if($draft_ad == true && !empty($draft_ad->ad_type) && $draft_ad->ad_type == 'Wanted')
+                      Publish Now
+                      @else
+                      {{ __('Sell Now') }}
+                      @endif
 
+                  </button></div> </div>
 
                   <input type="hidden" id="max_file_upload" name="max_file_upload" value="50" />
 
@@ -552,16 +561,7 @@
                   </form>
                   <p class="em text-danger mb-0" id="errslider_images"></p>
                 </div>
-                <div class="col-lg-12">
-                  <div class="form-group text-center">
-                  <button type="submit" id="CarSubmit" data-can_car_add="{{ $can_car_add }}" class="btn btn-success btn-lg btn-block">
-                  @if($draft_ad == true && !empty($draft_ad->ad_type) && $draft_ad->ad_type == 'Wanted')
-                  Publish Now
-                  @else
-                  {{ __('Sell Now') }}
-                  @endif
 
-              </button></div> </div>
 
                 </div>
 
