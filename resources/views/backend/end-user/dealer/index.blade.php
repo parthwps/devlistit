@@ -40,7 +40,7 @@
               </button>
 
               <form class="float-right" style="display: flex;width: 100%;" action="{{ route('admin.dealer_management.registered_dealer') }}" method="GET">
-                  
+
                 <div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%;border-radius: 0;">
                     <i class="fa fa-calendar"></i>&nbsp;
                     <span></span> <i class="fa fa-caret-down"></i>
@@ -50,12 +50,12 @@
                 <input name="info" type="text" class="form-control min-230"
                   placeholder="Search By Username or Email ID"
                   value="{{ !empty(request()->input('info')) ? request()->input('info') : '' }}">
-                  
+
                  &nbsp; &nbsp;&nbsp;<input type="submit" class="btn btn-success"  value="Search"/>
               </form>
             </div>
-            
-            
+
+
           </div>
         </div>
 
@@ -93,36 +93,36 @@
                           <td style="padding-left: 10px !important;  padding: 0 10px !important;">{{ $vendor->email }}</td>
                           <td style="padding-left: 10px !important;  padding: 0 10px !important;">{{ empty($vendor->phone) ? '-' : $vendor->phone }}</td>
                           <td style="padding-left: 10px !important;width: 150px;">{{ date('d F,Y' , strtotime($vendor->created_at)) }}</td>
-                          
+
                            <td style="padding-left: 10px !important;   padding: 0 10px !important;">
-                             
+
                             <div class="dropdown">
-                                
+
                               <button class="btn btn-secondary dropdown-toggle btn-sm" style=" @if($vendor->is_trusted == 1) background: #31ce36 !important;border: #31ce36 !important;  @else background: #a3a3a3 !important;border: #a3a3a3 !important;  @endif" type="button"
                                 id="trusteddropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 @if($vendor->is_trusted == 1) Trusted @else Untrusted @endif
                               </button>
 
                               <div class="dropdown-menu" aria-labelledby="trusteddropdownMenuButton">
-                                  
+
                                 <a href="{{route('admin.change_trust_status' , ['id' => $vendor->id , 'status' => 1 ])}}"
                                   class="dropdown-item">
                                   Yes
                                 </a>
-                                
+
                                 <a href="{{route('admin.change_trust_status' , ['id' => $vendor->id , 'status' => 0 ])}}"
                                   class="dropdown-item">
                                   No
                                 </a>
-                                
+
                               </div>
-                              
+
                             </div>
-                            
+
                            </td>
-                           
+
                             <td style="      padding-left: 10px !important;  padding: 0 10px !important;">
-                             
+
                             <div class="dropdown">
                               <button class="btn btn-secondary dropdown-toggle btn-sm" style=" @if($vendor->is_franchise_dealer == 1) background: #31ce36 !important;border: #31ce36 !important;  @else background: #a3a3a3 !important;border: #a3a3a3 !important;  @endif" type="button"
                                 id="trusteddropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -134,18 +134,18 @@
                                   class="dropdown-item">
                                   Franchise
                                 </a>
-                                
+
                                 <a href="{{route('admin.change_dealer_type' , ['id' => $vendor->id , 'status' => 0 ])}}"
                                   class="dropdown-item">
                                   Independent
                                 </a>
-                                
+
                               </div>
                             </div>
-                            
-                            
+
+
                            </td>
-                           
+
                           <td style="     padding-left: 10px !important;   padding: 0 10px !important;">
                             <form id="accountStatusForm-{{ $vendor->id }}" class="d-inline-block"
                               action="{{ route('admin.vendor_management.vendor.update_account_status', ['id' => $vendor->id]) }}"
@@ -194,12 +194,12 @@
                                   class="dropdown-item">
                                   {{ __('Details & Package') }}
                                 </a>
-                                
+
                                  <a href="{{ route('admin.edit_management.invoice', ['id' => $vendor->id]) }}"
                                   class="dropdown-item">
                                   Invoices
                                 </a>
-                                
+
                                 <a href="{{ route('admin.edit_management.dealer_edit', ['id' => $vendor->id]) }}"
                                   class="dropdown-item">
                                   {{ __('Edit') }}
@@ -221,7 +221,7 @@
                                 <a target="_blank"
                                   href="{{ route('admin.vendor_management.vendor.dealer_secret_login', ['id' => $vendor->id]) }}"
                                   class="dropdown-item">
-                                  {{ __('Secret Login') }}
+                                  {{ __('View Dealer Account') }}
                                 </a>
                               </div>
                             </div>
@@ -246,11 +246,11 @@
       </div>
     </div>
   </div>
-  
-  
+
+
 @if(!empty(request()->dateRange))
-<input type="hidden" value="{{$startdate}}" id="startdate" /> 
-<input type="hidden" value="{{$enddate}}" id="enddate" /> 
+<input type="hidden" value="{{$startdate}}" id="startdate" />
+<input type="hidden" value="{{$enddate}}" id="enddate" />
 @endif
 
 @endsection
@@ -264,7 +264,7 @@
 <script type="text/javascript">
 
 $(function() {
-    
+
     var startDate = $('#startdate').val();
     var endDate = $('#enddate').val();
 
@@ -284,7 +284,7 @@ $(function() {
         endDate = moment(endDate, dateFormat);
     }
 
-  
+
     function cb(selectedStart, selectedEnd) {
         $('#reportrange span').html(selectedStart.format('MMMM D, YYYY') + ' - ' + selectedEnd.format('MMMM D, YYYY'));
         $('#dateRange').val(selectedStart.format('MMMM D, YYYY') + ' - ' + selectedEnd.format('MMMM D, YYYY'));
