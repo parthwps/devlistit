@@ -25,13 +25,13 @@
   ])
   <div class="user-dashboard pt-20 pb-60">
     <div class="container">
-      
-  
-      
+
+
+
   <div class="row gx-xl-5">
-  
+
        @includeIf('vendors.partials.side-custom')
-   
+
     <div class="col-md-9">
   @php
     $current_package = App\Http\Helpers\VendorPermissionHelper::packagePermission(Auth::guard('vendor')->user()->id);
@@ -86,7 +86,7 @@
       $can_car_add = 0;
       $car_add = '';
       $car_featured = 'over';
-      
+
       $pendingMemb = \App\Models\Membership::query()
           ->where([['vendor_id', '=', Auth::id()], ['status', 0]])
           ->whereYear('start_date', '<>', '9999')
@@ -126,64 +126,64 @@
       @php
         $car_contents = $cars;
       @endphp
-    
-    
+
+
      @if(empty($car_contents))
                 <div class="col-12" data-aos="fade-up"> <center> <h4>No browsing history</h4> </center> </div>
             @else
-            
+
 @php
               $admin = App\Models\Admin::first();
             @endphp
             @foreach ($car_contents as $car_content)
 
              @php
-            
+
             $image_path = $car_content->feature_image;
-            
+
             $rotation = 0;
-            
+
             if($car_content->rotation_point > 0 )
             {
                  $rotation = $car_content->rotation_point;
             }
-            
+
             if(!empty($image_path) && $car_content->rotation_point == 0 )
-            {   
+            {
                $rotation = $car_content->galleries->where('image' , $image_path)->first();
-               
+
                if($rotation == true)
                {
-                    $rotation = $rotation->rotation_point;  
+                    $rotation = $rotation->rotation_point;
                }
                else
                {
-                    $rotation = 0;   
+                    $rotation = 0;
                }
             }
-            
+
             if(empty($car_content->feature_image))
             {
                 $image_path = $car_content->galleries[0]->image;
                 $rotation = $car_content->galleries[0]->rotation_point;
             }
-           
+
             @endphp
-            
+
             <div class="col-xl-4 col-md-6" data-aos="fade-up">
 
 
-           
+
             <div class="product-default us_set_height set_height border p-15 mb-25" data-id="{{$car_content->id}}" style="box-shadow: 0px 0px 10px #b3b3b3;border-radius: 10px;">
-            
-           
-                    
-               
+
+
+
+
          @if($car_content->is_sold == 1)
        <div class="overlay"></div>
-      @endif     
-                
-                
+      @endif
+
+
             <figure class="product-img mb-15">
             <a href="{{ route('frontend.car.details', ['cattitle' => catslug($car_content->car_content->category_id),'slug' => $car_content->car_content->slug, 'id' => $car_content->id]) }}"
             class="lazy-container ratio ratio-2-3">
@@ -192,16 +192,16 @@
             alt="{{ optional($car_content)->title }}" style="transform: rotate({{$rotation}}deg);" >
             </a>
 
-         
+
 
             </figure>
 
-            
+
                  <div class="product-details" style="cursor:pointer;"   >
-                
-                  
+
+
                     <span class="product-category font-xsm" onclick="window.location='{{ route('frontend.car.details', ['cattitle' => catslug($car_content->car_content->category_id), 'slug' => $car_content->car_content->slug, 'id' => $car_content->id]) }}'">
-                        
+
                            <h5 class="product-title mb-0">
                         <a href="{{ route('frontend.car.details', ['cattitle' => catslug($car_content->car_content->category_id),'slug' => $car_content->car_content->slug, 'id' => $car_content->id]) }}"
                           title="{{ optional($car_content)->title }}" class="us_grid_widths">
@@ -209,12 +209,12 @@
                          {{ carModel($car_content->car_content->car_model_id) }} {{ optional($car_content->car_content)->title }}
                          </a>
                       </h5>
-                      
-                      
+
+
                         </span>
-                        
+
                         <div class="d-flex align-items-center justify-content-between ">
-                   
+
                         @if (Auth::guard('vendor')->check())
                         @php
                         $user_id = Auth::guard('vendor')->user()->id;
@@ -225,7 +225,7 @@
                         $checkWishList = false;
                         @endphp
                         @endif
-                      
+
                         <a href="javascript:void(0);"
                         onclick="addToWishlist({{$car_content->id}})"
                         class="btn us_wishlist btn-icon "
@@ -245,8 +245,8 @@
                             <i class="fa fa-heart" aria-hidden="true"></i>
                         @endif
                       </a>
-                     
-                      <a href="javascript:void(0);"  class="us_grid_shared" onclick="openShareModal(this)" 
+
+                      <a href="javascript:void(0);"  class="us_grid_shared" onclick="openShareModal(this)"
                         data-url="{{ route('frontend.car.details', ['cattitle' => catslug($car_content->car_content->category_id), 'slug' => $car_content->car_content->slug, 'id' => $car_content->id]) }}"
                         style="background: transparent;
                         position: absolute;
@@ -257,122 +257,124 @@
                         color: #1b87f4;
                         font-size: 25px;" ><i class="fa fa-share-alt" aria-hidden="true"></i>
                         </a>
-                
+
                     </div>
-                    
+
                     <div class="author us_child_div" style="cursor:pointer;" onclick="window.location='{{ route('frontend.car.details', ['cattitle' => catslug($car_content->car_content->category_id), 'slug' => $car_content->car_content->slug, 'id' => $car_content->id]) }}'" >
-                     
+
                          <span style="line-height: 15px;font-size: 14px;">
-                             
+
                             @if($car_content->year)
-                                {{ $car_content->year }} 
+                                {{ $car_content->year }}
                              @endif
-                             
+
                              @if($car_content->engineCapacity && $car_content->car_content->fuel_type )
-                              <b class="us_dot"> - </b>   {{ roundEngineDisplacement($car_content) }} 
+                              <b class="us_dot"> - </b>   {{ roundEngineDisplacement($car_content) }}
                              @endif
-                             
+
                              @if($car_content->car_content->fuel_type )
-                              <b class="us_dot"> - </b>   {{ $car_content->car_content->fuel_type->name }} 
+                              <b class="us_dot"> - </b>   {{ $car_content->car_content->fuel_type->name }}
                              @endif
-                             
-                             
+
+
                              @if($car_content->mileage)
-                               <b class="us_dot"> - </b>    {{ number_format( $car_content->mileage ) }} mi 
+                               <b class="us_dot"> - </b>    {{ number_format( $car_content->mileage ) }} mi
                              @endif
-                             
+
                              @if($car_content->created_at && $car_content->is_featured != 1)
-                                <b class="us_dot"> - </b> {{calculate_datetime($car_content->created_at)}} 
+                                <b class="us_dot"> - </b> {{calculate_datetime($car_content->created_at)}}
                              @endif
-                             
+
                              @if($car_content->city)
-                                <b class="us_dot"> - </b> {{  Ucfirst($car_content->city) }} 
+                                <b class="us_dot"> - </b> {{  Ucfirst($car_content->city) }}
                              @endif
-                               
+
                         </span>
-                    
+
                     </div>
-                    
+
                     @if(!$car_content->year && !$car_content->mileage && !$car_content->engineCapacity)
-                    
+
                     <div style="display:flex;margin-top: 1.5rem;">
-                        
+
                         <!--@if ($car_content->manager_special  == 1)-->
                         <!--<div class="price-tag" style="padding: 3px 10px;border-radius:5px; background:#25d366;font-size: 10px;" > Manage Special</div>-->
                         <!--@endif-->
-                        
-                        
+
+
                         <!--@if($car_content->is_sale == 1)-->
-                        
+
                         <!--<div class="price-tag" style="padding: 3px 10px;border-radius:5px;margin-left: 10px;background: #434d89;font-size: 10px;" >  Sale </span></div>-->
-                        
+
                         <!--@endif-->
-                        
-                        
+
+
                         <!--@if($car_content->reduce_price == 1)-->
-                        
+
                         <!--<div class="price-tag" style="padding: 3px 10px;border-radius:5px;margin-left: 10px;background:#ff4444;font-size: 10px;" >    Reduced </span></div>-->
-                        
+
                         <!--@endif-->
-                    
+
                     </div>
-                    
-                    @endif 
-                    
+
+                    @endif
+
                      <ul class="product-icon-list us_absolute_position_front list-unstyled d-flex align-items-center us_absolute_position" style="margin-top: 10px;"   onclick="window.location='{{ route('frontend.car.details', ['cattitle' => catslug($car_content->car_content->category_id), 'slug' => $car_content->car_content->slug, 'id' => $car_content->id]) }}'" >
-                      
+
                         @if ($car_content->price != null)
                         <li class="icon-start us_price_icon" data-tooltip="tooltip" data-bs-placement="top"
                         title="Price">
                         <b style="color: gray;float: left;">Price</b>
-                       
+
                         <strong  class="us_mrg" style="color: black;font-size: 20px;">
                         @if($car_content->previous_price && $car_content->previous_price < $car_content->price)
-                        <strike style="font-weight: 300;color: red;font-size: 14px;margin-left: 15px;float: left;" class="us_mr_15">{{ symbolPrice($car_content->price) }}</strike> 
-                        
+                        <strike style="font-weight: 300;color: red;font-size: 14px;margin-left: 15px;float: left;" class="us_mr_15">{{ symbolPrice($car_content->price) }}</strike>
+
                         <div> {{ symbolPrice($car_content->previous_price) }}</div>
                         @else
-                        <strike style="font-weight: 300;color: white;font-size: 14px;    float: left;">  </strike> <div>  {{ symbolPrice($car_content->price) }}  </div> 
+                        <strike style="font-weight: 300;color: white;font-size: 14px;    float: left;">  </strike> <div>                             £{{ number_format($car_content->price, 0, '.', ',') }}
+                          £{{ number_format($car_content->price, 0, '.', ',') }}
+                        </div>
                         @endif
                         </strong>
                         </li>
                         @endif
-                        
+
                         @if ($car_content->price != null && $car_content->price >= 1000)
                         <li class="icon-start" data-tooltip="tooltip" data-bs-placement="top"
                         title="">
                         <b style="color: gray;">From</b>
-                       
+
                         <strong style="color: black;font-size: 20px;">
-                        
+
                         {!! calulcateloanamount(!empty($car_content->previous_price && $car_content->previous_price < $car_content->price) ? $car_content->previous_price : $car_content->price)[0] !!}
-                        
+
                         </strong>
                         </li>
                         @endif
-                      
+
                     </ul>
-                  
+
                   </div>
                 </div><!-- product-default -->
               </div>
             @endforeach
-            
+
              <div class="pagination us_pagination_filtered mb-40 justify-content-center" data-aos="fade-up">
             {{ $car_contents->links() }}
           </div>
-          
-          
+
+
           </div>
-        
+
         </div>
         @endif
-        
-        
-        
+
+
+
     </div>
-    
-    
+
+
   </div>
 </div>
 </div></div>
@@ -392,13 +394,13 @@
     $.ajax({
       type: 'GET',
       url: url,
-      
+
       success: function (response) {
-       
-       
+
+
           $('#fillwithAjax').html(response.data);
-         
-       
+
+
       }
     });
   });

@@ -33,40 +33,40 @@
             @foreach ($breadcrumb as $key=>$val)
             <li class="d-inline" style="color:gray !important;">></li>
             <li class="d-inline active opacity-75" style="color:gray !important;">
-            <a style="color:gray !important;" class = "font-sm" href="{{ route('frontend.cars', ['category' => $key]) }}">  
+            <a style="color:gray !important;" class = "font-sm" href="{{ route('frontend.cars', ['category' => $key]) }}">
             {{$val}}
             </a></li>
             @endforeach
-            
+
             @else
-            
+
             <li class="d-inline" style="color:gray !important;">></li>
             <li class="d-inline active opacity-75" style="color:gray !important;">All Sections</li>
             @endif
-        
+
          </span>
-         
+
         </ul>
         <h2 style="font-family: Lato, sans-serif;">
         @if (!empty(request()->input('category')))
         {{ ucwords(str_replace("-", " ", request()->input('category'))) }}
- 
+
         @else
         All Sections
         @endif
         </h2>
-        
+
       </div>
     </div>
   </div>
   {{-- breadcrub end --}}
-  
-  
+
+
 <style>
   .loading-section{
     display: none !important;
   }
-.card-deal-turncate 
+.card-deal-turncate
 {
         display: -webkit-box;
         -webkit-box-orient: vertical;
@@ -76,7 +76,7 @@
         overflow: hidden;
         text-overflow: ellipsis;
         font-size: 18px;
-}  
+}
 .card-design
 {
     width: 330px;
@@ -92,7 +92,7 @@
     border: none !important;
     cursor: not-allowed;
     color: rgb(158, 165, 178) !important;
-}  
+}
 
 .filter-reset-link{
   font-size: 14px;
@@ -109,7 +109,7 @@
 
   font-size: 30px !important;
   font-weight: 100 !important;
-  
+
 }
 
 .us_cat_cls2{
@@ -188,7 +188,7 @@
 
 .us_parent_dv
 {
-       margin-top: -3rem; 
+       margin-top: -3rem;
 }
 
 .us_child_dv
@@ -200,7 +200,7 @@
   .card-design{
     width: 100%;
   }
-  
+
 }
 @media (max-width: 1280px) {
   .dealer-product-card{
@@ -231,7 +231,7 @@
   }
 }
 
-@media (max-width: 768px) 
+@media (max-width: 768px)
 {
   .dealer-product-card{
     /* border: 1px solid orange !important; */
@@ -245,7 +245,7 @@
   }
 }
 
-@media (max-width: 575px) 
+@media (max-width: 575px)
 {
   .dealer-product-card{
     width:98%;
@@ -255,18 +255,18 @@
 }
 
 
-@media screen and (min-width: 580px) 
+@media screen and (min-width: 580px)
 {
   .card-design{
     width: 100%;
   }
-  
+
     .us_parent_cls
     {
     display:flex;
     }
     }
-    
+
     .us_custom_spot
     {
     position: absolute;
@@ -275,14 +275,14 @@
     left: 86%;
     z-index: 999;
     }
-    
-    
-    @media screen and (max-width: 580px) 
+
+
+    @media screen and (max-width: 580px)
     {
       .card-design{
     width: 100%;
-  }   
-  
+  }
+
     .us_custom_spot
     {
     position: absolute;
@@ -293,21 +293,21 @@
     }
      .us_parent_dv
     {
-       margin-top: 0rem !important; 
+       margin-top: 0rem !important;
     }
     .us_child_dv
     {
       margin-top: -1rem;
     }
-    
-    
+
+
 .us_trusted
     {
         float:right;
         margin-top:1rem;
         margin-bottom:1rem;
-    } 
-    
+    }
+
     .us_font_15
     {
         font-size:15px !important;
@@ -336,7 +336,7 @@ font-size: 20px !important;
   @media (max-width: 425px){
     .card-design{
       width: 170%;
-      
+
     }
     .left-container
 {
@@ -346,7 +346,7 @@ font-size: 20px !important;
 @media (max-width: 375px){
   .card-design{
     width: 100%;
-    
+
 
   }
   .left-container
@@ -359,10 +359,10 @@ font-size: 20px !important;
  /* flex-wrap: wrap; */
   }
   .flex-fill{
-    flex: 1; 
-    display: flex; 
-    justify-content: center; 
-    align-items: center; 
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 }
 
@@ -383,7 +383,7 @@ font-size: 20px !important;
                 @if (!empty(request()->input('category')))
                   <input type="hidden" name="category" value="{{ request()->input('category') }}">
                 @endif
-                       
+
                 <aside class="widget-area" data-aos="">
                   <div class="widget widget-select p-0 mb-20">
                     <div class="row">
@@ -394,15 +394,15 @@ font-size: 20px !important;
                           <!-- <i class="fal fa-sync-alt"></i> -->
                           {{ __('Reset All') }}</a>
                       </div></div>
-                      <hr/> 
+                      <hr/>
                     </div>
                   </div>
-              
-                  <!-- Car filters only start here --> 
+
+                  <!-- Car filters only start here -->
                   @if( request()->get('category') != "carsuu" )
                      @includeIf('frontend.car.carfilter')
                   @endif
-                 
+
 
                   @if (!empty(showAd(1)))
                     <div class="text-center mt-40">
@@ -414,10 +414,10 @@ font-size: 20px !important;
                 </aside>
             </div>
           </div>
-          
+
             </div>
-      
-        
+
+
         <div class="col-lg-8 col-xl-9" id="ajaxcall">
           <div class="product-sort-area" data-aos="">
             <div class="row align-items-center">
@@ -446,7 +446,7 @@ font-size: 20px !important;
                       <i class="fas fa-th-list"></i>
                     </a>
                   </li>
-                  
+
                   <li class="item">
                       @php
                       $queryParamsGrid = array_merge(request()->query(), ['type' => 'grid']);
@@ -459,8 +459,8 @@ font-size: 20px !important;
                   <li class="item me-4">
                     <div class="sort-item d-flex align-items-center">
                       <label class="me-2 font-sm">{{ __('Sort by') }}:</label>
-                    
-                        
+
+
                         @if (!empty(request()->input('title')))
                           <input type="hidden" name="title" value="{{ request()->input('title') }}">
                         @endif
@@ -510,7 +510,7 @@ font-size: 20px !important;
                             {{ __(' Lowest mileage') }}</option>
                             @endif
                         </select>
-                        
+
                       </form>
                     </div>
                   </li>
@@ -518,7 +518,7 @@ font-size: 20px !important;
               </div>
             </div>
           </div>
-         
+
           @include('frontend/car/dataloader')
           @include('frontend/car/dataloader')
           @include('frontend/car/dataloader')
@@ -526,58 +526,58 @@ font-size: 20px !important;
           @include('frontend/car/dataloader')
           @include('frontend/car/dataloader')
           <div class="row px-2" id="ajaxListing" style="display: none;">
-              
+
             @if($car_contents->count() == 0)
                 <div class="col-12 position-relative" > <center> <h4>Sorry, No Posts Matched Your Criteria</h4> </center> </div>
             @else
-            
+
             @php
               $admin = App\Models\Admin::first();
             @endphp
-            
+
             @foreach ($car_contents as $key => $car_content)
-            
+
               @php
-              
+
               $image_path = $car_content->feature_image;
-              
+
               $rotation = 0;
-              
+
               if($car_content->rotation_point > 0 )
               {
                   $rotation =    $car_content->rotation_point;
               }
-              
+
               if(!empty($image_path) && $car_content->rotation_point == 0 )
-              {   
+              {
                 $rotation = $car_content->galleries->where('image' , $image_path)->first();
-                
+
                 if($rotation == true)
                 {
-                      $rotation = $rotation->rotation_point;  
+                      $rotation = $rotation->rotation_point;
                 }
                 else
                 {
-                      $rotation = 0;   
+                      $rotation = 0;
                 }
               }
-              
+
               if(empty($car_content->feature_image))
               {
                   $imng = $car_content->galleries->sortBy('priority')->first();
-                  
+
                   $image_path = $imng->image;
                   $rotation = $imng->rotation_point;
               }
-              
-      
+
+
               @endphp
-            
+
               <div class="col-12 position-relative" >
-                  
-                  
+
+
                 @if ($key == 2 || $key == 6 || $key == 9 )
-                
+
                 <div class="widget-banner" style="margin-bottom: 1rem;">
                   @if (!empty(showAd(1)))
                   <div class="text-center">
@@ -590,128 +590,128 @@ font-size: 20px !important;
                     </div>
                   @endif
                 </div>
-        
+
                 @endif
-    
-    
+
+
                   @if($car_content->is_featured == 1)
-                    <div class="row g-0 product-default  product-column mb-30 align-items-center p-15" 
+                    <div class="row g-0 product-default  product-column mb-30 align-items-center p-15"
                     style="<?= ( $car_content->vendor->vendor_type == 'normal' ) ? 'border-top: 5px solid #ff9e02 !important;' : '' ?>
-                     padding: 0px !important;transform: translateY(-5px);border-radius:5px;box-shadow:rgba(88, 97, 118, 0.12) 0px 2px 8px 0px;" 
+                     padding: 0px !important;transform: translateY(-5px);border-radius:5px;box-shadow:rgba(88, 97, 118, 0.12) 0px 2px 8px 0px;"
                      data-id="{{$car_content->id}}">
                     @else
-                        <div class="row g-0 product-default  product-column mb-30 align-items-center p-15" 
-                        style="padding: 0px !important;transform: translateY(-5px); border-radius:5px;box-shadow:rgba(88, 97, 118, 0.12) 0px 2px 8px 0px;"  
+                        <div class="row g-0 product-default  product-column mb-30 align-items-center p-15"
+                        style="padding: 0px !important;transform: translateY(-5px); border-radius:5px;box-shadow:rgba(88, 97, 118, 0.12) 0px 2px 8px 0px;"
                         data-id="{{$car_content->id}}">
                     @endif
-                    
-                    @if ($car_content->vendor_id != 0)   
+
+                    @if ($car_content->vendor_id != 0)
                     @if($car_content->vendor->vendor_type == 'dealer')
-                    
+
                     <!-- <div style="display:flex;margin-top: 1rem;margin-bottom: 1.5rem;">
-                        
-                       
-                        
+
+
+
                         @if($car_content->is_sale == 1)
                             <div class="price-tag" style="padding: 3px 5px;border-radius:5px;margin-left: 10px;background:#434d89;font-size: 10.5px;" > Sale </span></div>
                         @endif
-                        
-                       
-                        
-                        
-                    
+
+
+
+
+
                     </div> -->
                     @if($car_content->is_featured == 1)
                         <div class="col-md-12" style="border-bottom: 2px solid #35373b;">
                     @else
                         <div class="col-md-12" style="border-bottom: 2px solid #35373b;">
                     @endif
-                    
+
                         <div class="author mb-15 us_parent_cls" >
                             <a style="padding-top: 1rem;display: flex;padding-left: 1rem;" class="color-medium"
                             href="{{ route('frontend.vendor.details', [ 'id' => $car_content->vendor->id , 'username' => ($vendor = @$car_content->vendor->username)]) }}"
                             target="_self" title="{{ $vendor = @$car_content->vendor->username }}">
                             @if ($car_content->vendor->photo != null)
-                           
+
                    @php
                     $photoUrl = env('SUBDOMAIN_APP_URL').'assets/admin/img/vendor-photo/' . $car_content->vendor->photo;
-                    
+
                     if (file_exists(public_path('assets/admin/img/vendor-photo/' . $car_content->vendor->photo))) {
-                    
+
                     $photoUrl = asset('assets/admin/img/vendor-photo/' . $car_content->vendor->photo);
                     }
                     @endphp
-                    
-                    <img 
-                    style="border-radius: 10%; max-width: 60px;" 
+
+                    <img
+                    style="border-radius: 10%; max-width: 60px;"
                     class="lazyload blur-up"
                     src="{{ asset('assets/img/blank-user.jpg') }}"
-                    data-src="{{ $photoUrl }}"  
-                    alt="Vendor" 
+                    data-src="{{ $photoUrl }}"
+                    alt="Vendor"
                     onload="handleImageLoad(this)"
                     onerror="{{ asset('assets/img/blank-user.jpg') }}" >
-                    
-                    
+
+
                             @else
-                            
+
                             @endif
                             <span>
-                             
+
                              <strong class="us_font_15" style="color:rgb(34, 40, 49);font-size: 14px;font-family: Lato, sans-serif;">{{ $car_content->vendor->vendor_info->name }} </strong>
-                            
+
                                  @if($car_content->vendor->is_franchise_dealer == 1)
-                            
+
                                     @php
-                                    
+
                                     $review_data = null;
-                                    
+
                                     @endphp
-                            
+
                                 @if($car_content->vendor->google_review_id > 0 )
                                     @php
                                         $review_data = get_vendor_review_from_google($car_content->vendor->google_review_id , true);
                                     @endphp
                                 @endif
-    
-                             <div style="display: flex;font-family: Lato, sans-serif;">Franchise Dealer 
-                             
-                             
+
+                             <div style="display: flex;font-family: Lato, sans-serif;">Franchise Dealer
+
+
                               @if(!empty($review_data) && $review_data['total_reviews'] > 0 && $review_data['total_ratings'] > 0)
-                            . <span> 
+                            . <span>
                             <div class="rating-container" style="font-size: 15px;margin-top: -0.4rem;">
                             <span class="star on"></span>  {{$review_data['total_ratings']}}/5
                             </div>
                             </span>
                         @endif
                         </div>
-                        
+
                         @else
-                        
-                        <div style="font-family: Lato, sans-serif;">Independent Dealer</div> 
+
+                        <div style="font-family: Lato, sans-serif;">Independent Dealer</div>
                             @endif
-                            
-                            
+
+
                             </span>
                             </a>
-                            
-                            
+
+
                         @if($car_content->vendor->is_trusted == 1)
-                              <div class="us_trusted">  
+                              <div class="us_trusted">
                                 <span style="background: #0fbd0f;color: white;padding: 1px 10px;border-radius: 20px;font-size: 12px;margin-left: 0.5rem;"><i class="fa fa-check" aria-hidden="true"></i> Trusted Dealer </span></div>
-                          @endif 
-                          
+                          @endif
+
                              @if($car_content->is_sold == 1)
                            <div class="us_trusted">  <span style="background: #ff2f00; margin-left:5px;color: white;padding: 1px 10px;border-radius: 20px;font-size: 12px;"><i class="fa fa-check" aria-hidden="true"></i> Sold </span></div>
                         @endif
-                        
+
                         </div>
-                        
+
                     </div>
                      @endif
                     @endif
-            
+
                   <figure class="product-img col-xl-4 col-lg-5 col-md-6 col-sm-12">
-                      
+
                     @if($car_content->is_featured == 1)
                      <div class="sale-tag" style="border-bottom-right-radius: 0px;     background: #ff9e02;">Spotlight</div>
                     @endif
@@ -723,89 +723,89 @@ font-size: 20px !important;
                             <span class="sold-text">Sold</span>
                         </div>
                     @endif -->
-                    
+
                     <a href="{{ route('frontend.car.details', ['cattitle' => catslug($car_content->category_id),'slug' => $car_content->slug, 'id' => $car_content->id]) }}"
                     class="lazy-container ratio ratio-2-3">
-                        
+
                     <img class="lazyload"
                     data-src=" {{  $car_content->vendor->vendor_type == 'normal' ? asset('assets/admin/img/car-gallery/' .$image_path) :  env('SUBDOMAIN_APP_URL').'assets/admin/img/car-gallery/' . $image_path }}  " alt="Product" style="transform: rotate({{$rotation}}deg);" onerror="this.onerror=null;this.src='{{ asset('assets/img/noimage.jpg') }}';">
-                    
+
                     </a>
-                    
+
                     @if($car_content->deposit_taken  == 1)
                         <div class="reduce-tag">DEPOSIT TAKEN</div>
                     @endif
-            
+
                   </figure>
-                  
+
                    <div class="product-details col-xl-8 col-lg-7 col-md-6 col-sm-12 pe-lg-2" style="margin-top:0.5rem;cursor:pointer;padding-left: 15px;"  onclick="window.location='{{ route('frontend.car.details', ['cattitle' => catslug($car_content->category_id), 'slug' => $car_content->slug, 'id' => $car_content->id]) }}'" >
-                        
+
                     <span class="product-category font-sm " style=" display: flex;"  >
-                        
+
                     <h5 class="product-title " style="font-family: Lato, sans-serif;"><a
                         href="{{ route('frontend.car.details', ['cattitle' => catslug($car_content->category_id),'slug' => $car_content->slug, 'id' => $car_content->id]) }}">{{ carBrand($car_content->brand_id) }} {{ carModel($car_content->car_model_id) }} {{ $car_content->title }}</a>
                     </h5>
-                    
+
                     </span>
-                    
+
                     <div class="author mb-10 us_child_dv" >
-                     
+
                     <span>
 
                       @if($car_content->created_at && $car_content->is_featured != 1)
-                        <b class="us_dot"> </b> 
-                        {{calculate_datetime($car_content->created_at)}} 
+                        <b class="us_dot"> </b>
+                        {{calculate_datetime($car_content->created_at)}}
                       @endif
 
                       @if($car_content->year)
-                        <b class="us_dot"> - </b> 
-                        {{ $car_content->year }} 
+                        <b class="us_dot"> - </b>
+                        {{ $car_content->year }}
                       @endif
 
                       @if($car_content->engineCapacity && $car_content->car_content->fuel_type )
-                      <b class="us_dot"> - </b>   {{ roundEngineDisplacement($car_content) }} 
+                      <b class="us_dot"> - </b>   {{ roundEngineDisplacement($car_content) }}
                       @endif
 
                       @if($car_content->car_content->fuel_type )
-                      <b class="us_dot"> - </b>   {{ $car_content->car_content->fuel_type->name }} 
+                      <b class="us_dot"> - </b>   {{ $car_content->car_content->fuel_type->name }}
                       @endif
 
 
                       @if($car_content->mileage)
-                        <b class="us_dot"> - </b>    {{ number_format( $car_content->mileage ) }} mi 
+                        <b class="us_dot"> - </b>    {{ number_format( $car_content->mileage ) }} mi
                       @endif
 
                       @if($car_content->city)
-                        <b class="us_dot"> - </b> {{  Ucfirst($car_content->city) }} 
+                        <b class="us_dot"> - </b> {{  Ucfirst($car_content->city) }}
                       @endif
-                      
+
                     </span>
-                    
+
                     </div>
-                    
+
                     <div style="display:flex;margin-top: 1rem;margin-bottom: 1.5rem;">
-                        
+
                         @if ($car_content->manager_special  == 1)
                             <div class="price-tag" style="padding: 3px 5px;border-radius:5px; background:#25d366;font-size: 10.5px;" > Manage Special</div>
                         @endif
-                        
+
                         <!-- @if($car_content->is_sale == 1)
                             <div class="price-tag" style="padding: 3px 5px;border-radius:5px;margin-left: 10px;background:#434d89;font-size: 10.5px;" > Sale </span></div>
                         @endif -->
-                        
+
                         @if($car_content->reduce_price == 1)
                             <div class="price-tag" style="padding: 3px 5px;border-radius:5px;margin-left: 10px;background:#ff4444;font-size: 10.5px;" > Reduced </span></div>
                         @endif
-                        
+
                         @if(!empty($car_content->warranty_duration))
                             <div class="price-tag" style="padding: 3px 5px;border-radius: 5px;margin-left: 10px;background: #ebebeb;font-size: 10.5px;color: #525252;border: 1px solid #d6d6d6;box-shadow: 0px 0px 5px gray;" > {{$car_content->warranty_duration}} Warranty</span></div>
                         @endif
-                    
+
                     </div>
-                    
-                    
+
+
                     <ul class="product-icon-list  list-unstyled d-flex align-items-center"  style="position:relative; bottom:10px">
-                      
+
                       @if ($car_content->price != null)
                           <li class="icon-start" data-tooltip="tooltip" data-bs-placement="top"
                             title="Price">
@@ -814,19 +814,19 @@ font-size: 20px !important;
                               <strong  class="" style="color: #505254;font-size: 32px;margin-left: 0;font-family:lato,sans-serif;">
                                     @if($car_content->previous_price && $car_content->previous_price < $car_content->price)
                                     <!-- <strike style="font-weight: 300;color: red;font-size: 14px;    float: left;"> -->
-                                      {{ symbolPrice($car_content->price) }}
-                                    <!-- </strike>  -->
-                                    
-                                    <div style="color:#505254;"> 
+                                      £{{ number_format($car_content->price, 0, '.', ',') }}
+                                      <!-- </strike>  -->
+
+                                    <div style="color:#505254;">
                                         {{ symbolPrice($car_content->previous_price) }}
                                     </div>
                                     @else
-                                        {{ symbolPrice($car_content->price) }}   
+                                    £{{ number_format($car_content->price, 0, '.', ',') }}
                                     @endif
                             </strong>
                           </li>
                       @endif
-                      
+
                        @if ($car_content->price != null && $car_content->price >= 1000)
                           <li class="icon-start" data-tooltip="tooltip" data-bs-placement="top"
                             title="">
@@ -848,7 +848,7 @@ font-size: 20px !important;
                                   $period = $matches[2] ?? ''; // The period ('week' or 'month')
                               @endphp
 
-                              @if ($car_content->category_id == 44 || $car_content->category_id == 45 
+                              @if ($car_content->category_id == 44 || $car_content->category_id == 45
                               || $car_content->parent_id == 24 || $car_content->main_category_id == 24)
 
                                 @if ($car_content->price>=5000)
@@ -857,23 +857,23 @@ font-size: 20px !important;
                                   <span class="text-18-categ-perWeek" style="color: black;">
                                      From {{ symbolPrice($number) }}
                                   </span>
-                                
+
                                   <span class="text-18-categ-perWeek" style="color: gray;">
                                       /{{ $period }}
                                   </span>
-                                  
+
                                 @endif
-        
+
                               @endif
                             </div>
                           </li>
                       @endif
-                      
+
                     </ul>
-                   
+
                   </div>
-                  
-            
+
+
                   @if (Auth::guard('vendor')->check())
                     @php
                       $user_id = Auth::guard('vendor')->user()->id;
@@ -884,7 +884,7 @@ font-size: 20px !important;
                       $checkWishList = false;
                     @endphp
                   @endif
-                  
+
                   <a href="javascript:void(0);"
                         onclick="addToWishlist({{$car_content->id}})"
                     class="btn us_wishlist2 btn-icon us_list_downside shadow" data-tooltip="tooltip"
@@ -896,8 +896,8 @@ font-size: 20px !important;
                             <i class="fa fa-heart" style="color:#35373b !important;font-size:22px;" aria-hidden="true"></i>
                         @endif
                   </a>
-                  
-                    <!-- <a href="javascript:void(0);" class="us_wishlist2 btn-icon us_list_downside us_share_icon " style=" color: #1b87f4 !important;" onclick="openShareModal(this)" 
+
+                    <!-- <a href="javascript:void(0);" class="us_wishlist2 btn-icon us_list_downside us_share_icon " style=" color: #1b87f4 !important;" onclick="openShareModal(this)"
                     data-url="{{ route('frontend.car.details', ['cattitle' => catslug($car_content->category_id),'slug' => $car_content->slug, 'id' => $car_content->id]) }}"
                     style="
                     color: #1b87f4;
@@ -908,7 +908,7 @@ font-size: 20px !important;
                 <!-- product-default -->
               </div>
             @endforeach
-            
+
                <!-- <div class="pagination us_pagination_default  mb-40 justify-content-center" data-aos="" >
                  {{ $car_contents->appends(request()->input())->links() }}
           </div> -->
@@ -957,11 +957,11 @@ font-size: 20px !important;
     </div>
   </div></div></div>
   <!-- Listing-list-area end -->
-  
-  
+
+
         <!-- featured section start -->
   @if ( !empty($getFeaturedVendors->cars))
-    <section class="product-area pt-30 pb-30" 
+    <section class="product-area pt-30 pb-30"
       style="background: rgb(0, 19, 52);margin:0px;border-bottom:4px solid rgb(221, 64, 69);display:none;box-shadow: 0px 0px 0px;border-radius: 0px;" id="carFeature">
       <div class="container">
         <div class="row">
@@ -970,49 +970,49 @@ font-size: 20px !important;
               <h2 class="feater-dealer-title">
                 Featured Car Dealer
               </h2>
-             
+
             </div>
-          </div> 
-        
+          </div>
+
           @foreach ($getFeaturedVendors->cars as $featureads)
 
             @php
-            
+
             $image_path = $featureads->feature_image;
-            
+
             $rotation = 0;
-            
+
             if($featureads->rotation_point > 0 )
             {
                  $rotation = $featureads->rotation_point;
             }
-            
+
             if(!empty($image_path) && $featureads->rotation_point == 0 )
-            {   
+            {
                $rotation = $featureads->galleries->where('image' , $image_path)->first();
-               
+
                if($rotation == true)
                {
-                    $rotation = $rotation->rotation_point;  
+                    $rotation = $rotation->rotation_point;
                }
                else
                {
-                    $rotation = 0;   
+                    $rotation = 0;
                }
             }
-            
+
             if(empty($featureads->feature_image))
             {
                 $imng = $featureads->galleries->sortBy('priority')->first();
-                
+
                 $image_path = $imng->image;
                 $rotation = $imng->rotation_point;
-            } 
-           
-           
+            }
+
+
             @endphp
-            
-            
+
+
             <div class="col-12 col-md-2 dealer-product-card" >
 
               <div class="product-default p-15 set_heigh" style="padding: 0px !important;box-shadow: 0px 0px 0px;border-radius: 4px;margin:-6px;" data-id="{{$featureads->id}}">
@@ -1025,11 +1025,11 @@ font-size: 20px !important;
                   </a>
 
                 </figure>
-            
+
                   <div class="product-details" style="padding: 7px !important;padding-left: 15px !important;">
-                
+
                     <span class="product-category font-xsm">
-                        
+
                         <h5 class="product-title custom-product-title mb-0" style="overflow: hidden;text-overflow: ellipsis;vertical-align: top;">
                             <a href="{{ route('frontend.car.details', ['cattitle' => catslug($featureads->car_content->category_id),'slug' => $featureads->car_content->slug, 'id' => $featureads->id]) }}"
                             title="{{ optional($featureads)->title }}">
@@ -1037,11 +1037,11 @@ font-size: 20px !important;
                             {{ carModel($featureads->car_content->car_model_id) }} {{ optional($featureads->car_content)->title }}
                         </a>
                         </h5>
-                      
+
                     </span>
-                    
+
                     <div class="d-flex align-items-center justify-content-between ">
-                   
+
                       @if (Auth::guard('vendor')->check())
                         @php
                           $user_id = Auth::guard('vendor')->user()->id;
@@ -1052,7 +1052,7 @@ font-size: 20px !important;
                           $checkWishList = false;
                         @endphp
                       @endif
-                      
+
                         <!-- <a href="javascript:void(0);"
                         onclick="addToWishlist({{$featureads->id}})"
                         class="btn us_wishlist btn-icon "
@@ -1072,8 +1072,8 @@ font-size: 20px !important;
                             <i class="fa fa-heart" aria-hidden="true"></i>
                         @endif
                       </a> -->
-                     
-                      <!-- <a href="javascript:void(0);"  class="us_grid_shared" onclick="openShareModal(this)" 
+
+                      <!-- <a href="javascript:void(0);"  class="us_grid_shared" onclick="openShareModal(this)"
                         data-url="{{ route('frontend.car.details', ['cattitle' => catslug($featureads->car_content->category_id),'slug' => $featureads->car_content->slug, 'id' => $featureads->id]) }}"
                         style="background: transparent;
                         position: absolute;
@@ -1084,47 +1084,47 @@ font-size: 20px !important;
                         color: #1b87f4;
                         font-size: 25px;" ><i class="fa fa-share-alt" aria-hidden="true"></i>
                         </a> -->
-                        
-                       
+
+
                     </div>
-                    
-                    
-                    {{-- 
+
+
+                    {{--
                       <div class="author us_child_dv" style="cursor:pointer;margin-top: 0px;" onclick="window.location='{{ route('frontend.car.details', ['cattitle' => catslug($featureads->car_content->category_id),'slug' => $featureads->car_content->slug, 'id' => $featureads->id]) }}'" >
-                     
+
                          <span style="line-height: 15px;font-size: 14px;">
-                             
+
                             @if($featureads->year)
-                                {{ $featureads->year }} 
+                                {{ $featureads->year }}
                              @endif
-                             
+
                              @if($featureads->engineCapacity && $featureads->car_content->fuel_type )
-                              <b class="us_dot"> - </b>   {{ roundEngineDisplacement($featureads) }} 
+                              <b class="us_dot"> - </b>   {{ roundEngineDisplacement($featureads) }}
                              @endif
-                             
+
                              @if($featureads->car_content->fuel_type )
-                              <b class="us_dot"> - </b>   {{ $featureads->car_content->fuel_type->name }} 
+                              <b class="us_dot"> - </b>   {{ $featureads->car_content->fuel_type->name }}
                              @endif
-                             
-                             
+
+
                              @if($featureads->mileage)
-                               <b class="us_dot"> - </b>    {{ number_format( $featureads->mileage ) }} mi 
+                               <b class="us_dot"> - </b>    {{ number_format( $featureads->mileage ) }} mi
                              @endif
-                             
+
                              @if($featureads->created_at && $featureads->is_featured != 1)
-                                <b class="us_dot"> - </b> {{calculate_datetime($featureads->created_at)}} 
+                                <b class="us_dot"> - </b> {{calculate_datetime($featureads->created_at)}}
                              @endif
-                             
+
                              @if($featureads->city)
-                                <b class="us_dot"> - </b> {{  Ucfirst($featureads->city) }} 
+                                <b class="us_dot"> - </b> {{  Ucfirst($featureads->city) }}
                              @endif
-                               
+
                         </span>
-                    
-                    </div> 
+
+                    </div>
                     --}}
-                    
-                                        
+
+
                     <ul class="product-icon-list custom-product-icon list-unstyled d-flex align-items-center"  style="position:relative;">
                       @if ($featureads->price != null)
                           <li class="icon-start" data-tooltip="tooltip" data-bs-placement="top"
@@ -1133,18 +1133,18 @@ font-size: 20px !important;
                               <br>
                               <strong  class="us_mr" style="color: black;font-size: 18px;font-weight:600;    margin-left: 0;">
                                     @if($featureads->previous_price && $featureads->previous_price < $featureads->price)
-                                    <strike style="font-weight: 300;color: red;font-size: 14px;    float: left;">{{ symbolPrice($featureads->price) }}</strike> 
-                                    
-                                    <div style="color:black;"> 
+                                    <strike style="font-weight: 300;color: red;font-size: 14px;    float: left;">{{ symbolPrice($featureads->price) }}</strike>
+
+                                    <div style="color:black;">
                                         {{ symbolPrice($featureads->previous_price) }}
                                     </div>
                                     @else
-                                        {{ symbolPrice($featureads->price) }}   
+                                        {{ symbolPrice($featureads->price) }}
                                     @endif
                             </strong>
                           </li>
                       @endif
-                      
+
                        @if ($featureads->price != null && $featureads->price >= 1000)
                         <li class="icon-start" data-tooltip="tooltip" data-bs-placement="top" title="">
                           <strong style="color: black;font-size: 18px;font-weight:600">
@@ -1169,29 +1169,29 @@ font-size: 20px !important;
                         </li>
 
                       @endif
-                      
+
                     </ul>
                   </div>
               </div>
             </div>
-              
+
           @endforeach
-            
-            
+
+
               <div class="col-12 col-md-4 custom-dealer-detail" data-aos="">
-                 
+
                 <div class="mt-3" style="color:rgb(219, 223, 230);">
                   <h4 style="color:white;font-size: 24px;font-weight:100;margin-bottom:0px;">{{$getFeaturedVendors->vendor_info->name}}</h4>
-                    <span style="display: flex;margin-bottom: 3px;font-size:14px;"> 
+                    <span style="display: flex;margin-bottom: 3px;font-size:14px;">
                       <div>
                         {{($getFeaturedVendors->is_franchise_dealer == 1) ? 'Franchise' : 'Independent' }} Dealer
-                      </div>  <b style="margin: 0px 5px;"> . </b> 
+                      </div>  <b style="margin: 0px 5px;"> . </b>
                       <div>Total stock: {{$getFeaturedVendors->cars_count}} Ads</div>
-                    
+
                     </span>
-                 
+
                  <a href="{{ route('frontend.vendor.details', ['id' => $getFeaturedVendors->id ,  'username' => ( $getFeaturedVendors->username)]) }}" style="color: rgb(219, 223, 230);text-decoration: underline;font-size:14px;">See Showroom</a>
-                 
+
                   <div style="width: 65px;
                     padding: 2px;
                     background: rgb(229, 105, 16);
@@ -1200,41 +1200,41 @@ font-size: 20px !important;
                     color: (255, 255, 255);
                     /* font-weight: 700; */
                     margin-top: 0.5rem;">FEATURED</div>
-                 
+
                   <br>
-                 
-                 
+
+
                    @php
                     $photoUrl = env('SUBDOMAIN_APP_URL').'assets/admin/img/vendor-photo/' . $getFeaturedVendors->photo;
-                    
-                    if (file_exists(public_path('assets/admin/img/vendor-photo/' . $getFeaturedVendors->photo))) 
+
+                    if (file_exists(public_path('assets/admin/img/vendor-photo/' . $getFeaturedVendors->photo)))
                     {
-                    
+
                         $photoUrl = asset('assets/admin/img/vendor-photo/' . $getFeaturedVendors->photo);
                     }
                     @endphp
-                    
-                    
-                  <img 
-                    style="border-radius: 1%; width: 160px;height:80px;margin-top:-12px;" 
+
+
+                  <img
+                    style="border-radius: 1%; width: 160px;height:80px;margin-top:-12px;"
                     class="lazyload blur-up"
                     src="{{ asset('assets/img/blank-user.jpg') }}"
-                    data-src="{{ $photoUrl }}"  
-                    alt="Vendor" 
+                    data-src="{{ $photoUrl }}"
+                    alt="Vendor"
                     onload="handleImageLoad(this)"
                     onerror="{{ asset('assets/img/blank-user.jpg') }}" >
-                 
+
                 </div>
-                    
+
               </div>
-         
+
         </div>
       </div>
     </section>
   @endif
   <!-- featured section end -->
-  
-  
+
+
   <div class="modal fade" id="financeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -1251,7 +1251,7 @@ font-size: 20px !important;
             </p></center>
             <a href="{{getSetVal('finance_url')}}" class="btn btn-info" style="width: 100%;color: white;">Get Finance Aproval</a>
       </div>
-  
+
     </div>
   </div>
 </div>
@@ -1267,13 +1267,13 @@ font-size: 20px !important;
   //       $('.skeleton').hide(); // Hide skeletons
   //     //   $('.loading-section').fadeIn()
   //       $('.loading-section').removeClass('loading-section');
-        
-  //   }, 2000);  
+
+  //   }, 2000);
     function closeModal()
     {
         $('#financeModal').modal('hide')
     }
-    
+
   function openPopModal(self , price)
   {
       var type = 'Monthly Price';
@@ -1282,30 +1282,30 @@ font-size: 20px !important;
       {
           var type = 'Weekly Price';
       }
-      
+
       $('#eventTag').html(type)
       $('#textHTML').html('<br>'+text)
       $('#financeModal').modal('show')
   }
-   
+
   // setTimeout(function(){
   //   $('#total_counter_with_category').css('display','');
   //   $('#ajaxListing').css('display','');
   // },1000);
-    
+
 
   if (sessionStorage.getItem('tabCategory')) {
-    
+
     if (sessionStorage.getItem('tabCategory') == 'all'){
         updateUrl(1,'all');
         // updateUrl(1);
     }else{
         updateUrl(1,sessionStorage.getItem('tabCategory'));
     }
-    
+
   }else{
     updateUrl(1,'cars-&-motors');
   }
- 
+
 </script>
 @endsection
