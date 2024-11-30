@@ -1,56 +1,56 @@
-       
+
       @if($car_contents->count() == 0)
         <div class="col-12 w-100" data-aos="fade-up"> <center> <h4>Sorry, No Posts Matched Your Criteria</h4> </center> </div>
       @else
-        
+
             @php
             $admin = App\Models\Admin::first();
             @endphp
-            
+
             @foreach ($car_contents as $key => $car_content)
-                 
+
               @php
-              
+
               $other_images = isset($car_content->images) && $car_content->images ? explode(',', $car_content->images) : [];
               // Limit the number of images to display to 3
               $limited_images = array_slice($other_images, 0, 3);
 
               $image_path = $car_content->feature_image;
-              
+
               $rotation = 0;
-              
+
               if($car_content->rotation_point > 0 )
               {
                   $rotation =    $car_content->rotation_point;
               }
-              
+
               if(!empty($image_path) && $car_content->rotation_point == 0 )
-              {   
+              {
                 $rotation = $car_content->galleries->where('image' , $image_path)->first();
-                
+
                 if($rotation == true)
                 {
-                      $rotation = $rotation->rotation_point;  
+                      $rotation = $rotation->rotation_point;
                 }
                 else
                 {
-                      $rotation = 0;   
+                      $rotation = 0;
                 }
               }
-              
+
               if(empty($car_content->feature_image))
               {
                   $imng = $car_content->galleries->sortBy('priority')->first();
-                  
+
                   $image_path = $imng->image;
                   $rotation = $imng->rotation_point;
               }
-            
+
               @endphp
-             
+
               <div class="w-100 border bg-white  rounded position-relative  mb-4 p-0" >
                 @if ($key == 2 || $key == 6 || $key == 9 )
-                  
+
                   <div class="widget-banner" style="margin-bottom: 1rem;">
                     @if (!empty(showAd(1)))
                       <div class="text-center">
@@ -63,11 +63,11 @@
                       </div>
                     @endif
                   </div>
-                  
+
                 @endif
-                                    
-                  @if ($car_content->vendor_id != 0 && $car_content->vendor->vendor_type == 'dealer')   
-                    
+
+                  @if ($car_content->vendor_id != 0 && $car_content->vendor->vendor_type == 'dealer')
+
                     <div class="w-100 p-3" style="border-bottom: 2px solid rgb(34, 40, 49);">
                       <div class="d-flex align-items-center gap-2">
                         <div >
@@ -75,32 +75,32 @@
                             href="{{ route('frontend.vendor.details', ['id' => $car_content->vendor->id ,'username' => ($vendor = @$car_content->vendor->username)]) }}"
                             target="_self" title="{{ $vendor = @$car_content->vendor->username }}">
                             @if ($car_content->vendor->photo != null)
-                          
+
                               @php
                               $photoUrl = env('SUBDOMAIN_APP_URL').'assets/admin/img/vendor-photo/' . $car_content->vendor->photo;
-                              
-                              if (file_exists(public_path('assets/admin/img/vendor-photo/' . $car_content->vendor->photo))) 
+
+                              if (file_exists(public_path('assets/admin/img/vendor-photo/' . $car_content->vendor->photo)))
                               {
                                 $photoUrl = asset('assets/admin/img/vendor-photo/' . $car_content->vendor->photo);
                               }
                               @endphp
-                              
-                              <img 
-                              style="border-radius: 10%; max-width: 60px;" 
+
+                              <img
+                              style="border-radius: 10%; max-width: 60px;"
                               class="lazyload blur-up"
-                             
+
                               data-src="{{ $photoUrl }}"
-                              src="{{ $photoUrl }}"  
-                              alt="Vendor" 
+                              src="{{ $photoUrl }}"
+                              alt="Vendor"
                               onload="handleImageLoad(this)"
                               onerror="{{ asset('assets/img/blank-user.jpg') }}" >
-                    
+
                             @else
                               <img style="border-radius: 10%;max-width: 60px;" class="lazyload blur-up" data-src="{{ asset('assets/img/blank-user.jpg') }}"
                               alt="Image">
                             @endif
-                            
-                        </a>    
+
+                        </a>
                         </div>
                         <div>
                             <p style="color: #222831;font-size: 14px;margin:0px!important;">{{ $car_content->vendor->vendor_info->name }}</p>
@@ -110,32 +110,32 @@
                               </svg>
                               @if($car_content->vendor->is_trusted == 1)
                                 <span>Trusted</span>
-                              @endif 
+                              @endif
 
                               @if($car_content->vendor->is_franchise_dealer == 1)
-                                Franchise Dealership 
+                                Franchise Dealership
                               @else
                                 Independent Dealership
                               @endif
 
-                              @php 
+                              @php
                                 $review_data = null;
-                              @endphp  
+                              @endphp
 
                               @if($car_content->vendor->google_review_id > 0 )
                                 @php
                                   $review_data = get_vendor_review_from_google($car_content->vendor->google_review_id , true);
                                 @endphp
                               @endif
-                          
+
                               @if(!empty($review_data) && $review_data['total_reviews'] > 0 && $review_data['total_ratings'] > 0)
-                                <span> 
+                                <span>
                                     <span class="star on"></span>  {{$review_data['total_ratings']}}/5
                                 </span>
                               @endif
 
                             </p>
-                      
+
                         </div>
                       </div>
                     </div>
@@ -149,7 +149,7 @@
                             @if($car_content->is_featured == 1)
                               <div class="sale-tag" style="border-bottom-right-radius: 0px;     background: #ff9e02;">Spotlight</div>
                             @endif
-        
+
                             <!-- @if ($car_content->is_sold == 1 || $car_content->status == 2 )
                                 <div class="sold-badge">
                                     <span class="sold-text">Sold</span>
@@ -164,8 +164,8 @@
                               style="transform: rotate(0deg); width: 100%; height: 240px; object-fit: cover;"
                               data-src=" {{  $car_content->vendor->vendor_type == 'normal' ? asset('assets/admin/img/car-gallery/' .$image_path) :  env('SUBDOMAIN_APP_URL').'assets/admin/img/car-gallery/' . $image_path }}  "
                               alt="Product" onerror="this.onerror=null;this.src='{{ asset('assets/img/noimage.jpg') }}';"
-                              src=" {{  $car_content->vendor->vendor_type == 'normal' ? 
-                              asset('assets/admin/img/car-gallery/' .$image_path) :  
+                              src=" {{  $car_content->vendor->vendor_type == 'normal' ?
+                              asset('assets/admin/img/car-gallery/' .$image_path) :
                               env('SUBDOMAIN_APP_URL').'assets/admin/img/car-gallery/' . $image_path }}  ">
                           </a>
                             @if($car_content->deposit_taken == 1)
@@ -176,8 +176,8 @@
                             <div class="d-flex gap-1 mt-1 w-100">
                               @foreach ($limited_images as $image)
                                 <div class="imageSize flex-fill">
-                                  <img class="ls-is-cached lazyloaded card-design-smalls" 
-                                    style="transform: rotate(0deg); height: 88px; width: 100%; object-fit: cover;" 
+                                  <img class="ls-is-cached lazyloaded card-design-smalls"
+                                    style="transform: rotate(0deg); height: 88px; width: 100%; object-fit: cover;"
                                     data-src=" {{  $car_content->vendor->vendor_type == 'normal' ? asset('assets/admin/img/car-gallery/' .$image) :  env('SUBDOMAIN_APP_URL').'assets/admin/img/car-gallery/' . $image }}  "
                                     alt="Product" onerror="this.onerror=null;this.src='http://localhost:8000/assets/img/noimage.jpg';"
                                     src=" {{  $car_content->vendor->vendor_type == 'normal' ? asset('assets/admin/img/car-gallery/' .$image) :  env('SUBDOMAIN_APP_URL').'assets/admin/img/car-gallery/' . $image }}  "
@@ -185,7 +185,7 @@
                                   </div>
                               @endforeach
                               </div>
-                            @endif  
+                            @endif
                             @if ($car_content->is_sold == 1 )
                             <div style="position: absolute; top:0px; width: 100%; z-index: -1px; height: 100%; background: rgba(0,0,0,0.3)"></div>
                             <img src="assets/img/Sold.png"  alt="sold out" style="position: absolute;  left:0px; right:0px; width: 45%; z-index: 1px; top:30%;" class="mx-auto" ></img>
@@ -199,7 +199,7 @@
                           </a>
                           </h6>
                           <div class="d-flex gap-1  flex-wrap justify-content-start align-items-center">
-                              
+
                               @if($car_content->created_at && $car_content->is_featured != 1)
                                 <p style="white-space: nowrap; ">
                                   <div style="border-radius: 100%; margin-right: -10px !important;"></div>
@@ -218,7 +218,7 @@
                                 <p style="white-space: nowrap;  ">
                                   <div style=" width: 5px; height:5px; background: #7A7575; border-radius: 100%;"></div>
                                   {{ roundEngineDisplacement($car_content) }}
-                                </p> 
+                                </p>
                               @endif
 
                               @if($car_content->car_content->fuel_type )
@@ -227,25 +227,25 @@
                                   {{ $car_content->car_content->fuel_type->name }}
                                 </p>
                               @endif
-                              
+
                               @if($car_content->mileage)
                                 <p style="white-space: nowrap;  ">
                                   <div style=" width: 5px; height:5px; background: #7A7575; border-radius: 100%;"></div>
                                   {{ number_format( $car_content->mileage ) }} mi
                                 </p>
                               @endif
-                              
+
                               @if($car_content->city)
                                 <p style="white-space: nowrap;  ">
                                   <div style=" width: 5px; height:5px; background: #7A7575; border-radius: 100%;"></div>
                                   {{  Ucfirst($car_content->city) }}
-                                </p> 
+                                </p>
                               @endif
-  
+
                           </div>
 
                           @if(!empty($car_content->warranty_duration))
-                          <div class="mt-20" 
+                          <div class="mt-20"
                               style="display: inline-block; padding: 3px 5px;border-radius: 5px; background: #ebebeb; font-size: 12px;color: #525252;
                               border: 1px solid #d6d6d6;
                               /* box-shadow: 0px 0px 5px gray; */">
@@ -257,7 +257,7 @@
                           @endif
 
                           @if ($car_content->manager_special  == 1)
-                          <div class="mt-20" 
+                          <div class="mt-20"
                               style="display: inline-block; padding: 3px 5px;border-radius: 5px; background: #ebebeb; font-size: 12px;color: #525252;
                               border: 1px solid #d6d6d6;
                               /* box-shadow: 0px 0px 5px gray; */">
@@ -267,42 +267,42 @@
                               Manage Special
                           </div>
                           @endif
-                          
+
                           <!-- @if($car_content->is_sale == 1)
-                          <div class="mt-20" 
+                          <div class="mt-20"
                               style="display: inline-block; padding: 3px 5px;border-radius: 5px; background: #ebebeb; font-size: 12px;color: #525252;
                               border: 1px solid #d6d6d6;
                               /* box-shadow: 0px 0px 5px gray; */">
                               Sale
                           </div>
                           @endif -->
-                          
+
                           @if($car_content->reduce_price == 1)
-                          <div class="mt-20" 
+                          <div class="mt-20"
                               style="display: inline-block; padding: 3px 5px;border-radius: 5px; background: #ebebeb; font-size: 12px;color: #525252;
                               border: 1px solid #d6d6d6;
                               /* box-shadow: 0px 0px 5px gray; */">
                               Reduced
                           </div>
                           @endif
-                          
+
                         </div>
-                          
+
                         <div class="w-100 mt-20 mt-sm-0 d-flex justify-content-between align-items-center">
                           <div class="w-100 d-flex gap-1">
                               @if ($car_content->price != null)
                               <div class="price-font" style="font-size: 32px;line-height: 40px; color: rgb(34, 40, 49);font-weight: 700;">
                                 @if($car_content->previous_price && $car_content->previous_price < $car_content->price )
-                                  <strike style="font-weight: 300;color: red;font-size: 14px;    float: left;">{{ symbolPrice($car_content->price) }}</strike> 
+                                  <strike style="font-weight: 300;color: red;font-size: 14px;    float: left;">{{ symbolPrice($car_content->price) }}</strike>
                                   <div style="color:black;"> {{ symbolPrice($car_content->previous_price) }}</div>
                                 @else
-                                  {{ symbolPrice($car_content->price) }}   
+                                £{{ number_format($car_content->price, 0, '.', ',') }}
                                 @endif
-                              
+
                               </div>
                               @endif
 
-                              <div class="pmon-font" 
+                              <div class="pmon-font"
                               style="font-size: 16px; line-height: 40px; color: rgb(34, 40, 49);font-weight: 400;padding-top:5px;">
                                 @php
                                   // Get loan amount data
@@ -318,7 +318,7 @@
                                   $period = $matches[2] ?? ''; // The period ('week' or 'month')
                                 @endphp
 
-                                @if ($car_content->category_id == 44 || $car_content->category_id == 45 
+                                @if ($car_content->category_id == 44 || $car_content->category_id == 45
                                 || $car_content->parent_id == 24 || $car_content->main_category_id == 24)
 
                                   @if ($car_content->price>=5000)
@@ -327,17 +327,17 @@
                                     <span class="text-18-categ-perWeek" style="color: black;">
                                       From {{ symbolPrice($number) }}
                                     </span>
-                                  
+
                                     <span class="text-18-categ-perWeek" style="color: gray;">
                                         /{{ $period }}
                                     </span>
-                                    
+
                                   @endif
-          
+
                                 @endif
                             </div>
                           </div>
-                          
+
 
                           @if (Auth::guard('vendor')->check())
                           @php
@@ -356,7 +356,7 @@
                                 data-bs-placement="right"
                                 title="{{ $checkWishList == false ? __('Save Ads') : __('Saved') }}"
                                 style="border-radius:50%;height: 35px; width:35px; cursor: pointer;
-                                      display: flex !important; justify-content: center !important; 
+                                      display: flex !important; justify-content: center !important;
                                       align-items: center !important;">
                                 @if($checkWishList == false)
                                   <i class="fal fa-heart" style="color:#35373b !important;font-size:22px;"></i>
@@ -364,18 +364,18 @@
                                   <i class="fal fa-heart"  aria-hidden="true" style="color:#35373b !important;font-size:22px;"></i>
                                 @endif
                             </a>
-                          </div>       
-                        </div> 
-                        
+                          </div>
+                        </div>
+
                       </div>
-                    </div>   
+                    </div>
                   </div>
                   @if($car_content->is_sale == 1 && $car_content->is_sold != 1)
                   <img src="assets/img/saletag.svg" width="120px" style="position: absolute; width: 60px; top:-13px; right:10px;" alt="sale"></img>
-                       @endif           
-                </div>      
+                       @endif
+                </div>
              @endforeach
-            
+
               <!-- Limited Pagination -->
               <div class="pagination us_pagination_filtered mb-40 justify-content-center" id="pagination">
     @if ($car_contents->lastPage() > 1)
