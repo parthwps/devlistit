@@ -471,18 +471,7 @@
 
                     </div>
 
-                    <div class="col-lg-12">
-                      <div class="form-group text-center">
-                      <button type="submit" id="CarSubmit" data-can_car_add="{{ $can_car_add }}" class="btn btn-success btn-lg btn-block">
-                      @if($draft_ad == true && !empty($draft_ad->ad_type) && $draft_ad->ad_type == 'Wanted')
-                      Publish Now
-                      @else
-                      {{ __('Sell Now') }}
-                      @endif
 
-                  </button></div> </div>
-
-                  <input type="hidden" id="max_file_upload" name="max_file_upload" value="50" />
 
 
                 </form>
@@ -562,14 +551,41 @@
                   <p class="em text-danger mb-0" id="errslider_images"></p>
                 </div>
 
+<form class = "myajaxform" id="carForm" action="{{ route('vendor.car_management.store_car') }}" method="POST"
+enctype="multipart/form-data">
+                <div class="col-lg-12">
 
-                </div>
+                  <div class="form-group text-center d-flex justify-content-end">
+                    
+                      <p class="col-lg-7 text-start">
+                        By clicking "<b>Sell Now</b>", you agree to the Listit
+                        <a href="https://listit.eegc.in/terms-&-condition" target="_blank" class="text-primary">Terms and Conditions</a>.
+                        <a href="#" target="_blank" class="text-primary">Read More</a> about payment options.
+                    </p>
+                    <div class="col-lg-4">
+                      <button type="button">Preview Ad</button>&nbsp;
+                      <button type="submit" id="CarSubmit" data-can_car_add="{{ $can_car_add }}" class="btn btn-success btn-lg btn-block ">
+                        @if($draft_ad == true && !empty($draft_ad->ad_type) && $draft_ad->ad_type == 'Wanted')
+                        Publish Now
+                        @else
+                        {{ __('Sell Now') }}
+                        @endif
+
+                    </button>
+                  </div>
+                  </div> </div>
+
+              <input type="hidden" id="max_file_upload" name="max_file_upload" value="50" />
+                </div></form>
 
 
 
             </div>
           </div>
 
+        </div>
+        <div class="">
+          <button type="submit" class="text-primary">Reset Form</button>
         </div>
 
 
