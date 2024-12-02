@@ -500,6 +500,26 @@ class UserController extends Controller
     return view('frontend.user.reset-password', compact('bgImg'));
   }
 
+
+  public function verify_no(Request $request)
+  {
+    $misc = new MiscellaneousController();
+
+    $language = $misc->getLanguage();
+
+    $queryResult['seoInfo'] = $language->seoInfo()->select('meta_keyword_login', 'meta_description_login')->first();
+
+    $queryResult['pageHeading'] = $misc->getPageHeading($language);
+
+    $queryResult['bgImg'] = $misc->getBreadcrumb();
+
+    // get the status of digital product (exist or not in the cart)
+
+
+
+    return view('frontend.user.verify_no', $queryResult);
+  }
+
   public function resetPasswordSubmit(Request $request)
   {
     if ($request->session()->has('userEmail')) {

@@ -1,4 +1,7 @@
-@extends("frontend.layouts.layout-v$settings->theme_version")
+@php
+  $version = $basicInfo->theme_version;
+@endphp
+@extends('frontend.layouts.layout-v' . $version)
 @section('pageHeading')
   {{ !empty($pageHeading) ? $pageHeading->vendor_login_page_title : __('Login to Listit') }}
 @endsection
@@ -32,7 +35,7 @@
         @endif
 
           <div class="title">
-           <h4 class="mb-20">{{ __('Verify your phone number') }}</h4>-->
+           <h4 class="mb-20">{{ __('Verify your phone number') }}</h4>
            <p>In order to protect the security of your account, please verify your phone number</p>
           </div>
           <form action="{{ route('vendor.send_code') }}" method="POST" class = "verifyopt-form">

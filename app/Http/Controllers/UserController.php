@@ -172,7 +172,7 @@ class UserController extends Controller
     }
 */
     $validator = Validator::make($request->all(), $rules, $messages);
-    
+
     if ($validator->fails()) {
       return redirect()->route('user.login')->withErrors($validator->errors())->withInput();
     }
@@ -231,6 +231,24 @@ class UserController extends Controller
     $queryResult['bs'] = Basic::query()->select('google_recaptcha_status', 'facebook_login_status', 'google_login_status')->first();
 
     return view('frontend.user.forget-password', $queryResult);
+  }
+  public function verify_no(Request $request)
+  {
+    $misc = new MiscellaneousController();
+
+    $language = $misc->getLanguage();
+
+    $queryResult['seoInfo'] = $language->seoInfo()->select('meta_keyword_login', 'meta_description_login')->first();
+
+    $queryResult['pageHeading'] = $misc->getPageHeading($language);
+
+    $queryResult['bgImg'] = $misc->getBreadcrumb();
+
+    // get the status of digital product (exist or not in the cart)
+
+
+
+    return view('frontend.user.verify_no', $queryResult);
   }
 
   public function forgetPasswordMail(Request $request)

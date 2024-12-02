@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 */
 
-Route::prefix('customer')->middleware('change.lang')->group(function () 
+Route::prefix('customer')->middleware('change.lang')->group(function ()
 {
   Route::get('/dashboard', 'Vendor\VendorController@index')->name('vendor.index');
   Route::get('/signup', 'Vendor\VendorController@signup')->name('vendor.signup');
@@ -27,7 +27,7 @@ Route::prefix('customer')->middleware('change.lang')->group(function ()
   Route::get('/get_categories_bread', 'Vendor\CarController@getCategoriesBread')->name('get_categories_bread');
 });
 
-Route::prefix('vendor')->middleware('auth:vendor', 'Deactive')->group(function () 
+Route::prefix('vendor')->middleware('auth:vendor', 'Deactive')->group(function ()
 {
      Route::get('/verify-phone/{phone}', 'Vendor\VendorController@verifyPhone');
 });
@@ -49,10 +49,10 @@ Route::prefix('customer')->middleware('auth:vendor', 'Deactive')->group(function
   Route::get('/save-searches', 'Vendor\VendorController@saveSearch')->name('vendor.save.searches');
   Route::get('/delete-save-searches/{id}', 'Vendor\VendorController@deleteSaveSearch')->name('vendor.delete.save.searches');
   //vendor package extend route
-  
+
   Route::get('/get_compare_car_data', 'Vendor\CarController@getCompareCarData')->name('get_compare_car_data');
   Route::get('/get_compare_car_datas', 'Vendor\CarController@getCompareCarDatas')->name('get_compare_car_datas');
-  
+
   Route::get('/package-list', 'Vendor\BuyPlanController@index')->name('vendor.plan.extend.index');
   Route::get('/package/checkout/{package_id}', 'Vendor\BuyPlanController@checkout')->name('vendor.plan.extend.checkout');
   Route::post('/package/checkout', 'Vendor\VendorCheckoutController@checkout')->name('vendor.plan.checkout');
@@ -64,7 +64,7 @@ Route::prefix('customer')->middleware('auth:vendor', 'Deactive')->group(function
   Route::get('/package/payment-method/{ad_id}', 'Vendor\CarController@PaymentMethod')->name('vendor.package.payment_method');
   Route::get('/package/boost-method/{category_id}/{ad_id}', 'Vendor\CarController@BoostPayment')->name('vendor.package.payment_boost');
   Route::get('/package/boost-package/{package_id}/{ad_id}', 'Vendor\CarController@BoostPackage')->name('vendor.package.boost_package');
-  
+
   Route::get('/vatverify', 'Vendor\CarController@vatVerify');
 
   //checkout payment gateway routes
@@ -90,15 +90,15 @@ Route::prefix('customer')->middleware('auth:vendor', 'Deactive')->group(function
 
     Route::get('/online/success', 'Vendor\VendorCheckoutController@onlineSuccess')->name('success.page');
   });
-  
-    Route::prefix('ad-management')->group(function () 
+
+    Route::prefix('ad-management')->group(function ()
     {
         Route::get('/', 'Vendor\CarController@index')->name('vendor.car_management.car');
         Route::get('ajaxcontent', 'Vendor\CarController@indexAjax')->name('vendor.car_management.carajax');
         Route::get('ajaxsaveads', 'Vendor\CarController@indexSaveAdsAjax')->name('vendor.car_management.caradsajax');
         Route::get('/create', 'Vendor\CarController@create')->name('vendor.cars_management.create_car');
         Route::post('store-data', 'Vendor\CarController@storeData')->name('vendor.cars_management.store_Data');
-    
+
         Route::post('store', 'Vendor\CarController@store')->name('vendor.car_management.store_car');
         Route::post('update_featured', 'Vendor\CarController@updateFeatured')->name('vendor.cars_management.update_featured_car');
         Route::post('update_status', 'Vendor\CarController@updateStatus')->name('vendor.cars_management.update_car_status');
@@ -109,9 +109,9 @@ Route::prefix('customer')->middleware('auth:vendor', 'Deactive')->group(function
         Route::post('delete', 'Vendor\CarController@delete')->name('vendor.cars_management.delete_car');
         Route::get('remove-post', 'Vendor\CarController@removePost')->name('vendor.cars_management.delete_add');
         Route::get('status/{status}/{id}', 'Vendor\CarController@adStatus')->name('vendor.cars_management.ad_status');
-    
+
         Route::post('bulk_delete', 'Vendor\CarController@bulkDelete')->name('vendor.car_management.bulk_delete.car');
-    
+
         //==========car slider image
         Route::post('/img-store', 'Vendor\CarController@imagesstore')->name('vendor.car.imagesstore');
         Route::post('/img-remove', 'Vendor\CarController@imagermv')->name('vendor.car.imagermv');
@@ -193,7 +193,7 @@ Route::prefix('customer')->middleware('auth:vendor', 'Deactive')->group(function
 
   Route::post('/update-method-settings', 'Vendor\VendorController@updateMethodSettings')->name('vendor.equipment_booking.settings.update_method_settings');
 
-  Route::prefix('withdraw')->middleware('Deactive')->group(function () 
+  Route::prefix('withdraw')->middleware('Deactive')->group(function ()
   {
     Route::get('/', 'Vendor\VendorWithdrawController@index')->name('vendor.withdraw');
     Route::get('/create', 'Vendor\VendorWithdrawController@create')->name('vendor.withdraw.create');
@@ -222,7 +222,7 @@ Route::prefix('customer')->middleware('auth:vendor', 'Deactive')->group(function
   Route::get('support-ticket/block/{id}', 'Vendor\SupportTicketController@block')->name('vendor.support_tickets.block');
   Route::post('support-ticket/report', 'Vendor\SupportTicketController@report')->name('vendor.support_ticket.report');
   Route::get('support-ticket/unblock/{id}', 'Vendor\SupportTicketController@unblock')->name('vendor.support_tickets.unblock');
-  
+
   Route::get('support-ticket/multi-delete', 'Vendor\SupportTicketController@deleteMulti')->name('vendor.support_tickets.multi.delete');
-  
+
 });

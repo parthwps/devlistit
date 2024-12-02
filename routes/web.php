@@ -196,6 +196,7 @@ Route::prefix('/user')->middleware(['guest:web', 'change.lang'])->group(function
   });
   // user login submit route
   Route::post('/login-submit', 'FrontEnd\UserController@loginSubmit')->name('user.login_submit')->withoutMiddleware('change.lang');
+  Route::get('/verify_no', 'FrontEnd\UserController@verify_no')->name('')->withoutMiddleware('change.lang');
 
   // user forget password route
   Route::get('/forget-password', 'FrontEnd\UserController@forgetPassword')->name('user.forget_password');
