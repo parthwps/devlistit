@@ -35,7 +35,7 @@
           <div class="title">
             <h4 class="mb-15">{{ __('Signup') }}</h4>
           </div>
-          
+
           <!-- <div class="form-group">
             <h5>Are You a</h5>
             <div class="form-check form-check-inline">
@@ -90,9 +90,38 @@
             </div>
             @error('password_confirmation')
               <p class="text-danger mt-2">{{ $message }}</p>
-            @enderror 
+            @enderror
           </div>
-          
+          @php
+          $languages = App\Models\Language::get();
+          @endphp
+          <div class="row mb-20">
+          @foreach ($languages as $language)
+          <div class="col-lg-6">
+          <div class="form-group">
+              <label>{{ __('Country') }}</label>
+              <input type="text"
+                value="Isle of Man"
+                class="form-control" name=""
+                placeholder="Enter Country" disabled >
+                <input type="hidden" name="country" value="Isle of Man">
+              <p id="editErr_{{ $language->code }}_country" class="mt-1 mb-0 text-danger em"></p>
+          </div>
+        </div>
+          <div class="col-lg-6">
+            <div class="form-group">
+            <label>{{ __('Select your location ')  }}</label>
+            <select name="city" id="" class="form-control">
+            <option value="">Please select...</option>
+                 @foreach ($countryArea as $area)
+            <option value="{{ $area->slug }}" >{{ $area->name }}</option>
+                 @endforeach
+            </select>
+                <p id="editErr_city" class="mt-1 mb-0 text-danger em"></p>
+              </div>
+            </div>
+          @endforeach
+          </div>
           @if ($recaptchaInfo->google_recaptcha_status == 1)
             <div class="form-group mb-15">
               {!! NoCaptcha::renderJs() !!}
@@ -107,24 +136,21 @@
             <div class="row align-items-center">
               <div class="col-12">
                 <div class="link">
-              <p>To get the most from Listit. We will send you members only updates via email, push notification 
+              <p>To get the most from Listit. We will send you members only updates via email, push notification
               and on site messsaging. You can update our prefrences at anytime from Your Listit account page.</p>
-                
                 </div>
               </div>
             </div>
-            </div>  
+            </div>
           <div class="form-group">
             <div class="row align-items-center ">
               <div class="col-12">
                 <div class="link">
               <input type = "checkbox"  name ="notification_allowed" style="width:1.2rem; height:1.2rem; padding-top:5px;" value="1" >  &nbsp; Yes I Agree</a>
-                
                 </div>
               </div>
             </div>
-            </div>  
-
+            </div>
           <div class="row align-items-center mb-10">
             <div class="col-12">
               <div class="link">

@@ -72,7 +72,7 @@
 
 
       <div class="card">
-        
+
         <div class="card-body">
           <div class="row">
             <div class="col-lg-12 ">
@@ -149,9 +149,9 @@
                                   class="form-control js-example-basic-single2 subhidden"  id="adsSubcat">
                                   <option selected disabled>{{ __('Select sub Category') }}</option>
 
-                                 
-                                    
-                                 
+
+
+
                                 </select>
                     </div>
                   </div>
@@ -161,7 +161,7 @@
                    <div class="col-lg-6">
                     <div class="form-group">
                       <div class="form-check form-check-inline">
-  
+
   <label class="form-check-label" for="inlineRadio3">Ad Type</label>
 </div>
                       <div class="form-check form-check-inline">
@@ -176,17 +176,17 @@
                    </div>
                     </div>
                  </div>
-                
-                
+
+
                 <div class="row cararea" style="display: none;">
                   <div class="col-lg-8 ">
                     <div class="form-group">
                       <h3>{{ __('Vehicle Details') }} </h3>
                       <label>Get all your vehicle details instantly</label>
-                  
+
                     </div>
                   </div>
-                  
+
                 </div>
                 <div class="row cararea" style="display: none;">
                   <div class="col-lg-8 ">
@@ -198,12 +198,12 @@
                           <button id="getVehData" class="btn btn-secondary" type="button">Find</button>
                         </div>
                       </div>
-                  
+
                     </div>
                   </div>
-                  
+
                 </div>
-                
+
                 <div class="row cararea" style="display: none;">
                   <div class="col-lg-4">
                               <div class="form-group">
@@ -230,7 +230,7 @@
                                 <label>{{ __('Model') }} *</label>
                                 <select name="en_car_model_id"
                                   class="form-control js-example-basic-single4 en_car_brand_model_id"   id="carModel">
-                                  
+
                                 </select>
                               </div>
                             </div>
@@ -249,7 +249,7 @@
 
                                 <label>{{ __('Fuel Type') }} *</label>
                                 <select name="en_fuel_type_id" id="fuelType" class="form-control" >
-                                  
+
 
                                   @foreach ($fuel_types as $fuel_type)
                                     <option value="{{ $fuel_type->id }}">{{ $fuel_type->name }}</option>
@@ -257,7 +257,7 @@
                                 </select>
                               </div>
                             </div>
-                 
+
 
                   <div class="col-lg-4">
                     <div class="form-group">
@@ -267,8 +267,8 @@
                   </div>
                   </div>
                    <div class="row cararea" style="display: none;">
-                  
-                   <!-- editable --> 
+
+                   <!-- editable -->
                    <div class="col-lg-4">
                               <div class="form-group">
                                 @php
@@ -278,7 +278,7 @@
 
                                 <label>{{ __('Transmission Type') }} *</label>
                                 <select name="en_transmission_type_id" class="form-control" id="transmissionType">
-                                 
+
 
                                   @foreach ($transmission_types as $transmission_type)
                                     <option value="{{ $transmission_type->id }}">{{ $transmission_type->name }}
@@ -362,7 +362,7 @@
                    <div class="col-lg-4">
                     <div class="form-group">
                       <label>{{ __('Add your mileage') }} (km) *</label>
-                      <input type="text" class="form-control" name="mileage" placeholder="Enter Mileage"> 
+                      <input type="text" class="form-control" name="mileage" placeholder="Enter Mileage">
                     </div>
                   </div>
                   <!-- </div>
@@ -375,8 +375,8 @@
                       </select>
                     </div>
                   </div> -->
-             
-                 
+
+
                 </div>
 
                 <div id="accordion" class="mt-3">
@@ -427,7 +427,7 @@
                       <label>{{ __('Price') }}</label>
                       <input type="number" class="form-control" name="price" placeholder="Enter  Price">
                     </div>
-                  </div> 
+                  </div>
                   <div class="col-lg-4">
                     <div class="form-group">
                       <label>{{ __('Status') }} *</label>
@@ -436,7 +436,7 @@
                         <option value="0">{{ __('Deactive') }}</option>
                       </select>
                     </div>
-                  </div> 
+                  </div>
                 </div>
 
                          <!--  <div class="row">
@@ -557,7 +557,7 @@
       } else {
           $direction = 'form-group';
       }
-  
+
       $labels .= "<div class='$direction'><input type='text' name='" . $label_name . "' class='form-control' placeholder='Label ($language->name)'></div>";
       $values .= "<div class='$direction'><input type='text' name='$value_name' class='form-control' placeholder='Value ($language->name)'></div>";
   }

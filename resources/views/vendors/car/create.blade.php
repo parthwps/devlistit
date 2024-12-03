@@ -556,7 +556,7 @@ enctype="multipart/form-data">
                 <div class="col-lg-12">
 
                   <div class="form-group text-center d-flex justify-content-end">
-                    
+
                       <p class="col-lg-7 text-start">
                         By clicking "<b>Sell Now</b>", you agree to the Listit
                         <a href="https://listit.eegc.in/terms-&-condition" target="_blank" class="text-primary">Terms and Conditions</a>.

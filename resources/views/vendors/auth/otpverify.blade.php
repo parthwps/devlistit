@@ -32,7 +32,7 @@
         @endif
 
           <div class="title">
-           <h4 class="mb-20">{{ __('Verify your phone number') }}</h4>-->
+           <h4 class="mb-20">{{ __('Verify your phone number') }}</h4>
            <p>In order to protect the security of your account, please verify your phone number</p>
           </div>
           <form action="{{ route('vendor.send_code') }}" method="POST" class = "verifyopt-form">

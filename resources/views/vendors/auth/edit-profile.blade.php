@@ -25,17 +25,17 @@
   ])
   <div class="user-dashboard pt-20 pb-60">
     <div class="container">
-      
-  
-      
-  <div class="row gx-xl-5">
-  
-       @includeIf('vendors.partials.side-custom')
-   
 
-    
+
+
+  <div class="row gx-xl-5">
+
+       @includeIf('vendors.partials.side-custom')
+
+
+
     <div class="col-md-9">
-  
+
 
   <div class="row">
     <div class="col-md-12">
@@ -54,12 +54,12 @@
               @php
                    $vendor_info = App\Models\VendorInfo::where('vendor_id', $vendor->id)->where('language_id', $language->id)->first();
               @endphp
-              
+
               @foreach ($languages as $language)
-              
+
               <form id="ajaxEditForm" action="{{ route('vendor.update_profile') }}" method="post">
                 @csrf
-                
+
                 <div class="row">
                   <div class="col-lg-12">
                     <div class="form-group">
@@ -68,7 +68,7 @@
                       <div class="thumb-preview" id="image-preview">
                         @if ($vendor->photo != null)
                           <img src="{{ asset('assets/admin/img/vendor-photo/' . $vendor->photo) }}" alt="..."  class="uploaded-img">
-                            
+
                             <a href="javascript:void(0);" onclick="removeImage(this)" style="    color: red;
                             position: absolute;
                             background: white;
@@ -81,12 +81,12 @@
                             text-align: center;
                             border: 1px solid #ff0000;">
                             <i class="fa fa-times" aria-hidden="true"></i></a>
-                            
+
                         @else
                           <img src="{{ asset('assets/img/noimage.jpg') }}" alt="..." class="uploaded-img">
                         @endif
                       </div>
-                      
+
 
                       <div class="mt-3">
                         <div role="button" class="btn btn-primary btn-sm upload-btn">
@@ -116,7 +116,7 @@
                       </div>
                   </div>
                 </div>
-                
+
                 <div class="col-lg-4 chkbox" @if ($vendor->trader == 0) style="display: none;" @endif>
                     <div class="form-group">
                       <label>{{ __('Business Name') }}</label>
@@ -138,7 +138,7 @@
                       <p id="editErr_business_address" class="mt-1 mb-0 text-danger em"></p>
                     </div>
                   </div>
-                  
+
                   <div class="col-lg-6">
                     <div class="form-group">
                       <label>{{ __('Name*') }}</label>
@@ -157,28 +157,28 @@
                   <div class="col-lg-6">
                     <label style="margin-left:8px; font-size:1.2rem;color:black;">{{ __('Phone') }} </label>
                     <div class="form-group input-group">
-                     
+
                      <div class="d-flex">
                         <div class="custom-select">
                         <div class="select-selected">
-                            
+
                             @php
                                 $ct = $country_codes->firstWhere('country', 'United Kingdom');
-                                
+
                                 $flagUrl = $ct->flag_url;
                                 $flagcode = $ct->code;
                                 $s_code = $ct->short_code;
-                                
+
                                 if(!empty($vendor->country_code))
                                 {
                                     $ct = $country_codes->firstWhere('code', $vendor->country_code);
-                                    
+
                                     $flagUrl = $ct->flag_url;
                                     $flagcode = $ct->code;
                                     $s_code = $ct->short_code;
-                                
+
                                 }
-                                
+
                             @endphp
                         <img src="{{ $flagUrl }}" alt="UK Flag" class="flag">
                         <span class="short_code"> {{$s_code}} </span> ({{ $flagcode }})
@@ -195,12 +195,12 @@
                         @endforeach
                         </div>
                         </div>
-                        
+
                         <input type="hidden" name="c_code" id="c_code" value="{{ !empty(Auth::guard('vendor')->user()->country_code) ? Auth::guard('vendor')->user()->country_code : '+44' }}"/>
-        
-                        <input  type="number" value="{{ $vendor->phone }}" style="height: 40px;margin-top: 10px;    margin-right: 5px;" class="form-control" name="phone" required> 
-                      
-                      
+
+                        <input  type="number" value="{{ $vendor->phone }}" style="height: 40px;margin-top: 10px;    margin-right: 5px;" class="form-control" name="phone" required>
+
+
                        @if ($vendor->phone_verified == 1)
                         <button disabled   class="btn  btn-success2"  style="    height: 40px;
                         margin-top: 10px;
@@ -220,34 +220,29 @@
                         background: transparent;
                         color: #1b87f4;" type="button" title="verify"><i class='fas fa-fingerprint'></i></button>
                         @endif
-                        
+
                         </div>
                      <small>Verify your phone number and help reduce fraud and scams on Listit</small>
                       <p id="editErr_phone" class="mt-1 mb-0 text-danger em"></p>
                     </div>
                   </div>
-                  
+
                   <div class="col-lg-6">
                       <div class="form-group">
                         <label>Use Whatsapp Function?</label>
-                        
+
                       <div class="d-flex">
                             <div style="display:flex;    margin-right: 70px;">
                             <span style="font-weight: bold;margin-right: 10px;">Yes </span> <input type="radio" name="also_whatsapp" <?= ($vendor->also_whatsapp == 1) ? 'checked' : '' ?>  />
                         </div>
-                      
-                      
+
+
                         <div style="display:flex;">
                             <span style="font-weight: bold;margin-right: 10px;">No </span> <input type="radio" name="also_whatsapp"  <?= ($vendor->also_whatsapp == 0) ? 'checked' : '' ?> />
                         </div>
                       </div>
-                      
-                      
                       </div>
                     </div>
-                    
-                    
-                    
                   <div class="col-lg-6">
                       <div class="form-group">
                         <label>{{ __('Country') }}</label>
@@ -255,15 +250,12 @@
                           value="Isle of Man"
                           class="form-control" name="{{ $language->code }}_country"
                           placeholder="Enter Country" disabled >
-                      
                         <p id="editErr_{{ $language->code }}_country" class="mt-1 mb-0 text-danger em"></p>
                       </div>
                     </div>
-                    
-                    
                     <div class="col-lg-6">
                     <div class="form-group">
-                    <label>{{ __('City/Area')  }}</label>
+                    <label>{{ __('Select your location ')  }}</label>
                     <select name="{{ $language->code }}_city" id="" class="form-control">
                     <option value="">Please select...</option>
                          @foreach ($countryArea as $area)
@@ -275,29 +267,18 @@
                         <p id="editErr_{{ $language->code }}_city" class="mt-1 mb-0 text-danger em"></p>
                       </div>
                     </div>
-                    
-                    
-                  
-                    
-                        
                   <div class="col-lg-12">
                     <div id="accordion" class="">
-                      
                         <div class="version" style="border: 0px !important;">
-                         
                           <div id="collapse{{ $language->id }}"
                             class="collapse {{ $language->is_default == 1 ? 'show' : '' }}"
                             aria-labelledby="heading{{ $language->id }}" data-parent="#accordion">
                             <div class="version-body" >
                               <div class="row">
-                                
-                                
-                               
                               </div>
                             </div>
                           </div>
                         </div>
-                      
                     </div>
                   </div>
                   <div class="col-lg-12">
@@ -334,17 +315,10 @@
                       </div>
                     </div>
                   </div>
-                
         <div class="row justify-content-center">
     <div class="col-12 col-lg-12 col-xl-12 mx-auto">
-       
         <div class="my-4">
-           
-           
-            
-            
         <h4 class="mb-4 mt-5 ms-3">Notification Preferences</h4>
-            
             <div class="list-group mb-5 ">
                 <div class="list-group-item">
                     <div class="row align-items-center">
@@ -414,10 +388,7 @@
             </div>
         </div>
     </div>
-
-
 </div>
-
                 </div>
               </form>
               @endforeach
@@ -438,7 +409,6 @@
     </div>
      </div>
   </div>
-  
   </div>
 </div>
 
@@ -455,7 +425,6 @@
       } else {
           $direction = 'form-group';
       }
-  
       $labels .= "<div class='$direction'><input type='text' name='" . $label_name . "' class='form-control' placeholder='Label ($language->name)'></div>";
       $values .= "<div class='$direction'><input type='text' name='$value_name' class='form-control' placeholder='Value ($language->name)'></div>";
   }
@@ -472,10 +441,6 @@
 {{-- admin-main css --}}
 <link rel="stylesheet" href="{{ asset('assets/css/admin-main.css') }}">
 <style type="">
-
-
-        
-        
   #carForm .form-control {
     display: block;
     width: 80%;
@@ -882,7 +847,7 @@
 
 {{-- fonts and icons script --}}
 <script type="text/javascript" src="{{ asset('assets/js/webfont.min.js') }}"></script>
-<!-- 
+<!--
 @if (session()->has('success'))
   <script>
     'use strict';
@@ -942,14 +907,14 @@
     var getBrandUrl = "{{ route('user.get-car.brand.model') }}";
     const account_status = "{{ Auth::guard('vendor')->user()->status }}";
     const secret_login = "{{ Session::get('secret_login') }}";
-    
+
   </script>
 
-  
+
   <script>
     var labels = "{!! $labels !!}";
     var values = "{!! $values !!}";
   </script>
-  
-  
+
+
 @endsection

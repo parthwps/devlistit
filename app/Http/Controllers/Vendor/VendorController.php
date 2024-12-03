@@ -18,7 +18,7 @@ use App\Models\Car\Wishlist;
 use Carbon\Carbon;
 use Config;
 use DateTime;
-use App\Models\Car\Category; 
+use App\Models\Car\Category;
 use App\Models\SaveSearch;
 use App\Models\BrowsingHistory;
 use Illuminate\Http\Request;
@@ -40,9 +40,17 @@ class VendorController extends Controller
     //signup
     public function signup()
     {
-        $misc = new MiscellaneousController();
+      $information = [];
+      $queryResult = [];
+
+      $misc = new MiscellaneousController();
 
         $language = $misc->getLanguage();
+
+
+        $information['language'] = $language;
+        $queryResult['languages'] = Language::get();
+
 
         $queryResult['seoInfo'] = $language->seoInfo()->select('meta_keywords_vendor_signup', 'meta_description_vendor_signup')->first();
 
@@ -52,9 +60,15 @@ class VendorController extends Controller
 
         $queryResult['bgImg'] = $misc->getBreadcrumb();
 
+        $data = CountryArea::where('status', 1)->orderBy('name', 'asc')->get();
+        $queryResult['countryArea'] = $data;
+        $queryResult['country_codes'] = DB::table('phone_country_codes')->get();
+
+
+
         return view('vendors.auth.register', $queryResult);
     }
-    
+
     function recentlyViewed()
     {
         $misc = new MiscellaneousController();
@@ -62,30 +76,30 @@ class VendorController extends Controller
         $language = $misc->getLanguage();
         $information['language'] = $language;
         $information['pageHeading'] = $misc->getPageHeading($language);
-        
+
         $queryResult['language'] = $language;
         $user_id = Auth::guard('vendor')->user()->id;
         $car_ids = BrowsingHistory::where('user_id' , $user_id)->orderBy('id', 'desc')->pluck('ad_id');
-        
+
         if(count($car_ids) > 0 )
         {
-          $wishlists = Car::whereIn('id' ,  $car_ids)->where('status' , 1)->paginate(15);  
+          $wishlists = Car::whereIn('id' ,  $car_ids)->where('status' , 1)->paginate(15);
           $information['cars'] = $wishlists;
         }
         else
         {
             $information['cars'] = null;
         }
-        
+
         $information['bgImg'] = $bgImg;
         return view('vendors.recently-view', $information);
     }
-    
+
      public function vatVerify($vatnumber)
     {
-           
+
             $curl = curl_init();
-            
+
             curl_setopt_array($curl, array(
               CURLOPT_URL => 'https://api.vatcheckapi.com/v2/check?vat_number='.$vatnumber.'&apikey='.env('VAT_API_KEY').'',
               CURLOPT_RETURNTRANSFER => true,
@@ -96,34 +110,34 @@ class VendorController extends Controller
               CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
               CURLOPT_CUSTOMREQUEST => 'GET',
             ));
-            
+
             $response = curl_exec($curl);
-            
+
             curl_close($curl);
-            
+
             $response = json_decode($response , true);
-            
+
             if(empty($response['registration_info']['is_registered']))
             {
                 return false;
             }
-            
+
             if($response['registration_info']['is_registered'] == false)
             {
                 return false;
             }
-        
+
             if($response['registration_info']['is_registered'] == true)
             {
                 return true;
             }
             else
             {
-               return false; 
+               return false;
             }
         }
-    
-    
+
+
     public function VerifyOtp(Request $request)
     {
         $misc = new MiscellaneousController();
@@ -137,25 +151,25 @@ class VendorController extends Controller
         $queryResult['bgImg'] = $misc->getBreadcrumb();
         return view('vendors.auth.otpverify', $queryResult);
     }
-    
+
     public function SendCode(Request $request)
     {
-       
+
                 $code = mt_rand(100000,999999);
 
                 $ch = curl_init();
                 $url = "https://api.smsgatewayapi.com/v1/message/send";
                 $client_id = "894736944329458124966"; // Your API client ID (required)
                 $client_secret = "BNrJEwLLQ7I1Y5NHq7UC2"; // Your API client secret (required)
-                if(!empty($request->country_code)) 
+                if(!empty($request->country_code))
                 {
                     $phoneNnumber = $request->country_code.$request->phone_number;
-                } 
+                }
                 else
                 {
-                    $phoneNnumber =$request->phone_number;   
+                    $phoneNnumber =$request->phone_number;
                 }
-                
+
                 $data = [
                     'message' => "Your ListIt verification code is  $code . Please do not provide this code to any other person requesting it.", //Message (required)
                     'to' => "$phoneNnumber", //Receiver (required)
@@ -171,10 +185,10 @@ class VendorController extends Controller
                     "Content-Type: application/json",
                 ]);
                 curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
-	            $response = curl_exec($ch); 
+	            $response = curl_exec($ch);
                 $data = json_decode($response, true);
                 //print_r($response); exit;
-                if(isset($data['messageid'])) {                
+                if(isset($data['messageid'])) {
                 $vendor  = Vendor::where('email', Session::get('vendorEmail'))->first();
                 $in['phone'] = $phoneNnumber;
                 $in['phone_verified'] = 0;
@@ -200,7 +214,7 @@ class VendorController extends Controller
             if(isset($request->profileverify)) {
             Session::flash('success', 'Your phone number is verified now.');
             }else{
-                Session::flash('success', 'Your new ListIt account is now active!'); 
+                Session::flash('success', 'Your new ListIt account is now active!');
             }
             return response()->json(['status' => 'success', 'data'=> $request->phone_number, "message"=>'Your new ListIt account is now active'], 200);
             return redirect()->route('index');
@@ -257,7 +271,7 @@ class VendorController extends Controller
 
         if ($setting->vendor_email_verification == 1) {
             $headermail =   view('email.mailheader')->render();
-            $footermail =  view('email.mailfooter')->render();                                       
+            $footermail =  view('email.mailfooter')->render();
             // first, get the mail template information from db
             $mailTemplate = MailTemplate::where('mail_type', 'verify_email')->first();
 
@@ -314,7 +328,7 @@ class VendorController extends Controller
                         ->from($fromMail, $fromName)
                         ->html($data['body'], 'text/html');
                 });
-              //  efdm uzfl fenk czvd 
+              //  efdm uzfl fenk czvd
                 Session::flash('success', 'A verification mail has been sent to your email address');
             } catch (\Exception $e) {
                 //echo "<pre>";
@@ -339,8 +353,11 @@ class VendorController extends Controller
         $in['password'] = Hash::make($request->password);
        // $in['trader'] = $request->traderstatus;
        $in['phone'] = $request->phone;
-         
+
        $in['username'] = $userName;
+       $in['country'] = $request->country;
+       $in['city'] = $request->city;
+
        if ($request->notification_allowed){
        $notification =1;
        }
@@ -355,12 +372,14 @@ class VendorController extends Controller
         $misc = new MiscellaneousController();
 
         $language = $misc->getLanguage();
-        
+
 
         $in['language_id'] = $language->id;
         $in['vendor_id'] = $vendor->id;
         $in['name'] = $request->username;
-        
+        $in['country'] = $request->country;
+        $in['city'] = $request->city;
+
         VendorInfo::create($in);
 
         return redirect()->route('vendor.otpverify');
@@ -371,29 +390,29 @@ class VendorController extends Controller
     {
         if(url()->previous() == route('vendor.login') )
         {
-          Session::put('previousUrl', url('/')); 
+          Session::put('previousUrl', url('/'));
         }
         else
         {
-          Session::put('previousUrl', url()->previous()); 
+          Session::put('previousUrl', url()->previous());
         }
-        
+
         $misc = new MiscellaneousController();
-        
+
         $language = $misc->getLanguage();
-        
+
         $queryResult['seoInfo'] = $language->seoInfo()->select('meta_keywords_vendor_login', 'meta_description_vendor_login')->first();
-        
+
         $queryResult['pageHeading'] = $misc->getPageHeading($language);
-        
+
         $queryResult['bgImg'] = $misc->getBreadcrumb();
-        
+
         $queryResult['bs'] = Basic::query()->select('google_recaptcha_status', 'facebook_login_status', 'google_login_status')->first();
-        
+
         return view('vendors.auth.login', $queryResult);
     }
     //wishlist
-    
+
       public function mywishlist(Request $request)
       {
             $misc = new MiscellaneousController();
@@ -401,15 +420,15 @@ class VendorController extends Controller
             $language = $misc->getLanguage();
             $information['language'] = $language;
             $information['pageHeading'] = $misc->getPageHeading($language);
-            
+
             $queryResult['language'] = $language;
             $user_id = Auth::guard('vendor')->user()->id;
-            
+
             $query = Car::with('car_content')
             ->join('wishlists', 'wishlists.car_id', '=', 'cars.id')
             ->where('wishlists.user_id', $user_id)
             ->select(['cars.*', 'wishlists.id as wishlist_id', 'wishlists.car_id', 'wishlists.user_id']);
-            
+
             // Check if category_id is present in the request and add the condition
             if (!empty($request->category_id) && $request->has('category_id')) {
             $category_id = $request->category_id;
@@ -417,7 +436,7 @@ class VendorController extends Controller
             $query->where('category_id', $category_id);
             });
             }
-            
+
             // Apply sorting based on filter_type
             if ($request->filter_type == 'recent') {
             $query->orderBy('cars.created_at', 'desc');
@@ -429,25 +448,25 @@ class VendorController extends Controller
             // Default ordering if no filter_type is provided or matched
             $query->orderBy('cars.id', 'desc');
             }
-            
+
             $wishlists = $query->get();
-            
+
             $mainCategoryIds = collect($wishlists)->map(function($item) {
             return $item->car_content->main_category_id;
             })->unique();
-            
-            
+
+
             $categorries = Category::whereIn('parent_id', $mainCategoryIds)->get();
-            
+
             if($categorries->count() > 0 )
             {
                 $information['categories'] =  $categorries;
             }
             else
             {
-               $information['categories'] = Category::where('parent_id', 24)->get(); 
+               $information['categories'] = Category::where('parent_id', 24)->get();
             }
-            
+
             $information['bgImg'] = $bgImg;
             $information['cars'] = $wishlists;
             return view('vendors.wishlist', $information);
@@ -464,8 +483,8 @@ class VendorController extends Controller
         // if ($info->google_recaptcha_status == 1) {
         //     $rules['g-recaptcha-response'] = 'required|captcha';
         // }
-        
-       
+
+
         $messages = [];
 
         // if ($info->google_recaptcha_status == 1) {
@@ -479,34 +498,34 @@ class VendorController extends Controller
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator->errors());
         }
-        
+
 
         if (Auth::guard('vendor')->attempt([
             'email' => $request->email,
             'password' => $request->password
-        ])) 
+        ]))
         {
             $authAdmin = Auth::guard('vendor')->user();
             //print_r($authAdmin); exit;
 
             $setting = DB::table('basic_settings')->where('uniqid', 12345)->select('vendor_email_verification', 'vendor_admin_approval')->first();
-            
+
               if( $authAdmin->vendor_type == 'dealer' )
             {
-                   Auth::guard('vendor')->logout(); 
-                 
+                   Auth::guard('vendor')->logout();
+
                    return redirect()->back()->with('error', 'Your account is not linked with any customer account');
             }
-            
+
             if($authAdmin->status == 0)
             {
                 Session::flash('error', 'Sorry, your account has been deactivated');
-                
+
                 Auth::guard('web')->logout();
 
                 return redirect()->route('page.crash');
             }
-            
+
             // check whether the admin's account is active or not
             if ($setting->vendor_email_verification == 1 && $authAdmin->email_verified_at == NULL && $authAdmin->status == 0) {
                 Session::flash('error', 'Please verify your email address');
@@ -530,25 +549,25 @@ class VendorController extends Controller
                 Session::put('is_dealer', $authAdmin->is_dealer);
                 session()->forget('dealer_loggedin');
                 //return redirect()->route('vendor.dashboard');
-                
+
                  $previousUrl = Session::pull('previousUrl', '/');
-                 
+
                  if(!empty($previousUrl)  &&  $previousUrl != url('customer/login')  && $previousUrl != url('customer/signup') )
                  {
                    Session::forget('previousUrl');
-                    return redirect()->intended($previousUrl);  
+                    return redirect()->intended($previousUrl);
                  }
-                    
-                    
+
+
                 return redirect()->route('index');
                 // If the user is authenticated successfully
                     // Redirect the user to the stored URL or home page
-                   
+
                 /*  //return redirect()->intended();
                  if ($request->session()->has('url.intended') && $request->session()->get('url.intended') == route('vendor.login')) {
                     return redirect()->route('home');
                 }
-        
+
                 return redirect()->intended($this->redirectPath()); */
             }
         } else {
@@ -576,7 +595,7 @@ class VendorController extends Controller
         return redirect()->route('vendor.login');
     }
 
-   
+
 
     public function dashboard()
     {
@@ -754,9 +773,9 @@ class VendorController extends Controller
        $url = "https://api.smsgatewayapi.com/v1/message/send";
        $client_id = "894736944329458124966"; // Your API client ID (required)
        $client_secret = "BNrJEwLLQ7I1Y5NHq7UC2"; // Your API client secret (required)
-       
-        $phoneNnumber = str_replace('+' , '' , $request->code).$request->phone;   
-      
+
+        $phoneNnumber = str_replace('+' , '' , $request->code).$request->phone;
+
        $data = [
            'message' => "Your ListIt verification code is  $code . Please do not provide this code to any other person requesting it.", //Message (required)
            'to' => "$phoneNnumber", //Receiver (required)
@@ -772,26 +791,26 @@ class VendorController extends Controller
            "Content-Type: application/json",
        ]);
        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
-       $response = curl_exec($ch); 
+       $response = curl_exec($ch);
        $data = json_decode($response, true);
        //print_r($response); exit;
-       if(isset($data['messageid'])) {                
+       if(isset($data['messageid'])) {
        $vendor  = Vendor::where('email', Auth::guard('vendor')->user()->email)->first();
        $in['phone'] = $request->phone;
        $in['country_code'] = $request->code;
        $in['phone_verified'] = 0;
-       $vendor->update($in); 
+       $vendor->update($in);
        Session::put('verifycode', $code);
        return response()->json(['status' => 'success', 'data'=> $code , 'phone'=> $phoneNnumber], 200);
-      } 
+      }
        else{
            return response()->json(['status' => 'error', 'data'=> $code, 'phone'=> $phoneNnumber], 200);
        }
 
     }
-   
-    
-    
+
+
+
     //edit_profile
     public function edit_profile()
     {
@@ -808,24 +827,24 @@ class VendorController extends Controller
         //print_r($information['vendor']);
         $information['bgImg'] = $misc->getBreadcrumb();
         $data = CountryArea::where('status', 1)->orderBy('name', 'asc')->get();
-        
+
         $information['openingHour'] = DB::table('opening_hours')->where('vendor_id' , $vendor_id)->get()->keyBy('day_of_week')->toArray();
-        
+
         $information['country_codes'] = DB::table('phone_country_codes')->get();
-        
+
         $information['countryArea'] = $data;
         return view('vendors.auth.edit-profile', $information);
     }
-    
-    
+
+
     //update_profile
     public function update_profile(Request $request, Vendor $vendor)
     {
         $id = Auth::guard('vendor')->user()->id;
-        
+
         $rules = [
-            'phone' => 'required', 
-            'c_code' => 'required', 
+            'phone' => 'required',
+            'c_code' => 'required',
         ];
 
         if ($request->hasFile('photo')) {
@@ -841,7 +860,7 @@ class VendorController extends Controller
         }
 
         $messages = [];
-        
+
         $messages['c_code.required'] = 'Country Code Requried';
         foreach ($languages as $language) {
             //$messages[$language->code . '_name.required'] = 'Name is required.';
@@ -859,24 +878,24 @@ class VendorController extends Controller
 
         $in = $request->all();
         $vendor  = Vendor::where('id', $id)->first();
-        
-        
-        if ($request->traderstatus == 1) 
-        {    
+
+
+        if ($request->traderstatus == 1)
+        {
             if(!empty($request['vat_number']))
             {
-                if($vendor->vendor_info->vatVerified != 1) 
+                if($vendor->vendor_info->vatVerified != 1)
                 {
                     if($this->vatVerify($request['vat_number'])== false)
                     {
                          Session::flash('success', 'Vat Number Not Verified.');
                          return Response::json(['status' => 'error'], 200);
                     }
-                    
-                }   
+
+                }
             }
         }
-        
+
         $file = $request->file('photo');
         if ($file) {
             $extension = $file->getClientOriginalExtension();
@@ -888,9 +907,9 @@ class VendorController extends Controller
             @unlink(public_path('assets/admin/img/vendor-photo/') . $vendor->photo);
             $in['photo'] = $fileName;
         }
-        
-        
-        
+
+
+
         $in['trader'] = $request->traderstatus;
 
         if ($request->show_email_addresss) {
@@ -908,26 +927,26 @@ class VendorController extends Controller
         } else {
             $in['show_contact_form'] = 0;
         }
-        
-        if ($request->phone) 
+
+        if ($request->phone)
         {
             $in['phone'] = $request->phone;
         }
-        
-        if ($request->also_whatsapp == 'on') 
+
+        if ($request->also_whatsapp == 'on')
         {
             $in['also_whatsapp'] =1;
         }
         else
         {
-            $in['also_whatsapp'] = 0; 
+            $in['also_whatsapp'] = 0;
         }
-        
-        if ($request->c_code) 
+
+        if ($request->c_code)
         {
            $in['country_code'] = $request->c_code;
         }
-        
+
         $in['notification_news_offer'] = request()->has('notification_news_offer') ? 1 : 0;
         $in['notification_saved_search'] = request()->has('notification_saved_search') ? 1 : 0;
         $in['notification_tips'] = request()->has('notification_tips') ? 1 : 0;
@@ -935,8 +954,8 @@ class VendorController extends Controller
         $in['notification_saved_ads'] = request()->has('notification_saved_ads') ? 1 : 0;
 
         $vendor->update($in);
-        
-        
+
+
         $languages = Language::get();
         $vendor_id = $vendor->id;
         foreach ($languages as $language) {
@@ -1078,13 +1097,13 @@ class VendorController extends Controller
                     ->from($fromMail, $fromName)
                     ->html($data['body'], 'text/html');
             });
-            
+
             Session::flash('success', 'A mail has been sent to your email address');
-            
+
             $email = $user->email;
             return view('vendors.auth.reset_password_custom', compact('email'));
-        } 
-        catch (\Exception $e) 
+        }
+        catch (\Exception $e)
         {
             Session::flash('error', 'Mail could not be sent!');
         }
@@ -1142,7 +1161,7 @@ class VendorController extends Controller
        // $information = [];
        //echo Auth::guard('vendor')->user()->id;  exit;
         $misc = new MiscellaneousController();
-        
+
         $search = $request->search;
         $data['memberships'] = Membership::query()->when($search, function ($query, $search) {
             return $query->where('transaction_id', 'like', '%' . $search . '%');
@@ -1153,25 +1172,25 @@ class VendorController extends Controller
             $data['bgImg'] = $misc->getBreadcrumb();
         return view('vendors.payment_log', $data);
     }
-    
+
     public function saveSearch(Request $request)
     {
        $misc = new MiscellaneousController();
         $data['savesearchers'] = SaveSearch::where('user_id', Auth::guard('vendor')->user()->id)
             ->orderBy('id', 'DESC')
             ->paginate(10);
-            
+
             $data['bgImg'] = $misc->getBreadcrumb();
         return view('vendors.savesearchers', $data);
     }
-    
+
     public function deleteSaveSearch($id)
     {
         SaveSearch::where('id' , $id)->delete();
         Session::flash('success', 'Your search has been removed.');
         return redirect()->back();
     }
-    
+
     public function transaction(Request $request)
     {
         $search = $request->search;
