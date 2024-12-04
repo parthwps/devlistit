@@ -30,7 +30,7 @@
         @if (Session::has('success'))
           <div class="alert alert-success">{{ __(Session::get('success')) }}</div>
         @endif
-        <form action="{{ route('vendor.signup_submit') }}" method="POST">
+        <form action="{{ route('vendor.signup_submit') }}" method="POST" id="signup-form">
           @csrf
           <div class="title">
             <h4 class="mb-15">{{ __('Signup') }}</h4>
@@ -111,7 +111,7 @@
           <div class="col-lg-6">
             <div class="form-group">
             <label>{{ __('Select your location ')  }}</label>
-            <select name="city" id="" class="form-control">
+            <select name="city" id="" class="form-control" required>
             <option value="">Please select...</option>
                  @foreach ($countryArea as $area)
             <option value="{{ $area->slug }}" >{{ $area->name }}</option>
@@ -160,10 +160,34 @@
               </div>
             </div>
           </div>
-          <button type="submit" class="btn btn-lg btn-primary radius-md w-100"> {{ __('Signup') }} </button>
+          <button type="submit" id="signup-button" class="btn btn-lg btn-primary radius-md w-100" disabled> {{ __('Signup') }} </button>
         </form>
       </div>
     </div>
   </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const form = document.getElementById('signup-form');
+      const inputs = form.querySelectorAll('input[required], select[required]');
+      const submitButton = document.getElementById('signup-button');
+
+      const validateForm = () => {
+        let isValid = true;
+        inputs.forEach(input => {
+          if (!input.value.trim()) {
+            isValid = false;
+          }
+        });
+        submitButton.disabled = !isValid;
+      };
+
+      inputs.forEach(input => {
+        input.addEventListener('input', validateForm);
+      });
+
+      validateForm();
+    });
+  </script>
+
   <!-- Authentication-area end -->
 @endsection

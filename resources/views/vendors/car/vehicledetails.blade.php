@@ -1,105 +1,159 @@
-@if (in_array('make', json_decode($categories->filters))) 
+@if (in_array('make', json_decode($categories->filters)))
 <div class="col-lg-9">
-@if ($apiarray['response'] == "manually")  
-  
+@if ($apiarray['response'] == "manually")
+
 @elseif ($apiarray['response'] == "ItemNotFound" || $apiarray['response'] == "KeyInvalid")
 <div class="alert alert-danger">We couldn't find a match. Try again or enter manually.</div>
-@else 
+@else
 <div class="alert alert-success">Vehicle details found. Check the details below before publishing your ad </div>
-@endif 
- 
+@endif
+
 </div>
 @endif
-@if (in_array('mileage', json_decode($categories->filters))) 
+@if (in_array('mileage', json_decode($categories->filters)))
 <div class="col-lg-4">
     <div class="form-group">
         <label>Mileage (M) *</label>
-        <input type="text" class="form-control" onfocusout="saveDraftData(this , 'milage')"  value="@if($draft_ad == true && !empty($draft_ad->milage)) {{$draft_ad->milage}} @endif"  name="mileage" placeholder="Enter Mileage"> 
+        <input type="text" class="form-control" onfocusout="saveDraftData(this , 'milage')"  value="@if($draft_ad == true && !empty($draft_ad->milage)) {{$draft_ad->milage}} @endif"  name="mileage" placeholder="Enter Mileage">
     </div>
-    </div> 
-@endif                          
-@if (in_array('make', json_decode($categories->filters))) 
-   
+    </div>
+@endif
+@if (in_array('make', json_decode($categories->filters)))
+
       <div class="col-lg-4">
         <div class="form-group">
         @php
-           
+
             $brands = App\Models\Car\Brand::where('cat_id', $catID)
             ->where('status', 1)
             ->withCount('cars')
             ->orderBy('cars_count', 'desc')
             ->orderBy('name', 'asc')
-            ->take(10) 
+            ->take(10)
             ->get();
-            
+
             $otherBrands = App\Models\Car\Brand::where('cat_id', $catID)
             ->where('status', 1)
             ->orderBy('name', 'asc')
             ->get();
-         
+
         @endphp
 
         <label>{{ __('Make') }} </label>
-        <select name="brand_id"  class="form-control  carmake js-example-basic-single3" data-code="en"   onchange="saveDraftData(this , 'make')" >
+        <div class="search-container">
+          <input type="text" id="search" placeholder="Search for brands..." oninput="filterDropdown()" autocomplete="off" class="form-control">
+          <select name="brand_id" class="form-control carmake js-example-basic-single3 mb-20" data-code="en" onchange="saveDraftData(this, 'make')" id="brandDropdown">
+            
+            <option value="">Please Select Make</option>
+            <option disabled>-- Popular Brands --</option>
+            @foreach ($brands as $brand)
+              @php
+                  $selected = "";
+                  if(isset($check_post) && strcasecmp($check_post->make, $brand->name) == 0) {
+                      $brandId = $brand->id;
+                      $selected = "selected";
+                  } elseif($draft_ad == true && !empty($draft_ad->make) && $draft_ad->make == $brand->id) {
+                      $brandId = $draft_ad->make;
+                      $selected = "selected";
+                  }
+              @endphp
+              <option value="{{ $brand->id }}" {{ $selected }}>{{ $brand->name }}</option>
+            @endforeach
+            <option disabled>-- Other Makes --</option>
+            @foreach ($otherBrands as $brand)
+              @php
+                  $selected = "";
+                  if(isset($check_post) && strcasecmp($check_post->make, $brand->name) == 0) {
+                      $brandId = $brand->id;
+                      $selected = "selected";
+                  } elseif($draft_ad == true && !empty($draft_ad->make) && $draft_ad->make == $brand->id) {
+                      $brandId = $draft_ad->make;
+                      $selected = "selected";
+                  }
+              @endphp
+              <option value="{{ $brand->id }}" {{ $selected }}>{{ $brand->name }}</option>
+            @endforeach
+          </select>
+        </div>
+<script>
+  function filterDropdown() {
+  const input = document.getElementById("search").value.toLowerCase();
+  const dropdown = document.getElementById("brandDropdown");
+  const options = dropdown.options;
+
+  for (let i = 0; i < options.length; i++) {
+    const option = options[i];
+    const text = option.textContent || option.innerText;
+
+    if (i === 0 || text.toLowerCase().includes(input)) {
+      option.style.display = "";
+    } else {
+      option.style.display = "none";
+    }
+  }
+}
+
+</script>
+        {{-- <select name="brand_id"  class="form-control  carmake js-example-basic-single3" data-code="en"   onchange="saveDraftData(this , 'make')" >
             <option value="" >Please Select Make</option>
              <option disabled>-- Popular Brands --</option>
             @foreach ($brands as $brand)
             @php
-            
-                if(isset($check_post)) 
+
+                if(isset($check_post))
                 {
                     if (strcasecmp($check_post->make, $brand->name) == 0)
                     {
                         $brandId = $brand->id;
                     }
                 }
-                
+
                 if($draft_ad == true && !empty($draft_ad->make) && $draft_ad->make == $brand->id)
                 {
                     $brandId = $draft_ad->make;
-                } 
-                
+                }
+
             @endphp
-            
-            
+
+
             <option value="{{ $brand->id }}"  @if($draft_ad == true && !empty($draft_ad->make) && $draft_ad->make == $brand->id) selected @endif   @php if(isset($check_post)) { if (strcasecmp($check_post->make, $brand->name) == 0)  { echo "selected";} } @endphp>{{ $brand->name }}</option>
             @endforeach
             <option disabled>-- Other Makes --</option>
-            
+
             @foreach ($otherBrands as $brand)
-            
+
             @php
-                if(isset($check_post)) 
+                if(isset($check_post))
                 {
                     if(strcasecmp($check_post->make, $brand->name) == 0 )
                     {
                         $brandId = $brand->id;
                     }
                 }
-                
+
                 if($draft_ad == true && !empty($draft_ad->make) && $draft_ad->make == $brand->id)
                 {
                     $brandId = $draft_ad->make;
-                } 
+                }
             @endphp
-            
-            
+
+
             <option value="{{ $brand->id }}"   @if($draft_ad == true && !empty($draft_ad->make) && $draft_ad->make == $brand->id) selected @endif  @php if(isset($check_post)) {  if (strcasecmp($check_post->make, $brand->name) == 0)  { echo "selected";} } @endphp>{{ $brand->name }}</option>
             @endforeach
-        </select>
-        </div>     
+        </select> --}}
+        </div>
     </div>
     <div class="col-lg-4">
         <div class="form-group">
         @php
-        if(isset($brandId)) 
+        if(isset($brandId))
         {
             $models = App\Models\Car\CarModel::where('brand_id', $brandId)->get();
-        } 
+        }
         @endphp
         <label>{{ __('Model') }} </label>
         <select name="car_model_id" class="form-control  en_car_brand_model_id"   id="carModel"  onchange="saveDraftData(this , 'model')" >
-        @if(isset($brandId)) 
+        @if(isset($brandId))
         @foreach ($models as $model)
         <option   @php if(isset($check_post)) { if (strcasecmp($check_post->model, $model->name) == 0) { echo "selected";} } @endphp
         value="{{ $model->id }}"   @if($draft_ad == true && !empty($draft_ad->model) && $draft_ad->model == $model->id) selected @endif    >{{ $model->name }}</option>
@@ -111,8 +165,8 @@
         </div>
     </div>
 @endif
-    
-    @if (in_array('year', json_decode($categories->filters))) 
+
+    @if (in_array('year', json_decode($categories->filters)))
     <div class="col-lg-4">
             <div class="form-group">
             <label>{{ __('Year') }} </label>
@@ -127,42 +181,42 @@
         @php
             $fuel_types = App\Models\Car\FuelType::where('status', 1)->get();
         @endphp
-        
+
         <label>{{ __('Fuel Type') }} </label>
         <select name="fuel_type_id" id="fuelType" class="form-control" onchange="changeVal()">
             <option value="" >Please Select Fuel Type</option>
-           
+
             @foreach ($fuel_types as $fuel_type)
-            
+
             @if($catID == 48 || $catID == 62)
-             
+
              @if( $fuel_type->name != 'Diesel')
                 <option value="{{ $fuel_type->id }}"
                 @if($draft_ad == true && !empty($draft_ad->fuel) && $draft_ad->fuel == $fuel_type->id) selected @endif
                 @php if(isset($check_post->fuel_type)) { if (strcasecmp($check_post->fuel_type, $fuel_type->name) == 0) { echo "selected";} } @endphp>
-                {{ $fuel_type->name }} 
+                {{ $fuel_type->name }}
                 </option>
              @endif
-             
+
             @else
             <option value="{{ $fuel_type->id }}"
              @if($draft_ad == true && !empty($draft_ad->fuel) && $draft_ad->fuel == $fuel_type->id) selected @endif
             @php if(isset($check_post->fuel_type)) {  if (strcasecmp($check_post->fuel_type, $fuel_type->name) == 0){ echo "selected";} } @endphp>
-            {{ $fuel_type->name }} 
+            {{ $fuel_type->name }}
             </option>
             @endif
-            
+
             @endforeach
         </select>
         </div>
     </div>
     @endif
-    
-    
+
+
     @if (in_array('engine', json_decode($categories->filters)))
-    
-    @if($draft_ad == true  ) 
-    
+
+    @if($draft_ad == true  )
+
 
      @if($catID == 48 || $catID == 62 )
         <div class="col-lg-4" id="new_engine_caacity">
@@ -172,9 +226,9 @@
             </div>
         </div>
     @else
-    
+
             @if(!empty($draft_ad->fuel) && in_array($draft_ad->fuel , [14,15]) )
-        
+
             <div class="col-lg-4" id="new_engine_caacity">
             <div class="form-group">
             @php
@@ -189,7 +243,7 @@
                     </select>
                 </div>
             </div>
-            
+
             @else
                 <div class="col-lg-4" id="new_engine_caacity">
                     <div class="form-group">
@@ -199,9 +253,9 @@
                 </div>
             @endif
     @endif
-    
+
     @else
-    
+
         <div class="col-lg-4" id="new_engine_caacity">
             <div class="form-group">
             @php
@@ -216,9 +270,9 @@
                 </select>
             </div>
         </div>
-    
-     @endif 
-     
+
+     @endif
+
    @endif
 
 @if (in_array('transmision_type', json_decode($categories->filters)))
@@ -232,7 +286,7 @@
         <label>{{ __('Transmission Type') }} </label>
         <select name="transmission_type_id" class="form-control" id="transmissionType" onchange="saveDraftData(this , 'transmission')" >
         <option value="" >Please Select Transmission Type</option>
-        
+
         @foreach ($transmission_types as $transmission_type)
             <option value="{{ $transmission_type->id }}"  @if($draft_ad == true && !empty($draft_ad->transmission) && $draft_ad->transmission == $transmission_type->id) selected @endif  @php if(isset($check_post->transmission)) {  if (strcasecmp($check_post->transmission, $transmission_type->name) == 0) { echo "selected";} } @endphp>{{ $transmission_type->name }}
             </option>
@@ -246,7 +300,7 @@
     <div class="form-group">
         @php
          $body_types = App\Models\Car\BodyType::where('status', 1)->where('cat_id' , $catID)->orderBy('serial_number', 'asc')->get();
-         
+
          if($body_types->count() == 0)
          {
             $body_types =  App\Models\Car\BodyType::where('status', 1)->orderBy('serial_number', 'asc')->get();
@@ -256,13 +310,13 @@
         <select name="body_type_id" id="bodyType" class="form-control" onchange="saveDraftData(this , 'body')" >
             <option value="" >Please Select Body Type</option>
         @foreach ($body_types as $body_type)
-        
+
             <option value="{{ $body_type->id }}" @if($draft_ad == true && !empty($draft_ad->body) && $draft_ad->body == $body_type->id) selected @endif   @php if(isset($apiarray['BodyType'])) { if(ucfirst(strtolower($apiarray['BodyType'])) == $body_type->name){ echo "selected";} } @endphp)>{{ $body_type->name }}
             </option>
         @endforeach
         </select>
     </div>
-</div> 
+</div>
 @endif
 @if (in_array('colour', json_decode($categories->filters)))
 <div class="col-lg-4">
@@ -274,7 +328,7 @@
     <label>{{ __('Colour') }} </label>
     <select name="car_colour_id" class="form-control" id="carColour" onchange="saveDraftData(this , 'color')" >
         <option value="">Please Select Colour</option>
-        
+
         @foreach ($colour as $colour)
         <option value="{{ $colour->id }}" @if($draft_ad == true && !empty($draft_ad->color) && $draft_ad->color == $colour->id) selected @endif  @php if(isset($check_post->color)) {  if (strcasecmp($check_post->color, $colour->name) == 0) { echo "selected";} } @endphp>{{ $colour->name }}</option>
         @endforeach
@@ -329,18 +383,18 @@
     @endphp
 
     <label>{{ __('Power') }} BHP</label>
-    
+
       <input type="number" class="form-control"  value="@if($draft_ad == true && !empty($draft_ad->power)){{$draft_ad->power}}@endif"  onfocusout="saveDraftData(this , 'power')"   placeholder="Enter Power"  name="power"/>
-  
+
     </div>
 </div>
 @endif
 @if (in_array('battery', json_decode($categories->filters)))
 <div class="col-lg-4" id="betry_dropdown" @if($draft_ad == true && !empty($draft_ad->fuel) && in_array($draft_ad->fuel , [14,15]))  style="display:none;" @endif>
     <div class="form-group ">
-   
+
     <label>Battery Range  </label>
-    
+
     <select name="battery" class="form-control" id="battery" onchange="saveDraftData(this , 'bettery')" >
         <option value=""> Select Range  </option>
         <option value="">{{ __('Any') }}</option>
@@ -356,7 +410,7 @@
 @if (in_array('owners', json_decode($categories->filters)))
 <div class="col-lg-4">
     <div class="form-group ">
-   
+
     <label>Please Select Owners</label>
     <select id="owners" class="form-select form-control"  name="owners"  onchange="saveDraftData(this , 'owners')" >
         <option value="">Please Select</option>
@@ -375,9 +429,9 @@
 @if (in_array('road-tax', json_decode($categories->filters)))
 <div class="col-lg-4">
     <div class="form-group ">
-   
+
     <label>{{ __('Annual Road Tax') }} </label>
-    
+
   @php
     // Determine the value to display
     $taxValue = !empty($draft_ad->tax) ? $draft_ad->tax : (isset($check_post->tax_fee) ? $check_post->tax_fee : '');
@@ -389,15 +443,15 @@
        step="any"
        placeholder="Enter Annual Road Tax"
        name="road_tax"/>
-    
-    
+
+
     </div>
 </div>
 @endif
 @if (in_array('verification', json_decode($categories->filters)))
 <!-- <div class="col-lg-4">
     <div class="form-group ">
-   
+
     <label>{{ __('Verification') }} </label>
     <select id="verification" class="form-select form-control"  name="verification">
         <option value="">{{ __('Any') }}</option>
@@ -411,7 +465,7 @@
 @if (in_array('warranty', json_decode($categories->filters)))
 <div class="col-lg-4" style="display:none;">
     <div class="form-group ">
-   
+
     <label>Please Select Warranty </label>
     <select id="warranty" class="form-select form-control"  name="warranty">
         <option value="">{{ __('Any') }}</option>
@@ -433,7 +487,7 @@
 @if (in_array('mot', json_decode($categories->filters)))
 <div class="col-lg-4" style="display:none;">
     <div class="form-group ">
-   
+
     <label>Please Select Mot</label>
     <select id="valid_test" class="form-select form-control"  name="valid_test">
     <option value="">{{ __('Any') }}</option>
@@ -442,7 +496,7 @@
     <option value="9" >More than 9 Months</option>
     <option value="12" > 12 Months</option>
     <option value="">Not Applicable</option>
-    
+
     </select>
     </div>
 </div>
