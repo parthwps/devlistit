@@ -212,12 +212,20 @@
                                   @endphp
                                   <label>{{ __('Category') }} *</label>
                                   <select name="en_main_category_id"
-                                    class="form-control " id="adsMaincat"  onchange="saveDraftData(this , 'category_id')">
+                                    class="form-control select2" id="adsMaincat"  onchange="saveDraftData(this , 'category_id')">
                                     <option selected disabled>{{ __('Select a Category') }}</option>
                                     @foreach ($categories as $category)
                                       <option value="{{ $category->id }}">{{ $category->name }}</option>
                                     @endforeach
                                   </select>
+                                  <script>
+                                    $(document).ready(function() {
+                                        $('#adsMaincat').select2({
+                                            placeholder: "Search and select a category",
+                                            allowClear: true
+                                        });
+                                    });
+                                </script>
                                 </div>
                               </div>
                               <div class="col-lg-4"></div>
