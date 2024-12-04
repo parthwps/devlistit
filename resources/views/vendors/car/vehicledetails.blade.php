@@ -40,10 +40,50 @@
         @endphp
 
         <label>{{ __('Make') }} </label>
-        <div class="search-container">
+        <select name="brand_id" class="form-control carmake js-example-basic-single3 mb-20 select2" data-code="en" onchange="saveDraftData(this, 'make')" id="brandDropdown">
+          <option value="">Please Select Make</option>
+          <option disabled>-- Popular Brands --</option>
+          @foreach ($brands as $brand)
+              @php
+                  $selected = "";
+                  if(isset($check_post) && strcasecmp($check_post->make, $brand->name) == 0) {
+                      $brandId = $brand->id;
+                      $selected = "selected";
+                  } elseif($draft_ad == true && !empty($draft_ad->make) && $draft_ad->make == $brand->id) {
+                      $brandId = $draft_ad->make;
+                      $selected = "selected";
+                  }
+              @endphp
+              <option value="{{ $brand->id }}" {{ $selected }}>{{ $brand->name }}</option>
+          @endforeach
+          <option disabled>-- Other Makes --</option>
+          @foreach ($otherBrands as $brand)
+              @php
+                  $selected = "";
+                  if(isset($check_post) && strcasecmp($check_post->make, $brand->name) == 0) {
+                      $brandId = $brand->id;
+                      $selected = "selected";
+                  } elseif($draft_ad == true && !empty($draft_ad->make) && $draft_ad->make == $brand->id) {
+                      $brandId = $draft_ad->make;
+                      $selected = "selected";
+                  }
+              @endphp
+              <option value="{{ $brand->id }}" {{ $selected }}>{{ $brand->name }}</option>
+          @endforeach
+      </select>
+      <script>
+        $(document).ready(function() {
+            $('#brandDropdown').select2({
+                placeholder: "Search for brands...",
+                allowClear: true
+            });
+        });
+    </script>
+
+        {{-- <div class="search-container">
           <input type="text" id="search" placeholder="Search for brands..." oninput="filterDropdown()" autocomplete="off" class="form-control">
           <select name="brand_id" class="form-control carmake js-example-basic-single3 mb-20" data-code="en" onchange="saveDraftData(this, 'make')" id="brandDropdown">
-            
+
             <option value="">Please Select Make</option>
             <option disabled>-- Popular Brands --</option>
             @foreach ($brands as $brand)
@@ -93,7 +133,7 @@
   }
 }
 
-</script>
+</script> --}}
         {{-- <select name="brand_id"  class="form-control  carmake js-example-basic-single3" data-code="en"   onchange="saveDraftData(this , 'make')" >
             <option value="" >Please Select Make</option>
              <option disabled>-- Popular Brands --</option>
