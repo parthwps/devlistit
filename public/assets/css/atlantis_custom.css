@@ -3837,3 +3837,6 @@ label.error {
       overflow-x: auto
   }
 }
+#searchForm label{
+  font-size: var(--font-base) !important;
+}

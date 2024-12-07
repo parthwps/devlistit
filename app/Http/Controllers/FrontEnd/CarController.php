@@ -59,7 +59,7 @@ class CarController extends Controller
         if ($request->filled('category') && $request->category == 'dealership_cars') {
             $request->merge([
                 'category' => 'cars-&-motors',
-                'dealertype' => 'dealer'
+                'dealer_type' => ['dealer']
             ]);
         }
 
@@ -94,7 +94,7 @@ class CarController extends Controller
                 'category' => 'cars-&-motors',
                 'brands' => ['audi', 'bmw', 'mercedes-benz'],
                 // 'price' => 50000,
-                'dealertype' => 'dealer'
+                'dealer_type' => ['dealer']
             ]);
         }
 
@@ -132,7 +132,7 @@ class CarController extends Controller
         }
         $view_type = Session::get('car_view_type');
         //echo $view_type; exit;
-       $fuelTypeArray = $bodyTypeArray = $category = $mileage_min = $mileage_max = $title = $location = $brands = $models = $fuel_type = $transmission = $colour = $min = $max =  null;
+        $colourTypeArray = $transmissionTypeArray = $fuelTypeArray = $bodyTypeArray = $category = $mileage_min = $mileage_max = $title = $location = $brands = $models = $fuel_type = $transmission = $colour = $min = $max =  null;
 
         $carIds = [];
         
@@ -374,6 +374,38 @@ class CarController extends Controller
                 }
             }
         }
+
+        $transmissionTypesArrayIds = [];
+        if ($request->filled('transmissionTypeArray'))
+        {
+            $transmissionTypeArray = $request->transmissionTypeArray;
+
+            $transmission_ids = [];
+
+            if (is_array($transmissionTypeArray)) {
+                foreach ($transmissionTypeArray as $transmissionTypeArrayValue) {
+                    if (!is_null($transmissionTypeArrayValue)) {
+                        $transmission_type_contents = TransmissionType::where([['language_id', $language->id], ['slug', $transmissionTypeArrayValue]])->first();
+                        if (!empty($transmission_type_contents)) {
+                            if (!in_array($transmission_type_contents->id, $transmission_ids)) {
+                                array_push($transmission_ids, $transmission_type_contents->id);
+                            }
+                        }
+                    }
+                }
+            }
+
+            $transmission_type_contents = CarContent::where('language_id', $language->id)
+                ->whereIn('transmission_type_id', $transmission_ids)
+                ->get()
+                ->pluck('car_id');
+            foreach ($transmission_type_contents as $content) {
+                if (!in_array($content, $transmissionTypesArrayIds)) {
+                    array_push($transmissionTypesArrayIds, $content);
+                }
+            }
+        }
+
         $colour_id = [];
         if ($request->filled('colour')) {
             $colour = $request->colour;
@@ -391,7 +423,37 @@ class CarController extends Controller
                 }
             }
         }
-       
+
+        $colourTypeArrayIds = [];
+        if ($request->filled('colourTypeArray'))
+        {
+            $colourTypeArray = $request->colourTypeArray;
+
+            $colour_ids = [];
+
+            if (is_array($colourTypeArray)) {
+                foreach ($colourTypeArray as $colourTypeArrayValue) {
+                    if (!is_null($colourTypeArrayValue)) {
+                        $colour_type_contents = CarColor::where([['language_id', $language->id], ['slug', $colourTypeArrayValue]])->first();
+                        if (!empty($colour_type_contents)) {
+                            if (!in_array($colour_type_contents->id, $colour_ids)) {
+                                array_push($colour_ids, $colour_type_contents->id);
+                            }
+                        }
+                    }
+                }
+            }
+
+            $colour_type_contents = CarContent::where('language_id', $language->id)
+                ->whereIn('car_colour_id', $colour_ids)
+                ->get()
+                ->pluck('car_id');
+            foreach ($colour_type_contents as $content) {
+                if (!in_array($content, $colourTypeArrayIds)) {
+                    array_push($colourTypeArrayIds, $content);
+                }
+            }
+        }
 
         $priceIds = [];
 
@@ -478,7 +540,7 @@ class CarController extends Controller
         }
 
         $bodyTypesArrayIds = [];
-        if ($request->filled('bodyTypeArray')) 
+        if ($request->filled('bodyTypeArray'))
         {
             $bodyTypeArray = $request->bodyTypeArray;
           
@@ -544,12 +606,15 @@ class CarController extends Controller
             // return response()->json([$bodyTypeArray,$bodyTypesArrayIds,$category_carIds]);
         // }
 
-        $price = $body_type = $location =  $seat_min = $seat_max = $adtype = $doors = $road_tax = $verification = $warranty = $owners = $mot = $year_min = $year_max = $engine_min = $engine_max = $power_min = $power_max = $dealer_type = "";
+        $price = $body_type = $location =  $seat_min = $seat_max = $adtype = $engine_size = $engine_power = $doors = $road_tax = $battery = $verification = $warranty = $owners = $mot = $year_min = $year_max = $engine_min = $engine_max = $power_min = $power_max = $dealer_type = "";
         
         if ($request->filled('adtype')) { $adtype = $request->adtype;  }
-        if ($request->filled('dealertype')) { $dealer_type = $request->dealertype;  }
+        if ($request->filled('dealer_type')) { $dealer_type = $request->dealer_type;  }
         if ($request->filled('doors')) { $doors = $request->doors;  }
+        if ($request->filled('engine_size')) { $engine_size = $request->engine_size;  }
+        if ($request->filled('engine_power')) { $engine_power = $request->engine_power;  }
         if ($request->filled('road_tax')) { $road_tax = $request->road_tax;  }
+        if ($request->filled('battery')) { $battery = $request->battery;  }
         if ($request->filled('verification')) { $verification = $request->verification;  }
         if ($request->filled('warranty')) { $warranty = $request->warranty;  }
         if ($request->filled('owners')) { $owners = $request->owners;  }
@@ -583,16 +648,12 @@ class CarController extends Controller
                 return $query->whereIn('cars.id', $carIds);
             })
              ->when($adtype, function ($query) use ($adtype) {
-                return $query->where('cars.ad_type', $adtype);
+                 return $query->where('cars.ad_type','LIKE', '%'.$adtype.'%');
             })
-            ->when($dealer_type && $dealer_type != 'any', function ($query) use ($dealer_type) {
-            return $query->whereHas('vendor', function ($vendorQuery) use ($dealer_type) {
-            if ($dealer_type == 'dealer') {
-            $vendorQuery->where('vendor_type', 'dealer');
-            } else {
-            $vendorQuery->where('vendor_type', 'normal');
-            }
-            });
+            ->when($dealer_type, function ($query) use ($dealer_type) {
+                return $query->whereHas('vendor', function ($vendorQuery) use ($dealer_type) {
+                    $vendorQuery->whereIn('vendor_type',$dealer_type);
+                });
             })
             ->when($category, function ($query) use ($category_carIds) { 
                 // return $query->whereIn('car_id', $category_carIds);
@@ -618,10 +679,19 @@ class CarController extends Controller
                 return $query->whereIn('cars.id', $colour_id);
             })
             ->when($doors, function ($query) use ($doors) {
-                return $query->where('cars.doors', $doors);
+                return $query->whereIn('cars.doors', $doors);
+            })
+            ->when($engine_size, function ($query) use ($engine_size) {
+                return $query->where('cars.engineCapacity', $engine_size);
+            })
+            ->when($engine_power, function ($query) use ($engine_power) {
+                return $query->where('cars.power', $engine_power);
             })
             ->when($road_tax, function ($query) use ($road_tax) {
-                return $query->where('cars.road_tax', '<=', $road_tax);
+                return $query->where('cars.road_tax', $road_tax);
+            })
+            ->when($battery, function ($query) use ($battery) {
+                return $query->where('cars.battery', $battery);
             })
             ->when($verification, function ($query) use ($verification) {
                 return $query->where('cars.verification', $verification);
@@ -659,8 +729,11 @@ class CarController extends Controller
             ->when($seat_max, function ($query) use ($seat_max) {
                 return $query->where('cars.seats', '<=', $seat_max);
             })
-            ->when($min && $max, function ($query) use ($priceIds) {
-                return $query->whereIn('cars.id', $priceIds);
+            ->when($min, function ($query) use ($min) {
+                return $query->where('cars.price', '>=', $min);
+            })
+            ->when($max, function ($query) use ($max) {
+                return $query->where('cars.price', '<=', $max);
             })
              ->when($mileage_min && $mileage_max, function ($query) use ($mileageIds) {
                 return $query->whereIn('cars.id', $mileageIds);
@@ -676,6 +749,12 @@ class CarController extends Controller
             })
             ->when($fuelTypeArray, function ($query) use ($fuelTypesArrayIds) {
                 return $query->whereIn('cars.id', $fuelTypesArrayIds);
+            })
+            ->when($transmissionTypeArray, function ($query) use ($transmissionTypesArrayIds) {
+                return $query->whereIn('cars.id', $transmissionTypesArrayIds);
+            })
+            ->when($colourTypeArray, function ($query) use ($colourTypeArrayIds) {
+                return $query->whereIn('cars.id', $colourTypeArrayIds);
             });
             
 
@@ -859,16 +938,12 @@ class CarController extends Controller
                 return $query->whereIn('cars.id', $carIds);
             })
              ->when($adtype, function ($query) use ($adtype) {
-                return $query->where('cars.ad_type', $adtype);
+                 return $query->where('cars.ad_type','LIKE', '%'.$adtype.'%');
             })
-            ->when($dealer_type && $dealer_type != 'any', function ($query) use ($dealer_type) {
-            return $query->whereHas('vendor', function ($vendorQuery) use ($dealer_type) {
-            if ($dealer_type == 'dealer') {
-            $vendorQuery->where('vendor_type', 'dealer');
-            } else {
-            $vendorQuery->where('vendor_type', 'normal');
-            }
-            });
+            ->when($dealer_type, function ($query) use ($dealer_type) {
+                return $query->whereHas('vendor', function ($vendorQuery) use ($dealer_type) {
+                    $vendorQuery->whereIn('vendor_type',$dealer_type);
+                });
             })
             ->when($category, function ($query) use ($category_carIds) {
                 return $query->whereIn('car_id', $category_carIds);
@@ -893,10 +968,19 @@ class CarController extends Controller
                 return $query->whereIn('cars.id', $colour_id);
             })
             ->when($doors, function ($query) use ($doors) {
-                return $query->where('cars.doors', $doors);
+                return $query->whereIn('cars.doors', $doors);
+            })
+            ->when($engine_size, function ($query) use ($engine_size) {
+                return $query->where('cars.engineCapacity', $engine_size);
+            })
+            ->when($engine_power, function ($query) use ($engine_power) {
+                return $query->where('cars.power', $engine_power);
             })
             ->when($road_tax, function ($query) use ($road_tax) {
                 return $query->where('cars.road_tax', $road_tax);
+            })
+            ->when($battery, function ($query) use ($battery) {
+                return $query->where('cars.battery', $battery);
             })
             ->when($verification, function ($query) use ($verification) {
                 return $query->where('cars.verification', $verification);
@@ -935,8 +1019,11 @@ class CarController extends Controller
             ->when($seat_max, function ($query) use ($seat_max) {
                 return $query->where('cars.seats', '<=', $seat_max);
             })
-            ->when($min && $max, function ($query) use ($priceIds) {
-                return $query->whereIn('cars.id', $priceIds);
+            ->when($min, function ($query) use ($min) {
+                return $query->where('cars.price', '>=', $min);
+            })
+            ->when($max, function ($query) use ($max) {
+                return $query->where('cars.price', '<=', $max);
             })
              ->when($mileage_min && $mileage_max, function ($query) use ($mileageIds) {
                 return $query->whereIn('cars.id', $mileageIds);
@@ -952,8 +1039,13 @@ class CarController extends Controller
             })
             ->when($fuelTypeArray, function ($query) use ($fuelTypesArrayIds) {
                 return $query->whereIn('cars.id', $fuelTypesArrayIds);
+            })
+            ->when($transmissionTypeArray, function ($query) use ($transmissionTypesArrayIds) {
+                return $query->whereIn('cars.id', $transmissionTypesArrayIds);
+            })
+            ->when($colourTypeArray, function ($query) use ($colourTypeArrayIds) {
+                return $query->whereIn('cars.id', $colourTypeArrayIds);
             });
-            
             
              foreach ($filteredKeys as $key => $value) 
             {
@@ -1070,11 +1162,12 @@ class CarController extends Controller
         {
             $information['body_type'] = BodyType::where('status', 1)->whereIn('cat_id' , $cate_id)->orderBy('serial_number', 'asc')->get();
         }
-        
-        
-        $information['engine_sizes'] = EngineSize::where('status', 1)->orderBy('id', 'asc')->get();
-        
-        $information['engine_power'] = CarPower::where('status', 1)->orderBy('id', 'asc')->get();
+
+        $information['engine_sizes'] = Car::select('engineCapacity')->whereNotNull('engineCapacity')->where('status', 1)->orderBy('engineCapacity','ASC')->get()->unique('engineCapacity')->values()->pluck('engineCapacity');
+
+        $information['engine_power'] = Car::select('power')->whereNotNull('power')->where('status', 1)->orderBy('power','ASC')->get()->unique('power')->values()->pluck('power');
+
+        $information['road_taxes'] = Car::select('road_tax')->whereNotNull('road_tax')->where('status', 1)->orderBy('road_tax','ASC')->get()->unique('road_tax')->values()->pluck('road_tax');
         
         $information['breadcrumb'] = array_reverse($parr);
 
@@ -1178,7 +1271,7 @@ class CarController extends Controller
             }
             else
             {
-                // dd($information);
+
                 return view('frontend.car.cars_list', $information);
             }
         }
@@ -1270,11 +1363,13 @@ class CarController extends Controller
             {
                 $information['body_type'] = BodyType::where('status', 1)->whereIn('cat_id' , $cate_id)->orderBy('serial_number', 'asc')->get();
             }
-            
-            $information['engine_sizes'] = EngineSize::where('status', 1)->orderBy('id', 'asc')->get();
-            
-            $information['engine_power'] = CarPower::where('status', 1)->orderBy('id', 'asc')->get();
-        
+
+            $information['engine_sizes'] = Car::select('engineCapacity')->whereNotNull('engineCapacity')->where('status', 1)->orderBy('engineCapacity','ASC')->get()->unique('engineCapacity')->values()->pluck('engineCapacity');
+
+            $information['engine_power'] = Car::select('power')->whereNotNull('power')->where('status', 1)->orderBy('power','ASC')->get()->unique('power')->values()->pluck('power');
+
+            $information['road_taxes'] = Car::select('road_tax')->whereNotNull('road_tax')->where('status', 1)->orderBy('road_tax','ASC')->get()->unique('road_tax')->values()->pluck('road_tax');
+
             $HTML = view('frontend.car.carfilter', $information)->render();  
         
             return response()->json(['result' => 'ok' , 'output' => $HTML , 'category_slug' => null ]);
@@ -1696,12 +1791,15 @@ class CarController extends Controller
         }
         
         
-        $location =$seat_min = $seat_max = $adtype = $doors = $road_tax = $verification = $warranty = $owners = $mot = $year_min = $year_max = $engine_min = $engine_max = $power_min = $power_max = $dealer_type = "";
+        $location =$seat_min = $seat_max = $adtype = $doors = $engine_size = $engine_power = $road_tax = $battery = $verification = $warranty = $owners = $mot = $year_min = $year_max = $engine_min = $engine_max = $power_min = $power_max = $dealer_type = "";
         
         if ($request->filled('adtype')) { $adtype = $request->adtype;  }
-        if ($request->filled('dealertype')) { $dealer_type = $request->dealertype;  }
+        if ($request->filled('dealer_type')) { $dealer_type = $request->dealer_type;  }
         if ($request->filled('doors')) { $doors = $request->doors;  }
+        if ($request->filled('engine_size')) { $engine_size = $request->engine_size;  }
+        if ($request->filled('engine_power')) { $engine_power = $request->engine_power;  }
         if ($request->filled('road_tax')) { $road_tax = $request->road_tax;  }
+        if ($request->filled('battery')) { $battery = $request->battery;  }
         if ($request->filled('verification')) { $verification = $request->verification;  }
         if ($request->filled('warranty')) { $warranty = $request->warranty;  }
         if ($request->filled('owners')) { $owners = $request->owners;  }
@@ -1725,16 +1823,12 @@ class CarController extends Controller
                 return $query->whereIn('cars.id', $carIds);
             })
              ->when($adtype, function ($query) use ($adtype) {
-                return $query->where('cars.ad_type', $adtype);
+                return $query->where('cars.ad_type','LIKE', '%'.$adtype.'%');
             })
-            ->when($dealer_type && $dealer_type != 'any', function ($query) use ($dealer_type) {
-            return $query->whereHas('vendor', function ($vendorQuery) use ($dealer_type) {
-            if ($dealer_type == 'dealer') {
-            $vendorQuery->where('vendor_type', 'dealer');
-            } else {
-            $vendorQuery->where('vendor_type', 'normal');
-            }
-            });
+            ->when($dealer_type, function ($query) use ($dealer_type) {
+                return $query->whereHas('vendor', function ($vendorQuery) use ($dealer_type) {
+                    $vendorQuery->whereIn('vendor_type',$dealer_type);
+                });
             })
             ->when($category, function ($query) use ($category_carIds) {
                 return $query->whereIn('car_id', $category_carIds);
@@ -1758,10 +1852,19 @@ class CarController extends Controller
                 return $query->whereIn('cars.id', $colour_id);
             })
             ->when($doors, function ($query) use ($doors) {
-                return $query->where('cars.doors', $doors);
+                return $query->whereIn('cars.doors', $doors);
+            })
+            ->when($engine_size, function ($query) use ($engine_size) {
+                return $query->where('cars.engineCapacity', $engine_size);
+            })
+            ->when($engine_power, function ($query) use ($engine_power) {
+                return $query->where('cars.power', $engine_power);
             })
             ->when($road_tax, function ($query) use ($road_tax) {
                 return $query->where('cars.road_tax', $road_tax);
+            })
+            ->when($battery, function ($query) use ($battery) {
+                return $query->where('cars.battery', $battery);
             })
             ->when($verification, function ($query) use ($verification) {
                 return $query->where('cars.verification', $verification);
@@ -1799,8 +1902,11 @@ class CarController extends Controller
             ->when($seat_max, function ($query) use ($seat_max) {
                 return $query->where('cars.seats', '<=', $seat_max);
             })
-            ->when($min && $max, function ($query) use ($priceIds) {
-                return $query->whereIn('cars.id', $priceIds);
+            ->when($min, function ($query) use ($min) {
+                return $query->where('cars.price', '>=', $min);
+            })
+            ->when($max, function ($query) use ($max) {
+                return $query->where('cars.price', '<=', $max);
             })
              ->when($mileage_min && $mileage_max, function ($query) use ($mileageIds) {
                 return $query->whereIn('cars.id', $mileageIds);

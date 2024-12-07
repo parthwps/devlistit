@@ -1284,13 +1284,14 @@ $('body').on('submit', '#vendorContactForm', function(e) {
     })
 });
 
-
-    $('.us_delr_type').on('click', function(event) {
-    $('#ad_dealer').val($(this).val());
-    $('.us_delr_type').removeClass('usCumButton')
-    $(this).addClass('usCumButton')
-    updateUrl();
-    }); 
+    $(document).on('change','.dealer_type',function(){
+        updateUrl();
+    });
+    // $('.us_delr_type').on('click', function(event) {
+    // $('#ad_dealer').val($(this).val());
+    // $('.us_delr_type').removeClass('usCumButton')
+    // $(this).addClass('usCumButton')
+    // });
 
 
     $('#adtypeSale').on('click', function(event) {
@@ -1315,25 +1316,25 @@ $('body').on('submit', '#vendorContactForm', function(e) {
 
     function updatecate(self)
     {
-        var pid = $(self).data("pid");
+        var pid = $('option:selected',self).data("pid");
         
-        var category = $(self).data("category");
+        var category = $('option:selected',self).data("category");
         
-        $('.us_cat_cls').removeAttr('style');
-        
-        $(self).css({
-        'font-weight': 'bold',
-        'color': '#EE2C7B'
-        });
+        // $('.us_cat_cls').removeAttr('style');
+        //
+        // $(self).css({
+        // 'font-weight': 'bold',
+        // 'color': '#EE2C7B'
+        // });
         
         $('#pid').val(pid);
         
         $('#category').val(category);
         
-         if ($('#us_load_more').length) 
-        {
-            $('.us_hidden_by_default').hide();
-        }
+        //  if ($('#us_load_more').length)
+        // {
+        //     $('.us_hidden_by_default').hide();
+        // }
         
             $.ajax({
                 type: 'GET',
@@ -1354,7 +1355,8 @@ $('body').on('submit', '#vendorContactForm', function(e) {
                 }
             }); 
             
-        updateUrl() 
+        updateUrl()
+        loadBreadCrum(pid , category)
     }
 
     function updateUrl(request_type = 1,category = null) 
@@ -1398,9 +1400,8 @@ $('body').on('submit', '#vendorContactForm', function(e) {
 
          console.log(formData);
 
-            let categoryField = formData.find(item => item.name === 'category'); 
-            console.log(categoryField.value)
-        
+            let categoryField = formData.find(item => item.name === 'category');
+
             $.each(formData, function(index, input) 
             {
                 if (input.value !== '') {

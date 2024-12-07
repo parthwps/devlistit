@@ -397,7 +397,6 @@ font-size: 20px !important;
                       <hr/>
                     </div>
                   </div>
-
                   <!-- Car filters only start here -->
                   @if( request()->get('category') != "carsuu" )
                      @includeIf('frontend.car.carfilter')
