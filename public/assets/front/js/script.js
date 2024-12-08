@@ -1661,7 +1661,7 @@ $('body').on('click', '.view_type', function (e) {
 })
 
 // Body Type Filter
-$('.body-type-filter .form-check-input').on('change', function () {
+$('.body-type-filter .form-check-input, .colour-filter .form-check-input').on('change', function () {
     const $formCheck = $(this).closest('.form-check'); // Get the parent .form-check
     if ($(this).is(':checked')) {
         $formCheck.addClass('checked'); // Add the class when checked

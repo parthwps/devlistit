@@ -723,7 +723,7 @@
                                                   <input class="form-check-input ms-0 d-none" onchange="updateUrl()"
                                                          type="checkbox" name="bodyTypeArray[]"
                                                          value="{{ $bodytype->slug }}" id="{{ $bodytype->slug }}" @checked(is_array(request('bodyTypeArray')) && in_array($bodytype->slug,request('bodyTypeArray')))>
-                                                  <label class="form-check-label body-type-filter-label" for="{{ $bodytype->slug }}">
+                                                  <label class="form-check-label body-type-filter-label mb-0" for="{{ $bodytype->slug }}">
                                                                 {{ $bodytype->name }}
 
                                                               </label>
@@ -932,27 +932,31 @@
                 <div class="widget widget-select p-0 mb-20">
                     <h5 class="title mb-3">
                       <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                              data-bs-target="#select2" aria-expanded="true" aria-controls="select">
+                              data-bs-target="#colour-filter" aria-expanded="true" aria-controls="select">
                         {{ __('Colour') }}
                       </button>
                     </h5>
-                    <div id="select2" class="collapse show">
+                    <div id="colour-filter" class="collapse show colour-filter">
                       <div class="accordion-body scroll-y">
                         <div class="row gx-sm-3">
                           <div class="col-12">
                             <div class="form-group" style="padding:10px 0px;">
                                 <div class="row">
                                      @foreach ($car_conditions->sortBy('name') as $car_condition)
-                                        <div class="col-12 float-start">
+                                        <div class="col-6 float-start">
                                              <div class="form-check">
-                                                  <input class="form-check-input ms-0" onchange="updateUrl()"
+                                                 <label for="{{ $car_condition->slug }}">
+                                                       @if(!in_array($car_condition->slug,['other-colour','any-colour']))
+                                                         <div class="car-color-code" style="background-color: {{ $car_condition->hex_code  }}"></div>
+                                                     @else
+                                                         <div class="car-color-code" style="background-color: transparent;"></div>
+                                                     @endif
+                                                 </label>
+                                                  <input class="form-check-input ms-0 d-none" onchange="updateUrl()"
                                                          type="checkbox" name="colourTypeArray[]"
                                                          value="{{ $car_condition->slug }}" id="{{ $car_condition->slug }}" @checked(is_array(request('colourTypeArray')) && in_array($car_condition->slug,request('colourTypeArray')))>
-                                                  <label class="form-check-label ms-4 d-flex align-items-center" for="{{ $car_condition->slug }}">
+                                                  <label class="form-check-label colour-filter-label mb-0" for="{{ $car_condition->slug }}">
                                                     {{ $car_condition->name }}
-                                                      @if(!in_array($car_condition->slug,['other-colour','any-colour']))
-                                                        <div class="car-color-code" style="background-color: {{ $car_condition->hex_code  }}"></div>
-                                                      @endif
                                                   </label>
                                              </div>
                                          </div>
