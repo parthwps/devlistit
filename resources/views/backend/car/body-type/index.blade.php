@@ -95,7 +95,8 @@
                             <a class="btn btn-secondary btn-sm mr-1 mt-1 editBtn" href="#" data-toggle="modal"
                               data-target="#editModal" data-id="{{ $carFuelType->id }}"
                               data-name="{{ $carFuelType->name }}" data-status="{{ $carFuelType->status }}" data-cat_id="{{ $carFuelType->cat_id }}"
-                              data-serial_number="{{ $carFuelType->serial_number }}">
+                              data-serial_number="{{ $carFuelType->serial_number }}"
+                            data-image = {{ $carFuelType->image ? asset('assets/img/body_types/'.$carFuelType->image) : asset('assets/img/noimage.jpg')  }}>
                               <span class="btn-label">
                                 <i class="fas fa-edit"></i>
                               </span>

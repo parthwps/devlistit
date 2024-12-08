@@ -1659,3 +1659,13 @@ $('body').on('click', '.view_type', function (e) {
     // Update the browser URL without reloading the page
     
 })
+
+// Body Type Filter
+$('.body-type-filter .form-check-input').on('change', function () {
+    const $formCheck = $(this).closest('.form-check'); // Get the parent .form-check
+    if ($(this).is(':checked')) {
+        $formCheck.addClass('checked'); // Add the class when checked
+    } else {
+        $formCheck.removeClass('checked'); // Remove the class when unchecked
+    }
+});

@@ -704,24 +704,28 @@
                 <div class="widget widget-select p-0 mb-20">
                     <h5 class="title mb-3">
                       <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                              data-bs-target="#select3" aria-expanded="true" aria-controls="select">
+                              data-bs-target="#body-type" aria-expanded="true" aria-controls="select">
                         {{ __('Body Types') }}
                       </button>
                     </h5>
-                    <div id="select3" class="collapse show">
+                    <div id="body-type" class="collapse show body-type-filter">
                       <div class="accordion-body scroll-y">
                         <div class="row gx-sm-3">
                           <div class="col-xl-12">
                             <div class="form-group" style="padding:10px 0px;">
                                 <div class="row">
                                     @foreach ($body_type->sortBy('name') as $bodytype)
-                                        <div class="col-12 float-start">
+                                        <div class="col-6 float-start">
                                              <div class="form-check">
-                                                  <input class="form-check-input ms-0" onchange="updateUrl()"
+                                                 <label for="{{ $bodytype->slug }}">
+                                                      <img src="{{ $bodytype->image ? asset('assets/img/body_types/'.$bodytype->image) : asset('assets/img/noimage.jpg')  }}">
+                                                 </label>
+                                                  <input class="form-check-input ms-0 d-none" onchange="updateUrl()"
                                                          type="checkbox" name="bodyTypeArray[]"
                                                          value="{{ $bodytype->slug }}" id="{{ $bodytype->slug }}" @checked(is_array(request('bodyTypeArray')) && in_array($bodytype->slug,request('bodyTypeArray')))>
-                                                  <label class="form-check-label ms-4" for="{{ $bodytype->slug }}">
+                                                  <label class="form-check-label body-type-filter-label" for="{{ $bodytype->slug }}">
                                                                 {{ $bodytype->name }}
+
                                                               </label>
                                              </div>
                                         </div>
