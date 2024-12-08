@@ -1197,7 +1197,7 @@ class CarController extends Controller
                 <h4 style="color:gray">Ad Filters </h4>
                 </div>
                 </div>
-                </div> <div class="row" style="    padding-left: 25px;"> <div class="form-group >';
+                </div> <div class="row" style="    padding-left: 25px;"> <div class="form-group">';
 
                 foreach($formData as $list)
                 {

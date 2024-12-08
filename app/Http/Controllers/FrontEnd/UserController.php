@@ -96,8 +96,8 @@ class UserController extends Controller
 
         if($categories->count() > 0)
         {
-            $output = '<div class="row sub_sub_sub_category" id="sub_cat_'.$categoryyy->id.'" >
-            <div class="col-lg-8 ">
+            $output = '
+            <div class="col-lg-6 mb-3 sub_sub_sub_category" id="sub_cat_'.$categoryyy->id.'">
             <div class="form-group">
             <label>Select Sub Category of '.$categoryyy->name.' *</label>
             <select name="fil_sub_categories[]" class="form-control"  onchange="saveDraftData(this)"><option selected="" disabled="">Select sub Category</option>';
@@ -109,8 +109,6 @@ class UserController extends Controller
 
             $output .='</select>
             </div>
-            </div>
-            <div class="col-lg-4"></div>
             </div>';
 
             return response()->json(['result' => 'ok' , 'output' => $output  , 'cat_id' => $categoryyy->id ]);

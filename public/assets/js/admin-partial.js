@@ -288,10 +288,9 @@ $(document).ready(function () {
 
   // Form Submit with AJAX Request Start
   
-    $(document).on("submit", '#carForm', function(e) {   
+    $(document).on("submit", '#carForm', function(e) {
       e.preventDefault();
-   
-    $(e.target).attr('disabled', true);
+      $(e.target).attr('disabled', true);
     $(".request-loader").addClass("show");
 
     if ($(".iconpicker-component").length > 0) {
