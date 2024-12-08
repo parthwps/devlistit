@@ -3840,3 +3840,11 @@ label.error {
 #searchForm label{
   font-size: var(--font-base) !important;
 }
+.car-color-code{
+  height: 15px;
+  width: 15px;
+  display: inline-block;
+  border-radius: 10px;
+  margin-left: 7px;
+  border: 1px #6a6a6a solid;
+}

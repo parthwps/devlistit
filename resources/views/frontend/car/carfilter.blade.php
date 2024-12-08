@@ -944,8 +944,11 @@
                                                   <input class="form-check-input ms-0" onchange="updateUrl()"
                                                          type="checkbox" name="colourTypeArray[]"
                                                          value="{{ $car_condition->slug }}" id="{{ $car_condition->slug }}" @checked(is_array(request('colourTypeArray')) && in_array($car_condition->slug,request('colourTypeArray')))>
-                                                  <label class="form-check-label ms-4" for="{{ $car_condition->slug }}">
+                                                  <label class="form-check-label ms-4 d-flex align-items-center" for="{{ $car_condition->slug }}">
                                                     {{ $car_condition->name }}
+                                                      @if(!in_array($car_condition->slug,['other-colour','any-colour']))
+                                                        <div class="car-color-code" style="background-color: {{ $car_condition->hex_code  }}"></div>
+                                                      @endif
                                                   </label>
                                              </div>
                                          </div>
