@@ -121,7 +121,7 @@ class VendorController extends Controller
             ->whereHas('vendor_info') // Ensure the vendor_info relationship exists
             ->where('id', '!=', 0) // Filter vendors with id not equal to 0
             ->orderBy('cars_count', 'desc') // Sort by the count of cars in descending order
-            ->paginate(10);
+            ->paginate(12);
         
         $queryResult['vendors'] =    $vendors;
         

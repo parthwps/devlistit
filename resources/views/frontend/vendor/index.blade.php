@@ -56,7 +56,7 @@
       <div class="product-sort-area pb-20" data-aos="fade-up">
         <div class="row align-items-center" style="background: white;border-radius: 10px;box-shadow: 0px 0px 10px gray;">
           <div class="col-lg-4" style="margin-top: 0.5rem;padding-left: 2rem;">
-            <h4 class="">{{ count($vendors) }}
+            <h4 class="">{{ $vendors->total() }}
                Dealers {{ __('Found') }}</h4>
           </div>
           <div class="col-lg-8" style="margin-top: 1rem;">
