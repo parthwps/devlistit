@@ -11,7 +11,7 @@
 </div>
 @endif
 @if (in_array('mileage', json_decode($categories->filters)))
-<div class="col-lg-4">
+<div class="col-lg-6 mb-3">
     <div class="form-group">
         <label>Mileage (M) *</label>
         <input type="text" class="form-control" onfocusout="saveDraftData(this , 'milage')"  value="@if($draft_ad == true && !empty($draft_ad->milage)) {{$draft_ad->milage}} @endif"  name="mileage" placeholder="Enter Mileage">
@@ -20,7 +20,7 @@
 @endif
 @if (in_array('make', json_decode($categories->filters)))
 
-      <div class="col-lg-4">
+      <div class="col-lg-6 mb-3">
         <div class="form-group">
         @php
 
@@ -81,7 +81,7 @@
     </script>
         </div>
     </div>
-    <div class="col-lg-4">
+    <div class="col-lg-6 mb-3">
         <div class="form-group">
         @php
         if(isset($brandId))
@@ -105,7 +105,7 @@
 @endif
 
     @if (in_array('year', json_decode($categories->filters)))
-    <div class="col-lg-4">
+    <div class="col-lg-6 mb-3">
             <div class="form-group">
             <label>{{ __('Year') }} </label>
                 <input type="text" class="form-control"  value="@if($draft_ad == true && !empty($draft_ad->year)) {{$draft_ad->year}} @else @if(isset($check_post->year)) {{$check_post->year}} @endif @endif  "  onfocusout="saveDraftData(this , 'year')"   placeholder="Enter Year" oninput="checkYearAgo(this)" name="year"/>
@@ -114,7 +114,7 @@
     @endif
 
     @if (in_array('fuel_types', json_decode($categories->filters)))
-    <div class="col-lg-4">
+    <div class="col-lg-6 mb-3">
         <div class="form-group">
         @php
             $fuel_types = App\Models\Car\FuelType::where('status', 1)->get();
@@ -157,7 +157,7 @@
 
 
      @if($catID == 48 || $catID == 62 )
-        <div class="col-lg-4" id="new_engine_caacity">
+        <div class="col-lg-6 mb-3" id="new_engine_caacity">
             <div class="form-group">
                 <label>Engine size (cc)  </label>
                 <input type="number" class="form-control" id="addCapacity" name="engineCapacity" value="{{$draft_ad->engine}}"  onfocusout="addnsjfjdfj(this)" />
@@ -167,7 +167,7 @@
 
             @if(!empty($draft_ad->fuel) && in_array($draft_ad->fuel , [14,15]) )
 
-            <div class="col-lg-4" id="new_engine_caacity">
+            <div class="col-lg-6 mb-3" id="new_engine_caacity">
             <div class="form-group">
             @php
                 $engine_sizes = App\Models\Car\EngineSize::where('status', 1)->get();
@@ -183,7 +183,7 @@
             </div>
 
             @else
-                <div class="col-lg-4" id="new_engine_caacity">
+                <div class="col-lg-6 mb-3" id="new_engine_caacity">
                     <div class="form-group">
                         <label>Engine size (KW) </label>
                         <input type="number" class="form-control" id="addCapacity" name="engineCapacity" value="{{$draft_ad->engine}} "  onfocusout="addnsjfjdfj(this)" />
@@ -194,7 +194,7 @@
 
     @else
 
-        <div class="col-lg-4" id="new_engine_caacity">
+        <div class="col-lg-6 mb-3" id="new_engine_caacity">
             <div class="form-group">
             @php
                 $engine_sizes = App\Models\Car\EngineSize::where('status', 1)->get();
@@ -214,7 +214,7 @@
    @endif
 
 @if (in_array('transmision_type', json_decode($categories->filters)))
-<div class="col-lg-4" id="trsmisn_type"   @if($draft_ad == true && !empty($draft_ad->fuel) && !in_array($draft_ad->fuel , [14,15]))  style="display:none;" @endif  >
+<div class="col-lg-6 mb-3" id="trsmisn_type"   @if($draft_ad == true && !empty($draft_ad->fuel) && !in_array($draft_ad->fuel , [14,15]))  style="display:none;" @endif  >
     <div class="form-group">
         @php
         $transmission_types = App\Models\Car\TransmissionType::where('status', 1)
@@ -234,7 +234,7 @@
 </div>
 @endif
 @if (in_array('body_type', json_decode($categories->filters)))
-<div class="col-lg-4">
+<div class="col-lg-6 mb-3">
     <div class="form-group">
         @php
          $body_types = App\Models\Car\BodyType::where('status', 1)->where('cat_id' , $catID)->orderBy('serial_number', 'asc')->get();
@@ -257,7 +257,7 @@
 </div>
 @endif
 @if (in_array('colour', json_decode($categories->filters)))
-<div class="col-lg-4">
+<div class="col-lg-6 mb-3">
     <div class="form-group ">
     @php
         $colour = App\Models\Car\CarColor::where('status', 1)->get();
@@ -275,7 +275,7 @@
 </div>
 @endif
 @if (in_array('doors', json_decode($categories->filters)))
-<div class="col-lg-4">
+<div class="col-lg-6 mb-3">
     <div class="form-group">
     <label>Please Select Doors </label>
     <select name="doors"  class="form-control" id="carDoors" onchange="saveDraftData(this , 'doors')" >
@@ -292,7 +292,7 @@
 </div>
 @endif
 @if (in_array('seat_count', json_decode($categories->filters)))
-<div class="col-lg-4">
+<div class="col-lg-6 mb-3">
     <div class="form-group">
     <label>Please Select Seats</label>
     @php
@@ -314,7 +314,7 @@
 </div>
 @endif
 @if (in_array('power', json_decode($categories->filters)))
-<div class="col-lg-4">
+<div class="col-lg-6 mb-3">
     <div class="form-group ">
     @php
         $engine_power = App\Models\Car\CarPower::where('status', 1)->get();
@@ -328,7 +328,7 @@
 </div>
 @endif
 @if (in_array('battery', json_decode($categories->filters)))
-<div class="col-lg-4" id="betry_dropdown" @if($draft_ad == true && !empty($draft_ad->fuel) && in_array($draft_ad->fuel , [14,15]))  style="display:none;" @endif>
+<div class="col-lg-6 mb-3" id="betry_dropdown" @if($draft_ad == true && !empty($draft_ad->fuel) && in_array($draft_ad->fuel , [14,15]))  style="display:none;" @endif>
     <div class="form-group ">
 
     <label>Battery Range  </label>
@@ -346,7 +346,7 @@
 </div>
 @endif
 @if (in_array('owners', json_decode($categories->filters)))
-<div class="col-lg-4">
+<div class="col-lg-6 mb-3">
     <div class="form-group ">
 
     <label>Please Select Owners</label>
@@ -365,7 +365,7 @@
 </div>
 @endif
 @if (in_array('road-tax', json_decode($categories->filters)))
-<div class="col-lg-4">
+<div class="col-lg-6 mb-3">
     <div class="form-group ">
 
     <label>{{ __('Annual Road Tax') }} </label>
@@ -386,22 +386,8 @@
     </div>
 </div>
 @endif
-@if (in_array('verification', json_decode($categories->filters)))
-<!-- <div class="col-lg-4">
-    <div class="form-group ">
-
-    <label>{{ __('Verification') }} </label>
-    <select id="verification" class="form-select form-control"  name="verification">
-        <option value="">{{ __('Any') }}</option>
-        <option value="manufacture">Manufacturer Approved</option>
-        <option value="greenlight" >Greenlight Verified</option>
-        <option value="trusted" >Trusted Dealer</option>
-    </select>
-    </div>
-</div> -->
-@endif
 @if (in_array('warranty', json_decode($categories->filters)))
-<div class="col-lg-4" style="display:none;">
+<div class="col-lg-6 mb-3" style="display:none;">
     <div class="form-group ">
 
     <label>Please Select Warranty </label>
@@ -423,7 +409,7 @@
 </div>
 @endif
 @if (in_array('mot', json_decode($categories->filters)))
-<div class="col-lg-4" style="display:none;">
+<div class="col-lg-6 mb-3" style="display:none;">
     <div class="form-group ">
 
     <label>Please Select Mot</label>

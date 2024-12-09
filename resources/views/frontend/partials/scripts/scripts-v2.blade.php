@@ -865,13 +865,13 @@ document.addEventListener('DOMContentLoaded', function() {
             {
                 if($(self).val()  == 'Sale')
                 {
-                    $('#selling_label').html('What you are selling?')
+                    $('#input-title').attr('placeholder','What you are selling?');
                     $('#CarSubmit').html('Sell Now')
                 }
                 else
                 {
-                     $('#selling_label').html('What you are looking for?')
-                      $('#CarSubmit').html('Publish Now')
+                     $('#input-title').attr('placeholder','What you are looking for?')
+                    $('#CarSubmit').html('Publish Now')
                 }
             }
         

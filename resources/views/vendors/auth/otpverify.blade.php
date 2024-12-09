@@ -36,6 +36,7 @@
            <p>In order to protect the security of your account, please verify your phone number</p>
           </div>
           <form action="{{ route('vendor.send_code') }}" method="POST" class = "verifyopt-form">
+              @csrf
           <!--@csrf-->
           <div id = "phonecode">
           <label>{{ __('Enter phone number') }}</label>

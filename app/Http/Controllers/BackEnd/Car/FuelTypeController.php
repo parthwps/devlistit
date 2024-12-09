@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\BackEnd\Car;
 
 use App\Http\Controllers\Controller;
+use App\Http\Helpers\UploadFile;
 use App\Models\Car\FuelType;
 use App\Models\Car\BodyType;
 use App\Models\Car\Category;
+use App\Rules\ImageMimeTypeRule;
 use Illuminate\Http\Request;
 use App\Models\Language;
 use Illuminate\Support\Facades\Response;
@@ -38,7 +40,8 @@ class FuelTypeController extends Controller
             'language_id' => 'required',
             'name' => 'required|unique:fuel_types|max:255',
             'status' => 'required|numeric',
-            'serial_number' => 'required|numeric'
+            'serial_number' => 'required|numeric',
+            'image' => ['nullable', new ImageMimeTypeRule()]
         ];
 
         $message = [
@@ -53,8 +56,13 @@ class FuelTypeController extends Controller
             ], 400);
         }
 
-        BodyType::create($request->except('slug') + [
-            'slug' => createSlug($request->name)
+        if($request->hasFile('image')){
+            $image = UploadFile::store(public_path('assets/img/body_types'), $request->file('image'));
+        }
+
+        BodyType::create($request->except(['slug','image']) + [
+            'slug' => createSlug($request->name),
+            'image' => $image ?? null,
         ]);
 
         Session::flash('success', 'New Car Body Type added successfully!');
@@ -70,7 +78,8 @@ class FuelTypeController extends Controller
                 'max:255'
             ],
             'status' => 'required|numeric',
-            'serial_number' => 'required|numeric'
+            'serial_number' => 'required|numeric',
+            'image' => ['nullable', new ImageMimeTypeRule()]
         ];
 
         $validator = Validator::make($request->all(), $rules);
@@ -83,8 +92,14 @@ class FuelTypeController extends Controller
 
         $fuel_types = BodyType::find($request->id);
 
-        $fuel_types->update($request->except('slug') + [
-            'slug' => createSlug($request->name)
+        $oldImage = $fuel_types->image;
+        if($request->hasFile('image')){
+            $oldImage = UploadFile::update(public_path('assets/img/body_types'), $request->file('image'),$oldImage);
+        }
+
+        $fuel_types->update($request->except(['slug','image']) + [
+            'slug' => createSlug($request->name),
+            'image' => $oldImage,
         ]);
 
         Session::flash('success', 'Car body Type updated successfully!');

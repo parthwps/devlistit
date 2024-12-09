@@ -3837,3 +3837,46 @@ label.error {
       overflow-x: auto
   }
 }
+
+#searchForm label:not(.body-type-filter-label,.colour-filter-label){
+  font-size: var(--font-base) !important;
+}
+.body-type-filter .form-check label, .colour-filter .form-check label{
+  font-size: 12px !important;
+  text-align: center;
+  width: 100%;
+  cursor: pointer;
+}
+.colour-filter .form-check.checked,.body-type-filter .form-check.checked {
+  background-color: rgb(243, 244, 247); /* Light blue background */
+  border: 2px solid rgb(34, 40, 49); /* Blue border */
+  padding: 10px;
+  border-radius: 5px;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+.colour-filter img, .body-type-filter img{
+  width: 100px;
+  height: 60px;
+}
+
+.car-color-code{
+  height: 20px;
+  width: 20px;
+  display: inline-block;
+  border-radius: 10px;
+  border: 1px #6a6a6a solid;
+}
+.colour-filter .form-check, .body-type-filter .form-check{
+  border: 1px solid #b1b1b1;
+  padding: 12px !important;
+  display: block;
+  border-radius: 7px;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.select2-container--default .select2-selection--single{
+  padding-top: 0px !important;
+  padding-bottom: 0px !important;
+  border: 1px solid #ced4da !important;
+}

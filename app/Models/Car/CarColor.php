@@ -12,6 +12,7 @@ class CarColor extends Model
         'language_id',
         'name',
         'slug',
+        'hex_code',
         'status',
         'serial_number',
     ];

@@ -50,6 +50,18 @@
               <small>{{ __('The higher the serial number is, the later the Brand will be shown.') }}</small>
             </p>
           </div>
+          <div class="form-group">
+            <label for="" class="d-block">{{ __('Image') }}</label>
+            <div class="thumb-preview">
+                <img src="{{ asset('assets/img/noimage.jpg') }}" alt="..." class="uploaded-img in_image">
+            </div>
+            <div class="mt-3">
+              <div role="button" class="btn btn-primary btn-sm upload-btn">
+                {{ __('Choose Image') }}
+                <input type="file" class="img-input" name="image">
+              </div>
+            </div>
+          </div>
         </form>
       </div>
 

@@ -17,6 +17,7 @@ class BodyType extends Model
         'status',
         'cat_id',
         'serial_number',
+        'image'
     ];
     
     
