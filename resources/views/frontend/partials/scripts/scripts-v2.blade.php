@@ -63,16 +63,16 @@
     <div class="modal-content">
      <form action="{{route('vendor.cars_management.delete_add')}}" method="get">
       <div class="modal-body">
-       
+
         <div class="row">
-            
+
             <div class="col-md-12">
                     <label style="font-size: 15px;
                     margin-bottom: 10px;
                     margin-left: 5px;
                     ">Have you sold the item?</label>
             </div>
-            
+
             <div class="col-md-12">
                 <div style="background: #b8b8b8;
                 color: white;
@@ -80,25 +80,25 @@
                 margin: 5px;cursor:pointer;" onclick="selectRadio(this)">
                 I sold it on Listit  <input style="float: right;zoom: 1.7;margin-top: 1px;" type="radio" value="I sold it on Listit" required name="remove_option" />
                 </div>
-                
-                
+
+
                 <div style="background: #b8b8b8;
                 color: white;
                 padding: 7px;
                 margin: 5px;cursor:pointer;" onclick="selectRadio(this)" >
                 I sold it elsewhere  <input type="radio" style="float: right;zoom: 1.7;margin-top: 1px;" value="I sold it elsewhere" required name="remove_option" />
                 </div>
-                
-                
+
+
                 <div style="background: #b8b8b8;
                 color: white;
                 padding: 7px;
                 margin: 5px;cursor:pointer;" onclick="selectRadio(this)">
                 I decide not to sell it  <input type="radio" style="float: right;zoom: 1.7;margin-top: 1px;" value="I decide not to sell it" required name="remove_option" />
                 </div>
-                
+
             </div>
-            
+
             <div class="col-md-12">
                 <div class="range_container">
                 <p style="text-align: left;margin-bottom: 2rem;margin-top: 1rem;">Would you recommend Listit to a friend</p>
@@ -123,20 +123,20 @@
                 </div>
                 </div>
             </div>
-            
-            
+
+
             <div class="col-md-12" style="    margin-top: 1rem;">
                  <label style="font-size: 15px;
                     margin-bottom: 10px;
                     margin-left: 5px;
                     ">Tell us about your Listit experience</label>
-                    
-                    <textarea class="form-control" rows="3" name="remove_remarks" 
+
+                    <textarea class="form-control" rows="3" name="remove_remarks"
                     placeholder="This is not mandatory, but we would love to hear from you with your suggestions on how we can make List It a better place"></textarea>
             </div>
-            
+
             <div id="parm_type" style='display:none;'>
-                
+
             </div>
             </div>
           </div>
@@ -154,7 +154,7 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header" style="    border-bottom: 0px;">
-           
+
             <button type="button" class="close" style="font-size: 30px;
         color: gray !important;
         position: absolute;
@@ -165,7 +165,7 @@
           <div class="modal-body" id="popup_body">
             ...
           </div>
-        
+
         </div>
       </div>
     </div>
@@ -174,25 +174,25 @@
     <div class="modal fade" id="shareModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog" style="margin-top: 30px;">
         <div class="modal-content">
-    
+
             <button type="button" class="close" onclick="closemodal()" style="     border-top-right-radius: 10px;   border-top-left-radius: 10px;color: gray !important;float: right;font-size: 28px;padding: 0px;height: 20px;margin-top: -15px !important;">
                 <span aria-hidden="true" style="float: right;margin-right: 1rem;">&times;</span>
             </button>
-    
+
           <div class="modal-body" id="shareModalContent" style="text-align: center;margin: 2rem;">
             ...
           </div>
         </div>
       </div>
     </div>
-    
+
 <script>
 
 
 
 
 $(document).on('click', '.dz-error-mark', function() {
-    
+
     $(this).closest('.dz-error').remove();
 });
 
@@ -208,13 +208,13 @@ function filterFormSubmission() {
     var formData = form.serialize(); // Serialize the form data
     $('#serachBTN').html('<span style="font-size:15px">Searching...</span>')
     $('#serachBTN').prop('disabled' , true)
-     
+
     $.ajax({
         url: "{{route('frontend.vendor.customer.filter')}}", // The URL to send the request to
         type: 'POST', // The HTTP method to use
         data: formData, // The serialized form data
         dataType: 'json', // Expected data type from server
-        success: function(response) 
+        success: function(response)
         {
             $('#appendFilterListing').html(response.data)
             $('#car_counter').html(response.count)
@@ -226,7 +226,7 @@ function filterFormSubmission() {
             console.error('Error:', error);
         }
     });
-    
+
     return false
 }
 
@@ -243,44 +243,44 @@ function showFilterSection() {
     }
 }
 
-   
+
 
     function removeImage()
     {
-        
+
         $('#image-preview').html('<img src="{{ asset('assets/img/noimage.jpg') }}" alt="..." class="uploaded-img">');
-        
+
         $('.img-input').val('');
-        
+
         $.ajax({
             url: "{{ route('remove.image') }}",
             method: 'GET',
-            success: function(response) 
+            success: function(response)
             { },
             error: function(xhr, status, error) { }
         });
     }
-    
+
     let draggedRow = null;
-    
+
     function dragStart(event) {
         draggedRow = event.target.closest('tr');  // Get the dragged row
         event.dataTransfer.effectAllowed = 'move'; // Allow move operation
     }
-    
+
     function allowDrop(event) {
         event.preventDefault(); // Prevent default behavior to allow dropping
     }
-    
+
     function drop(event) {
         event.preventDefault();
-    
+
         const targetRow = event.target.closest('tr');  // Get the row being dropped onto
         if (draggedRow && targetRow && draggedRow !== targetRow) {
             const tbody = document.querySelector('#imgtable tbody');  // Get the table body
             let draggedIndex = Array.from(tbody.children).indexOf(draggedRow);  // Index of dragged row
             let targetIndex = Array.from(tbody.children).indexOf(targetRow);    // Index of target row
-    
+
             // Insert the dragged row before or after the target row based on position
             if (draggedIndex < targetIndex) {
                 tbody.insertBefore(draggedRow, targetRow.nextSibling);
@@ -289,26 +289,26 @@ function showFilterSection() {
             }
         }
     }
-    
+
     function setCoverPhoto(id) {
         // Get the selected row
         let selectedRow = document.getElementById('trdb' + id);
-        
+
         // Get the table body
         let tableBody = document.querySelector('#imgtable tbody');
-        
+
         // Move the selected row to the first position
         if (selectedRow) {
             // Remove the selected row from its current position
             tableBody.removeChild(selectedRow);
-            
+
             // Insert the selected row at the beginning of the table
             tableBody.insertBefore(selectedRow, tableBody.firstChild);
             $('.cover_label').remove()
              $("#defaultImg").val(id);
         }
     }
-    
+
     document.addEventListener('DOMContentLoaded', function() {
     const selectSelected = document.querySelector('.select-selected');
     const selectItems = document.querySelector('.select-items');
@@ -329,14 +329,14 @@ function showFilterSection() {
         if (e.target.classList.contains('country-option')) {
             const code = e.target.getAttribute('data-value');
             const flag = e.target.getAttribute('data-flag');
-            
+
             countryCodeInput.value = code;
-            
+
             selectSelected.innerHTML = `<img src="${flag}" class="flag"> ${e.target.innerText}`;
             selectItems.classList.add('select-hide');
             selectSelected.classList.remove('select-arrow-active');
             phoneInput.setAttribute('data-country-code', code); // Store country code in phone input
-           
+
         }
     });
 
@@ -364,12 +364,12 @@ function showFilterSection() {
 });
 
 
-        
-    
+
+
 document.addEventListener('DOMContentLoaded', function() {
     const togglePassword = document.querySelector('#togglePassword');
     const passwordField = document.querySelector('#password');
-    
+
     const togglePasswordConfirmation = document.querySelector('#togglePasswordConfirmation');
     const passwordConfirmationField = document.querySelector('#password_confirmation');
 
@@ -390,10 +390,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-    function copyLink(text) 
+    function copyLink(text)
     {
-   
-        if (navigator.clipboard) 
+
+        if (navigator.clipboard)
         {
             navigator.clipboard.writeText(text).then(function() {
                 // Success feedback using Toastr
@@ -433,35 +433,38 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    
-    function openShareModal(self) 
+
+    function openShareModal(self)
     {
-        
+
         var url = $(self).data("url");
-    
-        $('#shareModalContent').html(`
-            <div class="social-link style="margin-top: 1rem;text-align: center;" style-2 mb-20" style="display: inline-block !important;">
-                <a data-tooltip="tooltip" style="width: 50px;height: 50px;border-radius: 50%;line-height: 50px;" data-bs-placement="top"
+
+        $('#shareModalContent').html(` <h3 style="text-align:justify;">Share</h3>
+            <p style="text-align:justify;">Help spread the word</p>
+            <p style="text-align:justify;">Share this ad with your friends or on your favourite social media network</p>
+
+            <div class="social-link" style="margin-top: 1rem; style-2 mb-20" style="display: inline-block !important;">
+                <a data-tooltip="tooltip" style="width: 50px;height: 50px;border-radius: 10%;line-height: 50px;background-color:white;color:black;box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);" data-bs-placement="top"
                     title="facebook" href="https://www.facebook.com/sharer/sharer.php?quote=Check Out this ad on List It&utm_source=facebook&utm_medium=social&u=${encodeURIComponent(url)}"
                     target="_blank"><i class="fab fa-facebook-f"></i></a>
-    
-                <a data-tooltip="tooltip" style="width: 50px;height: 50px;border-radius: 50%;line-height: 50px;" data-bs-placement="top"
+
+                <a data-tooltip="tooltip" style="width: 50px;height: 50px;border-radius: 10%;line-height: 50px;background-color:white;color:black;box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);" data-bs-placement="top"
                     title="Twitter" href="//twitter.com/intent/tweet?text=Check Out this ad on List It&amp;url=${encodeURIComponent(url)}"
                     target="_blank"><i class="fab fa-twitter"></i></a>
-    
-                <a data-tooltip="tooltip" style="width: 50px;height: 50px;border-radius: 50%;line-height: 50px;" data-bs-placement="top"
+
+                <a data-tooltip="tooltip" style="width: 50px;height: 50px;border-radius: 10%;line-height: 50px;background-color:white;color:black;box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);" data-bs-placement="top"
                     title="Whatsapp" href="//wa.me/?text=Check Out this ad on List it ${encodeURIComponent(url)}&amp;title="
                     target="_blank"><i class="fab fa-whatsapp"></i></a>
-    
-                <a data-tooltip="tooltip" style="width: 50px;height: 50px;border-radius: 50%;line-height: 50px;" data-bs-placement="top"
+
+                <a data-tooltip="tooltip" style="width: 50px;height: 50px;border-radius: 10%;line-height: 50px;background-color:white;color:black;box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);" data-bs-placement="top"
                     title="Linkedin" href="//www.linkedin.com/shareArticle?mini=true&amp;url=${encodeURIComponent(url)}&amp;title=Check Out this ad on List it"
                     target="_blank"><i class="fab fa-linkedin-in"></i></a>
-    
-                <a data-tooltip="tooltip" style="width: 50px;height: 50px;border-radius: 50%;line-height: 50px;" data-bs-placement="top"
+
+                <a data-tooltip="tooltip" style="width: 50px;height: 50px;border-radius: 10%;line-height: 50px;background-color:white;color:black;box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);" data-bs-placement="top"
                     title="Email" href="mailto:?subject=Check Out this ad on List it&amp;body=Check Out this ad on List it ${encodeURIComponent(url)}&amp;title="
                     target="_blank"><i class="fas fa-envelope"></i></a>
-    
-                <a data-tooltip="tooltip" style="width: 50px;height: 50px;border-radius: 50%;line-height: 50px;" data-bs-placement="top"
+
+                <a data-tooltip="tooltip" style="width: 50px;height: 50px;border-radius: 10%;line-height: 50px;background-color:white;color:black;box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);" data-bs-placement="top"
                     title="Copy Link"  onclick="copyLink('${url}')" href="javascript:void(0)">
                     <i class="fas fa-link"></i></a>
             </div>
@@ -471,16 +474,17 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
 
+
     $(document).ready(function() {
-  
+
         $(document).ready(function() {
         var interval = setInterval(function() {
             var dzMessage = $('.dz-default.dz-message');
-            
+
             if (dzMessage.find('i.fa-cloud-upload-alt').length === 0) { // Check if the icon hasn't been added yet
                 // Clear the existing content
                 dzMessage.empty();
-                
+
                 // Append the cloud icon, a specific instruction message, and additional details
                 dzMessage.html(`
                     <i class="fa fa-cloud-upload-alt" style="font-size: 48px;color:gray;"></i>
@@ -502,14 +506,14 @@ document.addEventListener('DOMContentLoaded', function() {
          var radioButton = div.querySelector('input[type="radio"]');
             radioButton.checked = true;
     }
-    
+
     function removeThisAd(status , car_id)
     {
         $('#parm_type').html('<input type="hidden" name="request_for" value="'+status+'" />  <input type="hidden" name="car_id" value="'+car_id+'" /> ');
         $('#removeAdRemarkModal').modal('show')
     }
-    
-    function openHours(self) 
+
+    function openHours(self)
     {
         // Check if the element does not have the ID 'append_dropdown'
         if ($(self).attr('id') !== 'append_dropdown') {
@@ -517,7 +521,7 @@ document.addEventListener('DOMContentLoaded', function() {
             $(self).remove();
             $('#append_dropdown').show();
         }
-    
+
         $('.us_open_hours').toggle('slow');
     }
 
@@ -525,38 +529,38 @@ document.addEventListener('DOMContentLoaded', function() {
         $('#imageInput').change(function (event) {
             var file = event.target.files[0];
             var reader = new FileReader();
-    
+
             reader.onload = function (e) {
                 $('#imagePreview').attr('src', e.target.result);
                 $('#imagePreview').show();
                 $('.image-container').show();
-                
+
             };
-    
+
             reader.readAsDataURL(file);
         });
     });
 
 
-    $(document).on('click', '.list-group.list-group-flush a', function () 
+    $(document).on('click', '.list-group.list-group-flush a', function ()
     {
         var pid = $(this).data("pid");
-        
+
         var category = $(this).data("category");
-        
+
         loadBreadCrum(pid , category)
     });
-    
-    $(document).on('click', '.us_customize_bread_crum', function () 
+
+    $(document).on('click', '.us_customize_bread_crum', function ()
     {
         var pid = $(this).data("pid");
-        
+
         var category = $(this).data("category");
-        
+
         loadBreadCrum(pid , category)
     });
-    
-    
+
+
     function loadBreadCrum(pid , category)
     {
          $.ajax({
@@ -566,7 +570,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     pid: pid,
                     category:category
                 },
-                success: function(response) 
+                success: function(response)
                 {
                    $('#categories_breadcrium').html(response)
             },
@@ -576,32 +580,32 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    document.getElementById('whatsappButton').addEventListener('click', function() 
+    document.getElementById('whatsappButton').addEventListener('click', function()
     {
         document.getElementById('whatsappPopup').style.display = 'block';
         this.style.display = 'none';
     });
-    
-    document.getElementById('closePopup').addEventListener('click', function() 
+
+    document.getElementById('closePopup').addEventListener('click', function()
     {
         document.getElementById('whatsappPopup').style.display = 'none';
         document.getElementById('whatsappButton').style.display = 'flex';
     });
-        
+
     function scroll_to_bottom()
     {
         $('html, body').animate({
             scrollTop: $("#packageSelected").offset().top
         }, 1000);
     }
-        
+
     function addToWishlist(car_id)
     {
         $.ajax({
         url: "{{ url('addto') }}/"+car_id,
         method: 'GET',
         dataType:'json',
-        success: function(response) 
+        success: function(response)
         {
            if(response.alert_type == 'login')
            {
@@ -611,10 +615,10 @@ document.addEventListener('DOMContentLoaded', function() {
            {
                 "use strict";
                 toastr['success'](response.message);
-                
+
                 const wishlistItems = document.querySelectorAll(`a[onclick="addToWishlist(${car_id})"]`);
-                
-                wishlistItems.forEach(anchor => 
+
+                wishlistItems.forEach(anchor =>
                 {
                     const iconElement = anchor.querySelector('i');
                     const imgElement = anchor.querySelector('img');
@@ -622,14 +626,14 @@ document.addEventListener('DOMContentLoaded', function() {
                     const currentSrc = imgElement.getAttribute('src');
                     if (currentSrc.includes("assets/img/heart_dislike.svg")) {
                     imgElement.setAttribute('src', "assets/img/heart_like.svg");
-                    } 
                     }
-                    if (iconElement ) 
+                    }
+                    if (iconElement )
                     {
-                        
+
                         iconElement.classList.remove('fal', 'fa-heart');
                         iconElement.classList.add('fa', 'fa-heart');
-                        
+
                         // Animate the icon
                         iconElement.style.transition = 'transform 0.5s ease, color 0.5s ease';
                         iconElement.style.transform = 'scale(1.5)';
@@ -639,18 +643,18 @@ document.addEventListener('DOMContentLoaded', function() {
                         setTimeout(() => {
                             iconElement.style.transform = 'scale(1)';
                         }, 500);
-                        
+
                     }
-                    
+
                 });
            }
            else if(response.alert_type == 'error')
            {
                 "use strict";
                 toastr['error'](response.message);
-                
+
                 const wishlistItems = document.querySelectorAll(`a[onclick="addToWishlist(${car_id})"]`);
-                
+
                 wishlistItems.forEach(anchor => {
                 // Change the icon within the <a> tag
                 const iconElement = anchor.querySelector('i');
@@ -659,12 +663,12 @@ document.addEventListener('DOMContentLoaded', function() {
                     const currentSrc = imgElement.getAttribute('src');
                     if (currentSrc.includes("assets/img/heart_like.svg")) {
                     imgElement.setAttribute('src', "assets/img/heart_dislike.svg");
-                    } 
+                    }
                     }
                 if (iconElement) {
                 iconElement.classList.remove('fa', 'fa-heart');
                 iconElement.classList.add('fal', 'fa-heart');
-                
+
                  // Animate the icon (zoom in effect on error)
             iconElement.style.transition = 'transform 0.5s ease, color 0.5s ease';
             iconElement.style.transform = 'scale(1.5)';
@@ -674,26 +678,26 @@ document.addEventListener('DOMContentLoaded', function() {
             setTimeout(() => {
                 iconElement.style.transform = 'scale(1)';
             }, 500);
-            
-            
+
+
                 }
                 });
            }
         },
-        error: function(xhr, status, error) 
+        error: function(xhr, status, error)
         {
             console.error(xhr.responseText);
         }
         });
-        
+
         return false;
     }
 
 
-    function applyfilter(self, type) 
+    function applyfilter(self, type)
     {
         var currentUrl = new URL(window.location.href); // Get the current URL
-    
+
         if (type === 'categories') {
             var category_id = $(self).val();
             currentUrl.searchParams.set('category_id', category_id); // Append category_id parameter
@@ -701,7 +705,7 @@ document.addEventListener('DOMContentLoaded', function() {
             var filter_type = $(self).val();
             currentUrl.searchParams.set('filter_type', filter_type); // Append filter_type parameter
         }
-    
+
         // Redirect to the new URL with the appended parameter
         window.location.href = currentUrl.toString();
     }
@@ -710,9 +714,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function gotothe(type , car_id)
     {
-        
+
         var car_ids = $('#car_ids').val();
-    
+
         $.ajax({
                 url: "{{ route('get_compare_car_datas') }}",
                 method: 'GET',
@@ -721,24 +725,24 @@ document.addEventListener('DOMContentLoaded', function() {
                     car_ids:car_ids,
                     type: type
                 },
-                success: function(response) 
+                success: function(response)
                 {
                     if(type == 'f_previous' || type == 'f_next')
                     {
-                      $('#first_card').html(response);  
+                      $('#first_card').html(response);
                     }
                     else
                     {
-                      $('#second_card').html(response);  
+                      $('#second_card').html(response);
                     }
             },
             error: function(xhr, status, error) {
                 console.error(xhr.responseText);
             }
         });
-        
+
     }
-    
+
     document.addEventListener('DOMContentLoaded', function() {
     // Check if the URL has the attribute compare_from
     if (window.location.search.includes('compare_from=')) {
@@ -757,7 +761,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function getComparison(type)
     {
         $('#request_type').val(type)
-        $('#comparsim_form').submit(); 
+        $('#comparsim_form').submit();
     }
 
     function compareCheckbox(self)
@@ -767,26 +771,26 @@ document.addEventListener('DOMContentLoaded', function() {
          var stickySection = $('.us_com_flex');
         if(checkedCheckboxes > 1)
         {
-            $('#comparebtn').show();  
+            $('#comparebtn').show();
             stickySection.addClass('us_com_flexs');
         }
         else
         {
-            $('#comparebtn').hide();  
+            $('#comparebtn').hide();
             stickySection.removeClass('us_com_flexs');
         }
-        
+
         if(checkedCheckboxes > 0)
         {
-            $('#removeBTN').show();  
+            $('#removeBTN').show();
         }
         else
         {
-            $('#removeBTN').hide();   
+            $('#removeBTN').hide();
         }
-        
+
         $('#com_cal').html(checkedCheckboxes);
-        
+
         if(checkedCheckboxes == 5)
         {
           $('.compare_checkbox:not(:checked)').prop('disabled', true);
@@ -797,16 +801,16 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    function reportAd() 
+    function reportAd()
     {
-    
+
         $('#submtBtn').html('Processing...');
         $('#submtBtn').prop('disabled' , true);
-    
+
         const adId = $('#ad_id').val();
         const reasonOption = $('#reasonOption').val();
         const explaination = $('#explaination').val();
-    
+
         // Send data via AJAX
         $.ajax({
             url: "{{ route('report.ad') }}",
@@ -819,20 +823,20 @@ document.addEventListener('DOMContentLoaded', function() {
             success: function(response) {
                 $('#successMessage').show();
                 $('#submtBtn').html('Report Ad');
-                
-            setTimeout(function() 
-            { 
+
+            setTimeout(function()
+            {
                 location.reload(true);
             }, 3000);
-        
-    
+
+
              // Uncomment if you still want to reload the page
         },
         error: function(xhr, status, error) {
             console.error(xhr.responseText);
         }
     });
-    
+
     return false; // Prevent form from submitting in the traditional way
     }
 
@@ -840,7 +844,7 @@ document.addEventListener('DOMContentLoaded', function() {
     {
         $('#reportModal').modal('show')
     }
-    
+
     function showmore(type , self)
     {
         if(type == 1)
@@ -854,13 +858,13 @@ document.addEventListener('DOMContentLoaded', function() {
              $('#readBtn').html('<a href="javascript:void(0);" style="color: #0063fc;" onclick="showmore(1 , this)">read more</a>')
         }
     }
-    
+
     function saveDraftData(self , column_name = null )
     {
-        
+
         if(column_name != null)
         {
-           
+
             if(column_name == 'ad_type' )
             {
                 if($(self).val()  == 'Sale')
@@ -874,19 +878,19 @@ document.addEventListener('DOMContentLoaded', function() {
                     $('#CarSubmit').html('Publish Now')
                 }
             }
-        
+
             $.ajax({
                 url: '{{ route("savetodraft") }}',
                 method: 'GET',
                 data: {current_val : $(self).val() ,  column_name : column_name },
                 dataType:'json',
-                success: function (response) 
+                success: function (response)
                 {
                     var $selectedElement = $(self).closest('.sub_sub_sub_category');
                     var $nextElements = $selectedElement.nextAll('.sub_sub_sub_category');
                     $nextElements.remove();
-                  
-                  
+
+
                     if(response.result == 'ok')
                     {
                         $(".sub_sub_sub_category").last().after(response.output);
@@ -899,7 +903,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     {
                         $('#searcfiltersdata').html('');
                     }
-                    
+
                     if((column_name == 'sub_category_id' || column_name == 'category_id') && ($('#adsMaincat').val()  == 233 || $('#adsMaincat').val()  == 347 ) )
                     {
                         $('#addTYAP').hide();
@@ -916,9 +920,9 @@ document.addEventListener('DOMContentLoaded', function() {
                         $('#en_description').attr('placeholder', 'Tell us a bit more about your ad, giving us as much information as possible to help sell your items.');
                         $('#ad_price').attr('readonly' , false);
                     }
-            
+
                 },
-                error: function (xhr, status, error) 
+                error: function (xhr, status, error)
                 {
                     console.error(xhr.responseText);
                 }
@@ -931,12 +935,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 method: 'GET',
                 data: {current_val : $(self).val() },
                 dataType:'json',
-                success: function (response) 
+                success: function (response)
                 {
                     var $selectedElement = $(self).closest('.sub_sub_sub_category');
                     var $nextElements = $selectedElement.nextAll('.sub_sub_sub_category');
                     $nextElements.remove();
-                        
+
                     if(response.result == 'ok')
                     {
                         $(".sub_sub_sub_category").last().after(response.output);
@@ -950,33 +954,33 @@ document.addEventListener('DOMContentLoaded', function() {
                        $('#searcfiltersdata').html('');
                     }
                 },
-                error: function (xhr, status, error) 
+                error: function (xhr, status, error)
                 {
                     console.error(xhr.responseText);
                 }
             });
         }
     }
-    
+
     function deletDarftAd()
     {
         $.ajax({
             url: '{{ route("deleteToDraft") }}',
             method: 'GET',
-            
-            success: function (response) 
+
+            success: function (response)
             {
                location.reload(true)
             },
-            error: function (xhr, status, error) 
+            error: function (xhr, status, error)
             {
                 console.error(xhr.responseText);
             }
         });
     }
-    
-    
-    $(document).ready(function () 
+
+
+    $(document).ready(function ()
     {
         var hoverTimeout;
         var currentElement;
@@ -997,11 +1001,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 url: '{{ route("ad.impression.count") }}',
                 method: 'GET',
                 data: {ad_id : ad_id },
-                success: function (response) 
+                success: function (response)
                 {
-                   
+
                 },
-                error: function (xhr, status, error) 
+                error: function (xhr, status, error)
                 {
                     console.error(xhr.responseText);
                 }
@@ -1026,9 +1030,9 @@ document.addEventListener('DOMContentLoaded', function() {
         var selectedText = $('#fuelType').find('option:selected').text();
         var thisVal = $('#fuelType').val();
         var subcatVal = $('#adsSubcat').val();
-      
-        
-       if (selectedText.trim() === 'Petrol' || selectedText.trim() === 'Diesel') 
+
+
+       if (selectedText.trim() === 'Petrol' || selectedText.trim() === 'Diesel')
         {
             $('#betry_dropdown').hide();
             $('#trsmisn_type').show()
@@ -1040,35 +1044,35 @@ document.addEventListener('DOMContentLoaded', function() {
             $('#transmissionType').change();
             $('#trsmisn_type').hide()
         }
-          
+
         $.ajax({
             url: "{{route('frontend.getEngineCapacity')}}",
             type: 'GET',
             data:{selectedText:selectedText , thisVal:thisVal , subcatVal:subcatVal },
-            success: function(data) 
+            success: function(data)
             {
-              $('#new_engine_caacity').html(data);  
+              $('#new_engine_caacity').html(data);
             }
         });
-        
+
         $('#battery').val('');
     }
 
     function addnsjfjdfj(self)
     {
     var addCapacity = $(self).val();
-    
-    
+
+
     $.ajax({
         url: '{{ route("savetodraft") }}',
         method: 'GET',
         data: {current_val : $(self).val() ,  column_name : 'engine' },
-        
-        success: function (response) 
+
+        success: function (response)
         {
-           
+
         },
-        error: function (xhr, status, error) 
+        error: function (xhr, status, error)
         {
             console.error(xhr.responseText);
         }
@@ -1084,47 +1088,47 @@ function notifyMe(self)
    var fueltype =  $(self).data("fueltype")
    var transmissiontype =  $(self).data("transmissiontype")
    var category_slug =  $(self).data("category_slug")
-   
+
    var url = "{{url('/')}}";
-   
+
    $(self).html('Processing...');
    $(self).prop('disabled' , true);
-   
+
    url = url+'/ads?category='+category_slug+'&page=1&fuel_type='+fueltype+'&brands%5B%5D='+brand+'&models%5B%5D='+model+'&transmission='+transmissiontype+'&year_min='+year+'&year_max='+year
    name = "Similar to "+name;
 //    return "yes hello";
    $.ajax({
-        type: 'GET', 
+        type: 'GET',
         url: "{{ route('frontend.save_search') }}",
-        data: {search_url:url , save_search_name:name , selectedAlertType: 1 }, 
+        data: {search_url:url , save_search_name:name , selectedAlertType: 1 },
         dataType:"json",
-        success: function(data) 
+        success: function(data)
         {
            if(data.response == 'saved')
            {
                $('#alertSuccess').show('slow');
            }
 
-            setTimeout(function() 
-            { 
+            setTimeout(function()
+            {
                 $('#alertSuccess').hide('slow');
                 $(self).html('Notify Me');
                 $(self).prop('disabled' , true);
-            }, 
+            },
             5000);
-    
+
         },
-        error: function(xhr, status, error) 
+        error: function(xhr, status, error)
         {
             console.error(xhr.responseText);
         }
     });
 }
-        
+
 function loadAllCat(self)
 {
-  
-    if ($(self).length) 
+
+    if ($(self).length)
     {
         $('.us_hidden_by_default').show();
         $(self).remove();
@@ -1133,34 +1137,34 @@ function loadAllCat(self)
     {
         $('.us_hidden_by_default').hide();
     }
-    
+
 }
 
   function submitFormBtn()
   {
       $('#submitForm').submit();
   }
- 
+
   $(document).ready(function() {
-       
-       
+
+
         $('.overlay').click(function() {
-         
+
          alert('Sorry this ad is already sold.')
 
             });
-            
-            
-        $('#parentCheckbox').click(function() 
+
+
+        $('#parentCheckbox').click(function()
         {
             var isChecked = $(this).is(':checked');
             $('.us_removeboxes').prop('checked', isChecked);
         });
     });
-  
-$(document).ready(function() 
+
+$(document).ready(function()
 {
-   
+
     $('.tab-category').on('click', function() {
 
         let selectedCat = sessionStorage.getItem('tabCategory');
@@ -1175,20 +1179,20 @@ $(document).ready(function()
         else if(selectedCat && selectedCat == 'farming'){
             categoryId = 28;
         }
-        
+
         $('#carFeaterHomepage').css('display','none');
         $('#browse_style_home').css('display','none');
         if(categoryId == 24){
             $('#carFeaterHomepage').css('display','');
             $('#browse_style_home').css('display','');
         }
-                    
+
         $.ajax({
             url: "{{route('getnewads')}}",
             type: 'GET',
-            dataType: 'json', 
+            dataType: 'json',
             data:{categoryId:categoryId},
-            success: function(res) 
+            success: function(res)
             {
                 if(res.response == 'yes')
                 {
@@ -1202,12 +1206,12 @@ $(document).ready(function()
                         $('.loading-section').removeClass('loading-section');
                     }, 1000);
                 }
-                
+
             }
         });
- 
+
     });
-    
+
     $('.nextprevbtn').on('click', function() {
 
         let selectedCat = sessionStorage.getItem('tabCategory');
@@ -1222,16 +1226,16 @@ $(document).ready(function()
         else if(selectedCat && selectedCat == 'farming'){
             categoryId = 28;
         }
-        
+
         var rightside = $('#rightside').val();
         var leftside = $('#leftside').val();
-     
+
         $.ajax({
             url: "{{route('getnewads')}}",
             type: 'GET',
-            dataType: 'json', 
+            dataType: 'json',
             data:{type:$(this).val() , rightside:rightside , leftside:leftside,categoryId:categoryId},
-            success: function(res) 
+            success: function(res)
             {
                 if(res.response == 'yes')
                 {
@@ -1245,20 +1249,20 @@ $(document).ready(function()
                         $('.loading-section').removeClass('loading-section');
                     }, 1000);
                 }
-                
+
             }
         });
- 
+
     });
 
 
 
-    $(document).on('change', '.makeclickable', function() 
+    $(document).on('change', '.makeclickable', function()
     {
         $.ajax({
-            type: 'GET', 
+            type: 'GET',
             url: "{{ route('frontend.getmodels') }}",
-            data: { make: $(this).val() }, 
+            data: { make: $(this).val() },
             success: function(data) {
                 $('#appendModels').html(data);
                 $('.js-example-basic-single1').select2();
@@ -1274,7 +1278,7 @@ $(document).ready(function()
 });
 
 
-function saveSearch() 
+function saveSearch()
 {
     // Serialize the form data
     var search_url = $('#search_url').val();
@@ -1283,18 +1287,18 @@ function saveSearch()
     $('#searchFormBtn').html('Processing...');
     $('#searchFormBtn').prop('disabled' , true)
     $.ajax({
-        type: 'GET', 
+        type: 'GET',
         url: "{{ route('frontend.save_search') }}",
-        data: {search_url:search_url , save_search_name:save_search_name , selectedAlertType:selectedAlertType }, 
+        data: {search_url:search_url , save_search_name:save_search_name , selectedAlertType:selectedAlertType },
         dataType:"json",
-        success: function(data) 
+        success: function(data)
         {
            if(data.response == 'saved')
            {
                $('#alertSuccess').show('slow');
            }
-           
-            setTimeout(function() { 
+
+            setTimeout(function() {
             $('#saveSearchModal').modal('hide');
             $('#save_search_name').val('');
             $('#search_url').val('');
@@ -1302,9 +1306,9 @@ function saveSearch()
             $('#searchFormBtn').prop('disabled' , false)
             $('#searchFormBtn').html('Save Search');
             }, 2000);
-    
+
         },
-        error: function(xhr, status, error) 
+        error: function(xhr, status, error)
         {
             console.error(xhr.responseText);
         }
@@ -1317,36 +1321,36 @@ function saveSearch()
 
 function SaveSeraches()
 {
-    
+
      @if (!Auth::guard('vendor')->check() )
      window.location.href="customer/login"
      @else
-     
+
     var formData = $('#searchForm').serializeArray();
-    
+
     var queryParams = [];
-    
-    $.each(formData, function(index, input) 
+
+    $.each(formData, function(index, input)
     {
         // Exclude 'search_url' from the query parameters
-        if (input.name !== 'search_url' && input.value !== '') 
+        if (input.name !== 'search_url' && input.value !== '')
         {
             queryParams.push(encodeURIComponent(input.name) + '=' + encodeURIComponent(input.value));
         }
     });
-    
+
     var queryString = queryParams.join('&');
     var newUrl = baseURL + '/ads';
-    
-    if (queryString !== '') 
+
+    if (queryString !== '')
     {
         newUrl += '?' + queryString;
     }
-    
+
     $('#search_url').val(newUrl);
-    
+
     $('#saveSearchModal').modal('show')
-    
+
     @endif
 }
 
@@ -1385,7 +1389,7 @@ function open_drop_downdash()
   $('.js-example-basic-single6').select2();
   $('.js-example-basic-single7').select2();
   //$('.subhidden').addClass('hidden');
-}); 
+});
 
 </script>
 

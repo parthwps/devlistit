@@ -249,11 +249,13 @@
             position: fixed; /* Fixed position */
             z-index: 1050; /* Set a higher z-index than the backdrop */
             left: 0;
-            top: 0;
+            top: 26%;
+            justify-content: center;
+            align-items: center;
             width: 100%;
             height: 100%;
             overflow: auto;
-            background-color: rgba(0, 0, 0, 0.4); /* Semi-transparent background */
+            background-color: transparent; /* Semi-transparent background */
             transition: opacity 0.3s ease;
             opacity: 0; /* Start with the modal invisible */
         }
@@ -261,8 +263,7 @@
         /* Modal content */
         .modal-content {
             background-color: white;
-            margin: 15% auto;
-
+            /* margin: 30% auto; */
             border: 1px solid #888;
             width: 80%;
             max-width: 500px;

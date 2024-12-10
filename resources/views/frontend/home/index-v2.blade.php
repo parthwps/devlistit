@@ -51,10 +51,10 @@
     }
 
     .font-type{
-      font-weight: 600;   
+      font-weight: 600;
     }
     .font-500{
-      font-weight: 500;   
+      font-weight: 500;
 
     }
 
@@ -67,7 +67,7 @@
     .nextprevbtn {
       z-index: 999; /* Higher z-index to make the buttons visible above other content */
     }
-    
+
     .loading-section{
       display: none !important;
     }
@@ -121,7 +121,7 @@
   padding: 15px;
   border-radius: 10px;
   color: black;
-  max-width: 100%; 
+  max-width: 100%;
   height: 320px;
 }
 .featured-stock-info {
@@ -190,8 +190,8 @@
 }
 
 .featured-tag {
-  background-color: #E7F2FF; 
-  border: 2px solid #1D86F5; 
+  background-color: #E7F2FF;
+  border: 2px solid #1D86F5;
   color: #1D86F5;
   padding: 5px 10px;
   border-radius: 5px;
@@ -262,7 +262,7 @@
   font-size: 26px !important;
   font-weight: 700;
 }
-.text-30px-blog 
+.text-30px-blog
 {font-size: 18px !important;
 font-weight: 700;}
 
@@ -274,12 +274,12 @@ font-weight: 700;}
   font-size: 25px;
 }
 .shareHeart{
-    position: absolute; 
-    right: 10px; 
-    top: 10px; 
-    z-index: 1; 
-    background: white; 
-    border-radius: 10px; 
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    z-index: 1;
+    background: white;
+    border-radius: 10px;
     padding: 5px;
   }
   .simpleText{
@@ -424,7 +424,7 @@ font-weight: 700;}
   .vendor-info {
     /* border: 1px solid red; */
   }
-  
+
 }
 
 @media (max-width: 1280px) {
@@ -649,12 +649,12 @@ font-weight: 700;}
     font-size: clamp(12px, 1.48vh, 24px)
   }
   .shareHeart{
-    position: absolute; 
-    right: 10px; 
-    top: 10px; 
-    z-index: 1; 
-    background: rgba(255,255,255,0.8); 
-    border-radius: 10px; 
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    z-index: 1;
+    background: rgba(255,255,255,0.8);
+    border-radius: 10px;
     padding: 5px;
 
   }
@@ -801,52 +801,52 @@ font-weight: 700;}
           </div>
         </div>
         <div class="col-12">
-        
+
         </div>
         <div class="col-lg-8 col-xl-6 us_homeclmn px-1">
           <div class="banner-filter-form mw-60" data-aos="">
             <ul class="nav nav-tabs border-0 m-3 bg-white" style="border-radius: 10px;">
-             
+
                   <li class="nav-item active">
                     <button class="nav-link car-button removeFilter  car_condition font-type tab-category"
                      data-image = "newbanner.png" data-id="24" data-bs-toggle="tab" data-cars-filter="1"
                       data-bs-target="#all" type="button" style="color:#1D86F5">
-                            
+
                       <i class="fas fa-car fa-fw me-2" style="color:#1D86F5"></i>
                       Cars
                     </button>
                   </li>
                    <li class="nav-item">
                     <button class="nav-link car_condition show_only_browse_style font-type tab-category" data-image = "market.jpg"
-                     data-id="0" data-bs-toggle="tab" 
+                     data-id="0" data-bs-toggle="tab"
                       data-bs-target="#all" type="button" style="color:black">
-                            
+
                        <i class="fas fa-store fa-fw me-2" style="color:gray"></i>
                        <!-- <i class="fas fa-shopping-cart back-cart" style="color: blue;"></i> -->
-                        Marketplace 
+                        Marketplace
                     </button>
                   </li>
                    <li class="nav-item">
-                    <button class="nav-link car_condition show_only_browse_style font-type tab-category" data-image = "property.jpg" 
-                     data-id="39" data-bs-toggle="tab" 
+                    <button class="nav-link car_condition show_only_browse_style font-type tab-category" data-image = "property.jpg"
+                     data-id="39" data-bs-toggle="tab"
                       data-bs-target="#all" type="button" style="color:black">
 
                       <i class="fas fa-building fa-fw me-2" style="color:gray"></i>
                         Property
                     </button>
                   </li>
-                  
+
                   <li class="nav-item">
-                    <button class="nav-link car_condition show_only_browse_style font-type tab-category" data-image = "farming.png"  
-                    data-id="28" data-bs-toggle="tab" 
+                    <button class="nav-link car_condition show_only_browse_style font-type tab-category" data-image = "farming.png"
+                    data-id="28" data-bs-toggle="tab"
                       data-bs-target="#all" type="button" style="color:black">
 
                       <i class="fas fa-tractor" style="color:gray"></i>
                         Farming
                     </button>
                   </li>
-                  
-                
+
+
              {{--  @endforeach --}}
             </ul>
             <div class="tab-content form-wrapper shadow-lg p-20">
@@ -857,7 +857,7 @@ font-weight: 700;}
                   <div class="row align-items-center gx-xl-3">
                     <div class="col-lg-12">
                       <div class="row ">
-                       
+
                         <div class="col-md col-sm-6 carform">
                           <div class="mb-20">
                             <select class="form-control js-example-basic-single1 font-500" id="car_brand" name="brands[]">
@@ -889,7 +889,7 @@ font-weight: 700;}
                             <select class="form-select form-control js-example-basic-single1 font-500" id="year_min" name="year_min">
                               <option value="">{{ __('Min Year') }}</option>
                               @foreach ($caryear as $year)
-                                  <option 
+                                  <option
                                     value="{{ $year->name }}">{{ $year->name }}</option>
                                 @endforeach
                             </select>
@@ -900,7 +900,7 @@ font-weight: 700;}
                             <select class="form-select form-control js-example-basic-single1 font-500" id="year_max" name="year_max">
                               <option value="">{{ __('Max Year') }}</option>
                                @foreach ($caryear as $year)
-                                  <option 
+                                  <option
                                     value="{{ $year->name }}">{{ $year->name }}</option>
                                 @endforeach
                             </select>
@@ -908,11 +908,11 @@ font-weight: 700;}
                         </div>
                         <div class="col-6 col-sm-3 carform">
                           <div class="mb-20">
-                          
+
                             <select class="form-select form-control js-example-basic-single1 font-500" id="min" name="min">
                               <option value="">{{ __('Min Price') }}</option>
                                @foreach ($adsprices as $prices)
-                                  <option 
+                                  <option
                                     value="{{ $prices->name }}">{{ symbolPrice($prices->name) }}</option>
                                 @endforeach
                             </select>
@@ -923,7 +923,7 @@ font-weight: 700;}
                             <select class="form-select form-control js-example-basic-single1 font-500" id="max" name="max">
                               <option value="">{{ __('Max Price') }}</option>
                               @foreach ($adsprices as $prices)
-                                  <option 
+                                  <option
                                     value="{{ $prices->name }}">{{ symbolPrice($prices->name) }}</option>
                                 @endforeach
                             </select>
@@ -941,13 +941,13 @@ font-weight: 700;}
                         <input class="form-control" type="hidden" value="{{ $min }}" id="o_min">
                         <input class="form-control" type="hidden" value="{{ $max }}" id="o_max">
                         <input type="hidden" id="currency_symbol" value="{{ $currencyInfo->base_currency_symbol }}">
-                      
+
                     </div>
                      <div class="col-lg-12 text-md-end">
                       <button type="button" onclick="updateUrlHome()" class="btn btn-primary bg-primary color-white w-100 searchNow">
                         {{ __('Search Now') }}</span>
                       </button>
-                    </div> 
+                    </div>
                   </div>
                 </form>
 
@@ -962,22 +962,22 @@ font-weight: 700;}
 
   <!-- latest add section start -->
     @if($car_contents->count() > 0 )
-        
+
     <section class="product-area pt-40 pb-20 us_recent_pro" style="border-radius:0px;box-shadow: 0px 0px 0px;margin-bottom: 1rem;">
       <div class="container-fluid">
             <div class="section-title title-inline mb-sm-30 mb-20" >
                   <h2 class="title  text-mobile " >
                     Recent Ads
-                  </h2>  
+                  </h2>
                       <!-- <a href="ads?sort=new" class="fw-bold" style="font-size: 27px; text-decoration: none;color:#1D86F5;font-size:20px;">See All ></a> -->
                     <a href="ads?type=list" class="fw-bold" style="font-size: 27px; text-decoration: none;color:#1D86F5;font-size:20px;">See All ></a>
           </div>
-      </div> 
+      </div>
       <div class="d-flex align-items-center justify-content-center position-relative">
-            <div class="w-100 gap-2 gap-md-3 d-flex align-items-center justify-content-center" 
+            <div class="w-100 gap-2 gap-md-3 d-flex align-items-center justify-content-center"
             style="overflow-x: auto; white-space: nowrap;  " id="recent_all_ads">
             @include('frontend/home/recent-ads-copy', ['car_contents' => $car_contents])
-            
+
               @php
                   $lastindex = count($car_contents) - 1;
               @endphp
@@ -990,15 +990,15 @@ font-weight: 700;}
                           <i class="fa fa-angle-left" aria-hidden="true"></i>
                   </button>
                   <!-- Right (Next) Button -->
-              <button type="button" class="nextprevbtn position-absolute d-none" value="2" 
+              <button type="button" class="nextprevbtn position-absolute d-none" value="2"
               style="top: 50%; right: -10px; transform: translateY(-50%); background: white; white; box-shadow: 0px 0px 20px 0px rgba(76, 87, 125, 0.1);border-color: transparent; padding: 5px; height: 50px; width: 50px; border-radius: 50%; font-size: 30px; color: #A6A6A6;">
                   <i class="fa fa-angle-right" aria-hidden="true"></i>
               </button>
       </div>
     </div>
  </section>
-     
-    @endif      
+
+    @endif
   <!-- latest add  section end -->
 
    <!-- Steps-area start 3-->
@@ -1014,7 +1014,7 @@ font-weight: 700;}
                 It's As Simple As List It
               </h2>
             </div>
-        
+
             <div class="section-title title-center " data-aos="">
               <h4 class="fw-bold text-center simpleText text-sm-end" style="color: #4a9dd9;">
                 {{-- @$workProcessSecInfo->title --}}
@@ -1044,7 +1044,7 @@ font-weight: 700;}
               <div class="col-lg-3 col-md-6" data-aos="">
                 <div class="card-container align-items-center text-center radius-md p-0 p-sm-25">
                   <div class="card-icon-container mb-25">
-                    <i class="fas fa-file-invoice-dollar"></i>
+                    <i class="fas fa-pound-sign"></i>
                   </div>
                   <div class="card-content mb-4 mb-sm-0">
                     <h5 class="card-title2 mb-20">
@@ -1095,7 +1095,7 @@ font-weight: 700;}
       </div>
     </section>
   <!-- Steps-area end -->
-    
+
   <!-- START BROWSE CARS --->
    <div class="w-100"  id="browse_style_home">
     @if($browse_by_lifestyle)
@@ -1109,7 +1109,7 @@ font-weight: 700;}
 
 <!-- Category-area start 3 -->
   @if ($secInfo->category_section_status == 1)
-  <section class="category-area category-1 pt-20 pb-20 font-type" 
+  <section class="category-area category-1 pt-20 pb-20 font-type"
     style="margin: 0px;border-radius:0px;box-shadow: 0px 0px 0px #afafaf;">
       <div class="container-fluid">
         <div class="row m-sm-4">
@@ -1121,22 +1121,22 @@ font-weight: 700;}
           <div class="col-12">
             @include('frontend/home/dataloader')
             <div class="row m-sm-4 tabsHtmlData loading-section">
-              
+
             @foreach ($car_categories as $key => $category)
                 <div class="col-6 col-lg-3" data-aos="">
                   <a href="{{ route('frontend.cars', ['category' => $category->slug]) }}" class="category_icon_link" data-cat="{{ $category->slug }}">
-                     
+
                     <div class="category-item ">
                       <div class="d-flex border rounded pt-4 ps-sm-4 pe-sm-4 px-4 mb-10">
                         <h6 class="category-title urbanistFonts mb-10 w-100">
-                          <div class="w-100  d-flex  justify-content-start justify-content-sm-center 
+                          <div class="w-100  d-flex  justify-content-start justify-content-sm-center
                           align-items-center gap-1">
                             <div class="catImg w-25 w-sm-50 w-md-50 w-lg-50 w-xl-50  w-xxl-50 d-flex justify-content-end align-items-center">
-                            <img class=" w-100 lazyload blur-up category-icon" 
+                            <img class=" w-100 lazyload blur-up category-icon"
                           style="    filter: brightness(0) saturate(100%) invert(72%) sepia(72%) saturate(6798%) hue-rotate(193deg)
-                           brightness(95%) contrast(101%);" 
-                              data-src="{{ asset('assets/admin/img/car-category/' . ($category->image === '/66cb39304409cColor.png' ? '/66cb39304409c.jpg' : $category->image)) }}?v=0.3"  
-                              alt="img 
+                           brightness(95%) contrast(101%);"
+                              data-src="{{ asset('assets/admin/img/car-category/' . ($category->image === '/66cb39304409cColor.png' ? '/66cb39304409c.jpg' : $category->image)) }}?v=0.3"
+                              alt="img
                               title="{{ $category->name }}"
                               id="filterCSS{{$key}}" >
                             </div>
@@ -1151,7 +1151,7 @@ font-weight: 700;}
                 </div>
             @endforeach
 
-            
+
           </div>
           </div>
         </div>
@@ -1159,10 +1159,10 @@ font-weight: 700;}
   </section>
   @endif
   <!-- Category-area end -->
- 
+
   <!-- featured section start 4-->
   @if ($secInfo->feature_section_status == 1 && !empty($getFeaturedVendors->cars))
-  <section class="product-area pt-20 pb-20 font-type" 
+  <section class="product-area pt-20 pb-20 font-type"
     style="border-radius:0px;background:rgb(34, 40, 49);box-shadow: 0px 0px 0px 0px;margin:0px;"  id="carFeaterHomepage">
       <div class="container-fluid" >
         <div class="row m-sm-4" style="padding: 0px 0px !important;">
@@ -1173,28 +1173,28 @@ font-weight: 700;}
               </h1>
             </div>
           </div>
-          
-          <div class="col-12  col-lg-4 mb-3 mx-auto"  data-aos="" > 
-            @include('frontend/home/dataloader')   
-            <div class="vendor-info-container dealer-card loading-section" 
+
+          <div class="col-12  col-lg-4 mb-3 mx-auto"  data-aos="" >
+            @include('frontend/home/dataloader')
+            <div class="vendor-info-container dealer-card loading-section"
             style="box-shadow: 0px 0px 20px 0px rgba(76, 87, 125, 0.1);border-color: transparent;">
               @php
                 $photoUrl = env('SUBDOMAIN_APP_URL').'assets/admin/img/vendor-photo/' . $getFeaturedVendors->photo;
-                
+
                 if (file_exists(public_path('assets/admin/img/vendor-photo/' . $getFeaturedVendors->photo))) {
                   $photoUrl = asset('assets/admin/img/vendor-photo/' . $getFeaturedVendors->photo);
                 }
               @endphp
-              
+
               <div class="vendor-info">
-                <img  
+                <img
                   class="lazyload blur-up"
                   src="{{ asset('assets/img/blank-user.jpg') }}"
-                  data-src="{{ $photoUrl }}"  
-                  alt="Vendor" 
+                  data-src="{{ $photoUrl }}"
+                  alt="Vendor"
                   onload="handleImageLoad(this)"
-                  onerror="this.onerror=null;this.src='{{ asset('assets/img/blank-user.jpg') }}';" 
-                >  
+                  onerror="this.onerror=null;this.src='{{ asset('assets/img/blank-user.jpg') }}';"
+                >
                 <div class="vendor-details ps-1">
                   <h1 class="vendor-title text-dark">{{$getFeaturedVendors->vendor_info->name}}</h1>
                   <span class="dealer-info">
@@ -1214,55 +1214,55 @@ font-weight: 700;}
               </div>
                 </div>
               </div>
-              <a 
-              href="{{ route('frontend.vendor.details', [ 'id' => $getFeaturedVendors->id ,  'username' => ( $getFeaturedVendors->username)]) }}" 
+              <a
+              href="{{ route('frontend.vendor.details', [ 'id' => $getFeaturedVendors->id ,  'username' => ( $getFeaturedVendors->username)]) }}"
               class="showroom-button ">
               See Showroom</a>
             </div>
           </div>
-          <div class="col-12  col-lg-8" data-aos="" style="border: 0px solid orange;"> 
-            <div class="row pe-sm-5 "  >     
+          <div class="col-12  col-lg-8" data-aos="" style="border: 0px solid orange;">
+            <div class="row pe-sm-5 "  >
             @foreach ($getFeaturedVendors->cars as $featureads)
 
              @php
-            
+
               $image_path = $featureads->feature_image;
-              
+
               $rotation = 0;
-              
+
               if($featureads->rotation_point > 0 )
               {
                   $rotation = $featureads->rotation_point;
               }
-              
+
               if(!empty($image_path) && $featureads->rotation_point == 0 )
-              {   
+              {
                 $rotation = $featureads->galleries->where('image' , $image_path)->first();
-                
+
                 if($rotation == true)
                 {
-                      $rotation = $rotation->rotation_point;  
+                      $rotation = $rotation->rotation_point;
                 }
                 else
                 {
-                      $rotation = 0;   
+                      $rotation = 0;
                 }
               }
-            
+
               if(empty($featureads->feature_image))
               {
                   $imng = $featureads->galleries->sortBy('priority')->first();
                   $image_path = $imng->image;
                   $rotation = $imng->rotation_point;
-              } 
-              
+              }
+
 
               @endphp
-   
+
               <!-- ------------------------------------------------- -->
               <div class="col-6 col-md-4">
               @include('frontend/home/dataloader')
-                <div class="product-default p-1 p-sm-15 mb-10 loading-section" 
+                <div class="product-default p-1 p-sm-15 mb-10 loading-section"
                 style="padding: 0px !important;box-shadow: 0px 0px 20px 0px rgba(76, 87, 125, 0.1);
                 border-color: transparent;border-radius: 10px;" data-id="{{$featureads->id}}">
 
@@ -1284,23 +1284,23 @@ font-weight: 700;}
                               $checkWishList = false;
                             @endphp
                           @endif
-                      <a href="javascript:void(0);" 
-                        onclick="addToWishlist({{$featureads->id}})" 
+                      <a href="javascript:void(0);"
+                        onclick="addToWishlist({{$featureads->id}})"
                         class=" us_front_ad"
-                        data-tooltip="tooltip" 
+                        data-tooltip="tooltip"
                         data-bs-placement="right"
-                        title="{{ $checkWishList == false ? __('Saved')  : __('Save Ad') }}" 
+                        title="{{ $checkWishList == false ? __('Saved')  : __('Save Ad') }}"
                         style="position: absolute; right: 5px; top: 5px; z-index: 100;">
                         <img src="assets/img/heart_dislike.svg"  class="whishList_img" alt="hear"></img>
-                          
+
                       </a>
                     </figure>
-                
+
                       <div class="product-details" style="padding: 7px !important;padding-left: 15px !important;">
-                    
+
                         <span class="product-category font-xsm">
-                            
-                            <h5 class="product-title mb-0" style="font-size: clamp(12px, calc(14px + 1.5vh), 18px); 
+
+                            <h5 class="product-title mb-0" style="font-size: clamp(12px, calc(14px + 1.5vh), 18px);
                             display: inline-block;white-space: nowrap;
                             overflow: hidden;text-overflow: ellipsis;vertical-align: top;">
                               <a href="{{ route('frontend.car.details', ['cattitle' => catslug($featureads->car_content->category_id),'slug' => $featureads->car_content->slug, 'id' => $featureads->id]) }}"
@@ -1309,63 +1309,63 @@ font-weight: 700;}
                                 <!-- {{ \Illuminate\Support\Str::limit(optional($featureads->car_content)->title, 12) }}                                -->
                               </a>
                             </h5>
-                          
+
                         </span>
-                      
+
                         <div class="d-flex align-items-center justify-content-between mt-3">
-                          <div class="author us_child_dv" style="cursor:pointer;" 
+                          <div class="author us_child_dv" style="cursor:pointer;"
                           onclick="window.location='{{ route('frontend.car.details', ['cattitle' => catslug($featureads->car_content->category_id),'slug' => $featureads->car_content->slug, 'id' => $featureads->id]) }}'" >
                             <span class="text-20px">
-                                
+
                                 <!-- @if($featureads->year)
-                                    {{ $featureads->year }} 
+                                    {{ $featureads->year }}
                                 @endif
-                                
+
                                 @if($featureads->engineCapacity && $featureads->car_content->fuel_type )
-                                  <b class="us_dot"> - </b>   {{ roundEngineDisplacement($featureads) }} 
+                                  <b class="us_dot"> - </b>   {{ roundEngineDisplacement($featureads) }}
                                 @endif -->
-                                
+
                                 <!-- @if($featureads->car_content->fuel_type )
-                                  <b class="us_dot"> - </b>   {{ $featureads->car_content->fuel_type->name }} 
+                                  <b class="us_dot"> - </b>   {{ $featureads->car_content->fuel_type->name }}
                                 @endif
-                                
-                                
+
+
                                 @if($featureads->mileage)
-                                  <b class="us_dot"> - </b>    {{ number_format( $featureads->mileage ) }} mi 
+                                  <b class="us_dot"> - </b>    {{ number_format( $featureads->mileage ) }} mi
                                 @endif -->
-                                
+
                                 @if($featureads->created_at && $featureads->is_featured != 1)
                                     <!-- <b class="us_dot text-20px"> - </b>  -->
-                                    {{calculate_datetime($featureads->created_at)}} 
+                                    {{calculate_datetime($featureads->created_at)}}
                                 @endif
-                                
+
                                 <!-- @if($featureads->city)
-                                    <b class="us_dot"> - </b> {{  Ucfirst($featureads->city) }} 
+                                    <b class="us_dot"> - </b> {{  Ucfirst($featureads->city) }}
                                 @endif -->
-                                  
+
                             </span>
-                        
+
                           </div>
-                        
+
                           @if(!$featureads->year && !$featureads->mileage && !$featureads->engineCapacity)
-                          
+
                             <div style="display:flex;">
                             </div>
-                          
-                          @endif 
 
-                            <a href="javascript:void(0);" onclick="openShareModal(this)" 
+                          @endif
+
+                            <a href="javascript:void(0);" onclick="openShareModal(this)"
                                data-url="{{ route('frontend.car.details', ['cattitle' => catslug($featureads->car_content->category_id),'slug' => $featureads->car_content->slug, 'id' => $featureads->id]) }}"
                               style="background: transparent; border: none; color: #1D86F5; font-size: 23px;">
                                 <i class="fa fa-share-alt pe-1" aria-hidden="true"></i>
                             </a>
                         </div>
-                                                
+
                         <div class="d-flex align-items-center justify-content-between mt-3 mb-2" >
                           <div class="author">
-                              
+
                               @if($featureads->previous_price && $featureads->previous_price < $featureads->price )
-                                  <strike style="font-weight: 300;color: red;font-size: 14px;float: left;">{{ symbolPrice($featureads->price) }}</strike> 
+                                  <strike style="font-weight: 300;color: red;font-size: 14px;float: left;">{{ symbolPrice($featureads->price) }}</strike>
                                   <!-- <div> {{ symbolPrice($featureads->previous_price) }}</div> -->
                                   <span style="color: #1D86F5;" class="text-18px text-18-categ poundPrice" data-price="{{ $featureads->previous_price }}">
                                     {{ symbolPrice($featureads->previous_price) }}</span>
@@ -1376,7 +1376,7 @@ font-weight: 700;}
                           </div>
                           <div>
                             <!-- {!! calulcateloanamount(!empty($featureads->previous_price && $featureads->previous_price < $featureads->price  ) ? $featureads->previous_price : $featureads->price)[0] !!} -->
-                           
+
                             @php
                                 // Get loan amount data
                                 $loanAmount = calulcateloanamount(!empty($featureads->previous_price && $featureads->previous_price < $featureads->price) ? $featureads->previous_price : $featureads->price)[0];
@@ -1397,7 +1397,7 @@ font-weight: 700;}
                                 <span class="text-18-categ-perWeek text-18-categ-perWeekBottom" style=" color: black;">
                                     {{ symbolPrice($number) }}
                                 </span>
-                              
+
                                 <span class="text-18-categ-perWeek text-18-categ-perWeekBottom" style=" color: gray;">
                                     /{{ $period }}
                                 </span>
@@ -1409,30 +1409,30 @@ font-weight: 700;}
                       </div>
                 </div>
               </div>
-              
+
             @endforeach
           </div>
-          </div>             
+          </div>
         </div>
       </div>
     </section>
   @endif
   <!-- featured section end -->
 
-       
-    
+
+
   <!-- counter section start -->
   {{-- @if ($secInfo->counter_section_status == 1) --}}
     <section class="choose-area choose-2 pt-20 pb-20" style="margin: 0px;border-radius:0px;box-shadow: 0px 0px 0px 0px">
       <div class="container-fluid mb-40">
         <div class="row justify-content-center m-sm-4">
           <div class="col-lg-6 order-2 order-md-1" data-aos="" style="border-radius:10px 0px 0px 10px;box-shadow: 1px 0px 10px 0px rgba(76, 87, 125, 0.1);border-color: transparent">
-              
+
 
             <div class="content-title text-center ">
               <div class="w-lg-40">
                 <!-- <h2 class="title mb-20 mt-0">{{ @$counterSectionInfo->title }}</h2> -->
-                
+
                 <h3 class=" text-center  mt-4 text-60px">Download our mobile app!</h3>
                 <!-- <p>{{ @$counterSectionInfo->subtitle }}</p> -->
                 <div class="image ">
@@ -1441,9 +1441,9 @@ font-weight: 700;}
                 </div>
                 <p style="font-size: 18px;font-weight:bold;color:#000000">on</p>
                 <div class="small-images">
-                  <img src="{{ asset('assets/img/appstore.svg') }}" alt="App Store" 
+                  <img src="{{ asset('assets/img/appstore.svg') }}" alt="App Store"
                   style="width: 180px; height: auto;">
-                  <img src="{{ asset('assets/img/playstore.svg') }}" alt="Play Store" 
+                  <img src="{{ asset('assets/img/playstore.svg') }}" alt="Play Store"
                   style="width: 180px; height: auto;">
                 </div>
               </div>
@@ -1467,8 +1467,8 @@ font-weight: 700;}
               </div>
             </div>
           </div>
-          <div class="col-lg-6 order-1 order-md-2" 
-          style="background-color:#B4D6FF;border-radius:0px 10px 10px 0px; 
+          <div class="col-lg-6 order-1 order-md-2"
+          style="background-color:#B4D6FF;border-radius:0px 10px 10px 0px;
           ">
             <div class="image d-flex justify-content-center align-items-center rounded ">
               <img class="lazyload blur-up" data-src="{{ asset('assets/img/12345678900.png') }}"
@@ -1627,7 +1627,7 @@ font-weight: 700;}
                             <img class="lazyload" data-src="{{ asset('assets/img/blogs/' . $blog->image) }}" alt="Blog Image">
                         </a>
                     </div>
-                    <div  class="p-sm-4 px-1">  
+                    <div  class="p-sm-4 px-1">
                       <h4  style="color: #000000;font-size: clamp(12px, calc(14px + 1vh), 18px);">
                           <a class="" href="{{ route('blog_details', ['slug' => $blog->slug]) }}">
                               {{ strlen(strip_tags($blog->title)) > 20 ? mb_substr(strip_tags($blog->title), 0, 20, 'UTF-8') . '...' : $blog->title }}
@@ -1659,7 +1659,7 @@ font-weight: 700;}
   // console.log(brands,"brands")
     const baseURL = "{{ url('/') }}";
 
-    
+
 const selectElement =document.getElementById('car_brand');
 
 const carBrands=["A.e.c.",
@@ -2941,7 +2941,7 @@ if (true) {
 
 
   $(document).ready(function() {
-  
+
 
   sessionStorage.setItem('tabCategory', 'cars-&-motors');
   $(document).ready(function() {
@@ -2950,20 +2950,20 @@ if (true) {
         var $element = $(element);
         var filterValue = $element.css('filter');  // Get current filter value
         if (index === 0) {  // Modify condition as needed
-            $element.css('filter', '');  
+            $element.css('filter', '');
         }
         else if (index === 14){
-          $element.css('filter', '');  
+          $element.css('filter', '');
         }
         else if (index === 10){
-          $element.css('filter', '');  
+          $element.css('filter', '');
         }
         else if (index === 23){
-          $element.css('filter', '');  
+          $element.css('filter', '');
         }
     });
 });
-  
+
 
 
 
@@ -2972,18 +2972,18 @@ if (true) {
         $('.skeleton').hide(); // Hide skeletons
         // $('.loading-section').fadeIn()
         $('.loading-section').removeClass('loading-section');
-        
+
     }, 2000); // Adjust the timeout according to your actual data loading time
     // Toggle active class on click
     $('.nav-link').on('click', function() {
 
       $('.nav-item').removeClass('active');
       $('.nav-link').css('border', '0px');
-      
+
       $('.nav-link').css('color', 'black');
       $('.nav-link i').css('color', 'gray');
-     
-      let current_obj = $(this); 
+
+      let current_obj = $(this);
       current_obj.css('color', '#1D86F5');
       current_obj.find('i').css('color', '#1D86F5');
   });
@@ -3012,8 +3012,8 @@ if (true) {
 
   // Call adjustTabHeight on tab change
   $('button[data-bs-toggle="tab"]').on('shown.bs.tab', function() {
-    adjustTabHeight(); // Adjust the height after a new tab is 
-    
+    adjustTabHeight(); // Adjust the height after a new tab is
+
   });
 
   var popups = [];
@@ -3083,7 +3083,7 @@ if (true) {
 });
 
 setTimeout(() => {
-  
+
   function formatCurrency(number) {
     return '£' + new Intl.NumberFormat('en-GB', {
         minimumFractionDigits: 0,
@@ -3098,7 +3098,7 @@ function formatAllPrices() {
         priceElement.text(formatCurrency(price));
       });
     }
-    
+
     formatAllPrices();
   }, 2000);
 

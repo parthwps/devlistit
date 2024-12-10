@@ -123,7 +123,26 @@
                                                                  data-parent="#accordion">
                                                                 <div class="version-body">
                                                                     <div class="row">
-                                                                        <div class="col-md-6 mb-3">
+                                                                      <div class="col-md-12 mb-3">
+                                                                        <div class="form-group {{ $language->direction == 1 ? 'rtl text-right' : '' }}">
+                                                                            @php
+                                                                                $placeholder = 'What you are selling?';
+                                                                                if ($draft_ad && !empty($draft_ad->ad_type) && $draft_ad->ad_type == 'Wanted') {
+                                                                                    $placeholder = 'What you are looking for?';
+                                                                                }
+                                                                            @endphp
+                                                                            <label>{{ __('Ad Title') }} *</label>
+                                                                            <input type="text" id="input-title" class="form-control"
+                                                                                   onfocusout="saveDraftData(this , 'ad_title')"
+                                                                                   value="@if($draft_ad == true && !empty($draft_ad->ad_title)) {{$draft_ad->ad_title}} @endif"
+                                                                                   name="{{ $language->code }}_title"
+                                                                                   placeholder="{{ $placeholder  }}">
+                                                                            <span class="form-text">
+                                                                            {{ __('Your ad title will be shown in search results') }}
+                                                                        </span>
+                                                                        </div>
+                                                                    </div>
+                                                                        <div class="col-md-12 mb-3">
                                                                             <div class="form-group">
                                                                                 <div class="form-check form-check-inline">
                                                                                     <label class="form-check-label" for="inlineRadio3">Ad
@@ -154,25 +173,7 @@
 
                                                                             </div>
                                                                         </div>
-                                                                        <div class="col-md-6 mb-3">
-                                                                            <div class="form-group {{ $language->direction == 1 ? 'rtl text-right' : '' }}">
-                                                                                @php
-                                                                                    $placeholder = 'What you are selling?';
-                                                                                    if ($draft_ad && !empty($draft_ad->ad_type) && $draft_ad->ad_type == 'Wanted') {
-                                                                                        $placeholder = 'What you are looking for?';
-                                                                                    }
-                                                                                @endphp
-                                                                                <label>{{ __('Ad Title') }} *</label>
-                                                                                <input type="text" id="input-title" class="form-control"
-                                                                                       onfocusout="saveDraftData(this , 'ad_title')"
-                                                                                       value="@if($draft_ad == true && !empty($draft_ad->ad_title)) {{$draft_ad->ad_title}} @endif"
-                                                                                       name="{{ $language->code }}_title"
-                                                                                       placeholder="{{ $placeholder  }}">
-                                                                                <span class="form-text">
-                                                                                {{ __('Your ad title will be shown in search results') }}
-                                                                            </span>
-                                                                            </div>
-                                                                        </div>
+
                                                                     </div>
                                                                     <div class="row">
                                                                         <div class="col-md-6 mb-3">

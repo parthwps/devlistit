@@ -130,6 +130,10 @@ Route::middleware('change.lang')->group(function ()
 
       Route::post('/product/{id}/store-review', 'FrontEnd\Shop\ProductController@storeReview')->name('shop.product_details.store_review');
   });
+  Route::get('/phpinfo', function () {
+    phpinfo();
+});
+
 
     Route::prefix('customers')->group(function ()
     {

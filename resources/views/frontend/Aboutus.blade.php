@@ -51,7 +51,7 @@
       <div class="row mt-0">
         @php
           $features = [
-              ['icon' => 'fas fa-dollar-sign', 'title' => 'Simple Price Comparison', 'text' => 'Effortlessly compare prices, makes, models, and more, so you can find the best deal in just a few clicks & made Exclusive Deals & Models.
+              ['icon' => 'fas fa-pound-sign', 'title' => 'Simple Price Comparison', 'text' => 'Effortlessly compare prices, makes, models, and more, so you can find the best deal in just a few clicks & made Exclusive Deals & Models.
 '],
               ['icon' => 'fas fa-shield-alt', 'title' => 'Safe Transactions', 'text' => 'Shop or sell with confidence, knowing that our platform is equipped with robust security features to ensure a safe experience every time.'],
               ['icon' => 'fas fa-check-circle', 'title' => 'Secure Listings', 'text' => 'Our team diligently reviews all listings to ensure they’re legitimate, so you can browse without worrying about scams or misleading offers.'],

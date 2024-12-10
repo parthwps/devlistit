@@ -1627,7 +1627,7 @@ div.table-responsive>div.dataTables_wrapper>div.row>div[class^="col-"]:last-chil
 .form-check [type="checkbox"]:not(:checked),
 .form-check [type="checkbox"]:checked {
   position: absolute;
-  
+
 }
 
 .form-check [type="checkbox"]:not(:checked)+.form-check-sign,
@@ -1890,7 +1890,7 @@ div.table-responsive>div.dataTables_wrapper>div.row>div[class^="col-"]:last-chil
 .form-check label {
   margin-bottom: .5rem;
   color: #0d0c1b;
-  
+
   font-size: 1.2rem;
   /* white-space: nowrap; */
 }
@@ -3667,7 +3667,7 @@ label.error {
 }
 .chat-about {
  padding-top: 18px;
-  
+
 }
 
 .chat .chat-history {
@@ -3857,6 +3857,7 @@ label.error {
 .colour-filter img, .body-type-filter img{
   width: 100px;
   height: 60px;
+  object-fit: contain;
 }
 
 .car-color-code{
