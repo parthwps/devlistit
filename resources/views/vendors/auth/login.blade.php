@@ -32,14 +32,14 @@
          <div class="title">
             <h4 class="mb-20">{{ __('Login') }}</h4>
           </div>
-      
-                        
-                        
+
+
+
         <form action="{{ route('vendor.login_submit') }}" method="POST">
           @csrf
-          
+
           <div class="form-group mb-10">
-              
+
         <a href="/login/google"  style="border: 1px solid #d7d7d7;
         background: #f4f4f4;
         border-radius: 5px;
@@ -47,12 +47,12 @@
             <img src="/google.svg" class="mr-auto" alt=" google svg">
             <span class="flex-grow-1">Login with Google account</span>
         </a>
-        
+
         <div class="text-center mt-30">
                         <span class="badge badge-circle-gray300 text-secondary d-inline-flex align-items-center justify-content-center" style="font-size: 1.5rem;">OR</span>
                     </div>
         </div>
-        
+
           <div class="form-group ">
             <input type="email" class="form-control" name="email" placeholder="Enter your email" required>
             @error('email')
@@ -60,7 +60,10 @@
             @enderror
           </div>
           <div class="form-group mb-30">
-            <input type="password" class="form-control" name="password" placeholder="{{ __('Password') }}" required>
+            <input type="password" class="form-control" name="password" id="password" autocomplete="off" placeholder="{{ __('Password') }}" required>
+            <span id="togglePassword" class="eye-icon">
+              <i class="fa fa-eye"></i>
+              </span>
             @error('password')
               <p class="text-danger mt-2">{{ $message }}</p>
             @enderror

@@ -20,6 +20,7 @@ class Car extends Model
         'vendor_id',
         'package_id',
         'price',
+        'sign',
         'previous_price',
         'city',
         'speed',
@@ -52,7 +53,7 @@ class Car extends Model
         'recommendation',
         'remove_remarks',
     ];
-   
+
     //car_content
     public function car_content()
     {
@@ -68,27 +69,27 @@ class Car extends Model
     {
         return $this->belongsTo(Vendor::class, 'vendor_id');
     }
-    
+
     public function package()
     {
         return $this->belongsTo(PrivatePackage::class , 'package_id');
     }
-    
+
     public function support_tickets()
     {
         return $this->hasMany(SupportTicket::class , 'ad_id');
     }
-    
+
 
     public function visitors()
     {
         return $this->hasMany(Visitor::class);
     }
-    
+
     public function wishlists()
     {
         return $this->hasMany(Wishlist::class);
     }
-    
-    
+
+
 }

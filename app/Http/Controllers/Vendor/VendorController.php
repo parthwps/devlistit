@@ -928,10 +928,12 @@ class VendorController extends Controller
             $in['show_contact_form'] = 0;
         }
 
-        if ($request->phone)
-        {
-            $in['phone'] = $request->phone;
-        }
+        // if ($request->phone)
+        // {
+        //     $in['phone'] = $request->phone;
+        // }
+        $vendor->phone = $request->phone;
+
 
         if ($request->also_whatsapp == 'on')
         {

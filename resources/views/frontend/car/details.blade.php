@@ -2003,6 +2003,11 @@ Thanks</textarea>
                 </a>
 
                 @else
+                @if($car->website_url == 1)
+                  <a href="{{ $car->website_url }}" id="userwebsitebutton" class="btn btn-md btn-outline w-100 showLoader mb-3 us_button_st @if($car->phone_text == 1 && $car->message_center == 0) us_sing_doub @else sticky-button @endif" target="_blank">
+                      <span class="original_text">Visit Website</span> <span class="mobile_icon" style="display:none;"><i class="fa fa-globe"></i></span>
+                  </a>
+                @endif
 
                 @if($car->phone_text == 1)
                     <a href="tel:{{$car->vendor->country_code.$car->vendor->phone}}" id="userphonebutton"  onclick="savePhoneView({{@$car->id}} , this)"
@@ -2205,8 +2210,6 @@ Thanks</textarea>
                         <a href="{{ route('frontend.car.details', ['cattitle' => catslug($car->car_content->category_id),'slug' => $car->car_content->slug, 'id' => $car->id]) }}"
                           class="lazy-container ratio ratio-1-1">
 
-                          <img class="lazyload" data-src=" {{  $car->vendor->vendor_type == 'normal' ? asset('assets/admin/img/car-gallery/' . $image_path) :  env('SUBDOMAIN_APP_URL').'assets/admin/img/car-gallery/' . $image_path }}"
-                            alt="Product" style="transform: rotate({{$rotation}}deg);" onerror="this.onerror=null;this.src='{{ asset('assets/img/Image_not_available.png') }}';" >
 
                         </a>
                       </figure>

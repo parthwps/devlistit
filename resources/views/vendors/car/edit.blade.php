@@ -31,12 +31,12 @@ $categories = App\Models\Car\Category::where('id', $carContent->category_id)->fi
 @endphp
 <div class="user-dashboard pt-20 pb-60">
     <div class="container">
-      
+
   <div class="row gx-xl-5">
-  
+
        @includeIf('vendors.partials.side-custom')
-  <div class="col-md-9">      
-  
+  <div class="col-md-9">
+
 
   <div class="row">
     <div class="col-md-12">
@@ -71,7 +71,7 @@ $categories = App\Models\Car\Category::where('id', $carContent->category_id)->fi
                 <button type="button" class="close" data-dismiss="alert">×</button>
                 <ul></ul>
               </div>
-              
+
               <div class="col-lg-12">
                 <label for="" class="mb-2"><strong>{{ __('Gallery Images') }} **</strong> <br> <small class="text-danger">load up to {{$car->package ? $car->package->photo_allowed : 15 }} images .jpg, .png, & .gif</small> </label>
                 <div class="row">
@@ -79,21 +79,21 @@ $categories = App\Models\Car\Category::where('id', $carContent->category_id)->fi
                     @php
                 // Sort galleries by priority
                 $sortedGalleries = $car->galleries->sortBy('priority');
-                
+
                 // Extract the feature image
                 $featureImage = $sortedGalleries->firstWhere('image', $car->feature_image);
-                
+
                 // Remove the feature image from the sorted galleries
                 if ($featureImage) {
                 $sortedGalleries = $sortedGalleries->reject(function($item) use ($featureImage) {
                 return $item->id === $featureImage->id;
                 });
-                
+
                 // Prepend the feature image to the sorted galleries
                 $sortedGalleries->prepend($featureImage);
                 }
                 @endphp
-                
+
                 <table class="table table-striped" id="imgtable">
                 @foreach ($sortedGalleries as $item)
                 <tr class="trdb table-row" id="trdb{{$item->id}}">
@@ -111,7 +111,7 @@ $categories = App\Models\Car\Category::where('id', $carContent->category_id)->fi
                     </div>
                 @endif
                 </td>
-                
+
                 <td>
                 <i class="fa fa-times" onclick="removethis({{ $item->id }})"></i>
                 <i class="fa fa-undo rotatebtndb" onclick="rotatePhoto({{ $item->id }})"></i>
@@ -142,60 +142,60 @@ $categories = App\Models\Car\Category::where('id', $carContent->category_id)->fi
                 <input type="hidden" name="car_id" value="{{ $car->id }}">
                 <input type="hidden" name="can_car_add" value="1">
                 <input type="hidden" id="defaultImg" name="car_cover_image" value="">
-                
-              
-               
+
+
+
                 @if($car->car_content->main_category_id == 24 && !empty($car->car_content->brand_id))
-                
-                    @if (in_array('make', json_decode($categories->filters))) 
+
+                    @if (in_array('make', json_decode($categories->filters)))
                         <div class="row">
                         <div class="col-lg-8">
                             <div class="form-group">
                             <h3>{{ __('Vehicle Details') }} </h3>
-                                       
+
                               </div>
                           </div>
                         </div>
                     @endif
 
                 <div class="row">
-                    @if (in_array('make', json_decode($categories->filters))) 
-                    
+                    @if (in_array('make', json_decode($categories->filters)))
+
                      @php
                         $brands = App\Models\Car\Brand::where('id', $carContent->brand_id)->first();
                     @endphp
-                    
+
                     @if($brands == true)
                       <div class="col-lg-6 col-sm-6">
                         <div class="form-group editAdLabel">
-                       
+
                           <label>{{ __('Make:') }} </label>
                           <b>{{$brands->name}}</b>
                         </div>
                       </div>
-                   @endif 
-                   
-                  @endif 
-                  
-                  @if (in_array('model', json_decode($categories->filters))) 
-                  
+                   @endif
+
+                  @endif
+
+                  @if (in_array('model', json_decode($categories->filters)))
+
                     @php
                         $models = App\Models\Car\CarModel::where('id', $carContent->car_model_id)->first();
                     @endphp
-                    
+
                     @if($models == true)
                       <div class="col-lg-6 col-sm-6">
                         <div class="form-group editAdLabel">
-                      
+
                           <label>{{ __('Model:') }} </label>
                           <b>{{$models->name}}</b>
                         </div>
                       </div>
-                    @endif 
-                    
-                  @endif 
+                    @endif
 
-                  @if (in_array('year', json_decode($categories->filters))) 
+                  @endif
+
+                  @if (in_array('year', json_decode($categories->filters)))
                   @if(!empty($car->year))
                   <div class="col-lg-6 col-sm-6">
                     <div class="form-group editAdLabel">
@@ -205,7 +205,7 @@ $categories = App\Models\Car\Category::where('id', $carContent->category_id)->fi
                   </div>
                   @endif
                   @endif
-                  
+
                   @if (in_array('fuel_types', json_decode($categories->filters)))
                    @php
                      $fuel_types = App\Models\Car\FuelType::where('id', $carContent->fuel_type_id)->first();
@@ -213,14 +213,14 @@ $categories = App\Models\Car\Category::where('id', $carContent->category_id)->fi
                      @if($fuel_types == true)
                   <div class="col-lg-6 col-sm-6">
                     <div class="form-group editAdLabel">
-                   
+
                       <label>{{ __('Fuel Type:') }} </label>
                       <b>{{$fuel_types->name}}</b>
                     </div>
                   </div>
                   @endif
                    @endif
-                   
+
 
              @if (in_array('engine', json_decode($categories->filters))  && !empty($fuel_types->id) &&  in_array($fuel_types->id , [14,15]) )
                 <div class="col-lg-4">
@@ -236,17 +236,17 @@ $categories = App\Models\Car\Category::where('id', $carContent->category_id)->fi
                         @endforeach
                         </select>
                     </div>
-                </div>   
-                
+                </div>
+
                 @else
-                
+
                 <div class="col-lg-4">
                     <div class="form-group">
                         <label>Engine size (KW) </label>
-                        
+
                         <input type="text" name="engineCapacity" value="{{$car->engineCapacity}}" class="form-control" />
                     </div>
-                </div> 
+                </div>
             @endif
 
 
@@ -257,11 +257,11 @@ $categories = App\Models\Car\Category::where('id', $carContent->category_id)->fi
                         $transmission_types = App\Models\Car\TransmissionType::where('status', 1)
                             ->get();
                         @endphp
-                
+
                         <label>{{ __('Transmission Type') }} </label>
                         <select name="transmission_type_id" class="form-control" id="transmissionType">
                         <option value="" >{{ __('Select') }}</option>
-                        
+
                         @foreach ($transmission_types as $transmission_type)
                             <option value="{{ $transmission_type->id }}" @selected($transmission_type->id == $carContent->transmission_type_id)>{{ $transmission_type->name }}
                             </option>
@@ -279,13 +279,13 @@ $categories = App\Models\Car\Category::where('id', $carContent->category_id)->fi
                         <label>{{ __('Body Type') }} </label>
                         <select name="body_type_id" id="bodyType" class="form-control">
                         @foreach ($body_types as $body_type)
-                        
+
                             <option value="{{ $body_type->id }}" @selected($body_type->id == $carContent->body_type_id)>{{ $body_type->name }}
                             </option>
                         @endforeach
                         </select>
                     </div>
-                </div> 
+                </div>
                 @endif
                 @if (in_array('colour', json_decode($categories->filters)))
                 <div class="col-lg-4">
@@ -293,11 +293,11 @@ $categories = App\Models\Car\Category::where('id', $carContent->category_id)->fi
                     @php
                         $colour = App\Models\Car\CarColor::where('status', 1)->get();
                     @endphp
-                
+
                     <label>{{ __('Colour') }} </label>
                     <select name="car_colour_id" class="form-control" id="carColour">
                         <option value="">{{ __('Select Colour') }}</option>
-                        
+
                         @foreach ($colour as $colour)
                         <option value="{{ $colour->id }}"  @selected($colour->id == $carContent->car_color_id)>{{ $colour->name }}</option>
                         @endforeach
@@ -342,24 +342,24 @@ $categories = App\Models\Car\Category::where('id', $carContent->category_id)->fi
                 @if (in_array('power', json_decode($categories->filters)))
                 <div class="col-lg-4">
                     <div class="form-group ">
-                   
-                
+
+
                     <label>{{ __('Power') }} </label>
-                    
+
                     <input type="number" class="form-control"  value="{{$car->power}}"   placeholder="Enter Power HP"  name="power"/>
 
-                   
+
                     </div>
                 </div>
                 @endif
                 @if (in_array('battery', json_decode($categories->filters)) && !empty($fuel_types->id) &&  !in_array($fuel_types->id , [14,15]))
                 <div class="col-lg-4">
                     <div class="form-group ">
-                   
+
                     <label>{{ __('Battery') }} </label>
                     <select name="battery" class="form-control" id="battery">
                         <option value="">{{ __('Select battery') }}</option>
-                
+
                         <option value="">{{ __('Any') }}</option>
                         <option value="100" @selected($car->battery == 100)>100+ M</option>
                         <option value="200" @selected($car->battery == 200)>200+ M</option>
@@ -373,7 +373,7 @@ $categories = App\Models\Car\Category::where('id', $carContent->category_id)->fi
                 @if (in_array('owners', json_decode($categories->filters)))
                 <div class="col-lg-4">
                     <div class="form-group ">
-                   
+
                     <label>{{ __('Number of owners') }} </label>
                     <select id="owners" class="form-select form-control"  name="owners">
                         <option value="">{{ __('Any') }}</option>
@@ -385,7 +385,7 @@ $categories = App\Models\Car\Category::where('id', $carContent->category_id)->fi
                         <option value="6" @selected($car->owners == 6)>6</option>
                         <option value="7" @selected($car->owners == 7)>7</option>
                         <option value="8" @selected($car->owners == 8)>8</option>
-                        
+
                     </select>
                     </div>
                 </div>
@@ -393,30 +393,30 @@ $categories = App\Models\Car\Category::where('id', $carContent->category_id)->fi
                 @if (in_array('road-tax', json_decode($categories->filters)))
                 <div class="col-lg-4">
                     <div class="form-group ">
-                   
+
                     <label>{{ __('Annual road tax') }} </label>
-                    
+
                     <input type="number" class="form-control"  value="{{$car->road_tax}}"   placeholder="Enter annual road tax"  name="road_tax"/>
-                    
-                    
+
+
                     </div>
                 </div>
                 @endif
-                
-                
-                
+
+
+
                 @endif
-                
-                
+
+
                   @if(!empty($output))
                     {!!$output!!}
                 @endif
-               
+
 
                 <div id="accordion" class="mt-3">
                   @foreach ($languages as $language)
-                   
-                   
+
+
                           <div class="row">
                             <div class="col-lg-12">
                               <div class="form-group">
@@ -448,7 +448,7 @@ $categories = App\Models\Car\Category::where('id', $carContent->category_id)->fi
                               </div>
                             </div> -->
 
-                               
+
                           <div class="row">
                             <div class="col-lg-12">
                               <div class="form-group">
@@ -459,22 +459,28 @@ $categories = App\Models\Car\Category::where('id', $carContent->category_id)->fi
                             </div>
                           </div>
                           <div class="row">
-                 
+
                           <div class="col-lg-6">
                             <div class="form-group">
                               <label>{{ __('Price') }} </label>
                               <input type="number" class="form-control" @if($carContent->main_category_id == 233 || $carContent->main_category_id == 347 ) readonly @endif name="previous_price" placeholder="Enter Previous Price"
                                 value="{{ (!empty($car->previous_price)) ? $car->previous_price :  $car->price }}">
                             </div>
+                            <div class="form-group" style="margin-top: 35px;">
+                              <select class="form-control" name="sign">
+                                  <option value="£" {{ old('sign', $draft_ad->sign ?? '£') == '£' ? 'selected' : '' }}>£</option>
+                                  <option value="₹" {{ old('sign', $draft_ad->sign ?? '₹') == '₹' ? 'selected' : '' }}>₹</option>
+                              </select>
+                          </div>
                           </div>
                           <div class="col-lg-6 ">
                             <div class="form-group">
                               <label>{{ __('Optional YouTube Video') }} </label>
                                  <input type="text" class="form-control" name="youtube_video" value="{{$car->youtube_video}}" placeholder="Enter youtube Video URL">
                               </div>
-                              </div>                      
+                              </div>
                            </div>
-                           
+
                           @endforeach
                         </div>
                         <div class="row pt-20">
@@ -500,32 +506,32 @@ $categories = App\Models\Car\Category::where('id', $carContent->category_id)->fi
                       <label>{{ __('Email') }}</label>
                       <input type="text" value="{{ $vendor->email }}" class="form-control" name="email" disabled>
                     </div>
-                  </div> 
+                  </div>
                   <div class="col-lg-6">
                     <label style="margin-top: 5px;margin-left: 10px;font-size: 21px;color: #7b7b7b;">{{ __('Phone') }}</label>
                     <div class="form-group input-group">
-                      
+
                       <div class="d-flex" style="    margin-top: -12px;">
                         <div class="custom-select">
                         <div class="select-selected">
-                            
+
                             @php
                                 $ct = $country_codes->firstWhere('country', 'United Kingdom');
-                                
+
                                 $flagUrl = $ct->flag_url;
                                 $flagcode = $ct->code;
                                 $s_code = $ct->short_code;
-                                
+
                                 if(!empty($vendor->country_code))
                                 {
                                     $ct = $country_codes->firstWhere('code', $vendor->country_code);
-                                    
+
                                     $flagUrl = $ct->flag_url;
                                     $flagcode = $ct->code;
                                     $s_code = $ct->short_code;
-                                
+
                                 }
-                                
+
                             @endphp
                         <img src="{{ $flagUrl }}" alt="UK Flag" class="flag">
                         <span class="short_code"> {{$s_code}} </span> ({{ $flagcode }})
@@ -542,12 +548,12 @@ $categories = App\Models\Car\Category::where('id', $carContent->category_id)->fi
                         @endforeach
                         </div>
                         </div>
-                        
+
                         <input type="hidden" name="c_code" id="c_code" value="{{ !empty(Auth::guard('vendor')->user()->country_code) ? Auth::guard('vendor')->user()->country_code : '+44' }}"/>
-        
-                        <input  type="number" value="{{ $vendor->phone }}" style="height: 40px;margin-top: 10px;    margin-right: 5px;" class="form-control" name="phone" required> 
-                      
-                      
+
+                        <input  type="number" value="{{ $vendor->phone }}" style="height: 40px;margin-top: 10px;    margin-right: 5px;" class="form-control" name="phone" required>
+
+
                        @if ($vendor->phone_verified == 1)
                         <button disabled   class="btn  btn-success2"  style="    height: 40px;
                         margin-top: 10px;
@@ -567,43 +573,43 @@ $categories = App\Models\Car\Category::where('id', $carContent->category_id)->fi
                         background: transparent;
                         color: #1b87f4;" type="button" title="verify"><i class='fas fa-fingerprint'></i></button>
                         @endif
-                        
+
                         </div>
-                        
-                        
+
+
                      <small style="    margin-top: 10px;">Verify your phone number and help reduce fraud and scams on Listit</small>
                       <p id="editErr_phone" class="mt-1 mb-0 text-danger em"></p>
                     </div>
                   </div>
-                  
-                  
+
+
                   <div class="col-lg-6">
-                       
+
                       <div class="form-group checkbox-xl row">
                           <div> <label>{{ __('Allow contact by') }}</label></div>
                       <div class="col-lg-6">
-                        
+
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="checkbox" name="message_center" id="inlineRadio1" value="yes" required  <?= ($car->message_center == 1) ? 'checked' : '' ?>>
                             <label class="form-check-label" for="message_center">Message </label>
                         </div>
                       </div>
-                        
+
                       <div class="col-lg-6">
                         <div class="form-check form-check-inline">
                              <input class="form-check-input" type="checkbox" name="phone_text" id="inlineRadio2" value="yes"  <?= ($car->phone_text == 1) ? 'checked' : '' ?> >
                             <label class="form-check-label" for="message_center">Phone/Text</label>
                         </div>
                       </div>
-                      
+
                     </div>
                   </div>
-                  
-                  
+
+
                   <div class="col-lg-6" style="display:none;">
                     <div class="form-group">
                      <label>{{ __('Area') }}</label>
-                     
+
                      <input id ="promoStatus" type="hidden" name="promo_status" value="0">
                       <select name="city" id="" class="form-control">
                     <option value="">Please select...</option>
@@ -612,9 +618,9 @@ $categories = App\Models\Car\Category::where('id', $carContent->category_id)->fi
                     @endforeach
                     </select>
                     </div>
-                  </div> 
-                  
-                
+                  </div>
+
+
                   <div class="row">
             <div class="col-12 text-center">
               <button type="submit" id="CarSubmit" class="btn btn-primary">
@@ -622,7 +628,7 @@ $categories = App\Models\Car\Category::where('id', $carContent->category_id)->fi
               </button>
             </div>
           </div>
-                  </div> 
+                  </div>
                 <input type="hidden" id="max_file_upload" name="max_file_upload" value="{{$car->package ? $car->package->photo_allowed : 15 }}" />
 
                 <div id="sliders">
@@ -631,7 +637,7 @@ $categories = App\Models\Car\Category::where('id', $carContent->category_id)->fi
                             <input type="hidden" name="slider_images[]" id="slider{{$itm->id}}" value="{{$itm->id}}">
                         @endforeach
                     @endif
-                    
+
                 </div>
               </form>
             </div>
@@ -640,7 +646,7 @@ $categories = App\Models\Car\Category::where('id', $carContent->category_id)->fi
         </div>
 
         <div class="card-footer">
-         
+
         </div>
       </div>
     </div>
@@ -649,10 +655,10 @@ $categories = App\Models\Car\Category::where('id', $carContent->category_id)->fi
   </div>
   </div> </div>
   </div>
-  
+
    <input type="hidden" id="request_method" value="GET" />
-   
-   
+
+
   @endsection
 @php
   $languages = App\Models\Language::get();
@@ -666,7 +672,7 @@ $categories = App\Models\Car\Category::where('id', $carContent->category_id)->fi
       } else {
           $direction = 'form-group';
       }
-  
+
       $labels .= "<div class='$direction'><input type='text' name='" . $label_name . "' class='form-control' placeholder='Label ($language->name)'></div>";
       $values .= "<div class='$direction'><input type='text' name='$value_name' class='form-control' placeholder='Value ($language->name)'></div>";
   }
@@ -719,11 +725,11 @@ option {
   font-weight: 600;
  }
  .editAdLabel label{
-  
+
   width:150px;
  }
- 
-  
+
+
   button.rotate-btn {
     font-size: 12px;
     position: absolute;
@@ -741,21 +747,21 @@ option {
 
 .rotatebtndb
 {
-     
+
     top: 30px !important;
-   
+
     color: #004eabd6 !important;
-   
+
     cursor: pointer !important;
 }
 .form-group label, .form-check label {
- color:gray !important;   
+ color:gray !important;
 }
 
 
 .row h3,b,h4,label
 {
-     color:gray !important; 
+     color:gray !important;
 }
 
 </style>
@@ -874,34 +880,34 @@ option {
     var rmvdbUrl = "{{ route('vendor.car.imgdbrmv') }}";
     const account_status = "{{ Auth::guard('vendor')->user()->status }}";
     const secret_login = "{{ Session::get('secret_login') }}";
-    
+
     var rotationAngle1 = 0;
-    
-    function rotatePhoto(id) 
+
+    function rotatePhoto(id)
 {
     // Find the image element within the file preview element
     var imageElement = $('#img_'+id);
-    
-    
+
+
     if (imageElement.length) {
         // Increment the rotation angle by 90 degrees
         rotationAngle1 += 90;
-    
+
         // Apply the rotation to the image element
         imageElement.css('transform', 'rotate(' + rotationAngle1 + 'deg)');
-    
+
         // Reset rotation to 0 if it reaches 360 degrees
         if (rotationAngle1 === 360) {
             rotationAngle1 = 0;
         }
-        
+
         rotationSave(id, rotationAngle1);
     }
-    
+
     return false;
 }
 
-    function removethis(fileid) 
+    function removethis(fileid)
     {
         $.ajax({
           url: removeUrl,
@@ -915,32 +921,32 @@ option {
           }
         });
     }
-    
-    
+
+
      function rotationSave(fileid , rotationEvnt)
     {
         var requestMethid = "POST";
-        
+
         if($('#request_method').val() != '')
         {
-           var requestMethid = "GET"; 
+           var requestMethid = "GET";
         }
-        
+
            $.ajax({
           url: '/customer/ad-management/img-db-rotate',
           type: requestMethid,
           data: {
             fileid: fileid , rotationEvnt:rotationEvnt
           },
-          success: function (data) 
+          success: function (data)
           {
-           
+
           }
-        }); 
+        });
     }
-    
-    
-    
+
+
+
   </script>
 
    <script src="{{ asset('assets/js/car.js?v=0.9') }}"></script>

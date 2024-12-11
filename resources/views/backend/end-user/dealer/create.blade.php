@@ -59,7 +59,7 @@
                   </div>
 
                 <input type="hidden" name="vendor_type" value="dealer" />
-              
+
                   <div class="col-lg-3">
                     <div class="form-group">
                       <label>{{ __('Username*') }}</label>
@@ -92,10 +92,17 @@
                       <p id="editErr_phone" class="mt-1 mb-0 text-danger em"></p>
                     </div>
                   </div>
+                      <div class="col-lg-3" style="text-align: center;justify-content:center;display:flex">
+                        <div class="form-group">
+                          <label>{{ __('Dealer Website') }}</label>
+                          <input type="text" value="" class="form-control"  name="dealer_website"
+                            placeholder="{{ __('Enter Dealer Website') }}">
+                        </div>
+                      </div>
 
                 </div>
-                
-                
+
+
                 <div class="col-lg-12">
                         <div class="form-group">
                                 <label style="width: 100%;
@@ -107,7 +114,7 @@
                                 margin-bottom: 2rem;">
                                     Opening Hours
                                 </label>
-                            
+
                             <table style='width: 100%;'>
                                     <tr>
                                         <th>Day</th>
@@ -130,13 +137,13 @@
                                     </tr>
                                 @endforeach
                             </table>
-                        
-                        
+
+
                         </div>
                     </div>
-                    
-                    
-                    
+
+
+
                 <div id="accordion" class="mt-5">
                   @foreach ($languages as $language)
                     <div class="version">
@@ -176,23 +183,23 @@
                              <div class="col-lg-4">
                               <div class="form-group">
                                 <label>Area</label>
-                                
+
                                     <select name="{{ $language->code }}_city" id="" class="form-control">
                                         <option value="">Please select...</option>
                                         @foreach ($countryArea as $area)
                                             <option value="{{ $area->slug }}" >{{ $area->name }}</option>
                                         @endforeach
                                     </select>
-                                    
+
                                 <p id="editErr_{{ $language->code }}_city" class="mt-1 mb-0 text-danger em"></p>
                               </div>
                             </div>
                             <div class="col-lg-4">
                               <div class="form-group">
                                 <label>Established Year</label>
-                                
+
                                    <select name="est_year" class="form-control" id="yearpicker" ></select>
-                                    
+
                                 <p id="est_year" class="mt-1 mb-0 text-danger em"></p>
                               </div>
                             </div>
@@ -204,7 +211,7 @@
                                 <p id="website_link" class="mt-1 mb-0 text-danger em"></p>
                               </div>
                             </div>
-                            
+
                             <div class="col-lg-4">
                               <div class="form-group">
                                 <label>Customer ID For Google Review</label>
@@ -212,8 +219,8 @@
                                   name="google_review_id" placeholder="{{ __('Enter Customer ID For Google Review') }}">
                               </div>
                             </div>
-                            
-                            
+
+
                             <div class="col-lg-6">
                               <div class="form-group">
                                 <label>{{ __('Address') }}</label>

@@ -142,40 +142,82 @@
                                                                         </span>
                                                                         </div>
                                                                     </div>
-                                                                        <div class="col-md-12 mb-3">
-                                                                            <div class="form-group">
-                                                                                <div class="form-check form-check-inline">
-                                                                                    <label class="form-check-label" for="inlineRadio3">Ad
-                                                                                        Type</label>
-                                                                                </div>
-                                                                                <div class=" align-items-center d-flex">
-                                                                                    <div class="form-check form-check-inline">
-                                                                                        <input class="form-check-input" type="radio"
-                                                                                               name="ad_type" id="inlineRadio1"
-                                                                                               @if($draft_ad == true && empty($draft_ad->ad_type) ) checked
-                                                                                               @endif @if($draft_ad == true && !empty($draft_ad->ad_type) && $draft_ad->ad_type == 'Sale') checked
-                                                                                               @endif onchange="saveDraftData(this , 'ad_type')"
-                                                                                               value="Sale">&nbsp;
-                                                                                        <label class="form-check-label" for="ad_type">For
-                                                                                            Sale</label>
 
-                                                                                    </div>
-                                                                                    <div class="form-check form-check-inline">
-                                                                                        <input class="form-check-input" type="radio"
-                                                                                               name="ad_type" id="inlineRadio2"
-                                                                                               @if($draft_ad == true && !empty($draft_ad->ad_type) && $draft_ad->ad_type == 'Wanted') checked
-                                                                                               @endif  onchange="saveDraftData(this , 'ad_type')"
-                                                                                               value="Wanted">&nbsp;
-                                                                                        <label class="form-check-label"
-                                                                                               for="ad_type">Wanted</label>
-                                                                                    </div>
-                                                                                </div>
-
-                                                                            </div>
-                                                                        </div>
 
                                                                     </div>
                                                                     <div class="row">
+                                                                      <div class="col-md-6 mb-3">
+                                                                          <div class="form-group">
+                                                                              @php
+                                                                                  $categories = App\Models\Car\Category::where('parent_id', 0)->where('status', 1)->get();
+                                                                              @endphp
+                                                                              <label>{{ __('Category') }} *</label>
+                                                                              <select name="en_main_category_id"
+                                                                                      class="form-control select2"
+                                                                                      id="adsMaincat"
+                                                                                      onchange="fetchSubCategories(this)">
+                                                                                  <option selected disabled>{{ __('Select a Category') }}</option>
+                                                                                  @foreach ($categories as $category)
+                                                                                      <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                                                                  @endforeach
+                                                                              </select>
+                                                                          </div>
+                                                                      </div>
+
+                                                                      <div class="col-md-6 sub_sub_sub_category mb-3" id="sub_catgry" style="display: none;">
+                                                                          <div class="form-group">
+                                                                              <label>{{ __('Select a Sub Category') }} *</label>
+                                                                              <select disabled name="en_category_id" class="form-control subhidden" id="adsSubcat">
+                                                                                  <option selected disabled>{{ __('Select Sub Category') }}</option>
+                                                                              </select>
+                                                                          </div>
+                                                                      </div>
+                                                                  </div>
+                                                                    <script>
+                                                                      function fetchSubCategories(selectElement) {
+                                                                            var categoryId = selectElement.value;
+
+                                                                            // Check if a category is selected
+                                                                            if (categoryId) {
+                                                                                // Show the subcategory dropdown
+                                                                                $('#sub_catgry').show();
+
+                                                                                // Disable the subcategory dropdown initially
+                                                                                $('#adsSubcat').prop('disabled', false);
+
+                                                                                // Make an AJAX request to fetch subcategories
+                                                                                $.ajax({
+                                                                                    url: '/get-subcategories/' + categoryId,
+                                                                                    type: 'GET',
+                                                                                    dataType: 'json',
+                                                                                    success: function(response) {
+                                                                                        // Clear previous options
+                                                                                        $('#adsSubcat').empty();
+                                                                                        $('#adsSubcat').append('<option selected disabled>{{ __("Select Sub Category") }}</option>');
+
+                                                                                        // Add the new subcategories
+                                                                                        $.each(response, function(index, subcategory) {
+                                                                                            $('#adsSubcat').append('<option value="' + subcategory.id + '">' + subcategory.name + '</option>');
+                                                                                        });
+                                                                                    },
+
+                                                                                });
+                                                                            } else {
+                                                                                // If no category is selected, hide subcategory dropdown
+                                                                                $('#sub_catgry').hide();
+                                                                                $('#adsSubcat').prop('disabled', true);
+                                                                            }
+                                                                        }
+
+                                                                        $(document).ready(function() {
+                                                                            $('#adsMaincat').select2({
+                                                                                placeholder: "Search and select a category",
+                                                                                allowClear: true
+                                                                            });
+                                                                        });
+
+                                                                    </script>
+                                                                    {{-- <div class="row">
                                                                         <div class="col-md-6 mb-3">
                                                                             <div class="form-group ">
                                                                                 @php
@@ -216,7 +258,38 @@
                                                                                 </select>
                                                                             </div>
                                                                         </div>
-                                                                    </div>
+                                                                    </div> --}}
+                                                                    <div class="col-md-12 mb-3">
+                                                                      <div class="form-group">
+                                                                          <div class="form-check form-check-inline">
+                                                                              <label class="form-check-label" for="inlineRadio3">Ad
+                                                                                  Type</label>
+                                                                          </div>
+                                                                          <div class=" align-items-center d-flex">
+                                                                              <div class="form-check form-check-inline">
+                                                                                  <input class="form-check-input" type="radio"
+                                                                                         name="ad_type" id="inlineRadio1"
+                                                                                         @if($draft_ad == true && empty($draft_ad->ad_type) ) checked
+                                                                                         @endif @if($draft_ad == true && !empty($draft_ad->ad_type) && $draft_ad->ad_type == 'Sale') checked
+                                                                                         @endif onchange="saveDraftData(this , 'ad_type')"
+                                                                                         value="Sale">&nbsp;
+                                                                                  <label class="form-check-label" for="ad_type">For
+                                                                                      Sale</label>
+
+                                                                              </div>
+                                                                              <div class="form-check form-check-inline">
+                                                                                  <input class="form-check-input" type="radio"
+                                                                                         name="ad_type" id="inlineRadio2"
+                                                                                         @if($draft_ad == true && !empty($draft_ad->ad_type) && $draft_ad->ad_type == 'Wanted') checked
+                                                                                         @endif  onchange="saveDraftData(this , 'ad_type')"
+                                                                                         value="Wanted">&nbsp;
+                                                                                  <label class="form-check-label"
+                                                                                         for="ad_type">Wanted</label>
+                                                                              </div>
+                                                                          </div>
+
+                                                                      </div>
+                                                                  </div>
                                                                     <div class="row">
                                                                         <div class="col-lg-12 mb-3">
                                                                             <div class="form-group {{ $language->direction == 1 ? 'rtl text-right' : '' }}">
@@ -233,17 +306,23 @@
                                                                         </div>
                                                                     </div>
                                                                     <div class="row">
-                                                                        <div class="col-lg-6 mb-3">
-                                                                            <div class="form-group">
-                                                                                <label>{{ __('Price') }}  &pound;</label>
-                                                                                <input type="number"
-                                                                                       class="form-control" name="price"
-                                                                                       id="ad_price"
-                                                                                       onfocusout="saveDraftData(this , 'price')"
-                                                                                       value=" @if($draft_ad == true && !empty($draft_ad->price)) {{$draft_ad->price}} @endif"
-                                                                                       placeholder="Enter Price in  &pound;">
-                                                                            </div>
-                                                                        </div>
+                                                                       <div class="col-lg-6 d-flex align-items-center">
+                                                                          <div class="form-group flex-grow-1 mr-2">
+                                                                              <label>{{ __('Price') }}</label>
+                                                                              <input type="number" class="form-control" name="price" id="ad_price"
+                                                                                     onfocusout="saveDraftData(this, 'price')"
+                                                                                     value="@if($draft_ad == true && !empty($draft_ad->price)) {{$draft_ad->price}} @endif"
+                                                                                     placeholder="Enter Price in  &pound;">
+                                                                          </div>&nbsp;
+                                                                          <div class="form-group" style="margin-top: 35px;">
+                                                                              <select class="form-control" name="sign">
+                                                                                  <option value="£" {{ old('sign', $draft_ad->sign ?? '£') == '£' ? 'selected' : '' }}>£</option>
+                                                                                  <option value="₹" {{ old('sign', $draft_ad->sign ?? '₹') == '₹' ? 'selected' : '' }}>₹</option>
+                                                                              </select>
+                                                                          </div>
+                                                                      </div>
+
+
                                                                         <div class="col-lg-6 mb-3">
                                                                             <div class="form-group">
                                                                                 <label>{{ __('Optional YouTube Video') }} </label>
@@ -316,8 +395,8 @@
                                                 <div class="form-group input-group" style="margin-top: 8px;">
 
                                                     <div class="d-flex" style="    margin-top: -12px;">
-                                                        <div class="custom-select">
-                                                            <div class="select-selected">
+                                                        {{-- <div class="custom-select"> --}}
+                                                            {{-- <div class="select-selected">
 
                                                                 @php
                                                                     $ct = $country_codes->firstWhere('country', 'United Kingdom');
@@ -340,8 +419,8 @@
                                                                 <img src="{{ $flagUrl }}" alt="UK Flag" class="flag">
                                                                 <span class="short_code"> {{$s_code}} </span>
                                                                 ({{ $flagcode }})
-                                                            </div>
-                                                            <div class="select-items select-hide">
+                                                            </div> --}}
+                                                            {{-- <div class="select-items select-hide">
                                                                 <div class="search-box">
                                                                     <input type="text" id="country-search"
                                                                            placeholder="Search country...">
@@ -357,18 +436,19 @@
                                                                         ({{ $country->code }})
                                                                     </div>
                                                                 @endforeach
-                                                            </div>
+                                                            </div> --}}
                                                         </div>
+                                                        <input value="{{ old('phone', $vendor->phone) }}" class="form-control" readonly>
 
                                                         <input type="hidden" name="c_code" id="c_code"
                                                                value="{{ !empty(Auth::guard('vendor')->user()->country_code) ? Auth::guard('vendor')->user()->country_code : '+44' }}"/>
 
-                                                        <input type="number" value="{{ $vendor->phone }}"
+                                                        {{-- <input type="number" value="{{ $vendor->phone }}"
                                                                style="height: 40px;margin-top: 10px;    margin-right: 5px;"
-                                                               class="form-control" name="phone" required>
+                                                               class="form-control" name="phone" required> --}}
 
 
-                                                        @if ($vendor->phone_verified == 1)
+                                                        {{-- @if ($vendor->phone_verified == 1)
                                                             <button disabled class="btn  btn-success2" style="    height: 40px;
                         margin-top: 10px;
                         font-size: 25px;
@@ -387,7 +467,7 @@
                         padding-left: 12px;
                         background: transparent;
                         color: #1b87f4;" type="button" title="verify"><i class='fas fa-fingerprint'></i></button>
-                                                        @endif
+                                                        @endif --}}
 
                                                     </div>
 

@@ -349,7 +349,7 @@
 <div class="col-lg-6 mb-3">
     <div class="form-group ">
 
-    <label>Please Select Owners</label>
+    <label>Select Previous Owners</label>
     <select id="owners" class="form-select form-control"  name="owners"  onchange="saveDraftData(this , 'owners')" >
         <option value="">Please Select</option>
         <option value="1"  @if($draft_ad == true && !empty($draft_ad->owners) && $draft_ad->owners == 1 ) selected @endif >1</option>
