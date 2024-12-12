@@ -285,7 +285,7 @@ function reportAd(Request $request)
         'vendor_info',
         'memberships.package',
         'cars' => function ($query) {
-            $query->latest()->limit(3);
+            $query->latest()->limit(4);
         }
     ])
     ->withCount('cars') // Counting the number of cars for each vendor

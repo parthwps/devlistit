@@ -33,33 +33,7 @@ $(function ($) {
   /*****************************************************
   ==========Bootstrap Notify end==========
   ******************************************************/
-  if (account_status == 1 || secret_login == 1) {
-    $.ajaxSetup({
-      headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-      }
-    });
-  } else {
-    $.ajaxSetup({
-      beforeSend: function (jqXHR, settings) {
-        if (settings.type == 'POST' && status == 0) {
-          if ($(".request-loader").length > 0) {
-            $(".request-loader").removeClass('show');
-          }
-          if ($(".modal").length > 0) {
-            $(".modal").modal('hide');
-          }
-          if ($("button[disabled='disabled']").length > 0) {
-            $("button[disabled='disabled']").removeAttr('disabled');
-          }
-          bootnotify('Your account needs Admin approval!', 'Alert', 'warning')
-          jqXHR.abort(event);
-        }
-      },
-      complete: function () {
-      }
-    });
-  }
+
 
   // sidebar search start
   $(".sidebar-search").on('input', function () {
@@ -309,7 +283,7 @@ if(chkval==true){
                  //$('input[name="email_id"]').val('');
                  $('#filterarea').html(response.data);
                 // console.log(response);
-                 
+
              },
              error: function(errorData) {
                  // throw error -----
@@ -339,8 +313,8 @@ if(chkval==true){
             $(this).prop('checked', true);
           }
         });
-      } 
-     
+      }
+
       else if ($("#in_" + x).hasClass('select2')) {
         $("#in_" + x).val(datas[x]);
         $("#in_" + x).trigger('change');
@@ -663,7 +637,7 @@ if(chkval==true){
     };
 
     reader.readAsDataURL(file);
-    
+
     $('#image-preview').append(`<a href="javascript:void(0);" onclick="removeImage(this)" style="    color: red;
     position: absolute;
     background: white;
@@ -677,8 +651,8 @@ if(chkval==true){
     border: 1px solid #ff0000;">
     <i class="fa fa-times" aria-hidden="true"></i></a>`);
   });
-  
-  
+
+
   $('.img-input2').on('change', function (event) {
     let file = event.target.files[0];
     let reader = new FileReader();

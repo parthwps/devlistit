@@ -162,8 +162,80 @@
 
                         <input type="hidden" name="c_code" id="c_code" value="{{ !empty(Auth::guard('vendor')->user()->country_code) ? Auth::guard('vendor')->user()->country_code : '+44' }}"/>
 
-                        <input value="{{ old('phone', $vendor->phone) }}" class="form-control" readonly>
+                        <div class="custom-select">
+                          <div class="select-selected">
 
+                              @php
+                                  $ct = $country_codes->firstWhere('country', 'United Kingdom');
+
+                                  $flagUrl = $ct->flag_url;
+                                  $flagcode = $ct->code;
+                                  $s_code = $ct->short_code;
+
+                                  if(!empty($vendor->country_code))
+                                  {
+                                      $ct = $country_codes->firstWhere('code', $vendor->country_code);
+
+                                      $flagUrl = $ct->flag_url;
+                                      $flagcode = $ct->code;
+                                      $s_code = $ct->short_code;
+
+                                  }
+
+                              @endphp
+                              <img src="{{ $flagUrl }}" alt="UK Flag" class="flag">
+                              <span class="short_code"> {{$s_code}} </span>
+                              ({{ $flagcode }})
+                          </div>
+                           <div class="select-items select-hide">
+                              <div class="search-box">
+                                  <input type="text" id="country-search"
+                                         placeholder="Search country...">
+                              </div>
+                              @foreach($country_codes as $country)
+                                  <div class="country-option"
+                                       data-value="{{ $country->code }}"
+                                       data-flag="{{ $country->flag_url }}">
+                                      <img src="{{ $country->flag_url }}"
+                                           alt="{{ $country->country }}" class="flag">
+                                      <span class="short_code">  {{$country->short_code}} </span>
+                                      <span style="display:none;">{{$country->country}}</span>
+                                      ({{ $country->code }})
+                                  </div>
+                              @endforeach
+                          </div>
+                      </div>
+
+                      <input type="hidden" name="c_code" id="c_code"
+                             value="{{ !empty(Auth::guard('vendor')->user()->country_code) ? Auth::guard('vendor')->user()->country_code : '+44' }}"/>
+
+                      <input type="number" value="{{ $vendor->phone }}"
+                             style="height: 40px;margin-top: 10px;    margin-right: 5px;"
+                             class="form-control" name="phone" required>
+
+
+                       @if ($vendor->phone_verified == 1)
+                          <button disabled class="btn  btn-success2" style="    height: 40px;
+                            margin-top: 10px;
+                            font-size: 25px;
+                            padding-top: 5px;
+                            width: 50px;
+                            padding-left: 12px;
+                            background: transparent;
+                            color: #1b87f4;" type="button"><i class="fa fa-check" aria-hidden="true"></i></button>
+                                                  @else
+                                                      <button id="verifyPhone" class="btn btn-outline-secondary"
+                                                              style="height: 40px;
+                            margin-top: 10px;
+                            font-size: 25px;
+                            padding-top: 5px;
+                            width: 50px;
+                            padding-left: 12px;
+                            background: transparent;
+                            color: #1b87f4;" type="button" title="verify"><i class='fas fa-fingerprint'></i></button>
+                      @endif
+
+                  </div>
                         </div>
                      <small>Verify your phone number and help reduce fraud and scams on Listit</small>
                       <p id="editErr_phone" class="mt-1 mb-0 text-danger em"></p>

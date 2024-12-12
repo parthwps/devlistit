@@ -86,17 +86,108 @@
                                     <div class="row ">
                                         <div class="col-lg-12 mb-2">
                                             <div class="form-group">
-                                                <h4 style="color:gray">Ad Details </h4>
+                                                {{-- <h4 style="color:gray">Ad Details </h4> --}}
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> <div class="alert alert-danger pb-1 dis-none" id="carErrors">
+                                      <button type="button" class="close" data-dismiss="alert">×</button>
+                                      <ul></ul>
+                                  </div>
+                                    <div class="col-lg-12">
+                                                                    <label for="" class="mb-2"><strong>{{ __('Gallery Images') }}
+                                                                            **</strong> <br> <small class="text-danger"> load up to <span
+                                                                                    id="change_text_photo_allow">15</span> images .jpg,
+                                                                            .png, & .gif </small></label>
+
+                                                                    @if($draft_ad == true && !empty($draft_ad->images))
+                                                                        @php
+                                                                            $images = json_decode($draft_ad->images, true);
+                                                                            $items = [];
+                                                                        @endphp
+
+                                                                        @if(count($images) > 0)
+                                                                            <div class="row">
+                                                                                <div class="col-12">
+                                                                                    <table class="table table-striped" id="imgtable">
+                                                                                        @foreach($images as $image)
+                                                                                            @php
+                                                                                                $item = \App\Models\Car\CarImage::where('image', $image)->first();
+                                                                                            @endphp
+
+                                                                                            @if($item)
+                                                                                                @php
+                                                                                                    $items[] = [
+                                                                                                        'id' => $item->id,
+                                                                                                        'image' => $item->image,
+                                                                                                        'rotation_point' => $item->rotation_point,
+                                                                                                        'priority' => $item->priority,
+                                                                                                    ];
+                                                                                                @endphp
+                                                                                            @endif
+                                                                                        @endforeach
+
+                                                                                        @php
+                                                                                            // Sort items by priority
+                                                                                            usort($items, function($a, $b) {
+                                                                                                return $a['priority'] <=> $b['priority'];
+                                                                                            });
+                                                                                        @endphp
+
+                                                                                        @foreach($items as $item)
+                                                                                            <tr class="trdb table-row"
+                                                                                                id="trdb{{ $item['id'] }}" draggable="true"
+                                                                                                ondragstart="dragStart(event)"
+                                                                                                ondrop="drop(event)"
+                                                                                                ondragover="allowDrop(event)">
+                                                                                                <td>
+                                                                                                    <div class="">
+                                                                                                        <img class="thumb-preview wf-150"
+                                                                                                            src="{{ asset('assets/admin/img/car-gallery/' . $item['image']) }}"
+                                                                                                            id="img_{{$item['id']}}"
+                                                                                                            alt="Ad Image"
+                                                                                                            style="height:120px; width:120px; object-fit: cover;transform: rotate({{$item['rotation_point']}}deg);">
+                                                                                                    </div>
+
+                                                                                                    <div style="text-align: center;margin-bottom: 5px;color: gray;">
+                                                                                                        Set Cover <input
+                                                                                                                class='form-check-input'
+                                                                                                                value="{{ $item['id'] }}"
+                                                                                                                onclick="setCoverPhoto({{ $item['id'] }})"
+                                                                                                                type='radio'
+                                                                                                                name='flexRadioDefault'>
+                                                                                                    </div>
+                                                                                                </td>
+                                                                                                <td>
+                                                                                                    <i class="fa fa-times"
+                                                                                                    onclick="removethis({{ $item['id'] }})"></i>
+                                                                                                    <i class="fa fa-undo rotatebtndb"
+                                                                                                    onclick="rotatePhoto({{ $item['id'] }})"></i>
+                                                                                                </td>
+
+                                                                                            </tr>
+                                                                                        @endforeach
+                                                                                    </table>
+                                                                                </div>
+                                                                            </div>
+                                                                        @endif
+                                                                    @endif
+
+
+                                                                    <form action="{{ route('car.imagesstore') }}" id="my-dropzone"
+                                                                        enctype="multipart/formdata"
+                                                                        class="dropzone create us_dropzone">
+                                                                        @csrf
+                                                                        <div class="fallback">
+                                                                            <input name="file" type="file" multiple/>
+                                                                        </div>
+                                                                    </form>
+                                                                    <p class="em text-danger mb-0" id="errslider_images"></p>
+                                                                </div>
                                     <div class="row">
 
                                         <div class="col-lg-12 ">
-                                            <div class="alert alert-danger pb-1 dis-none" id="carErrors">
-                                                <button type="button" class="close" data-dismiss="alert">×</button>
-                                                <ul></ul>
-                                            </div>
+
+
                                             <form class="myajaxform" id="carForm"
                                                   action="{{ route('vendor.car_management.store_car') }}" method="POST"
                                                   enctype="multipart/form-data">
@@ -122,30 +213,30 @@
                                                                  aria-labelledby="heading{{ $language->id }}"
                                                                  data-parent="#accordion">
                                                                 <div class="version-body">
-                                                                    <div class="row">
-                                                                      <div class="col-md-12 mb-3">
-                                                                        <div class="form-group {{ $language->direction == 1 ? 'rtl text-right' : '' }}">
-                                                                            @php
-                                                                                $placeholder = 'What you are selling?';
-                                                                                if ($draft_ad && !empty($draft_ad->ad_type) && $draft_ad->ad_type == 'Wanted') {
-                                                                                    $placeholder = 'What you are looking for?';
-                                                                                }
-                                                                            @endphp
-                                                                            <label>{{ __('Ad Title') }} *</label>
-                                                                            <input type="text" id="input-title" class="form-control"
-                                                                                   onfocusout="saveDraftData(this , 'ad_title')"
-                                                                                   value="@if($draft_ad == true && !empty($draft_ad->ad_title)) {{$draft_ad->ad_title}} @endif"
-                                                                                   name="{{ $language->code }}_title"
-                                                                                   placeholder="{{ $placeholder  }}">
-                                                                            <span class="form-text">
-                                                                            {{ __('Your ad title will be shown in search results') }}
-                                                                        </span>
-                                                                        </div>
-                                                                    </div>
+                                                                      {{-- <div class="row">
+                                                                        <div class="col-md-12 mb-3">
+                                                                          <div class="form-group {{ $language->direction == 1 ? 'rtl text-right' : '' }}">
+                                                                              @php
+                                                                                  $placeholder = 'What you are selling?';
+                                                                                  if ($draft_ad && !empty($draft_ad->ad_type) && $draft_ad->ad_type == 'Wanted') {
+                                                                                      $placeholder = 'What you are looking for?';
+                                                                                  }
+                                                                              @endphp
+                                                                              <label>{{ __('Ad Title') }} *</label>
+                                                                              <input type="text" id="input-title" class="form-control"
+                                                                                    onfocusout="saveDraftData(this , 'ad_title')"
+                                                                                    value="@if($draft_ad == true && !empty($draft_ad->ad_title)) {{$draft_ad->ad_title}} @endif"
+                                                                                    name="{{ $language->code }}_title"
+                                                                                    placeholder="{{ $placeholder  }}">
+                                                                              <span class="form-text">
+                                                                              {{ __('Your ad title will be shown in search results') }}
+                                                                          </span>
+                                                                          </div>
+                                                                      </div> --}}
 
 
                                                                     </div>
-                                                                    <div class="row">
+                                                                    {{-- <div class="row">
                                                                       <div class="col-md-6 mb-3">
                                                                           <div class="form-group">
                                                                               @php
@@ -216,8 +307,8 @@
                                                                             });
                                                                         });
 
-                                                                    </script>
-                                                                    {{-- <div class="row">
+                                                                    </script> --}}
+                                                                    <div class="row">
                                                                         <div class="col-md-6 mb-3">
                                                                             <div class="form-group ">
                                                                                 @php
@@ -226,7 +317,7 @@
                                                                                 @endphp
                                                                                 <label>{{ __('Category') }} *</label>
                                                                                 <select name="en_main_category_id"
-                                                                                        class="form-control select2"
+                                                                                        class="form-control select2 @error('category_id') is-invalid @enderror"
                                                                                         id="adsMaincat"
                                                                                         onchange="saveDraftData(this , 'category_id')">
                                                                                     <option selected
@@ -235,7 +326,10 @@
                                                                                         <option value="{{ $category->id }}">{{ $category->name }}</option>
                                                                                     @endforeach
                                                                                 </select>
-                                                                                <script>
+                                                                                @error('category_id')
+                                                                                <span class="text-danger">{{$message}}</span>
+                                                                                @enderror
+                                                                                  <script>
                                                                                     $(document).ready(function () {
                                                                                         $('#adsMaincat').select2({
                                                                                             placeholder: "Search and select a category",
@@ -258,7 +352,7 @@
                                                                                 </select>
                                                                             </div>
                                                                         </div>
-                                                                    </div> --}}
+                                                                    </div>
                                                                     <div class="col-md-12 mb-3">
                                                                       <div class="form-group">
                                                                           <div class="form-check form-check-inline">
@@ -289,7 +383,45 @@
                                                                           </div>
 
                                                                       </div>
-                                                                  </div>
+                                                                  </div><hr/>
+                                                                  <h4 style="color:gray">Videos </h4>
+                                                                  <div class="col-lg-6 mb-3">
+                                                                    <div class="form-group">
+                                                                        <label>{{ __('Optional YouTube Video') }} </label>
+                                                                        <input type="text" class="form-control @error('youtube_video') is-invalid @enderror"
+                                                                               name="youtube_video"
+                                                                               placeholder="Enter youtube Video URL">
+                                                                               @error('youtube_video')
+                                                                                  <span class="invalid-feedback" role="alert">
+                                                                                      <strong>{{ $message }}</strong>
+                                                                                  </span>
+                                                                              @enderror
+                                                                    </div>
+                                                                </div>
+                                                                <hr/>
+                                                                <h4 style="color:gray">Ad Details </h4>
+
+                                                                 <div class="row">
+                                                                        <div class="col-md-12 mb-3">
+                                                                          <div class="form-group {{ $language->direction == 1 ? 'rtl text-right' : '' }}">
+                                                                              @php
+                                                                                  $placeholder = 'What you are selling?';
+                                                                                  if ($draft_ad && !empty($draft_ad->ad_type) && $draft_ad->ad_type == 'Wanted') {
+                                                                                      $placeholder = 'What you are looking for?';
+                                                                                  }
+                                                                              @endphp
+                                                                              <label>{{ __('Ad Title') }} *</label>
+                                                                              <input type="text" id="input-title" class="form-control "
+                                                                                    onfocusout="saveDraftData(this , 'ad_title')"
+                                                                                    value="@if($draft_ad == true && !empty($draft_ad->ad_title)) {{$draft_ad->ad_title}} @endif"
+                                                                                    name="{{ $language->code }}_title"
+                                                                                    placeholder="{{ $placeholder  }}">
+                                                                              <span class="form-text">
+                                                                              {{ __('Your ad title will be shown in search results') }}
+                                                                          </span>
+                                                                          </div>
+                                                                      </div>
+
                                                                     <div class="row">
                                                                         <div class="col-lg-12 mb-3">
                                                                             <div class="form-group {{ $language->direction == 1 ? 'rtl text-right' : '' }}">
@@ -308,29 +440,27 @@
                                                                     <div class="row">
                                                                        <div class="col-lg-6 d-flex align-items-center">
                                                                           <div class="form-group flex-grow-1 mr-2">
-                                                                              <label>{{ __('Price') }}</label>
-                                                                              <input type="number" class="form-control" name="price" id="ad_price"
+                                                                              <label>{{ __('Price') }}*</label>
+                                                                              <input type="number" class="form-control @error('price') is-invalid @enderror" name="price" id="ad_price"
                                                                                      onfocusout="saveDraftData(this, 'price')"
                                                                                      value="@if($draft_ad == true && !empty($draft_ad->price)) {{$draft_ad->price}} @endif"
-                                                                                     placeholder="Enter Price in  &pound;">
+                                                                                     placeholder="Enter Price in  &pound;">@error('price')
+                                                                                     <p class="invalid-feedback">{{$message}}</p>
+
+                                                                                     @enderror
                                                                           </div>&nbsp;
-                                                                          <div class="form-group" style="margin-top: 35px;">
-                                                                              <select class="form-control" name="sign">
-                                                                                  <option value="£" {{ old('sign', $draft_ad->sign ?? '£') == '£' ? 'selected' : '' }}>£</option>
-                                                                                  <option value="₹" {{ old('sign', $draft_ad->sign ?? '₹') == '₹' ? 'selected' : '' }}>₹</option>
-                                                                              </select>
-                                                                          </div>
+
                                                                       </div>
 
 
-                                                                        <div class="col-lg-6 mb-3">
+                                                                        {{-- <div class="col-lg-6 mb-3">
                                                                             <div class="form-group">
                                                                                 <label>{{ __('Optional YouTube Video') }} </label>
                                                                                 <input type="text" class="form-control"
                                                                                        name="youtube_video"
                                                                                        placeholder="Enter youtube Video URL">
                                                                             </div>
-                                                                        </div>
+                                                                        </div> --}}
                                                                     </div>
                                                                 </div>
 
@@ -378,25 +508,26 @@
                                         <div class="row">
                                             <div class="col-lg-6">
                                                 <div class="form-group">
-                                                    <label>{{ __('Full Name') }}</label>
+                                                    <label>{{ __('Full Name') }}*</label>
                                                     <input type="text" class="form-control" name="full_name"
                                                            value="{{ $vendor->vendor_info->name }}" disabled>
                                                 </div>
                                             </div>
                                             <div class="col-lg-6">
                                                 <div class="form-group">
-                                                    <label>{{ __('Email') }}</label>
+                                                    <label>{{ __('Email') }}*</label>
                                                     <input type="text" value="{{ $vendor->email }}" class="form-control"
                                                            name="email" disabled>
                                                 </div>
                                             </div>
-                                            <div class="col-lg-6">
-                                                <label style="margin-top: 5px;margin-left: 10px;font-size: 21px;color: #7b7b7b;">{{ __('Phone') }}</label>
-                                                <div class="form-group input-group" style="margin-top: 8px;">
 
-                                                    <div class="d-flex" style="    margin-top: -12px;">
-                                                        {{-- <div class="custom-select"> --}}
-                                                            {{-- <div class="select-selected">
+                                            <div class="col-lg-6">
+                                                <label style="margin-top: 5px;margin-left: 10px;font-size: 21px;color: #7b7b7b;">{{ __('Phone') }}*</label>
+                                                <div class="form-group input-group" style="margin-top: 10px;">
+
+                                                    <div class="d-flex col-lg-12" style="    margin-top: -12px;">
+                                                         <div class="custom-select">
+                                                             <div class="select-selected">
 
                                                                 @php
                                                                     $ct = $country_codes->firstWhere('country', 'United Kingdom');
@@ -419,8 +550,8 @@
                                                                 <img src="{{ $flagUrl }}" alt="UK Flag" class="flag">
                                                                 <span class="short_code"> {{$s_code}} </span>
                                                                 ({{ $flagcode }})
-                                                            </div> --}}
-                                                            {{-- <div class="select-items select-hide">
+                                                            </div>
+                                                             <div class="select-items select-hide">
                                                                 <div class="search-box">
                                                                     <input type="text" id="country-search"
                                                                            placeholder="Search country...">
@@ -436,19 +567,19 @@
                                                                         ({{ $country->code }})
                                                                     </div>
                                                                 @endforeach
-                                                            </div> --}}
-                                                        </div>
-                                                        <input value="{{ old('phone', $vendor->phone) }}" class="form-control" readonly>
+                                                            </div>
+                                                         </div>
 
                                                         <input type="hidden" name="c_code" id="c_code"
                                                                value="{{ !empty(Auth::guard('vendor')->user()->country_code) ? Auth::guard('vendor')->user()->country_code : '+44' }}"/>
+                                                               {{-- <input value="{{ old('phone', $vendor->phone) }}" class="form-control" readonly> --}}
 
-                                                        {{-- <input type="number" value="{{ $vendor->phone }}"
+                                                        <input type="number" value="{{ $vendor->phone }}"
                                                                style="height: 40px;margin-top: 10px;    margin-right: 5px;"
-                                                               class="form-control" name="phone" required> --}}
+                                                               class="form-control" name="phone" required>
 
 
-                                                        {{-- @if ($vendor->phone_verified == 1)
+                                                         @if ($vendor->phone_verified == 1)
                                                             <button disabled class="btn  btn-success2" style="    height: 40px;
                         margin-top: 10px;
                         font-size: 25px;
@@ -467,7 +598,7 @@
                         padding-left: 12px;
                         background: transparent;
                         color: #1b87f4;" type="button" title="verify"><i class='fas fa-fingerprint'></i></button>
-                                                        @endif --}}
+                                                        @endif
 
                                                     </div>
 
@@ -475,12 +606,9 @@
                                                         reduce fraud and scams on Listit</small>
                                                     <p id="editErr_phone" class="mt-1 mb-0 text-danger em"></p>
                                                 </div>
-
                                             </div>
-
-
                                             <div class="col-lg-6">
-
+<br/>
                                                 <div class="form-group checkbox-xl row">
                                                     <div><label>{{ __('Allow contact by') }}</label></div>
                                                     <div class="col-lg-6">
@@ -504,8 +632,8 @@
                                                     </div>
 
                                                 </div>
-                                            </div>
-
+                                            </div><br/>
+                                            <hr/>
 
                                             <div class="col-lg-6" style="display:none;">
                                                 <div class="form-group">
@@ -587,7 +715,7 @@
 
 
                                             </form>
-                                            <div class="col-lg-12">
+                                            {{-- <div class="col-lg-12">
                                                 <label for="" class="mb-2"><strong>{{ __('Gallery Images') }}
                                                         **</strong> <br> <small class="text-danger"> load up to <span
                                                                 id="change_text_photo_allow">15</span> images .jpg,
@@ -676,7 +804,7 @@
                                                     </div>
                                                 </form>
                                                 <p class="em text-danger mb-0" id="errslider_images"></p>
-                                            </div>
+                                            </div> --}}
 
                                             <form class="myajaxform" id="carForm"
                                                   action="{{ route('vendor.car_management.store_car') }}" method="POST"

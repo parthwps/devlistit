@@ -1221,7 +1221,7 @@ font-weight: 700;}
             </div>
           </div>
           <div class="col-12  col-lg-8" data-aos="" style="border: 0px solid orange;">
-            <div class="row pe-sm-5 "  >
+            <div class="row">
             @foreach ($getFeaturedVendors->cars as $featureads)
 
              @php
@@ -1260,7 +1260,7 @@ font-weight: 700;}
               @endphp
 
               <!-- ------------------------------------------------- -->
-              <div class="col-6 col-md-4">
+              <div class="col-6 col-md-3">
               @include('frontend/home/dataloader')
                 <div class="product-default p-1 p-sm-15 mb-10 loading-section"
                 style="padding: 0px !important;box-shadow: 0px 0px 20px 0px rgba(76, 87, 125, 0.1);
