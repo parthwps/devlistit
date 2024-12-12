@@ -291,6 +291,7 @@ $(document).ready(function () {
     $(document).on("submit", '#carForm', function(e) {
       e.preventDefault();
       $(e.target).attr('disabled', true);
+      $('.validation-error').remove();
     $(".request-loader").addClass("show");
 
     if ($(".iconpicker-component").length > 0) {
@@ -346,20 +347,40 @@ $(document).ready(function () {
         let errors = ``;
 
         for (let x in error.responseJSON.errors) {
-          errors += `<li>
-                <p class="text-danger mb-0">${error.responseJSON.errors[x][0]}</p>
-              </li>`;
+          if(x == 'slider_images'){
+             $('#errslider_images').html(`<p class="text-danger mb-0 validation-error">${error.responseJSON.errors[x][0]}</p>`);
+          }
+          else if(x == 'price'){
+            $('#ad_price').after(`<p class="text-danger mb-0 validation-error">${error.responseJSON.errors[x][0]}</p>`);
+          }
+          else if(x == 'package_id'){
+            $('#payplans').after(`<p class="text-danger mb-0 validation-error">${error.responseJSON.errors[x][0]}</p>`);
+          }
+          else if($('[name="'+x+'"]','#carForm').length){
+            $('[name="'+x+'"]','#carForm').after(`<p class="text-danger mb-0 validation-error">${error.responseJSON.errors[x][0]}</p>`);
+          }
+          else{
+            errors += `<li>
+                  <p class="text-danger mb-0">${error.responseJSON.errors[x][0]}</p>
+                </li>`;
+          }
         }
         //alert(errors);
-
-        $('#carErrors ul').html(errors);
-        $('#carErrors').show();
+        if(errors){
+            $('#carErrors ul').html(errors);
+            $('#carErrors').show();
+            $('html, body').animate({
+              scrollTop: $('#carErrors').offset().top - 100
+            }, 1000);
+        }
+        if($('.validation-error','#carForm').length){
+          $('html, body').animate({
+            scrollTop: $('.validation-error:first').offset().top - 100
+          }, 1000);
+        }
 
         $('.request-loader').removeClass('show');
 
-        $('html, body').animate({
-          scrollTop: $('#carErrors').offset().top - 100
-        }, 1000);
       }
 
     });

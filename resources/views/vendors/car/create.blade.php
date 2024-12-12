@@ -94,95 +94,95 @@
                                       <ul></ul>
                                   </div>
                                     <div class="col-lg-12">
-                                                                    <label for="" class="mb-2"><strong>{{ __('Gallery Images') }}
-                                                                            **</strong> <br> <small class="text-danger"> load up to <span
-                                                                                    id="change_text_photo_allow">15</span> images .jpg,
-                                                                            .png, & .gif </small></label>
+                                        <label for="" class="mb-2"><strong>{{ __('Gallery Images') }}
+                                                **</strong> <br> <small class="text-danger"> load up to <span
+                                                        id="change_text_photo_allow">15</span> images .jpg,
+                                                .png, & .gif </small></label>
 
-                                                                    @if($draft_ad == true && !empty($draft_ad->images))
-                                                                        @php
-                                                                            $images = json_decode($draft_ad->images, true);
-                                                                            $items = [];
-                                                                        @endphp
+                                        @if($draft_ad == true && !empty($draft_ad->images))
+                                            @php
+                                                $images = json_decode($draft_ad->images, true);
+                                                $items = [];
+                                            @endphp
 
-                                                                        @if(count($images) > 0)
-                                                                            <div class="row">
-                                                                                <div class="col-12">
-                                                                                    <table class="table table-striped" id="imgtable">
-                                                                                        @foreach($images as $image)
-                                                                                            @php
-                                                                                                $item = \App\Models\Car\CarImage::where('image', $image)->first();
-                                                                                            @endphp
+                                            @if(count($images) > 0)
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <table class="table table-striped" id="imgtable">
+                                                            @foreach($images as $image)
+                                                                @php
+                                                                    $item = \App\Models\Car\CarImage::where('image', $image)->first();
+                                                                @endphp
 
-                                                                                            @if($item)
-                                                                                                @php
-                                                                                                    $items[] = [
-                                                                                                        'id' => $item->id,
-                                                                                                        'image' => $item->image,
-                                                                                                        'rotation_point' => $item->rotation_point,
-                                                                                                        'priority' => $item->priority,
-                                                                                                    ];
-                                                                                                @endphp
-                                                                                            @endif
-                                                                                        @endforeach
+                                                                @if($item)
+                                                                    @php
+                                                                        $items[] = [
+                                                                            'id' => $item->id,
+                                                                            'image' => $item->image,
+                                                                            'rotation_point' => $item->rotation_point,
+                                                                            'priority' => $item->priority,
+                                                                        ];
+                                                                    @endphp
+                                                                @endif
+                                                            @endforeach
 
-                                                                                        @php
-                                                                                            // Sort items by priority
-                                                                                            usort($items, function($a, $b) {
-                                                                                                return $a['priority'] <=> $b['priority'];
-                                                                                            });
-                                                                                        @endphp
+                                                            @php
+                                                                // Sort items by priority
+                                                                usort($items, function($a, $b) {
+                                                                    return $a['priority'] <=> $b['priority'];
+                                                                });
+                                                            @endphp
 
-                                                                                        @foreach($items as $item)
-                                                                                            <tr class="trdb table-row"
-                                                                                                id="trdb{{ $item['id'] }}" draggable="true"
-                                                                                                ondragstart="dragStart(event)"
-                                                                                                ondrop="drop(event)"
-                                                                                                ondragover="allowDrop(event)">
-                                                                                                <td>
-                                                                                                    <div class="">
-                                                                                                        <img class="thumb-preview wf-150"
-                                                                                                            src="{{ asset('assets/admin/img/car-gallery/' . $item['image']) }}"
-                                                                                                            id="img_{{$item['id']}}"
-                                                                                                            alt="Ad Image"
-                                                                                                            style="height:120px; width:120px; object-fit: cover;transform: rotate({{$item['rotation_point']}}deg);">
-                                                                                                    </div>
-
-                                                                                                    <div style="text-align: center;margin-bottom: 5px;color: gray;">
-                                                                                                        Set Cover <input
-                                                                                                                class='form-check-input'
-                                                                                                                value="{{ $item['id'] }}"
-                                                                                                                onclick="setCoverPhoto({{ $item['id'] }})"
-                                                                                                                type='radio'
-                                                                                                                name='flexRadioDefault'>
-                                                                                                    </div>
-                                                                                                </td>
-                                                                                                <td>
-                                                                                                    <i class="fa fa-times"
-                                                                                                    onclick="removethis({{ $item['id'] }})"></i>
-                                                                                                    <i class="fa fa-undo rotatebtndb"
-                                                                                                    onclick="rotatePhoto({{ $item['id'] }})"></i>
-                                                                                                </td>
-
-                                                                                            </tr>
-                                                                                        @endforeach
-                                                                                    </table>
-                                                                                </div>
-                                                                            </div>
-                                                                        @endif
-                                                                    @endif
-
-
-                                                                    <form action="{{ route('car.imagesstore') }}" id="my-dropzone"
-                                                                        enctype="multipart/formdata"
-                                                                        class="dropzone create us_dropzone">
-                                                                        @csrf
-                                                                        <div class="fallback">
-                                                                            <input name="file" type="file" multiple/>
+                                                            @foreach($items as $item)
+                                                                <tr class="trdb table-row"
+                                                                    id="trdb{{ $item['id'] }}" draggable="true"
+                                                                    ondragstart="dragStart(event)"
+                                                                    ondrop="drop(event)"
+                                                                    ondragover="allowDrop(event)">
+                                                                    <td>
+                                                                        <div class="">
+                                                                            <img class="thumb-preview wf-150"
+                                                                                 src="{{ asset('assets/admin/img/car-gallery/' . $item['image']) }}"
+                                                                                 id="img_{{$item['id']}}"
+                                                                                 alt="Ad Image"
+                                                                                 style="height:120px; width:120px; object-fit: cover;transform: rotate({{$item['rotation_point']}}deg);">
                                                                         </div>
-                                                                    </form>
-                                                                    <p class="em text-danger mb-0" id="errslider_images"></p>
-                                                                </div>
+
+                                                                        <div style="text-align: center;margin-bottom: 5px;color: gray;">
+                                                                            Set Cover <input
+                                                                                    class='form-check-input'
+                                                                                    value="{{ $item['id'] }}"
+                                                                                    onclick="setCoverPhoto({{ $item['id'] }})"
+                                                                                    type='radio'
+                                                                                    name='flexRadioDefault'>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <i class="fa fa-times"
+                                                                           onclick="removethis({{ $item['id'] }})"></i>
+                                                                        <i class="fa fa-undo rotatebtndb"
+                                                                           onclick="rotatePhoto({{ $item['id'] }})"></i>
+                                                                    </td>
+
+                                                                </tr>
+                                                            @endforeach
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            @endif
+                                        @endif
+
+
+                                        <form action="{{ route('car.imagesstore') }}" id="my-dropzone"
+                                              enctype="multipart/formdata"
+                                              class="dropzone create us_dropzone ad-creation">
+                                            @csrf
+                                            <div class="fallback">
+                                                <input name="file" type="file" multiple/>
+                                            </div>
+                                        </form>
+                                        <p class="em text-danger mb-0" id="errslider_images"></p>
+                                    </div>
                                     <div class="row">
 
                                         <div class="col-lg-12 ">
@@ -527,7 +527,7 @@
 
                                                     <div class="d-flex col-lg-12" style="    margin-top: -12px;">
                                                          <div class="custom-select">
-                                                             <div class="select-selected">
+                                                             <div class="select-selected bg-light">
 
                                                                 @php
                                                                     $ct = $country_codes->firstWhere('country', 'United Kingdom');
@@ -551,7 +551,7 @@
                                                                 <span class="short_code"> {{$s_code}} </span>
                                                                 ({{ $flagcode }})
                                                             </div>
-                                                             <div class="select-items select-hide">
+                                                             <div class="select-items select-hide" style="display: none;">
                                                                 <div class="search-box">
                                                                     <input type="text" id="country-search"
                                                                            placeholder="Search country...">
@@ -576,7 +576,7 @@
 
                                                         <input type="number" value="{{ $vendor->phone }}"
                                                                style="height: 40px;margin-top: 10px;    margin-right: 5px;"
-                                                               class="form-control" name="phone" required>
+                                                               class="form-control" name="phone" required readonly>
 
 
                                                          @if ($vendor->phone_verified == 1)
