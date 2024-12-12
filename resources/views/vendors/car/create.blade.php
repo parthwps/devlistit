@@ -175,7 +175,7 @@
 
                                         <form action="{{ route('car.imagesstore') }}" id="my-dropzone"
                                               enctype="multipart/formdata"
-                                              class="dropzone create us_dropzone">
+                                              class="dropzone create us_dropzone ad-creation">
                                             @csrf
                                             <div class="fallback">
                                                 <input name="file" type="file" multiple/>

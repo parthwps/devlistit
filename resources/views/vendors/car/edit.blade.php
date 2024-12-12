@@ -126,7 +126,7 @@ $categories = App\Models\Car\Category::where('id', $carContent->category_id)->fi
                   </div>
                 </div>
                 <form action="{{ route('vendor.car.imagesstore') }}" id="my-dropzone" enctype="multipart/formdata"
-                  class="dropzone create us_dropzone ">
+                  class="dropzone create us_dropzone ad-creation">
                   @csrf
                   <div class="fallback">
                     <input name="file" type="file" multiple />

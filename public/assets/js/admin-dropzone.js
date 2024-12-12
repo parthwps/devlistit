@@ -9,9 +9,11 @@
      Dropzone.autoDiscover = false;
 
         $(document).ready(function() {
+
             // Dropzone initialization
             var myDropzone = new Dropzone("#my-dropzone", {
                 acceptedFiles: '.png, .jpg, .jpeg',
+                maxFiles: 15,
                 url: storeUrl,
                 success: function(file, response) 
                 {
