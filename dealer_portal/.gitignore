@@ -1,13 +1,7 @@
 /node_modules
 /public/hot
-/vendor
-/public/assets/admin/img/car-gallery
 /public/storage
 /storage/*.key
-# /dealer_portal
-/dealer_portal/temp
-/storage
-.env
 .env.backup
 .phpunit.result.cache
 docker-compose.override.yml
@@ -15,5 +9,3 @@ Homestead.json
 Homestead.yaml
 npm-debug.log
 yarn-error.log
-listit-dev
-/.idea
