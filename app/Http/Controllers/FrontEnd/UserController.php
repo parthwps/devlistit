@@ -843,6 +843,7 @@ class UserController extends Controller
 
         if($data->count()>0)
         {
+            $data->prepend(['id' => '', 'name' => __('Please select model')]);
              return $data;
         }
 

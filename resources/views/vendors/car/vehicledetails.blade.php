@@ -160,7 +160,7 @@
         <div class="col-lg-6 mb-3" id="new_engine_caacity">
             <div class="form-group">
                 <label>Engine size (cc)  </label>
-                <input type="number" class="form-control" id="addCapacity" name="engineCapacity" value="{{$draft_ad->engine}}"  onfocusout="addnsjfjdfj(this)" />
+                <input type="number" placeholder="e.g 1.6"  class="form-control" id="addCapacity" name="engineCapacity" value="{{$draft_ad->engine}}"  onfocusout="addnsjfjdfj(this)" />
             </div>
         </div>
     @else
@@ -186,7 +186,7 @@
                 <div class="col-lg-6 mb-3" id="new_engine_caacity">
                     <div class="form-group">
                         <label>Engine size (KW) </label>
-                        <input type="number" class="form-control" id="addCapacity" name="engineCapacity" value="{{$draft_ad->engine}} "  onfocusout="addnsjfjdfj(this)" />
+                        <input type="number" placeholder="e.g 1.6" class="form-control" id="addCapacity" name="engineCapacity" value="{{$draft_ad->engine}} "  onfocusout="addnsjfjdfj(this)" />
                     </div>
                 </div>
             @endif
