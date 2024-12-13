@@ -3196,6 +3196,9 @@ $(document).ready(function() {
         });
         $priceMax.trigger('change');
     });
+
+    $('.banner-filter-form .nav-tabs .nav-item:nth-child(2) button').trigger('click');
+
 });
 
 </script>
