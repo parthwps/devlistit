@@ -141,11 +141,11 @@
                                                                     ondragover="allowDrop(event)">
                                                                     <td>
                                                                         <div class="">
-                                                                            <img class="thumb-preview wf-150"
+                                                                            <img id="preview-image" class="thumb-preview wf-150"
                                                                                  src="{{ asset('assets/admin/img/car-gallery/' . $item['image']) }}"
                                                                                  id="img_{{$item['id']}}"
                                                                                  alt="Ad Image"
-                                                                                 style="height:120px; width:120px; object-fit: cover;transform: rotate({{$item['rotation_point']}}deg);">
+                                                                                 style="height:120px; width:120px; object-fit: cover;transform: rotate({{$item['rotation_point']}}deg);" onchange="updateImagePreview('image-input', 'preview-image')">
                                                                         </div>
 
                                                                         <div style="text-align: center;margin-bottom: 5px;color: gray;">
@@ -411,11 +411,14 @@
                                                                                   }
                                                                               @endphp
                                                                               <label>{{ __('Ad Title') }} *</label>
-                                                                              <input type="text" id="input-title" class="form-control "
-                                                                                    onfocusout="saveDraftData(this , 'ad_title')"
-                                                                                    value="@if($draft_ad == true && !empty($draft_ad->ad_title)) {{$draft_ad->ad_title}} @endif"
-                                                                                    name="{{ $language->code }}_title"
-                                                                                    placeholder="{{ $placeholder  }}">
+                                                                              <input
+                                                                              type="text"
+                                                                              id="input-title"
+                                                                              class="form-control"
+                                                                              oninput="updatePreview('input-title', 'preview-title')"
+                                                                              value="{{ old($language->code . '_title', ($draft_ad && !empty($draft_ad->ad_title)) ? $draft_ad->ad_title : '') }}"
+                                                                              name="{{ $language->code }}_title"
+                                                                              placeholder="{{ $placeholder }}">
                                                                               <span class="form-text">
                                                                               {{ __('Your ad title will be shown in search results') }}
                                                                           </span>
@@ -427,13 +430,13 @@
                                                                             <div class="form-group {{ $language->direction == 1 ? 'rtl text-right' : '' }}">
                                                                                 <label>{{ __('Description') }} *</label>
                                                                                 <textarea
-                                                                                        id="{{ $language->code }}_description"
-                                                                                        onfocusout="saveDraftData(this , 'ad_description')"
-                                                                                        class="form-control "
-                                                                                        name="{{ $language->code }}_description"
-                                                                                        data-height="500"
-                                                                                        style="height: 300px;"
-                                                                                        placeholder="Tell us a bit more about your ad, giving us as much information as possible to help sell your items">@if($draft_ad == true && !empty($draft_ad->ad_description)){{$draft_ad->ad_description}}@endif</textarea>
+                                                                                  id="description"
+                                                                                  oninput="updatePreview('description', 'preview-description')"
+                                                                                  class="form-control"
+                                                                                  name="{{ $language->code }}_description"
+                                                                                  style="height: 300px;"
+                                                                                  placeholder="Tell us a bit more about your ad, giving as much information as possible to help sell your items">{{ old($language->code . '_description', ($draft_ad && !empty($draft_ad->ad_description)) ? $draft_ad->ad_description : '') }}</textarea>
+
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -441,29 +444,21 @@
                                                                        <div class="col-lg-6 d-flex align-items-center">
                                                                           <div class="form-group flex-grow-1 mr-2">
                                                                               <label>{{ __('Price') }}*</label>
-                                                                              <input type="number" class="form-control @error('price') is-invalid @enderror" name="price" id="ad_price"
-                                                                                     onfocusout="saveDraftData(this, 'price')"
-                                                                                     value="@if($draft_ad == true && !empty($draft_ad->price)) {{$draft_ad->price}} @endif"
-                                                                                     placeholder="Enter Price in  &pound;">@error('price')
+                                                                              <input
+                                                                              type="number"
+                                                                              class="form-control"
+                                                                              id="price"
+                                                                              oninput="updatePreview('price', 'preview-price')"
+                                                                              value="{{ old('price', ($draft_ad && !empty($draft_ad->price)) ? $draft_ad->price : '') }}"
+                                                                              placeholder="Enter Price in £">@error('price')
                                                                                      <p class="invalid-feedback">{{$message}}</p>
 
                                                                                      @enderror
                                                                           </div>&nbsp;
-
                                                                       </div>
-
-
-                                                                        {{-- <div class="col-lg-6 mb-3">
-                                                                            <div class="form-group">
-                                                                                <label>{{ __('Optional YouTube Video') }} </label>
-                                                                                <input type="text" class="form-control"
-                                                                                       name="youtube_video"
-                                                                                       placeholder="Enter youtube Video URL">
-                                                                            </div>
-                                                                        </div> --}}
-                                                                    </div>
+                                                                    </div><br/>
+                                                                   
                                                                 </div>
-
                                                                 <div class="row">
                                                                     <div class="col">
                                                                         @php $currLang = $language; @endphp
@@ -478,7 +473,7 @@
                                                                                            onchange="cloneInput('collapse{{ $currLang->id }}', 'collapse{{ $language->id }}', event)">
                                                                                     <span class="form-check-sign">{{ __('Clone for') }} <strong
                                                                                                 class="text-capitalize text-secondary">{{ $language->name }}</strong>
-                                      {{ __('language') }}</span>
+                                                                         {{ __('language') }}</span>
                                                                                 </label>
                                                                             </div>
                                                                         @endforeach
@@ -822,20 +817,133 @@
                                                                 More</a> about payment options.
                                                         </p>
                                                         <div class="col-lg-4">
-                                                            <button type="button">Preview Ad</button>&nbsp;
-                                                            <button type="submit" id="CarSubmit"
-                                                                    data-can_car_add="{{ $can_car_add }}"
-                                                                    class="btn btn-success btn-lg btn-block ">
-                                                                @if($draft_ad == true && !empty($draft_ad->ad_type) && $draft_ad->ad_type == 'Wanted')
-                                                                    Publish Now
-                                                                @else
-                                                                    {{ __('Sell Now') }}
-                                                                @endif
+                                                          <button type="button" id="previewAdButton">Preview Ad</button>
+                                                          <div id="previewAdModal" style="display: none; position: fixed; z-index: 1000; background: rgba(0,0,0,0.7); width: 100%; height: 100%; top: 0; left: 0; justify-content: center; align-items: center;">
+                                                              <div style="max-height:600px;background: white; padding: 0 20px 20px 20px; border-radius: 10px; max-width: 500px; width: 100%; text-align: center;overflow-y:auto;">
+                                                                  <div class="sticky-top bg-white  d-flex justify-content-between p-3 justify-content-center">
+                                                                      <h4 class="mb-0 d-flex align-items-center">
+                                                                          <span class="preview-icon me-2"><i class="fas fa-eye"></i>Preview</span>
+                                                                      </h4>
+                                                                      <button type="button" class="btn-close" id="closeModal" aria-label="Close"></button>
+                                                                  </div>
+                                                                  <!-- Image Input -->
+                                                                    @php
+                                                                        $items = isset($items) ? $items : [];
+                                                                    @endphp
+                                                                    
+                                                                    <!-- Image Preview -->
+                                                                    <div id="preview-images-container" style="display: flex; flex-wrap: wrap; gap: 10px;width:100%;justify-content:center;align-items:center;">
+                                                                        
+                                                                        @forelse($items as $index => $item)
+                                                                            <img class="thumb-preview"
+                                                                                 src="{{ asset('assets/admin/img/car-gallery/' . $item['image']) }}"
+                                                                                 id="img_{{$item['id']}}"
+                                                                                 alt="Ad Image"
+                                                                                 style="{{ $index === 0 ? 'height:300px; width:300px;' : 'height:150px; width:150px;' }} object-fit: contain; transform: rotate({{$item['rotation_point']}}deg);"
+                                                                                 onchange="updateImagePreview('image-input', 'img_{{$item['id']}}')">
+                                                                        @empty
+                                                                            <p>No images available.</p>
+                                                                        @endforelse
+                                                                    </div><br/>
 
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                                  <p id="preview-title" style=" margin-bottom: 10px;text-align:left;">Default Title</p>
+                                                                  <h1 id="preview-price" style="font-weight: bold;text-align:left;">£0</h1>
+                                                                  <p style="text-align: justify;font-weight:bold;">Description</p>
+                                                                  <div id="over-flow-fade"></div>
+
+                                                                  <p id="preview-description" style="height: auto; min-height: 100px;text-align:left;">Default Description</p>
+                                                                  <!-- <button id="read-more" style=";" onclick="toggleDescription(true)">Read More</button>
+                                                                  <button id="read-less" style="" onclick="toggleDescription(false)">Read Less</button> -->
+
+                                                                  <button type="button" id="closeModalButton" style="margin-top: 10px;" class="btn btn-primary text-white w-100">Close Preview</button>
+                                                              </div>
+                                                          </div>
+                                                      {{-- </div> --}}
+
+                                                      <script>
+                                                          // Open modal
+                                                          document.getElementById('previewAdButton').addEventListener('click', function () {
+                                                              document.getElementById('previewAdModal').style.display = 'flex';
+                                                          });
+
+                                                          // Close modal
+                                                          document.getElementById('closeModal').addEventListener('click', function () {
+                                                              document.getElementById('previewAdModal').style.display = 'none';
+                                                          });
+                                                          document.getElementById('closeModalButton').addEventListener('click', function () {
+                                                              document.getElementById('previewAdModal').style.display = 'none';
+                                                          });
+
+                                                          // Update preview dynamically
+                                                          function updatePreview(inputId, previewId) {
+                                                              const inputValue = document.getElementById(inputId).value;
+                                                              const previewElement = document.getElementById(previewId);
+                                                              if (previewElement) {
+                                                                  previewElement.textContent = inputValue || (inputId === 'price' ? '£0' : 'Default');
+                                                              }
+                                                          }
+                                                          function updateImagePreview(inputId, previewId) {
+                                                            const inputElement = document.getElementById(inputId);
+                                                            const previewElement = document.getElementById(previewId);
+
+                                                            if (inputElement.files && inputElement.files[1]) {
+                                                                const file = inputElement.files[1];
+                                                                const reader = new FileReader();
+
+                                                                reader.onload = function (e) {
+                                                                    previewElement.src = e.target.result;
+                                                                };
+
+                                                                reader.readAsDataURL(file);
+                                                            }
+                                                        }
+
+
+                                                          // Save and restore draft data
+                                                          document.addEventListener('DOMContentLoaded', function () {
+                                                              ['input-title', 'description', 'price'].forEach(id => {
+                                                                  const savedValue = localStorage.getItem(id);
+                                                                  if (savedValue) {
+                                                                      document.getElementById(id).value = savedValue;
+                                                                      updatePreview(id, `preview-${id}`);
+                                                                  }
+                                                              });
+                                                          });
+
+                                                          function saveDraftData(input) {
+                                                              localStorage.setItem(input.id, input.value);
+                                                          }
+                                                          function toggleDescription(isReadMore) {
+                                                            const description = document.getElementById("preview-description");
+                                                            const readMoreBtn = document.getElementById("read-more");
+                                                            const readLessBtn = document.getElementById("read-less");
+
+                                                            if (isReadMore) {
+                                                                description.style.maxHeight = "none"; // Expand to show full content
+                                                                readMoreBtn.style.display = "none";
+                                                                readLessBtn.style.display = "inline";
+                                                            } else {
+                                                                description.style.maxHeight = "100px"; // Collapse to show limited content
+                                                                readMoreBtn.style.display = "inline";
+                                                                readLessBtn.style.display = "none";
+                                                            }
+                                                        }
+
+                                                      </script>
+
+                                                          <button type="submit" id="CarSubmit"
+                                                                      data-can_car_add="{{ $can_car_add }}"
+                                                                      class="btn btn-success btn-lg btn-block ">
+                                                                  @if($draft_ad == true && !empty($draft_ad->ad_type) && $draft_ad->ad_type == 'Wanted')
+                                                                      Publish Now
+                                                                  @else
+                                                                      {{ __('Sell Now') }}
+                                                                  @endif
+
+                                                              </button>
+                                                          </div>
+                                                      </div>
+                                                  </div>
 
                                                 <input type="hidden" id="max_file_upload" name="max_file_upload"
                                                        value="50"/>
@@ -848,7 +956,7 @@
 
                             </div>
                             <div class="">
-                                <button type="submit" class="text-primary">Reset Form</button>
+                                <button type="reset" class="text-primary">Reset Form</button>
                             </div>
 
 

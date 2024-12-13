@@ -790,7 +790,7 @@ class UserController extends Controller
           if (!empty($check))
           {
              Wishlist::where('car_id' , $id)->where('user_id' , $user_id)->delete();
-            $notification = array('message' => 'This ad has been removed from your saved ads!', 'alert_type' => 'error');
+            $notification = array('message' => 'This Listing has been removed from your Saved Ads!', 'alert_type' => 'error');
             return response()->json($notification);
           }
           else
@@ -799,7 +799,7 @@ class UserController extends Controller
             $add->car_id = $id;
             $add->user_id = $user_id;
             $add->save();
-            $notification = array('message' => 'This ad has been added to your saved ads', 'alert_type' => 'success');
+            $notification = array('message' => 'This Listing has been added to your Saved Ads', 'alert_type' => 'success');
             return response()->json($notification);
           }
         }
