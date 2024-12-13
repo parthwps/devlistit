@@ -450,14 +450,11 @@
                                                                               id="price"
                                                                               oninput="updatePreview('price', 'preview-price')"
                                                                               value="{{ old('price', ($draft_ad && !empty($draft_ad->price)) ? $draft_ad->price : '') }}"
-                                                                              placeholder="Enter Price in £">@error('price')
-                                                                                     <p class="invalid-feedback">{{$message}}</p>
-
-                                                                                     @enderror
+                                                                              placeholder="Enter Price in £">
                                                                           </div>&nbsp;
                                                                       </div>
                                                                     </div><br/>
-                                                                   
+
                                                                 </div>
                                                                 <div class="row">
                                                                     <div class="col">
@@ -830,10 +827,10 @@
                                                                     @php
                                                                         $items = isset($items) ? $items : [];
                                                                     @endphp
-                                                                    
+
                                                                     <!-- Image Preview -->
                                                                     <div id="preview-images-container" style="display: flex; flex-wrap: wrap; gap: 10px;width:100%;justify-content:center;align-items:center;">
-                                                                        
+
                                                                         @forelse($items as $index => $item)
                                                                             <img class="thumb-preview"
                                                                                  src="{{ asset('assets/admin/img/car-gallery/' . $item['image']) }}"
@@ -955,9 +952,21 @@
                                 </div>
 
                             </div>
-                            <div class="">
-                                <button type="reset" class="text-primary">Reset Form</button>
-                            </div>
+                            <!-- Reset Form Button -->
+<div class="">
+    <button type="reset" id="resetFormButton" class="text-primary">Reset Form</button>
+</div>
+
+<script>
+    document.getElementById('resetFormButton').addEventListener('click', function() {
+        // Reset the form fields
+        document.getElementById('carForm').reset();
+
+        // Reset any other custom fields or states as needed
+        // For example, clear local storage if you are saving draft data
+        localStorage.clear();
+    });
+</script>
 
 
                             <div class="card-footer">
