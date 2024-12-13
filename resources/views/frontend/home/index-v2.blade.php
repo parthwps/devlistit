@@ -799,7 +799,9 @@ font-weight: 700;}
         <div class="col-lg-6">
           <div class="swiper home-slider" id="home-slider-2" data-aos="">
           </div>
+
         </div>
+
         <div class="col-12">
 
         </div>
@@ -959,7 +961,44 @@ font-weight: 700;}
     </div>
   </section>
   <!-- Home-area end -->
+  <style>
 
+    .marquee__container {
+      display: flex;
+      overflow: hidden;
+      white-space: nowrap;
+      align-items: center;
+    }
+    .marquee__text {
+      display: inline-block;
+      font-size: 18px;
+      padding-right: 2rem;
+      animation: marquee-animation 20s linear infinite;
+      padding-top: 5px;
+      padding-bottom: 5px;
+    }
+    @keyframes marquee-animation {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-100%); }
+    }
+    @media screen and (max-width: 768px) {
+      .marquee__text {
+        font-size: 12px;
+        animation-duration: calc(20s * 0.8);
+      }
+    }
+
+  </style>
+  <div class="marquee">
+    <div class="marquee__container bg-primary text-white">
+      <div class="marquee__text">Isle of Man's Number 1 marketplace to buy, sell, and connect — where locals trade anything and everything!
+        &amp; Isle of Man's Number 1 marketplace to buy, sell, and connect — where locals trade anything and everything!
+      </div>
+      <div class="marquee__text" aria-hidden="true">Isle of Man's Number 1 marketplace to buy, sell, and connect — where locals trade anything and everything!
+        &amp; hIsle of Man's Number 1 marketplace to buy, sell, and connect — where locals trade anything and everything!
+      </div>
+    </div>
+  </div>
   <!-- latest add section start -->
     @if($car_contents->count() > 0 )
 
@@ -1003,111 +1042,7 @@ font-weight: 700;}
 
    <!-- Steps-area start 3-->
 
-    <section class="steps-area pt-20 pb-20  font-500" style="border-radius:0px; box-shadow: 0px 0px 0px; background:#F4F9FF;">
-      <div class="container-fluid">
-        <div class="row m-sm-4 m-0">
-        <!-- <div class="col-1"></div> -->
-          <div class="d-flex flex-sm-row flex-column justify-content-between pb-2 pb-sm-0">
-            <div class="section-title title" data-aos="" >
-              <h2 class=" text-center text-sm-start simpleText fw-bold">
-                {{-- @$workProcessSecInfo->subtitle --}}
-                It's As Simple As List It
-              </h2>
-            </div>
-
-            <div class="section-title title-center " data-aos="">
-              <h4 class="fw-bold text-center simpleText text-sm-end" style="color: #4a9dd9;">
-                {{-- @$workProcessSecInfo->title --}}
-                Simple, Safe, Secure
-              </h4>
-            </div>
-          </div>
-          <div class="col-12 mb-20">
-            <div class="row mt-4 ">
-              <!-- Card 1 -->
-              <div class="col-lg-3 col-md-6" data-aos="">
-                <div class="card-container align-items-center text-center radius-md p-0 p-sm-25">
-                  <div class="card-icon-container mb-25">
-                    <i class="fas fa-search"></i>
-                  </div>
-                  <div class="card-content mb-4 mb-sm-0">
-                    <h5 class="card-title2 mb-20">
-                      Search for it on List It Classifieds ISLE OF MAN
-                    </h5>
-                    <p class="card-text lc-3 ">
-                      Search and discover almost anything you can think of for sale, in one place.
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <!-- Card 2 -->
-              <div class="col-lg-3 col-md-6" data-aos="">
-                <div class="card-container align-items-center text-center radius-md p-0 p-sm-25">
-                  <div class="card-icon-container mb-25">
-                    <i class="fas fa-pound-sign"></i>
-                  </div>
-                  <div class="card-content mb-4 mb-sm-0">
-                    <h5 class="card-title2 mb-20">
-                      Browse your favorite sections
-                    </h5>
-                    <p class="card-text lc-3 ">
-                      View a range of ads from the hundreds of listing currently online.
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <!-- Card 3 -->
-              <div class="col-lg-3 col-md-6" data-aos="">
-                <div class="card-container align-items-center text-center radius-md p-0 p-sm-25">
-                  <div class="card-icon-container mb-25">
-                    <i class="fas fa-headphones-alt"></i>
-                  </div>
-                  <div class="card-content mb-4 mb-sm-0">
-                    <h5 class="card-title2 mb-20">
-                      Make Contact with the Seller
-                    </h5>
-                    <p class="card-text lc-3 ">
-                      Contacting local sellers is simple, safe and efficient. You may choose to call or message.
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <!-- Card 4 -->
-              <div class="col-lg-3 col-md-6" data-aos="">
-                <div class="card-container align-items-center text-center radius-md p-0 p-sm-25">
-                  <div class="card-icon-container mb-25">
-                    <i class="fas fa-gavel"></i>
-                  </div>
-                  <div class="card-content mb-4 mb-sm-0">
-                    <h5 class="card-title2 mb-20">
-                      Consider it SOLD on List It!
-                    </h5>
-                    <p class="card-text lc-3 ">
-                      You can consider it SOLD! If its not listed on List it its not for sale!!!
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  <!-- Steps-area end -->
-
-  <!-- START BROWSE CARS --->
-   <div class="w-100"  id="browse_style_home">
-    @if($browse_by_lifestyle)
-      @include('frontend/home/browseBycars', [$browse_by_lifestyle])
-    @endif
-</div>
-  <!-- END BROWSE CARS --->
-
-
-
-
-<!-- Category-area start 3 -->
+   <!-- Category-area start 3 -->
   @if ($secInfo->category_section_status == 1)
   <section class="category-area category-1 pt-20 pb-20 font-type"
     style="margin: 0px;border-radius:0px;box-shadow: 0px 0px 0px #afafaf;">
@@ -1158,6 +1093,107 @@ font-weight: 700;}
       </div>
   </section>
   @endif
+  <!-- Steps-area end -->
+
+  <!-- START BROWSE CARS --->
+   <div class="w-100"  id="browse_style_home">
+    @if($browse_by_lifestyle)
+      @include('frontend/home/browseBycars', [$browse_by_lifestyle])
+    @endif
+</div>
+  <!-- END BROWSE CARS --->
+
+  <section class="steps-area pt-20 pb-20  font-500" style="border-radius:0px; box-shadow: 0px 0px 0px; background:#F4F9FF;">
+    <div class="container-fluid">
+      <div class="row m-sm-4 m-0">
+      <!-- <div class="col-1"></div> -->
+        <div class="d-flex flex-sm-row flex-column justify-content-between pb-2 pb-sm-0">
+          <div class="section-title title" data-aos="" >
+            <h2 class=" text-center text-sm-start simpleText fw-bold">
+              {{-- @$workProcessSecInfo->subtitle --}}
+              It's As Simple As List It
+            </h2>
+          </div>
+
+          <div class="section-title title-center " data-aos="">
+            <h4 class="fw-bold text-center simpleText text-sm-end" style="color: #4a9dd9;">
+              {{-- @$workProcessSecInfo->title --}}
+              Simple, Safe, Secure
+            </h4>
+          </div>
+        </div>
+        <div class="col-12 mb-20">
+          <div class="row mt-4 ">
+            <!-- Card 1 -->
+            <div class="col-lg-3 col-md-6" data-aos="">
+              <div class="card-container align-items-center text-center radius-md p-0 p-sm-25">
+                <div class="card-icon-container mb-25">
+                  <i class="fas fa-search"></i>
+                </div>
+                <div class="card-content mb-4 mb-sm-0">
+                  <h5 class="card-title2 mb-20">
+                    Search for it on List It Classifieds ISLE OF MAN
+                  </h5>
+                  <p class="card-text lc-3 ">
+                    Search and discover almost anything you can think of for sale, in one place.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <!-- Card 2 -->
+            <div class="col-lg-3 col-md-6" data-aos="">
+              <div class="card-container align-items-center text-center radius-md p-0 p-sm-25">
+                <div class="card-icon-container mb-25">
+                  <i class="fas fa-pound-sign"></i>
+                </div>
+                <div class="card-content mb-4 mb-sm-0">
+                  <h5 class="card-title2 mb-20">
+                    Browse your favorite sections
+                  </h5>
+                  <p class="card-text lc-3 ">
+                    View a range of ads from the hundreds of listing currently online.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <!-- Card 3 -->
+            <div class="col-lg-3 col-md-6" data-aos="">
+              <div class="card-container align-items-center text-center radius-md p-0 p-sm-25">
+                <div class="card-icon-container mb-25">
+                  <i class="fas fa-headphones-alt"></i>
+                </div>
+                <div class="card-content mb-4 mb-sm-0">
+                  <h5 class="card-title2 mb-20">
+                    Make Contact with the Seller
+                  </h5>
+                  <p class="card-text lc-3 ">
+                    Contacting local sellers is simple, safe and efficient. You may choose to call or message.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <!-- Card 4 -->
+            <div class="col-lg-3 col-md-6" data-aos="">
+              <div class="card-container align-items-center text-center radius-md p-0 p-sm-25">
+                <div class="card-icon-container mb-25">
+                  <i class="fas fa-gavel"></i>
+                </div>
+                <div class="card-content mb-4 mb-sm-0">
+                  <h5 class="card-title2 mb-20">
+                    Consider it SOLD on List It!
+                  </h5>
+                  <p class="card-text lc-3 ">
+                    You can consider it SOLD! If its not listed on List it its not for sale!!!
+                  </p>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
   <!-- Category-area end -->
 
   <!-- featured section start 4-->

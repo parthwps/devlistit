@@ -792,7 +792,7 @@ Thanks</textarea>
                             @endphp
 
                           @else
-                            Get Finance Approval
+                            <strong style="font-size: 18px; font-weight: bold;">Get Finance Approval</strong> 
                           @endif
                           </a>
                       @endif
@@ -815,20 +815,20 @@ Thanks</textarea>
 
 						<div class="d-flex justify-content-between align-items-center" style="width:140px ; margin-left:auto;">
                 <a href="javascript:void(0);" class="btn2" style=" color: #1b87f4 !important; display: inline-block;
-                      font-size: 16px;" onclick="openShareModal(this)"
+                      font-size: 18px;font-weight:bold;" onclick="openShareModal(this)"
                 data-url="{{ route('frontend.car.details', ['cattitle' => catslug($car->car_content->category_id), 'slug' => $car->car_content->slug, 'id' => $car->id]) }}"
                 style="color: #1b87f4;" >
                 <i class="fa fa-share-alt" aria-hidden="true"></i> Share
                 </a>
                 <a href="javascript:void(0);"
                       onclick="addToWishlist({{$car->id}})"
-								class="btn2  " style="display: inline-block;"
+								class="btn2  " style="display: inline-block;font-size:18px;font-weight:bold;"
 								data-tooltip="tooltip" data-bs-placement="right"
 								title="{{ $checkWishList == false ? __('Save Ads') : __('Saved') }}">
                 @if($checkWishList == false)
-                            <i class="fal fa-heart" style="font-size: 16px; color:red;padding-right: 2px;" ></i>Save
+                            <i class="fal fa-heart" style="font-size: 18px; color:red;padding-right: 2px;font-weight:bold;" ></i>Save
                         @else
-                            <i class="fa fa-heart" aria-hidden="true" style="font-size: 16px; color:red;padding-right: 2px;"></i>Save
+                            <i class="fa fa-heart" aria-hidden="true" style="font-size: 18px; color:red;padding-right: 2px;font-weight:bold;"></i>Save
                         @endif
 							  </a>
 
@@ -903,6 +903,7 @@ Thanks</textarea>
                                 </div>
                         </div>
                         @endif
+     
 
                         <div class="{{$car->vendor->vendor_type == 'dealer' ? 'col-12 col-md-6' : 'col-12'}}">
                         <div class="d-flex border-bottom py-3 justify-content-between align-items-center">
