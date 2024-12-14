@@ -445,6 +445,7 @@
                                                                           <div class="form-group flex-grow-1 mr-2">
                                                                               <label>{{ __('Price') }}*</label>
                                                                               <input
+                                                                                      name="price"
                                                                               type="number"
                                                                               class="form-control"
                                                                               id="price"
@@ -564,7 +565,6 @@
                                                                 @endforeach
                                                             </div>
                                                          </div>
-
                                                         <input type="hidden" name="c_code" id="c_code"
                                                                value="{{ !empty(Auth::guard('vendor')->user()->country_code) ? Auth::guard('vendor')->user()->country_code : '+44' }}"/>
                                                                {{-- <input value="{{ old('phone', $vendor->phone) }}" class="form-control" readonly> --}}
