@@ -11,19 +11,19 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('customer')->middleware('change.lang')->group(function ()
 {
   Route::get('/dashboard', 'Vendor\VendorController@index')->name('vendor.index');
-  Route::get('/signup', 'Vendor\VendorController@signup')->name('vendor.signup');
-  Route::post('/signup/submit', 'Vendor\VendorController@create')->name('vendor.signup_submit');
-  Route::get('/login', 'Vendor\VendorController@login')->name('vendor.login');
+  Route::get('/signup', 'Vendor\VendorController@signup')->middleware(['guest:vendor'])->name('vendor.signup');
+  Route::post('/signup/submit', 'Vendor\VendorController@create')->middleware(['guest:vendor'])->name('vendor.signup_submit');
+  Route::get('/login', 'Vendor\VendorController@login')->middleware(['guest:vendor'])->name('vendor.login');
   Route::get('/otpverify', 'Vendor\VendorController@VerifyOtp')->name('vendor.otpverify');
-  Route::post('/login/submit', 'Vendor\VendorController@authentication')->name('vendor.login_submit');
+  Route::post('/login/submit', 'Vendor\VendorController@authentication')->middleware(['guest:vendor'])->name('vendor.login_submit');
   Route::post('/send/code', 'Vendor\VendorController@SendCode')->name('vendor.send_code');
   Route::post('/verify/code', 'Vendor\VendorController@VerifyCode')->name('vendor.verify_code');
   Route::get('/email/verify', 'Vendor\VendorController@confirm_email');
-  Route::get('/forget-password', 'Vendor\VendorController@forget_passord')->name('vendor.forget.password');
-  Route::post('/send-forget-mail', 'Vendor\VendorController@forget_mail')->name('vendor.forget.mail');
+  Route::get('/forget-password', 'Vendor\VendorController@forget_passord')->middleware(['guest:vendor'])->name('vendor.forget.password');
+  Route::post('/send-forget-mail', 'Vendor\VendorController@forget_mail')->middleware(['guest:vendor'])->name('vendor.forget.mail');
   Route::get('/paynow', 'Vendor\VendorController@sendPayment');
-  Route::get('/reset-password', 'Vendor\VendorController@reset_password')->name('vendor.reset.password');
-  Route::post('/update-forget-password', 'Vendor\VendorController@update_password')->name('vendor.update-forget-password');
+  Route::get('/reset-password', 'Vendor\VendorController@reset_password')->middleware(['guest:vendor'])->name('vendor.reset.password');
+  Route::post('/update-forget-password', 'Vendor\VendorController@update_password')->middleware(['guest:vendor'])->name('vendor.update-forget-password');
   Route::get('/get_categories_bread', 'Vendor\CarController@getCategoriesBread')->name('get_categories_bread');
 });
 

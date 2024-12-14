@@ -498,7 +498,7 @@ $categories = App\Models\Car\Category::where('id', $carContent->category_id)->fi
                   <div class="col-lg-6">
                     <div class="form-group">
                       <label>{{ __('Full Name') }}</label>
-                      <input type="text" class="form-control" name="full_name" value="{{ $vendor->vendor_info->name }}">
+                      <input type="text" class="form-control" name="full_name" value="{{ $vendor->vendor_info->name }}" readonly>
                     </div>
                   </div>
                   <div class="col-lg-6">
@@ -536,7 +536,7 @@ $categories = App\Models\Car\Category::where('id', $carContent->category_id)->fi
                         <img src="{{ $flagUrl }}" alt="UK Flag" class="flag">
                         <span class="short_code"> {{$s_code}} </span> ({{ $flagcode }})
                         </div>
-                        <div class="select-items select-hide">
+                        <div class="select-items select-hide" style="display:none;">
                         <div class="search-box">
                         <input type="text" id="country-search" placeholder="Search country...">
                         </div>
@@ -551,7 +551,7 @@ $categories = App\Models\Car\Category::where('id', $carContent->category_id)->fi
 
                         <input type="hidden" name="c_code" id="c_code" value="{{ !empty(Auth::guard('vendor')->user()->country_code) ? Auth::guard('vendor')->user()->country_code : '+44' }}"/>
 
-                        <input  type="number" value="{{ $vendor->phone }}" style="height: 40px;margin-top: 10px;    margin-right: 5px;" class="form-control" name="phone" required>
+                        <input  type="number" value="{{ $vendor->phone }}" style="height: 40px;margin-top: 10px;    margin-right: 5px;" class="form-control" name="phone" required readonly>
 
 
                        @if ($vendor->phone_verified == 1)

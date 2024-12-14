@@ -29,7 +29,6 @@
                                 <input type="hidden" name="page" value="1" id="pageno">
                                 <input type="hidden" name="request_type" value="by_default" id="request_type">
                                 <div class="list-group list-group-flush">
-                                    @foreach ($categories as $key => $category)
                                         <select class="form-select form-control js-example-basic-single1"
                                                 onchange="updatecate(this)" name="category">
                                             <option value="">{{ __('Categories') }}</option>
@@ -39,7 +38,6 @@
                                                         data-pid="{{$categoryValue->parent_id}}" @selected($categoryValue->slug == request()->category)>{{ $categoryValue->name }}</option>
                                             @endforeach
                                         </select>
-                                    @endforeach
                                 </div>
                             </div>
                         </div>
