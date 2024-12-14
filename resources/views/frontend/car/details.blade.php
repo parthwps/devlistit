@@ -35,7 +35,15 @@
         <ul class="list-unstyled pb-2">
           <li class="d-inline"><a href="{{ route('index') }}">{{ __('Home') }}</a></li>
           <li class="d-inline">></li>
-          <li class="d-inline active opacity-75">{{ @$car->car_content->category->name }}</li>
+            @php
+                $parentCategory = $car->car_content->category->parent;
+                $category = $car->car_content->category;
+            @endphp
+            @if($parentCategory)
+                <li class="d-inline"><a href="{{ route('frontend.cars',['category' => $parentCategory->slug]) }}">{{ $parentCategory->name }}</a></li>
+                <li class="d-inline">></li>
+            @endif
+            <li class="d-inline active opacity-75">{{ @$car->car_content->category->name }}</li>
         </ul>
         <h2>
           {{$car->car_content->title}}
