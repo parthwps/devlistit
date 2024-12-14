@@ -953,20 +953,20 @@
 
                             </div>
                             <!-- Reset Form Button -->
-<div class="">
-    <button type="reset" id="resetFormButton" class="text-primary">Reset Form</button>
-</div>
+                            <div class="">
+                                <button type="reset" id="resetFormButton" class="text-primary">Reset Form</button>
+                            </div>
 
-<script>
-    document.getElementById('resetFormButton').addEventListener('click', function() {
-        // Reset the form fields
-        document.getElementById('carForm').reset();
+                            <script>
+                                document.getElementById('resetFormButton').addEventListener('click', function() {
+                                    // Reset the form fields
+                                    document.getElementById('carForm').reset();
 
-        // Reset any other custom fields or states as needed
-        // For example, clear local storage if you are saving draft data
-        localStorage.clear();
-    });
-</script>
+                                    // Reset any other custom fields or states as needed
+                                    // For example, clear local storage if you are saving draft data
+                                    localStorage.clear();
+                                });
+                            </script>
 
 
                             <div class="card-footer">
