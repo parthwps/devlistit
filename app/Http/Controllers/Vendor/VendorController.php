@@ -190,7 +190,8 @@ class VendorController extends Controller
                 //print_r($response); exit;
                 if(isset($data['messageid'])) {
                 $vendor  = Vendor::where('email', Session::get('vendorEmail'))->first();
-                $in['phone'] = $phoneNnumber;
+                $in['phone'] = $request->phone_number;
+                $in['country_code'] = $request->country_code;
                 $in['phone_verified'] = 0;
                 $vendor->update($in);
                 Session::put('verifycode', $code);

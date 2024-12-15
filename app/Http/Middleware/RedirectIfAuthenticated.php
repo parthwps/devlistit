@@ -29,6 +29,10 @@ class RedirectIfAuthenticated
       if ($guard == 'web' && Auth::guard($guard)->check()) {
         return redirect()->route('user.dashboard');
       }
+
+    if ($guard == 'vendor' && Auth::guard($guard)->check()) {
+        return redirect()->route('vendor.edit.profile');
+    }
     }
 
     return $next($request);
