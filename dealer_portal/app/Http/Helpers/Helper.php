@@ -11,7 +11,7 @@ use App\Models\Language;
 use App\Models\Conversation;
 use App\Models\PrivatePackage;
 use Carbon\Carbon;
-use DateTime;
+// use DateTime;
 
 if (!function_exists('createSlug')) {
   function createSlug($string)
@@ -27,9 +27,9 @@ if (!function_exists('createSlug')) {
 if (!function_exists('contactNotification')) {
   function contactNotification($id)
   {
-    
+
     $messages  = Conversation::where([['message_to', $id],['message_seen', 0]])->get();
-    
+
     return  count($messages);
   }
 }
@@ -39,9 +39,9 @@ if (!function_exists('calculate_datetime')) {
   {
     $created_at = new DateTime($date);
     $now = new DateTime();
-    
+
     $interval = $created_at->diff($now);
-    
+
     if ($interval->days == 0) {
     if ($interval->h == 0) {
         $time_diff = $interval->i . ' min';
@@ -53,7 +53,7 @@ if (!function_exists('calculate_datetime')) {
     } else {
     $time_diff = $interval->days . ' dys';
     }
-    
+
     return $time_diff;
   }
 }
@@ -72,29 +72,29 @@ if (!function_exists('make_input_name')) {
 if (!function_exists('countAds')) {
   function countAds($vendor_id,$status = "")
   {
-   
+
     if($status == ""){
       $count = Car::where('vendor_id', $vendor_id)->count();
-      } else{    
+      } else{
       $count = Car::where('status', $status)->where('vendor_id', $vendor_id)->count();
     }
-    
+
     return  $count;
   }
 }
 if (!function_exists('countSaveAds')) {
   function countSaveAds($vendor_id,$status = "")
   {
-   
+
     if($status == ""){
       $count = Car::join('wishlists', 'cars.id', '=', 'wishlists.car_id')->where('wishlists.user_id', '=', $vendor_id)
       ->select('cars.*')->get();
-      } else{    
+      } else{
       $count = Car::join('wishlists', 'cars.id', '=', 'wishlists.car_id')->where('cars.status', $status)
       ->where('wishlists.user_id', '=', $vendor_id)->select('cars.*')->get();
-        
+
     }
-    
+
     return  count($count);
   }
 }
@@ -104,15 +104,15 @@ if (!function_exists('countSaveAds')) {
 if (!function_exists('catslug')) {
   function catslug($id)
   {
-    
+
     $catname  = Category::where('id', $id)->first();
     $findincar = CarContent::where('category_id', $id)->first();
-   
+
     $in['category_slug'] =  createSlug($catname->name);
     //exit;
     //print_r($in); exit;
-       $findincar->update($in); 
-    
+       $findincar->update($in);
+
     return  createSlug($catname->name);
   }
 }
@@ -122,9 +122,9 @@ if (!function_exists('noDaysLeftByAd')) {
     $adPackage = PrivatePackage::where('id', $id)->first();
     $createdAt = Carbon::parse($created_at);
     $currentDate = Carbon::now();
-  
+
     $adDuration = $adPackage->days_listing; // Duration of the ad in days
-  
+
     // Calculate the number of days since the ad was posted
     $daysSincePosted  = $createdAt->diffInDays($currentDate);
     // Calculate the number of days left for the ad to be live
@@ -139,11 +139,11 @@ if (!function_exists('noDaysLeftByAd')) {
 
         return 'Listed ('. $daysLeft.' day left)';
       }
-     
+
   }
 }
 
-if (!function_exists('get_vendor_review_from_google')) 
+if (!function_exists('get_vendor_review_from_google'))
 {
   function get_vendor_review_from_google($cid , $need_review = false)
   {
@@ -153,7 +153,7 @@ if (!function_exists('get_vendor_review_from_google'))
         $show_rule_after_review = false; // true OR false
         $show_blank_star_till_5 = true;  // true OR false
         /* ------------------------------------------------------------------------- */
-        
+
         $ch = curl_init('https://www.google.com/maps?cid='.$cid);
         curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla / 5.0 (Windows; U; Windows NT 5.1; en - US; rv:1.8.1.6) Gecko / 20070725 Firefox / 2.0.0.6");
         curl_setopt($ch, CURLOPT_TIMEOUT, 60);
@@ -164,32 +164,32 @@ if (!function_exists('get_vendor_review_from_google'))
         $result = curl_exec($ch);
         curl_close($ch);
         $pattern = '/window\.APP_INITIALIZATION_STATE(.*);window\.APP_FLAGS=/ms';
-        
+
         $total_ratings = 0;
         $total_reviews = 0;
         $reviews_outout = '';
         $rating_stars = '';
-        if ( preg_match($pattern, $result, $match) ) 
+        if ( preg_match($pattern, $result, $match) )
         {
         $match[1] = trim($match[1], ' =;'); // fix json
         $reviews = json_decode($match[1]);
-        
+
         $reviews = ltrim($reviews[3][6], ")]}'"); // fix json
-        
+
         $reviews = json_decode($reviews);
-        
+
         //$customer = $reviews[0][1][0][14][18];
         $total_ratings = $reviews[6][4][7];
         $total_reviews = $reviews[6][4][8];
-        
+
         $customer = $reviews[6][18]; // NEW IN 2020
         $reviews  = $reviews[6][52][0]; // NEW IN 2020
         }
-        
-        if (isset($reviews)) 
+
+        if (isset($reviews))
         {
            $user_img = '<img style="    height: 50px;" src="'.asset('/public/comment_user.png').'" />';
-            foreach ($reviews as $review) 
+            foreach ($reviews as $review)
             {
                  $reviews_outout .= '<small>'.$user_img.'<b style="margin-left: 8px;">'.$review[0][1].'</b><span style="font-size: 30px;color: gray;"> . </span>' ; // AUTHOR
                 if ($show_only_if_with_text == true and empty($review[3])) continue;
@@ -198,40 +198,40 @@ if (!function_exists('get_vendor_review_from_google'))
                 if ($show_blank_star_till_5 == true)
                 for ($i=1; $i <= 5-$review[4]; ++$i)  $reviews_outout .= '☆'; // RATING
                  $reviews_outout .= '<span style="font-size: 30px;color: gray;"> . </span>'. $review[1] .'<span style="margin-top: 10px;display: block;">'.$review[3].'</span> </small><br>'; // TEXT
-                
-               
+
+
                 if ($show_rule_after_review == true)  $reviews_outout .= '<hr size="1">';
             }
-             
+
         }
-        
+
         if($total_ratings > 0 && $total_reviews > 0)
         {
-            
+
                      // Output filled stars for the integer part of the rating
             for ($i = 1; $i <= floor($total_ratings); $i++) {
                 $rating_stars .= '<span class="star on"></span>';
             }
-        
+
             // Output a half-filled star if the decimal part is greater than 0
             if (($total_ratings - floor($total_ratings)) > 0) {
                  $rating_stars .=  '<span class="star half"></span>';
             }
-        
+
             // Output unfilled stars for the remaining space up to 5
             for ($i = ceil($total_ratings); $i < 5; $i++) {
                  $rating_stars .=  '<span class="star"></span>';
             }
-    
-    
+
+
             if($need_review == true)
             {
-              return ['total_reviews' => $total_reviews , 'total_ratings' => $total_ratings , 'rating_stars' => $rating_stars , 'reviews_outout' => $reviews_outout];  
+              return ['total_reviews' => $total_reviews , 'total_ratings' => $total_ratings , 'rating_stars' => $rating_stars , 'reviews_outout' => $reviews_outout];
             }
-            
+
             return ['total_reviews' => $total_reviews , 'total_ratings' => $total_ratings ,  'rating_stars' => $rating_stars];
         }
-        
+
          return ['total_reviews' => $total_reviews , 'total_ratings' => $total_ratings];
   }
 }
@@ -452,12 +452,12 @@ if (!function_exists('symbolPrice')) {
   }
 }
 
-if (!function_exists('getSetVal')) 
+if (!function_exists('getSetVal'))
 {
   function getSetVal($key)
   {
     $basic = Basic::where('uniqid', 12345)->select($key)->first();
-    
+
     return $basic->$key;
   }
 }

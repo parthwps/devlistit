@@ -9,35 +9,42 @@
      Dropzone.autoDiscover = false;
 
         $(document).ready(function() {
+          function updateImageCount() {
+            let count = $(".dropzone .dz-preview").length;
+            let remaining = 15 - count; // Calculate remaining images
+            $("#imageCount").text(`${count} uploaded, ${remaining} remaining out of 15`).css({"color": "red", "font-weight": "bold"}); // Update text to show remaining count
+          }
 
             // Dropzone initialization
             var myDropzone = new Dropzone("#my-dropzone", {
                 acceptedFiles: '.png, .jpg, .jpeg',
                 maxFiles: 15,
                 url: storeUrl,
-                success: function(file, response) 
+                success: function(file, response)
                 {
                     var dataId = response.file_id;
-                    
+
                     file.previewElement.dataset.id = dataId;
-                    
+
                     $("#sliders").append(`<input type="hidden" name="slider_images[]" data-id="${dataId}" value="${dataId}">`);
 
                     var removeButton = Dropzone.createElement("<button class='rmv-btn'><i class='fa fa-times'></i></button>");
-                    
+
                     var chkBox = Dropzone.createElement(`<div><input class='form-check-input customRadio' value='${dataId}' type='radio' name='flexRadioDefault' id='chkbo'><label class='customRadiolabel'> Set cover</label></div>`);
-                    
+
                     var rotateButton = Dropzone.createElement("<button class='rotate-btn' title='rotate'><i class='fa fa-undo'></i></button>");
 
                     var _this = this;
 
-                    removeButton.addEventListener("click", function(e) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        _this.removeFile(file);
-                        $(`input[data-id="${dataId}"]`).remove();
-                        rmvimg(dataId);
-                    });
+                    removeButton.addEventListener("click", function (e) {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      _this.removeFile(file);
+                      $(`input[data-id="${dataId}"]`).remove();
+                      rmvimg(dataId);
+                      updateImageCount(); // Update count on remove
+                  });
+
 
                     var rotationAngle = 0;
                     rotateButton.addEventListener("click", function(e) {
@@ -75,10 +82,10 @@
                         containment: '.dropzone',
                         distance: 20,
                         tolerance: 'pointer',
-                        stop: function(event, ui) 
+                        stop: function(event, ui)
                         {
                             var newOrder = [];
-                            $('.dropzone .dz-complete').each(function(index) 
+                            $('.dropzone .dz-complete').each(function(index)
                             {
                                 var dataId = $(this).data('id');
                                 newOrder.push({ id: dataId, priority: index + 1 });
@@ -88,11 +95,11 @@
                                 type: "POST",
                                 url: "/customer/ad-management/img-drag",
                                 data: { order: newOrder },
-                                success: function(response) 
+                                success: function(response)
                                 {
                                     console.log("Priority updated successfully: " + response);
                                 },
-                                error: function(xhr, status, error) 
+                                error: function(xhr, status, error)
                                 {
                                     console.error("Failed to update priority: " + error);
                                 }
@@ -105,30 +112,42 @@
                             });
                         }
                     });
-                }
+                    updateImageCount(); // Update count on add
+
+                },
+                removedfile: function (file) {
+                  var dataId = file.previewElement.dataset.id;
+                  $(`input[data-id="${dataId}"]`).remove();
+                  file.previewElement.remove();
+                  rmvimg(dataId); // Call custom function to handle backend removal
+                  updateImageCount(); // Update count on remove
+              }
+
             });
+            updateImageCount(); // Initialize count on page load
+
         });
-    
+
     function rotateSave(fileid , rotationEvnt)
     {
         var requestMethid = "POST";
-        
+
         if($('#request_method').val() != '')
         {
-           var requestMethid = "GET"; 
+           var requestMethid = "GET";
         }
-        
+
        $.ajax({
       url: '/customer/ad-management/img-db-rotate',
       type: requestMethid,
       data: {
         fileid: fileid , rotationEvnt:rotationEvnt
       },
-      success: function (data) 
+      success: function (data)
       {
-       
+
       }
-    }); 
+    });
     }
 
   function rmvimg(fileid) {
@@ -147,19 +166,19 @@
     });
 
   }
-  
-  
-    $(document).on('click', '.customRadio', function () 
+
+
+    $(document).on('click', '.customRadio', function ()
     {
          var imageContainer = $(this).closest('.dz-preview');
 
             // Move this container to the top of its parent
             imageContainer.parent().prepend(imageContainer);
-            
+
         $("#defaultImg").val($(this).val());
     });
- 
- 
+
+
   //remove existing images
   $(document).on('click', '.rmvbtndb', function () {
     let indb = $(this).data('indb');

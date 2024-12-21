@@ -31,21 +31,21 @@ use Illuminate\Validation\Rule;
 
 class DealerManagementController extends Controller
 {
-    
-    
+
+
     public function dealer_secret_login($id)
     {
         $url = env('SUBDOMAIN_APP_URL')."user-cron/{$id}";
         return redirect()->away($url);
     }
-    
+
     public function depositFilter(Request $request)
     {
         $setting = DB::table('basic_settings')->where('uniqid', 12345)->select('vendor_email_verification', 'vendor_admin_approval', 'admin_approval_notice')->first();
         return view('backend.end-user.dealer.settings', compact('setting'));
     }
-    
-    
+
+
     public function settings()
     {
         $setting = DB::table('basic_settings')->where('uniqid', 12345)->select('vendor_email_verification', 'vendor_admin_approval', 'admin_approval_notice')->first();
@@ -80,83 +80,88 @@ class DealerManagementController extends Controller
     public function index(Request $request)
     {
         $searchKey = null;
-        
-        if ($request->filled('info')) 
+
+        if ($request->filled('info'))
         {
             $searchKey = $request['info'];
         }
-        
+
         $startdate = null;
-        
+
         $enddate = null;
-        
+
         if(!empty($request->dateRange))
         {
             $explode = explode(' - ' , $request->dateRange);
-            
+
             $startdate = date('Y-m-d', strtotime($explode[0]));
-            
+
             $enddate = date('Y-m-d', strtotime($explode[1]));
-            
+
             $From = date('Y-m-d 00:00:00', strtotime($explode[0]));
-            
+
             $To = date('Y-m-d 23:59:59', strtotime($explode[1]));
         }
-        
-        $vendors = Vendor::when($searchKey, function ($query, $searchKey) 
+
+        $vendors = Vendor::when($searchKey, function ($query, $searchKey)
         {
             return $query->where('username', 'like', '%' . $searchKey . '%')
             ->orWhere('email', 'like', '%' . $searchKey . '%');
         })
         ->where('id', '!=', 0);
-        
+
         if(!empty($request->dateRange))
         {
             $vendors = $vendors->whereBetween('created_at', [$From, $To]);
         }
-        
+
         $vendors = $vendors->whereHas('vendor_info')->where('vendor_type', 'dealer')
         ->orderBy('id', 'desc')
         ->paginate(10);
-       
-        return view('backend.end-user.dealer.index', compact('vendors' ,  'startdate' , 'enddate' ));
+
+        $totalAdsByDealer = Car::select('vendor_id', DB::raw('COUNT(*) as total_ads'))
+        ->groupBy('vendor_id')
+        ->pluck('total_ads', 'vendor_id')
+        ->toArray();
+
+        return view('backend.end-user.dealer.index', compact('vendors' ,  'startdate' , 'enddate','totalAdsByDealer' ));
     }
-    
+
     public function invoice(Request $request)
     {
         $vendor_id = $request->id;
-        
+
         $startdate = null;
-        
+
         $enddate = null;
-        
+
         if(!empty($request->dateRange))
         {
            $explode = explode(' - ' , $request->dateRange);
-           
+
            $startdate = $explode[0];
-           
+
            $enddate = $explode[1];
-           
+
            $From = date('Y-m-d 00:00:00', strtotime($explode[0]));
-        
+
            $To = date('Y-m-d 23:59:59', strtotime($explode[1]));
         }
-        
-        $invoices = Invoice::query(); 
-        
-        if (!empty($vendor_id)) 
+
+        $invoices = Invoice::query();
+
+        if (!empty($vendor_id))
         {
             $invoices->where('vendor_id', $vendor_id);
         }
-        
-        if (!empty($request->status) && $request->status !== 'any') 
+
+        if (!empty($request->status) && $request->status !== 'any')
         {
             $status = $request->status == 'paid' ? 1 : 0;
             $invoices->where('status', $status);
         }
-        
-        if (!empty($request->search_query)) 
+
+        if (!empty($request->search_query))
         {
             if(is_numeric($request->search_query))
             {
@@ -171,97 +176,97 @@ class DealerManagementController extends Controller
 
             }
         }
-        
-        
+
+
         if(!empty($request->dateRange))
         {
             $invoices = $invoices->whereBetween('created_at', [$From, $To]);
         }
-        
+
         $invoices = $invoices->orderBy('id', 'desc') ->paginate(20);
-        
+
         $currency_symbol = DB::table('basic_settings')->where('uniqid', 12345)->select('base_currency_symbol')->first()->base_currency_symbol;
-        
+
         $paidSum = 0;
-        
+
         $unpaidSum = 0;
-        
-        foreach ($invoices as $invoice) 
+
+        foreach ($invoices as $invoice)
         {
-            if ($invoice->status == 1) 
-            { 
+            if ($invoice->status == 1)
+            {
                 $paidSum += $invoice->history->sum('amount');
-            } 
-            else 
-            { 
+            }
+            else
+            {
                 $unpaidSum += $invoice->history->sum('amount');
             }
         }
-        
+
         return view('backend.end-user.dealer.invoice', compact('invoices' , 'vendor_id' , 'startdate' , 'enddate', 'currency_symbol' , 'paidSum' , 'unpaidSum' ));
     }
-    
+
     function invoiceDelete($invoice_id)
     {
         Invoice::where('id', $invoice_id)->delete();
-        
+
         Deposit::where('invoice_id', $invoice_id)->delete();
-        
+
         Session::flash('success', 'Invoice Deleted');
-        
-        return redirect()->back(); 
+
+        return redirect()->back();
     }
-    
+
     function invoiceChangeStatus($invoice_id , $status)
     {
         $paid_date = null;
-        
+
         if($status == 1)
         {
           $paid_date  = date('Y-m-d H:i:s');
         }
-        
+
         Invoice::where('id', $invoice_id)->update(['status' => $status , 'paid_at' => $paid_date ]);
-        
+
         Session::flash('success', 'Invoice Status Updated');
-        
-        return redirect()->back(); 
+
+        return redirect()->back();
     }
-    
+
     public function deposit(Request $request)
     {
         $invoice_id = $request->id;
-        
+
         $startdate = null;
-        
+
         $enddate = null;
-        
+
         if(!empty($request->dateRange))
         {
            $explode = explode(' - ' , $request->dateRange);
-           
+
            $startdate = $explode[0];
-           
+
            $enddate = $explode[1];
-           
+
            $From = date('Y-m-d 00:00:00', strtotime($explode[0]));
-        
+
            $To = date('Y-m-d 23:59:59', strtotime($explode[1]));
         }
-        
+
         $deposits = Deposit::where('invoice_id', $invoice_id);
-        
+
         if(!empty($request->dateRange))
         {
             $deposits = $deposits->whereBetween('created_at', [$From, $To]);
         }
-        
+
          if(!empty($request->type))
         {
            if($request->type === 'spotlight')
            {
                $search_query = 'spotlight';
-               
+
                $deposits = $deposits->where('short_des', 'like', '%' . $search_query . '%');
            }
            else
@@ -269,22 +274,22 @@ class DealerManagementController extends Controller
                $deposits = $deposits->where('deposit_type' , $request->type);
            }
         }
-        
+
         $deposits = $deposits->orderBy('id', 'desc') ->paginate(20);
-        
+
         $total_deposit = Deposit::where('invoice_id' , $invoice_id);
-        
+
         if(!empty($request->dateRange))
         {
             $total_deposit = $total_deposit->whereBetween('created_at', [$From, $To]);
         }
-        
+
         if(!empty($request->type))
         {
            if($request->type === 'spotlight')
            {
                $search_query = 'spotlight';
-               
+
                $total_deposit = $total_deposit->where('short_des', 'like', '%' . $search_query . '%');
            }
            else
@@ -292,23 +297,23 @@ class DealerManagementController extends Controller
                $total_deposit = $total_deposit->where('deposit_type' , $request->type);
            }
         }
-        
-        
+
+
         $total_deposit = $total_deposit->where('deposit_type' , 'deposit')->sum('amount');
-        
+
         $total_withdrwal = Deposit::where('invoice_id' , $invoice_id);
-        
+
         if(!empty($request->dateRange))
         {
             $total_withdrwal = $total_withdrwal->whereBetween('created_at', [$From, $To]);
         }
-        
+
         if(!empty($request->type))
         {
            if($request->type === 'spotlight')
            {
                $search_query = 'spotlight';
-               
+
                $total_withdrwal = $total_withdrwal->where('short_des', 'like', '%' . $search_query . '%');
            }
            else
@@ -316,57 +321,57 @@ class DealerManagementController extends Controller
                $total_withdrwal = $total_withdrwal->where('deposit_type' , $request->type);
            }
         }
-        
-        
+
+
         $total_withdrwal = $total_withdrwal->where('deposit_type' , 'withdrawl')->sum('amount');
-        
+
         $currency_symbol = DB::table('basic_settings')->where('uniqid', 12345)->select('base_currency_symbol')->first()->base_currency_symbol;
-       
+
         $invoice = Invoice::find($invoice_id);
-        
+
         return view('backend.end-user.dealer.deposit', compact('deposits' , 'startdate' , 'enddate'  , 'currency_symbol' , 'invoice'));
     }
-    
+
     public function saveDeposit(Request $request)
     {
         $vendor_id = $request->vendor_id;
         $vendorAmt = Vendor::find($vendor_id)->amount;
-        
+
         if($request->amount <= 0)
         {
              Session::flash('success', 'Amount must be greater then zero!');
-           return redirect()->back(); 
+           return redirect()->back();
         }
-        
+
         Vendor::where('id' , $vendor_id)->update(['amount' => ($vendorAmt + $request->amount)]);
         Deposit::create(['amount' => $request->amount , 'deposit_type' => 'deposit' , 'vendor_id' => $vendor_id , 'short_des' => 'Balance added from admin']);
         Session::flash('success', 'Balance Added Successfully!');
         return redirect()->back();
     }
-    
+
     public function saveDeduct(Request $request)
     {
         $vendor_id = $request->vendor_id;
         $vendorAmt = Vendor::find($vendor_id)->amount;
-        
+
          if($request->amount <= 0)
         {
              Session::flash('success', 'Amount must be greater then zero!');
-           return redirect()->back(); 
+           return redirect()->back();
         }
-        
+
         if($request->amount > $vendorAmt )
         {
            Session::flash('success', 'Amount not be greater then current balance!');
-           return redirect()->back(); 
+           return redirect()->back();
         }
-        
+
         Vendor::where('id' , $vendor_id)->update(['amount' => ($vendorAmt - $request->amount)]);
         Deposit::create(['amount' => $request->amount , 'deposit_type' => 'withdrawl' , 'vendor_id' => $vendor_id , 'short_des' => 'Balance deduct from admin']);
         Session::flash('success', 'Balance deduct Successfully!');
         return redirect()->back();
     }
-    
+
     //add
     public function add(Request $request)
     {
@@ -378,7 +383,7 @@ class DealerManagementController extends Controller
         $information['languages'] = Language::get();
         return view('backend.end-user.dealer.create', $information);
     }
-    
+
     public function create(Request $request)
     {
         $admin = Admin::select('username')->first();
@@ -421,18 +426,18 @@ class DealerManagementController extends Controller
             $in['photo'] = $fileName;
         }
         $in['email_verified_at'] = Carbon::now();
-       
+
         $vendor = Vendor::create($in);
-        
+
         if(!empty($in['opening_hours']))
         {
-            foreach ($in['opening_hours'] as $day => $times) 
+            foreach ($in['opening_hours'] as $day => $times)
             {
-                if (empty($times['open_time']) && empty($times['close_time']) && $times['holiday'] == false ) 
+                if (empty($times['open_time']) && empty($times['close_time']) && $times['holiday'] == false )
                 {
                     continue;
                 }
-            
+
                 DB::table('opening_hours')->updateOrInsert(
                 [
                     'day_of_week' => ucfirst($day),
@@ -446,9 +451,9 @@ class DealerManagementController extends Controller
                     'updated_at' => now()
                 ]
                 );
-            } 
+            }
         }
-        
+
         $vendor_id = $vendor->id;
         foreach ($languages as $language) {
             $vendorInfo = new VendorInfo();
@@ -469,7 +474,7 @@ class DealerManagementController extends Controller
         return Response::json(['status' => 'success'], 200);
     }
 
-   
+
 
     public function edit(Request $request)
     {
@@ -558,10 +563,10 @@ class DealerManagementController extends Controller
 
 
         $vendor->update($in);
-        
-        
-      
-        
+
+
+
+
         $languages = Language::get();
         $vendor_id = $vendor->id;
         foreach ($languages as $language) {
@@ -586,6 +591,6 @@ class DealerManagementController extends Controller
     }
 
 
-   
-    
+
+
 }

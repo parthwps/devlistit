@@ -987,6 +987,11 @@ font-weight: 700;}
         animation-duration: calc(20s * 0.8);
       }
     }
+    .kp{
+      padding: 20px;
+    word-break: break-all;
+    margin: 0;
+    }
 
   </style>
   <div class="marquee">
@@ -1063,7 +1068,7 @@ font-weight: 700;}
 
                     <div class="category-item ">
                       <div class="d-flex border rounded pt-4 ps-sm-4 pe-sm-4 px-4 mb-10">
-                        <h6 class="category-title urbanistFonts mb-10 w-100">
+                        <h5 class="category-title urbanistFonts mb-10 w-100">
                           <div class="w-100  d-flex  justify-content-start justify-content-sm-center
                           align-items-center gap-1">
                             <div class="catImg w-25 w-sm-50 w-md-50 w-lg-50 w-xl-50  w-xxl-50 d-flex justify-content-end align-items-center">
@@ -1079,7 +1084,7 @@ font-weight: 700;}
                             {{ $category->name === 'Commercials' ? 'Commercials' : $category->name }}
                             </div>
                           </div>
-                        </h6>
+                        </h5>
                       </div>
                     </div>
                   </a>
@@ -1195,7 +1200,78 @@ font-weight: 700;}
     </div>
   </section>
   <!-- Category-area end -->
+  <section class="steps-area pt-15 pb-15  font-500" style="border-radius:0px; box-shadow: 0px 0px 0px; background:#F4F9FF;">
+    <div class="container-fluid">
+      <div class="row m-sm-4 m-0">
+      <!-- <div class="col-1"></div> -->
+      <h2 class="text-center mb-4 pb-2 text-primary fw-bold">FAQ</h2>
+      <p class="text-center mb-5">
+        Find the answers for the most frequently asked questions about Lisit
+      </p>
 
+      <div class="row">
+        <div class="kp col-md-6 col-lg-4 mb-4">
+          <h4 class="mb-3 text-primary"><i class="far fa-question-circle text-primary pe-2"></i>What is Listit.im?</h4>
+          <p style="text-align: justify;">
+            <strong>Listit.im</strong> is a classified ads marketplace based in the Isle of Man, focusing primarily on vehicles and motors. We also offer categories for Property, Marketplace, and Farming. Established in 2022, we partner with over 50 car dealerships, including major franchises and independent dealers.
+
+          </p>
+        </div>
+
+        <div class="kp col-md-6 col-lg-4 mb-4">
+          <h4 class="mb-3 text-primary"><i class="fas fa-pen-alt text-primary pe-2"></i>  How do I list an item? </h4>
+          <p style="text-align: justify;">
+            <strong>Yes, it is possible!</strong> Creating a listing on Listit.im is easy and free! Simply sign up, choose your category, and follow the prompts to enter your item details, photos, and contact information.
+          </p>
+        </div>
+
+        <div class="kp col-md-6 col-lg-4 mb-4">
+          <h4 class="mb-3 text-primary"><i class="fas fa-dollar-sign text-primary pe-2"></i>
+            Are there any fees for listing?
+          </h4>
+          <p style="text-align: justify;">
+            Currently, Listit.im offers free and paid listings. We plan to introduce some exciting  ad options as our traffic grows, so stay tuned for updates.
+
+          </p>
+        </div>
+
+        <div class="kp col-md-6 col-lg-4 mb-4">
+          <h4 class="mb-3 text-primary"><i class="fas fa-exchange-alt text-primary pe-2"></i>How can I ensure the security of my own Transactions?
+          </h4>
+          <p style="text-align: justify;">
+            We use PayPal to secure transactions on our platform. Additionally, we have a verification process for sellers to enhance trust and safety.          </p>
+        </div>
+
+        <div class="kp col-md-6 col-lg-4 mb-4">
+          <h4 class="mb-3 text-primary"><i class="fas fa-filter text-primary pe-2"></i>  What search filters are available for vehicles?
+          </h4>
+          <p style="text-align: justify;">You can filter your vehicle search by trusted dealerships, warranties, Greenlight History Check, and finance options to find exactly what you need.</p>
+        </div>
+
+        <div class="kp col-md-6 col-lg-4 mb-4">
+          <h4 class="mb-3 text-primary"><i class="fas fa-envelope text-primary pe-2"></i> How do I contact customer support?</h4>
+          <p style="text-align: justify;">
+            You can reach our friendly customer support team through social media or the app support feature. We're here to help!
+          </p>
+        </div>
+
+        <div class="kp col-md-6 col-lg-4 mb-4">
+          <h4 class="mb-3 text-primary"><i class="fas fa-globe text-primary pe-2"></i> What are your future plans?</h4>
+          <p style="text-align: justify;">
+            We're planning to expand our platform to introduce financial products and insurance as new ways to help both buyer and seller. We our consistently looking at ways to enhance our platform.          </p>
+        </div>
+
+        <div class="kp col-md-6 col-lg-4 mb-4">
+          <h4 class="mb-3 text-primary"><i class="fas fa-bell text-primary pe-2"></i>How can I stay updated with Listit.im?  </h4>
+          <p style="text-align: justify;">
+            Follow us on social media and subscribe to our newsletter to stay informed about our latest updates, promotions, and features          </p>
+        </div>
+      </div>
+      <div class="text-center"><a href="/faq" class="btn btn-primary mt-2">Read More</a>
+      </div>
+      </div>
+    </div>
+  </section>
   <!-- featured section start 4-->
   @if ($secInfo->feature_section_status == 1 && !empty($getFeaturedVendors->cars))
   <section class="product-area pt-20 pb-20 font-type"

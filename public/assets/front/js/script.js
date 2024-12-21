@@ -4,7 +4,7 @@
     /*============================================
         Mobile menu
     ============================================*/
-    
+
 
 
     /*============================================
@@ -300,7 +300,7 @@
             },
         }
     });
-    
+
 var proSingleSlider = new Swiper(".product-single-slider", {
     loop: false, // Disable loop as per requirement
     speed: 1000, // Transition speed between slides
@@ -394,7 +394,7 @@ if (document.querySelector(".slider-btn-prev") && proSingleSlider) {
             }
         })
     })
-    
+
     var catSlider2 = new Swiper(".category-slider-2", {
         speed: 400,
         spaceBetween: 25,
@@ -722,32 +722,32 @@ $(".lightbox-single").magnificPopup({
         $('.condition').val($(this).attr('data-id'));
         let mainCatID = $(this).attr('data-id');
         let carfilteronAjax = $(this).attr('data-cars-filter');
-    $(".hero-banner.hero-banner-2").css("background-image", 'url(/assets/img/'+$(this).attr('data-image')+')'); 
+    $(".hero-banner.hero-banner-2").css("background-image", 'url(/assets/img/'+$(this).attr('data-image')+')');
     if(mainCatID == 39 || mainCatID == 0 || mainCatID == 28)
     {
         if(mainCatID == 39)
         {
             $('#tabsCat').val("property");
         }
-        
+
         if(mainCatID == 28)
         {
             $('#tabsCat').val("farming");
         }
-        
-        
+
+
         if(mainCatID == 0){
             $('#tabsCat').val("");
             }
-       $('.carform').hide(); 
+       $('.carform').hide();
        $('.carformtxt').show();
     }else if(mainCatID == 24){
         $('#tabsCat').val("cars-&-motors");
         $('.carform').show();
         $('.carformtxt').hide();
-         
+
     }
-        
+
     let formURL = '/tabs-data/'+$(this).attr('data-id');
     let formMethod = "GET";
 
@@ -774,7 +774,7 @@ $(".lightbox-single").magnificPopup({
                         $('#filterCSS' + value).css('filter', 'none');
                     });
             }
-            $('.car-button').on('click', function() {      
+            $('.car-button').on('click', function() {
                 console.log("click here farah ----")
                 $('#filterCSS23').css('filter', 'none'); // Remove the filter
             });
@@ -784,7 +784,7 @@ $(".lightbox-single").magnificPopup({
         }
     });
 
-        
+
     })
 
 })(jQuery);
@@ -866,28 +866,28 @@ function maskPhoneNumber(phone) {
 
 
 
-$('#verifyPhone').on('click', function() 
+$('#verifyPhone').on('click', function()
 {
       let countryCode = $('input[name="c_code"]').val(); // Assuming you have a separate input field for the country code
     let phoneNumber = $('input[name="phone"]').val();
 
-    
+
     let formURL = '/vendor/verify-phone/'+phoneNumber+'?code='+countryCode;
-    
+
     let formMethod = "GET";
    // $('.mycode').html('We have send you a verification code to <strong>'+$('input[name="phone"]').val()+'</strong>, verify your phone number to get  extra trust merit on your profile!');
-    
-    
+
+
     //return false;
-    
+
     $.ajax({
         url: formURL,
         type: "GET",
-        
-       
+
+
         success: function(response) {
 
-           
+
             if(response.status == 'success'){
                 $('#verifyProfilePhone').modal('show');
             // toastr[response.status]('Enter the code via text to <strong>'+maskPhoneNumber(response.phone)+'</strong> ')
@@ -966,17 +966,17 @@ $('body').on('enter', '#topSearchForm', function(event) {
         $('#topSearchForm').submit();
     }
 });
-// Autocomplete 
+// Autocomplete
 $('body').on('keyup', '#searchByTitle', function(event){
     $("#suggesstion-box").show();
 
     let selectedCat = sessionStorage.getItem('tabCategory');
-       
-    if (selectedCat == null) { 
+
+    if (selectedCat == null) {
         selectedCat = 'cars-&-motors';
     }
     if($(this).val() && $(this).val().length >2){
-        
+
         $.ajax({
             type: "GET",
             url: "/autocomplete/suggestions",
@@ -994,7 +994,7 @@ $('body').on('keyup', '#searchByTitle', function(event){
             }
         });
     }
-}); 
+});
 // Autocomplete  top
 $('body').on('keyup', '#searchByTitleTop', function(event){
    // $("#suggesstion-box").show();
@@ -1033,7 +1033,7 @@ $('body').on('keyup', '#searchByTitleTop', function(event){
     }
 });
 $('body').on('focus', '#searchByTitle', function(event){
-    
+
         $.ajax({
             type: "GET",
             url: "/autocomplete/defaultsuggestions",
@@ -1047,7 +1047,7 @@ $('body').on('focus', '#searchByTitle', function(event){
                 //$("#search-box").css("background", "#FFF");
             }
         });
-    
+
 });
 
 $('body').on('focusout', '#searchByTitle', function(event){
@@ -1105,7 +1105,7 @@ $('.verifyopt-form').on('submit', function(event) {
         dataType: 'json',
         success: function(response) {
 
-           
+
             if(response.status == 'success'){
             toastr[response.status]('Enter the code via text to <strong>'+response.phone+'</strong>')
             toastr.options = {
@@ -1152,7 +1152,7 @@ $('.verifyopt-code').on('submit', function(event) {
             if (response.status == 'success') {
                 window.location.href= "/";
               } else {
-            
+
             toastr[response.status](response.message)
             toastr.options = {
                 "closeButton": true,
@@ -1189,7 +1189,7 @@ $('.verifyoptProfile-code').on('submit', function(event) {
             if (response.status == 'success') {
                 window.location.reload();
               } else {
-            
+
             //toastr[response.status](response.message)
             // toastr.options = {
             //     "closeButton": true,
@@ -1210,7 +1210,7 @@ $('.verifyoptProfile-code').on('submit', function(event) {
 
 });
 
-   
+
 // add user email for subscription
 $('.subscriptionForm').on('submit', function(event) {
     event.preventDefault();
@@ -1299,43 +1299,43 @@ $('body').on('submit', '#vendorContactForm', function(e) {
     $('#adtypeWanted').removeClass('usCumButton')
     $(this).addClass('usCumButton')
     updateUrl();
-    }); 
-    
-    
+    });
+
+
     $('#adtypeWanted').on('click', function(event) {
-        
+
     $('#ad_type').val('wanted');
-    
+
     $('#adtypeSale').removeClass('usCumButton');
-    
+
     $(this).addClass('usCumButton')
-    
+
     updateUrl();
-    
-    }); 
+
+    });
 
     function updatecate(self)
     {
         var pid = $('option:selected',self).data("pid");
-        
+
         var category = $('option:selected',self).data("category");
-        
+
         // $('.us_cat_cls').removeAttr('style');
         //
         // $(self).css({
         // 'font-weight': 'bold',
         // 'color': '#EE2C7B'
         // });
-        
+
         $('#pid').val(pid);
-        
+
         $('#category').val(category);
-        
+
         //  if ($('#us_load_more').length)
         // {
         //     $('.us_hidden_by_default').hide();
         // }
-        
+
             $.ajax({
                 type: 'GET',
                 url: 'load-filters',
@@ -1345,21 +1345,21 @@ $('body').on('submit', '#vendorContactForm', function(e) {
                 {
                   if(data.result == 'ok')
                   {
-                      
+
                       $('#carsFiltrs').hide();
-                      
+
                       $('#appendNewFilters').html(data.output);
-                      
+
                       $('#category').val(data.category_slug)
                   }
                 }
-            }); 
-            
+            });
+
         updateUrl()
         loadBreadCrum(pid , category)
     }
 
-    function updateUrl(request_type = 1,category = null) 
+    function updateUrl(request_type = 1,category = null)
     {
         if(request_type == 1 )
         {
@@ -1368,8 +1368,8 @@ $('body').on('submit', '#vendorContactForm', function(e) {
 
         var formData = $('#searchForm').serializeArray();
         var queryParams = [];
-        
-        if (category !== null && category !== '') 
+
+        if (category !== null && category !== '')
         {
             formData.forEach(function(item) {
                 if (item.name === 'category') {
@@ -1377,7 +1377,7 @@ $('body').on('submit', '#vendorContactForm', function(e) {
                 }
             });
 
-            if (category === 'all') 
+            if (category === 'all')
             {
                 formData.forEach(function(item) {
                     if (item.name === 'category') {
@@ -1388,9 +1388,9 @@ $('body').on('submit', '#vendorContactForm', function(e) {
         }else{
             formData.forEach(function(item) {
                 if (item.name === 'category') {
-                    
+
                     if ((item.value == '' || item.value == null) && sessionStorage.getItem('tabCategory')) {
-                        item.value = sessionStorage.getItem('tabCategory'); 
+                        item.value = sessionStorage.getItem('tabCategory');
                     }else{
                         sessionStorage.setItem('tabCategory', item.value)
                     }
@@ -1402,23 +1402,23 @@ $('body').on('submit', '#vendorContactForm', function(e) {
 
             let categoryField = formData.find(item => item.name === 'category');
 
-            $.each(formData, function(index, input) 
+            $.each(formData, function(index, input)
             {
                 if (input.value !== '') {
                     queryParams.push(encodeURIComponent(input.name) + '=' + encodeURIComponent(input.value));
                 }
             });
-            
+
             var queryString = queryParams.join('&');
             var newUrl = baseURL + '/ads';
-            
+
             if (queryString !== '') {
                 newUrl += '?' + queryString;
             }
-    
+
              console.log(queryParams);
              console.log(category);
-           
+
             $.ajax({
                 type: 'GET',
                 url: newUrl,
@@ -1429,23 +1429,23 @@ $('body').on('submit', '#vendorContactForm', function(e) {
                     $('#ajaxListing').html(data.html_view);
                     $('#total_counter_with_category').html(data.countHeading);
                     $('.us_btn_close').click();
-    
+
                     if (categoryField.value !== null && categoryField.value == 'cars-&-motors' || categoryField.value == 'all' ) {
-                    
+
                         setTimeout(function(){
                             $('#carFeature').css('display','');
                             $('#browse_style').css('display','');
                         },1000);
-    
+
                     }else{
-                        $('#carFeature').css('display','none'); 
-                        $('#browse_style').css('display','none'); 
+                        $('#carFeature').css('display','none');
+                        $('#browse_style').css('display','none');
                     }
-                    
+
                     $('#total_counter_with_category').css('display','');
-                    $('.main-skeleton-container').hide();//dataloader for grid view 
+                    $('.main-skeleton-container').hide();//dataloader for grid view
                     $('.skeleton').hide();//dataloader for list view
- 
+
                     setTimeout(function(){
                         $('#ajaxListing').css('display','');
                     },500);
@@ -1454,7 +1454,7 @@ $('body').on('submit', '#vendorContactForm', function(e) {
     }
 
     function updateBySorting(){
- 
+
         let selectedCat = sessionStorage.getItem('tabCategory');
         if (selectedCat && selectedCat === 'market-place') {
             updateUrl(0,selectedCat)
@@ -1463,7 +1463,7 @@ $('body').on('submit', '#vendorContactForm', function(e) {
         }
     }
 
-  
+
 
     //this function used for recents adds accordingly selected tabs
     $(document).ready(function() {
@@ -1473,8 +1473,8 @@ $('body').on('submit', '#vendorContactForm', function(e) {
             var index = $(this).index('.tab-category');
             // alert('Current tab index: ' + index);
             if (index == 0) {
-                tabCategory = 'cars-&-motors';
-            
+                tabCategory = 'Cars-&-Motors';
+
             }else if(index == 1){
                 tabCategory = 'market-place';
             }
@@ -1487,10 +1487,10 @@ $('body').on('submit', '#vendorContactForm', function(e) {
             // Store the tabCategory value in sessionStorage
             sessionStorage.setItem('tabCategory', tabCategory);
         });
-        
+
         /* --------------------------- */
         $('.category_icon_link').on('click',function(){
-            var currentElement = $(this); 
+            var currentElement = $(this);
             var categoryName = currentElement.data('cat');
              console.log(categoryName);
              console.log(typeof(categoryName));
@@ -1500,7 +1500,7 @@ $('body').on('submit', '#vendorContactForm', function(e) {
             return console.log(sessionStorage.getItem('tabCategory'));
         });
         $('.browser_by_lifestyle').on('click',function(){
-            var currentElement = $(this); 
+            var currentElement = $(this);
             var categoryName = currentElement.data('cat');
              console.log(categoryName);
              console.log(typeof(categoryName));
@@ -1513,7 +1513,7 @@ $('body').on('submit', '#vendorContactForm', function(e) {
 
     });
 
-    
+
 
     $('.filter-reset-link').on('click',function(){
 
@@ -1524,16 +1524,16 @@ $('body').on('submit', '#vendorContactForm', function(e) {
 
 
     $('#ajaxListing').on('click', '.us_pagination_default a', function(e) {
-        e.preventDefault(); 
+        e.preventDefault();
         var url = $(this).attr('href');
         var pageNum = $(this).text();
         $('#pageno').val(pageNum)
-        updateUrl(0) 
+        updateUrl(0)
     });
-    
-    
+
+
     $('#ajaxListing').on('click', '.us_pagination_filtered a', function(e) {
-        e.preventDefault(); 
+        e.preventDefault();
         var url = $(this).attr('href');
         var pageNum = $(this).text();
         $('#pageno').val(pageNum)
@@ -1543,9 +1543,9 @@ $('body').on('submit', '#vendorContactForm', function(e) {
         }else{
             updateUrl(0);
         }
-         
+
     });
-    
+
 
 
     function updateUrlHome() {
@@ -1569,14 +1569,14 @@ $('body').on('submit', '#vendorContactForm', function(e) {
     window.location.href = newUrl;
 }
 
-function updateUrl2(request_type = 1) 
+function updateUrl2(request_type = 1)
     {
-        
+
     if(request_type == 1 )
     {
         $('#pageno').val('1')
     }
-        
+
     var formData = $('#SortForm').serializeArray();
     var queryParams = [];
 
@@ -1595,8 +1595,8 @@ function updateUrl2(request_type = 1)
 
     // Update the browser URL without reloading the page
     // window.location.href = newUrl;
-    
-      
+
+
       $.ajax({
             type: 'GET',
             url: newUrl,
@@ -1606,8 +1606,8 @@ function updateUrl2(request_type = 1)
              $('#total_counter_with_category').html(data.countHeading);
             }
         });
-        
-        
+
+
 }
 
 $('body').on('keypress', '#searchByTitle', function(event) {
@@ -1657,7 +1657,7 @@ $('body').on('click', '.view_type', function (e) {
     }
 
     // Update the browser URL without reloading the page
-    
+
 })
 
 // Body Type Filter

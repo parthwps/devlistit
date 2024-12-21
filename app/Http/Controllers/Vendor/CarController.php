@@ -84,10 +84,11 @@ class CarController extends Controller
         $output = '';
         if($pid == 0)
         {
-            $output = '<li class="d-inline" style="color:gray !important">></li>
-            <li class="d-inline active opacity-75"><a  style="color:gray !important" href="javascript:void(0);" data-category="'.$category.'" data-pid="0" onclick="updatecate(this)" class="mt-2 us_customize_bread_crum">
-            '.str_replace('-' , ' ' , $category ).'
-            </a></li> ';
+          $output = '<li class="d-inline" style="color:gray !important">></li>
+          <li class="d-inline active opacity-75"><a style="color:gray !important" href="javascript:void(0);" data-category="'.$category.'" data-pid="0" onclick="updatecate(this)" class="mt-2 us_customize_bread_crum">
+          '.ucfirst(str_replace('-', ' ', $category)).'
+          </a></li>';
+
         }
         else
         {

@@ -32,16 +32,14 @@
          <div class="title">
             <h4 class="mb-20">{{ __('Login') }}</h4>
           </div>
-      
-                        
-                        
+
+
+
         <form action="{{ route('vendor.login_submit') }}" method="POST">
           @csrf
-          
+
           <div class="form-group mb-10">
-              
-        
-        
+
           <div class="form-group ">
             <input type="email" class="form-control" name="email" placeholder="Enter your email" required>
             @error('email')
@@ -49,12 +47,18 @@
             @enderror
           </div>
           <div class="form-group mb-30">
-            <input type="password" class="form-control" name="password" placeholder="{{ __('Password') }}" required>
+            <div class="password-container">
+            <input type="password" class="form-control" name="password" id="password"  autocomplete="off" placeholder="{{ __('Password') }}" required>
+            <span id="togglePassword" class="eye-icon">
+              <i class="fa fa-eye"></i>
+              </span>
+            </div>
             @error('password')
               <p class="text-danger mt-2">{{ $message }}</p>
             @enderror
           </div>
-          @if ($bs->google_recaptcha_status == 1)
+
+          {{-- @if ($bs->google_recaptcha_status == 1)
             <div class="form-group mb-30">
               {!! NoCaptcha::renderJs() !!}
               {!! NoCaptcha::display() !!}
@@ -63,7 +67,7 @@
                 <p class="mt-1 text-danger">{{ $message }}</p>
               @enderror
             </div>
-          @endif
+          @endif --}}
           <div class="row align-items-center mb-20">
             <div class="col-4 col-xs-12">
               <div class="link">
@@ -71,7 +75,7 @@
               </div>
             </div>
             <div class="col-8 col-xs-12">
-             
+
             </div>
           </div>
           <button type="submit" class="btn btn-lg btn-primary radius-md w-100"> {{ __('Login') }} </button>

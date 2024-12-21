@@ -75,12 +75,13 @@
                         <th scope="col" style="padding-left: 10px !important;min-width: 151px;" >Dealer name</th>
                         <th scope="col" style="padding-left: 10px !important;">Email Address</th>
                         <th scope="col" style="padding-left: 10px !important;min-width: 151px;">Phone Number</th>
-                         <th scope="col" style="padding-left: 10px !important;min-width: 151px;">Date Created</th>
+                        <th scope="col" style="padding-left: 10px !important;min-width: 151px;">Date Created</th>
                         <th scope="col" style="min-width: 151px;padding-left: 10px !important;">Trusted Dealer</th>
                         <th scope="col" style="min-width: 151px;padding-left: 10px !important;">Dealer Type</th>
                         <th scope="col" style="padding-left: 10px !important;min-width: 151px;">{{ __('Account Status') }}</th>
                         <th scope="col" style="padding-left: 10px !important;min-width: 151px;">{{ __('Email Status') }}</th>
                         <th scope="col" style="padding-left: 10px !important;min-width: 151px;">{{ __('Actions') }}</th>
+                        <th scope="col" style="padding-left: 10px !important;min-width: 151px;">Total Ads</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -224,8 +225,15 @@
                                   {{ __('View Dealer Account') }}
                                 </a>
                               </div>
+
+
                             </div>
                           </td>
+                          <td>
+                            Total Ads: {{ $totalAdsByDealer[$vendor->id] ?? 0 }}
+
+                          </td>
+
                         </tr>
                       @endforeach
                     </tbody>

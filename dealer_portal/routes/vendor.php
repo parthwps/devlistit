@@ -82,9 +82,9 @@ Route::prefix('vendor')->middleware('auth:vendor', 'Deactive')->group(function (
     Route::get('/online/success', 'Vendor\VendorCheckoutController@onlineSuccess')->name('success.page');
   });
 
-  Route::prefix('car-management')->group(function () 
+  Route::prefix('car-management')->group(function ()
   {
-      
+
     Route::post('frame-image', 'Vendor\CarController@frameImage')->name('vendor.frame.image');
     Route::get('/getCarModels', 'Vendor\CarController@getCarModels')->name('getmodel');
     Route::get('/', 'Vendor\CarController@index')->name('vendor.car_management.car');
@@ -103,13 +103,13 @@ Route::prefix('vendor')->middleware('auth:vendor', 'Deactive')->group(function (
     Route::get('/price-assist', 'Vendor\CarController@priceAssist')->name('vendor.car_management.price.assist');
 
     Route::get('/enquiry-preferences', 'Vendor\CarController@enquiryPreferences')->name('vendor.car_management.enquiry.preferences');
-    
+
     Route::get('/saveuser', 'Vendor\CarController@saveUser')->name('vendor.cars_management.saveuser');
 
     Route::get('/deleteuser', 'Vendor\CarController@deleteUser')->name('vendor.cars_management.deleteuser');
 
     Route::get('/create', 'Vendor\CarController@create')->name('vendor.cars_management.create_car');
-    
+
     Route::post('store-data', 'Vendor\CarController@storeData')->name('vendor.cars_management.store_Data');
 
     Route::post('store', 'Vendor\CarController@store')->name('vendor.car_management.store_car');
@@ -130,7 +130,7 @@ Route::get('status/{status}/{id}', 'Vendor\CarController@adStatus')->name('vendo
         Route::post('/img-db-remove', 'Vendor\CarController@imagedbrmv')->name('vendor.car.imgdbrmv');
         Route::match(['get', 'post'], '/img-db-rotate', 'Vendor\CarController@imagerotates')->name('vendor.car.imgrotate');
 
-    
+
     //==========car slider image end
     // user Ads  route
   Route::get('/ads-subcat/{id}', 'Vendor\CarController@subCat');
@@ -234,9 +234,9 @@ Route::get('status/{status}/{id}', 'Vendor\CarController@adStatus')->name('vendo
   Route::post('support-ticket/reply/{id}', 'Vendor\SupportTicketController@ticketreply')->name('vendor.support_ticket.reply');
 
   Route::post('support-ticket/delete/{id}', 'Vendor\SupportTicketController@delete')->name('vendor.support_tickets.delete');
-  
+
    Route::get('support-ticket/block/{id}', 'Vendor\SupportTicketController@block')->name('vendor.support_tickets.block');
   Route::get('support-ticket/unblock/{id}', 'Vendor\SupportTicketController@unblock')->name('vendor.support_tickets.unblock');
-  
-  
+
+
 });

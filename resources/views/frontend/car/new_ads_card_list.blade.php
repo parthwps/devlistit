@@ -188,7 +188,7 @@
                             @endif
                             @if ($car_content->is_sold == 1 )
                             <div style="position: absolute; top:0px; width: 100%; z-index: -1px; height: 100%; background: rgba(0,0,0,0.3)"></div>
-                            <img src="assets/img/Sold.png"  alt="sold out" style="position: absolute;  left:0px; right:0px; width: 45%; z-index: 1px; top:30%;" class="mx-auto" ></img>
+                            <img src="assets/img/Sold.png"  alt="sold out" style="position: absolute;  left:12px; right:0px; width: 45%; z-index: 1px; top:14%;" class="mx-auto" ></img>
                             @endif
                           </div>
                       <div class="p-20 w-100 d-flex flex-column justify-content-between align-items-center">

@@ -31,7 +31,7 @@
   border: 2px solid transparent;
 }
 .customFooteremailBtn
-{border-radius: 100%; 
+{border-radius: 100%;
   /* width: 30px;
   height: 30px; */
 }
@@ -50,20 +50,20 @@
 
   .social-link i {
     margin-top: 6px;
-  } 
+  }
 }
 
 @media (max-width: 575px) {
 
   .footer-row{
     margin: 0px !important;
-  }  
+  }
 }
 
 
 
   </style>
-  
+
   <!-- Footer-area start -->
   @if ($footerSectionStatus == 1)
 
@@ -93,17 +93,17 @@
                           class="{{ $socialMediaInfo->icon }}"></i>
                   </a>
                    <!-- LinkedIn -->
-                  <a href="#" target="_blank" class="social-icon-new">
+                  {{-- <a href="#" target="_blank" class="social-icon-new">
                     <i class="fab fa-linkedin"></i>
                   </a>
 
                   <!-- Twitter -->
                   <a href="#" target="_blank" class="social-icon-new">
-                    <i class="fab fa-twitter"></i>
+                    <i class="fab fa-twitter"></i> --}}
                   </a>
                 </div>
               </div>
-            </div> 
+            </div>
             <div class="col-xl-2 col-lg-3 col-md-3 col-sm-5">
               <div class="footer-widget" data-aos="">
                 <h4 style="font-size: 17px !important;font-weight:bold">{{ __('Explore') }}</h4>
@@ -164,7 +164,7 @@
                     @endif
                   </ul>
               </div>
-            </div> 
+            </div>
             <div class="col-xl-3 col-lg-6 col-md-7 col-sm-5">
               <div class="footer-widget" data-aos="">
               <h4 style="font-size: 17px !important;font-weight:bold" >{{ __('Subscribe') }}</h4>
@@ -176,8 +176,8 @@
                     <div class="form-group">
                       <input  class="form-control customFooteremail" placeholder="{{ __('Your  email') }}" type="text"
                         name="email_id" required="" autocomplete="off">
-                      <button 
-                      
+                      <button
+
                       class="btn btn-sm  btn-primary customFooteremailBtn" type="submit">
                         <img src="/assets/img/footerEmailIcon.png" width="15px" height="15px" alt="footer"/>
                       </button>
@@ -214,18 +214,18 @@
               <input type="text" name ="title" id="searchByTitleTop" class="form-control input-lg" placeholder="Search Listit" style="padding: 15px;">
             </div>
           </h5>
-        
+
           @csrf
           <a class="close" data-dismiss="modal" role="button">
             <span aria-hidden="true">&nbsp;&nbsp;Cancel</span>
           </a>
         </div>
         <div class="modal-body">
-            
+
           <div class="user mb-20">
-              
+
             <div class="row">
-              <div class="col-12">  
+              <div class="col-12">
                 <div class="autocomplete-suggestions suggestionbox">
                   <div class="autocomplete-suggestion pt-2 pb-2"><strong> My Last Search</strong><br>
                         @php
@@ -235,12 +235,12 @@
                               if($lastSearch){
                               $lSearch = $lastSearch->customer_filters;
                               }
-                          } elseif(session()->has('lastSearch')) { 
+                          } elseif(session()->has('lastSearch')) {
                               $lSearch = Session::get('lastSearch');
                           }
                       @endphp
                       @if(!empty($lSearch))
-                      
+
                       <a style="font-size:11px;" href="ads?{{ http_build_query(json_decode($lSearch)) }}">
                                     @foreach (json_decode($lSearch) as $key=>$value)
                                     @if($key!='_token')
@@ -250,7 +250,7 @@
                                       @endif
                                     @endforeach
                                   </a>
-                      @endif             
+                      @endif
                   </div>
                   <div class="autocomplete-suggestion pt-2 pb-2"> Suggested searches</div>
                   <div class="autocomplete-suggestion pt-2 pb-2"><a href="{{route('frontend.cars', ['category'=>'cars'])}}"><i class="fal fa-check"></i> &nbsp;Cars from Trusted Dealerships  <b>in Cars</b></a></div>
@@ -261,10 +261,10 @@
 
                 </div>
               </div>
-            </div> 
-          </div> 
+            </div>
+          </div>
         </div>
-        
+
       </div>
   </form>
   </div>
@@ -280,23 +280,23 @@
             <h4 class="modal-title w-100" id="topSearchLabel">
               <img src = "">
               <img src="{{ asset('assets/img/mobile-id-verification.png') }}" alt="verification" width= "60">
-            Verify your number <br> 
+            Verify your number <br>
             </h4>
           </div>
-        
+
           <a class="close" data-dismiss="modal" onclick="closemodal()">
             <span aria-hidden="true">X</span>
           </a>
         </div>
         <div class="modal-body">
-            
+
           <div class="user mb-20">
-              
+
             <div class="row">
-                <div class="col-12">  
+                <div class="col-12">
                 <p class ="mycode"> </p>
               </div>
-              <div class="col-12">  
+              <div class="col-12">
                 <div class="form-group">
                 <label for="exampleInputPassword1">Enter the code you received via text</label>
                 <input name="code" type="text" class="form-control" id="verifyProfileCode" placeholder="Enter verification code">
@@ -305,13 +305,13 @@
                   <div class="form-group">
                     <button type="submit" class="btn btn-lg btn-primary radius-md w-100"> {{ __('Verify Phone') }} </button>
                   </div>
-                
+
               </div>
-              
-            </div> 
-          </div> 
+
+            </div>
+          </div>
         </div>
-        
+
       </div>
     </form>
   </div>

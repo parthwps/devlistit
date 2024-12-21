@@ -4,7 +4,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header" style="justify-content:center;">
-     
+
         <h5 class="modal-title" id="exampleModalLabel" style="justify-content: center;">AD PERFORMANCE</h5>
 
         <button type="button" class="close" onclick="closeModal()" data-dismiss="modal" style="position: relative;left: 30%;font-size: 20px;" aria-label="Close">
@@ -16,46 +16,46 @@
        <div class="row">
         <div class="col-md-12" style="font-size: 13.5px;">
           <b>Ad Click % (CTR)</b>
-          
+
           <p style="margin-bottom: 2rem;"> The percentage of customer  who clicked  to view the ad after  it appeared  on a search  page  on the listit app or website.</p>
         </div>
 
         <div class="col-md-12" style="font-size: 13.5px;">
           <b>Ad Views</b>
-          
+
           <p style="margin-bottom: 2rem;">The number  of customers that have viewed this ad via the listit app or website.</p>
         </div>
 
 
         <div class="col-md-12" style="font-size: 13.5px;">
           <b>Ad Saves</b>
-          
+
           <p style="margin-bottom: 2rem;">The number of times that customers have  saved ad via the listit app or website.</p>
         </div>
 
         <div class="col-md-12" style="font-size: 13.5px;">
           <b>Phone No. Reveals</b>
-          
+
           <p style="margin-bottom: 2rem;"> The number of customers that have revealed the phone number on  ad via the  listit app or website.</p>
         </div>
 
         <div class="col-md-12" style="font-size: 13.5px;">
           <b>Conversations</b>
-          
+
           <p style="margin-bottom: 2rem;">The number of customers that have send you message  for ads via the  listit app or website.</p>
         </div>
 
         <div class="col-md-12 text-center" style="font-size: 13.5px;">
         <hr>
-          <p style="margin-bottom: 2rem;">  
+          <p style="margin-bottom: 2rem;">
           Need help ? Please contact our Sales team on <a href="mailto:dealer@listit.im" style="color:#ee2c7b;">dealer@listit.im</a>.
         </p>
         </div>
-      
+
        </div>
 
       </div>
-     
+
     </div>
   </div>
 </div>
@@ -65,9 +65,9 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header" style="justify-content:center;">
-     
+
         <h5 class="modal-title" id="exampleModalLabel" style="justify-content: center;">Email Subscription Report</h5>
-       
+
         <button type="button" class="close" onclick="closeModal()" data-dismiss="modal" style="position: relative;left: 25%;font-size: 20px;" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -80,10 +80,10 @@
       <p style="font-size: 12px;color: black;font-weight: 900;">The emails who subscribe will receive last 7 days report on every monday.</p>
 
       <form method="get" id="emailForm" action="{{route('vendor.car_management.submit_emails')}}">
-     
+
       </form>
       </div>
-     
+
     </div>
   </div>
 </div>
@@ -99,9 +99,9 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header" style="justify-content:center;">
-     
+
         <h5 class="modal-title" id="exampleModalLabel" style="justify-content: center;">Add New User</h5>
-       
+
         <button type="button" class="close" onclick="closeModal()" data-dismiss="modal" style="position: relative;left: 25%;font-size: 20px;" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -132,14 +132,14 @@
           </div>
 
           <div class="col-md-12" >
-        
+
          <button class="btn btn-sm btn-success" style="width: 100%;">Save</button>
           </div>
 
         </div>
       </form>
       </div>
-     
+
     </div>
   </div>
 </div>
@@ -149,9 +149,9 @@
   <div class="modal-dialog modal-lg"  role="document">
     <div class="modal-content">
       <div class="modal-header" style="justify-content:center;">
-     
+
         <h5 class="modal-title" id="exampleModalLabel" style="justify-content: center;">Verify Car History Before You Buy</h5>
-       
+
         <button type="button" class="close" onclick="closeModal()" data-dismiss="modal" style="position: relative;left: 25%;font-size: 20px;" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -172,23 +172,23 @@
           </div>
 
           <div class="col-md-12"  style="margin-bottom:1rem;">
-       
+
           <div id="result_statuss" style="background: #e7e7e7;padding: 1rem;border-radius: 10px;">
             Below are the details you get freenium version</div>
           </div>
- 
+
           <div class="col-md-3 col-sm-6 col-6 mob_mt_1rem"   style="margin-bottom:1rem;">
           <label>Make</label>
           <div id="carMake"></div>
           </div>
-          
-          
+
+
           <div class="col-md-3 col-sm-6 col-6 mob_mt_1rem"  style="margin-bottom:1rem;">
           <label>Model</label>
           <div id="carModel"></div>
           </div>
 
-          
+
           <div class="col-md-3 col-sm-6 col-6 mob_mt_1rem"  style="margin-bottom:1rem;">
           <label>Year</label>
           <div id="carYear"></div>
@@ -200,30 +200,30 @@
           <div id="carFuelType"></div>
           </div>
 
-          
+
           <div class="col-md-3 col-sm-6 col-6 mob_mt_1rem"  style="margin-bottom:1rem;">
           <label>Engine Capacity</label>
           <div id="carEngineCapacity"></div>
           </div>
 
-          
+
           <div class="col-md-3 col-sm-6 col-6 mob_mt_1rem"  style="margin-bottom:1rem;">
           <label>Transmission Type</label>
           <div id="carTransmissionType"></div>
           </div>
-       
+
           <div class="col-md-3 col-sm-6 col-6 mob_mt_1rem"  style="margin-bottom:1rem;">
           <label>Body Type</label>
           <div id="carBodyType"></div>
           </div>
 
-          
+
           <div class="col-md-3 col-sm-6 col-6 mob_mt_1rem"  style="margin-bottom:1rem;">
           <label>Mileage</label>
           <div id="carMileage"></div>
           </div>
 
-          
+
           <div class="col-md-3 col-sm-6 col-6 mob_mt_1rem"  style="margin-bottom:1rem;">
           <label>Number Of Seats</label>
           <div id="carNumberOfSeats"></div>
@@ -237,9 +237,9 @@
 
 
         </div>
- 
+
       </div>
-     
+
     </div>
   </div>
 </div>
@@ -249,12 +249,12 @@
   <div class="modal-dialog modal-lg"  role="document">
     <div class="modal-content">
       <div class="modal-header" style="justify-content:center;">
-     
+
         <h5 class="modal-title" id="exampleModalLabel" style="justify-content: center;text-align: center;">
             Your Available Credits
-           
+
         </h5>
-       
+
         <button type="button" class="close" onclick="closeModal()" data-dismiss="modal" style="position: relative;left: 25%;font-size: 20px;" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -266,29 +266,29 @@
 
 
         <div class="row">
-          
+
 
           <div class="col-md-4 text-center"  style="margin-bottom:1rem;">
           <label style="font-weight: bolder;font-size: 15px !important;">Bumps</label>
-          
+
           </div>
-   
-          
+
+
           <div class="col-md-4 text-center"  style="margin-bottom:1rem;">
           <label style="font-weight: bolder;font-size: 15px !important;">History Check Credit</label>
-        
+
           </div>
 
 
           <div class="col-md-4 text-center"  style="margin-bottom:1rem;">
           <label style="font-weight: bolder;font-size: 15px !important;">Add Posting Credits</label>
-          
+
           </div>
-    
-    
+
+
             @if(!empty(Auth::guard('vendor')->user()))
              <div class="col-md-12"  style="margin-bottom:1rem;">   <hr> </div>
-         
+
           <div class="col-md-4 text-center"  style="margin-bottom:1rem;">
           <label style="font-weight: 600;font-size: 13px !important;">Available Bump</label>
           <div id="">{{Auth::guard('vendor')->user()->bump}}</div>
@@ -311,25 +311,25 @@
           <div id="">{{Auth::guard('vendor')->user()->bump_used }}</div>
           </div>
 
-        
+
           <div class="col-md-4 text-center"  style="margin-bottom:1rem;">
           <label style="font-weight: 600;font-size: 13px !important;">Used credits</label>
           <div id="">{{Auth::guard('vendor')->user()->history_check_used }}</div>
           </div>
 
-          
+
           <div class="col-md-4 text-center"  style="margin-bottom:1rem;">
           <label style="font-weight: 600;font-size: 13px !important;">Used credits</label>
           <div id="">{{Auth::guard('vendor')->user()->no_of_ads_used	}}</div>
           </div>
 
-            <div class="col-md-12"  style="text-align: center;margin-bottom: 1rem;margin-top: 2rem;">   Looking to upgrade  or change  your current package? Please contact our sales team on 
+            <div class="col-md-12"  style="text-align: center;margin-bottom: 1rem;margin-top: 2rem;">   Looking to upgrade  or change  your current package? Please contact our sales team on
             <a href="mailto:hello@listit.im" style="color:#ee2c7b;">hello@listit.im</a> </div>
    @endif
         </div>
- 
+
       </div>
-     
+
     </div>
   </div>
 </div>
@@ -341,9 +341,9 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header" style="justify-content:center;">
-     
+
         <h5 class="modal-title" id="exampleModalLabel" style="justify-content: center;">Upload Your Home Banner</h5>
-       
+
         <button type="button" class="close" onclick="closeModal()" data-dismiss="modal" style="position: relative;left: 25%;font-size: 20px;" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -354,7 +354,7 @@
       <div class="modal-body">
 
       <form method="post" id="imageUploadForm" enctype="multipart/form-data">
-          
+
         <div id="imagePreview">
              @if(!empty(Auth::guard('vendor')->user()->banner_image))
             <img style="width: 100%;height: 200px;margin-bottom: 1rem;border-radius: 10px;" src="{{asset('public/uploads/'.Auth::guard('vendor')->user()->banner_image)}}" alt="Preview">
@@ -362,13 +362,13 @@
         </div>
 
         <input type="file" class="form-control" id="imageInput" name="image" />
-        
+
         <button  type="button" onclick="uploadImage()" class="btn btn-success btn-sm" style="float: right;margin-top: 1rem;">Save</button>
       </form>
-      
-      
+
+
       </div>
-     
+
     </div>
   </div>
 </div>
@@ -380,26 +380,26 @@
   <div class="modal-dialog modal-lg"  role="document">
     <div class="modal-content">
       <div class="modal-header" >
-  
+
         <h5 class="modal-title" style="width: 100%;display: inline-block;" >
-            Buy Extras 
+            Buy Extras
             @if(!empty(Auth::guard('vendor')->user()))
             <br>
-            <span style="color: gray;font-size: 15px;"> 
-            
+            <span style="color: gray;font-size: 15px;">
+
                 <b>
                     Your Available Credits Balance is
-                </b> 
-                
-                <span style="color:black;font-weight: 600;"> 
-                    : £  {{number_format(Auth::guard('vendor')->user()->amount , 2)}} 
-                </span> 
-                
+                </b>
+
+                <span style="color:black;font-weight: 600;">
+                    : £  {{number_format(Auth::guard('vendor')->user()->amount , 2)}}
+                </span>
+
             </span>
             @endif
              <span aria-hidden="true" onclick="closeModal()"  style="cursor:pointer;font-size: 20px;float: right;" >&times;</span>
         </h5>
-       
+
         <br>
       </div>
 
@@ -408,16 +408,16 @@
 
 
         <div class="row">
-          
+
         <div  class="col-md-12"  style="margin-bottom:0.5rem;">
             <div class="alert " role="alert" id="alertMessage" style="display:none;"> </div>
         </div>
 
           <div class="col-md-12"  style="margin-bottom:0.5rem;">
           <label style="font-weight: bolder;font-size: 19px !important;">Buy Bump(s)</label>
-          
+
           </div>
-   
+
         <div class="col-md-12"  style="margin-bottom:0.5rem;">
             <form method="GET" onsubmit="return updateExtras(0)">
             <label class="mb-1">Each bump multiply by cost <span style="color:black;font-weight: 600;">&nbsp;&nbsp;£ {{getSetVal('per_bump_price')}} </span></label>
@@ -427,13 +427,13 @@
             </div>
             </form>
         </div>
-        
+
          <div class="col-md-12"  style="margin-bottom:0.5rem;">
           <label style="font-weight: bolder;font-size: 19px !important;">Buy More Ads(s)</label>
-          
+
           </div>
-          
-          
+
+
          <div class="col-md-12"  style="margin-bottom:0.5rem;">
             <form method="GET"  onsubmit="return updateExtras(1)">
             <label class="mb-1">Each Ad multiply by cost <span style="color:black;font-weight: 600;">&nbsp;&nbsp; £ {{getSetVal('per_ad_price')}} </span></label>
@@ -443,17 +443,17 @@
             </div>
             </form>
         </div>
-        
-        
+
+
                 </div>
- 
+
             </div>
-     
+
         </div>
       </div>
     </div>
-    
-    
+
+
     <div class="modal fade" id="vintageYearAlertModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -466,7 +466,7 @@
           <div class="modal-body" style="padding-top: inherit;margin-bottom: 1rem;">
            <div id="apendHTML"></div>
           </div>
-         
+
         </div>
       </div>
     </div>
@@ -474,7 +474,7 @@
   <div class="modal fade" id="showAlertForDebit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
-    
+
       <div class="modal-body" style="font-weight: 600;display: flex;">
        <i class='fas fa-exclamation-circle' style="    font-size: 25px;
     margin-right: 10px;
@@ -495,8 +495,8 @@
 
 
    @endif
-   
-   
+
+
 <script>
   'use strict';
   /*const baseURL = "{{ url('/') }}";
@@ -564,52 +564,52 @@
             $('#showAlertForDebit').modal('show');
             return false;
         }
-        
+
         function validateCarFeatured(car_id)
         {
             $('#PyMdlFtr').html('<input type="hidden" id="py_car_id" value="'+car_id+'" /> <button type="button" class="btn btn-danger" style="width:100%;margin-right: 10px;" onclick="closepModal(1)" >Cancel</button><button type="button" class="btn btn-primary" style="width:100%" onclick="confirmedPayemnt(1)">Confirm</button>')
             $('#showAlertForDebit').modal('show');
             return false;
         }
-       
+
         function closepModal(type = null)
         {
-             $('#showAlertForDebit').modal('hide'); 
-          
+             $('#showAlertForDebit').modal('hide');
+
              if(type == 1)
              {
                 $('#fearured_select_box').val(0)
              }
         }
-        
+
         function showAlertForDebit()
         {
             $('#showAlertForDebit').modal('show');
         }
-        
+
         function confirmedPayemnt(type = null)
         {
             if(type == 1)
             {
                $('#featureForm'+$('#py_car_id').val()).submit()
             }
-            
+
              if(type == 2)
             {
                window.location.href="car-management/add-bump?car="+$('#py_car_id').val()
             }
-            
+
             $('#prmrnt_artBtn').hide();
             $('#CarSubmit').show();
             $('#CarSubmit').click();
             $('#showAlertForDebit').modal('hide');
         }
-        
+
         $(document).ready(function() {
             $(document).on('change', '.us_hide_by_default input[type="checkbox"]', function() {
                 var checkboxValue = $(this).val();
                 var isChecked = $(this).is(':checked'); // Simplified
-        
+
                 $.ajax({
                     url: '{{ route("savetodraftkeyfeature") }}',
                     method: 'GET',
@@ -624,13 +624,13 @@
                 });
             });
         });
-        
+
         function saveDraftData(self , column_name = null )
         {
-        
+
         if(column_name != null)
         {
-           
+
             if(column_name == 'ad_type' )
             {
                 if($(self).val()  == 'Sale')
@@ -644,25 +644,25 @@
                       $('#CarSubmit').html('Publish Now')
                 }
             }
-                
+
                 $isChecked = false;
-                if ($(self).is(':checked')) 
+                if ($(self).is(':checked'))
                 {
                    $isChecked = true;
                 }
-                
+
             $.ajax({
                 url: '{{ route("savetodraft") }}',
                 method: 'GET',
                 data: {current_val : $(self).val() ,  column_name : column_name , 'isChecked' : $isChecked},
                 dataType:'json',
-                success: function (response) 
+                success: function (response)
                 {
                     var $selectedElement = $(self).closest('.sub_sub_sub_category');
                     var $nextElements = $selectedElement.nextAll('.sub_sub_sub_category');
                     $nextElements.remove();
-                  
-                  
+
+
                    if(response.result == 'ok')
                    {
                     $(".sub_sub_sub_category").last().after(response.output);
@@ -675,9 +675,9 @@
                     {
                        $('#searcfiltersdata').html('');
                     }
-                    
-                  
-                    
+
+
+
                     if((column_name == 'sub_category_id' || column_name == 'category_id') && ($('#adsMaincat').val()  == 233 || $('#adsMaincat').val()  == 347 ) )
                     {
                         $('#addTYAP').hide();
@@ -690,12 +690,12 @@
                         $('#ad_price').val('');
                         $('#ad_price').attr('readonly' , false);
                     }
-                    
-                
-                    
-            
+
+
+
+
                 },
-               
+
             });
         }
         else
@@ -705,12 +705,12 @@
                 method: 'GET',
                 data: {current_val : $(self).val() },
                 dataType:'json',
-                success: function (response) 
+                success: function (response)
                 {
                     var $selectedElement = $(self).closest('.sub_sub_sub_category');
                     var $nextElements = $selectedElement.nextAll('.sub_sub_sub_category');
                     $nextElements.remove();
-                        
+
                     if(response.result == 'ok')
                     {
                         $(".sub_sub_sub_category").last().after(response.output);
@@ -724,18 +724,18 @@
                        $('#searcfiltersdata').html('');
                     }
                 },
-                error: function (xhr, status, error) 
+                error: function (xhr, status, error)
                 {
                     console.error(xhr.responseText);
                 }
             });
         }
-        
-       
+
+
                     if((column_name == 'sub_category_id' || column_name == 'category_id')  && $('#adsMaincat').val() == 39)
                     {
-                           
-                            
+
+
                         $('#labael_sold').html('SOLD STC');
                         $('#labael_reduced_price').html('REDUCED');
                         $('#labael_manager_special').html('UNDER OFFER');
@@ -750,32 +750,32 @@
                         $('#labael_new').html('New');
                         $('#labael_used').html('Used');
                     }
-                     
+
     }
-    
+
     function deletDarftAd()
     {
         $.ajax({
             url: '{{ route("deleteToDraft") }}',
             method: 'GET',
-            
-            success: function (response) 
+
+            success: function (response)
             {
                location.reload(true)
             },
-            error: function (xhr, status, error) 
+            error: function (xhr, status, error)
             {
                 console.error(xhr.responseText);
             }
         });
     }
-    
-    
+
+
 function hide_owner_if_new(self)
 {
     if($(self).val() == 'brand_new')
     {
-       $('#ownerParentDiv').hide() 
+       $('#ownerParentDiv').hide()
     }
     else
     {
@@ -784,16 +784,16 @@ function hide_owner_if_new(self)
 }
 
     $(document).on('click', '.dz-error-mark', function() {
-        
+
         $(this).closest('.dz-error').remove();
     });
 
-    
+
     function hideFuelIf(self)
     {
         var thisVal = $('#adsSubcat').val();
-        
-        if (thisVal == 48 || thisVal == 62) 
+
+        if (thisVal == 48 || thisVal == 62)
         {
             $('#fuelType option[value="14"]').addClass('hidden-option');
         }
@@ -801,16 +801,16 @@ function hide_owner_if_new(self)
         {
             $('#fuelType option[value="14"]').removeClass('hidden-option');
         }
-        
+
         $.ajax({
             url: "{{route('frontend.getValidinput')}}",
             type: 'GET',
             data:{catVal:thisVal },
-            success: function(data) 
+            success: function(data)
             {
-              $('#loadFiltersCategoryWise').html(data);  
-              
-            
+              $('#loadFiltersCategoryWise').html(data);
+
+
             }
         });
     }
@@ -820,33 +820,33 @@ function hide_owner_if_new(self)
         var selectedText = $('#fuelType').find('option:selected').text();
         var thisVal = $('#fuelType').val();
         var subcatVal = $('#adsSubcat').val();
-      
-        
-       if (selectedText.trim() === 'Petrol' || selectedText.trim() === 'Diesel') 
+
+
+       if (selectedText.trim() === 'Petrol' || selectedText.trim() === 'Diesel')
         {
             $('#trsmisn_type').show()
         }
         else
         {
-            
+
             $('#transmissionType').val(14);
             $('#transmissionType').change();
             $('#trsmisn_type').hide()
         }
-      
+
     $.ajax({
         url: "{{route('frontend.getEngineCapacity')}}",
         type: 'GET',
         data:{selectedText:selectedText , thisVal:thisVal , subcatVal:subcatVal },
-        success: function(data) 
+        success: function(data)
         {
-          $('#new_engine_caacity').html(data);  
+          $('#new_engine_caacity').html(data);
         }
     });
 
 }
-    
-    
+
+
 function handleImageLoad(imgElement) {
     // Check if the image failed to load
     if (imgElement.naturalWidth === 0) {
@@ -863,7 +863,7 @@ function handleImageError(imgElement, fallbackUrl, attempt = 1) {
 
     // Define the maximum number of retry attempts
     const maxAttempts = 5;
-    
+
     // Define a retry delay in milliseconds
     const retryDelay = 500; // 2 seconds
 
@@ -886,12 +886,12 @@ function handleImageError(imgElement, fallbackUrl, attempt = 1) {
     };
 }
 
-    
-    
+
+
 $(document).ready(function() {
     // Clear the existing content
     $('.dz-default.dz-message').empty();
-    
+
     // Append the cloud icon, a specific instruction message, and additional details
     $('.dz-default.dz-message').append(`
         <i class="fa fa-cloud-upload-alt" style="font-size: 48px;"></i>
@@ -904,26 +904,26 @@ $(document).ready(function() {
 function checkYearAgo(self) {
     // Get the value from the input, trim spaces
     var year = $(self).val().trim();
-    
+
     // Allow only numeric input and enforce a maximum length of 4 digits
     if (year.length > 4) {
         year = year.slice(0, 4); // Limit to the first 4 digits
         $(self).val(year); // Update the input field
     }
-    
+
     // Check if year has 4 digits and is a number
     if (year.length === 4 && !isNaN(year)) {
         var currentYear = new Date().getFullYear();
-        
+
         // Check if the input year is greater than the current year
         if (parseInt(year, 10) > currentYear) {
             // Set the input value to the current year
             $(self).val(currentYear);
             year = currentYear; // Update the year variable to the current year
         }
-        
+
         var yearDifference = currentYear - parseInt(year, 10);
-        
+
         // Check if the year difference is greater than or equal to 30
         if (yearDifference >= 30) {
             $('#vintageYearAlertModal').modal('show');
@@ -931,27 +931,27 @@ function checkYearAgo(self) {
         }
     }
 }
- 
-    
+
+
 function updateExtras(type)
 {
     if(type == 0)
     {
-        var numberOfData = $('#no_of_bumps').val(); 
+        var numberOfData = $('#no_of_bumps').val();
     }
     else
     {
          var numberOfData = $('#no_of_ads').val();
     }
-   
+
     $('.us_dis_btn').prop('disabled' , true);
-    
+
       $.ajax({
         url: '{{ route("vendor.car_management.save_more_credits") }}',
         type: 'GET',
         data:{type:type , numberOfData:numberOfData },
         dataType:'json',
-        success: function(data) 
+        success: function(data)
         {
              $('#alertMessage').show();
              $('.us_dis_btn').prop('disabled' , false);
@@ -964,18 +964,18 @@ function updateExtras(type)
             {
                 $('#alertMessage').addClass('alert-success');
                 $('#alertMessage').html(data.message);
-                
-                setTimeout(function() { 
+
+                setTimeout(function() {
                  location.reload(true);
                 }, 5000);
             }
         },
-        error: function(error) 
+        error: function(error)
         {
             console.error('Error:', error);
         }
     });
-        
+
         return false;
 }
 
@@ -990,24 +990,24 @@ function clsoeModal()
 }
 
     // Display image preview
-    $('#imageInput').change(function () 
+    $('#imageInput').change(function ()
     {
         var input = this;
         var reader = new FileReader();
 
-        reader.onload = function (e) 
+        reader.onload = function (e)
         {
             $('#imagePreview').html('<img style="width: 100%;height: 200px;margin-bottom: 1rem;border-radius: 10px;" src="' + e.target.result + '" alt="Preview">');
         };
 
         reader.readAsDataURL(input.files[0]);
     });
-    
+
   function uploadImage() {
         var formData = new FormData($('#imageUploadForm')[0]);
-    
+
         var csrfToken = $('meta[name="csrf-token"]').attr('content');
-        
+
         $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': csrfToken
@@ -1020,7 +1020,7 @@ function clsoeModal()
             data: formData,
             processData: false,
             contentType: false,
-            success: function (response) 
+            success: function (response)
             {
                if(response.success )
                {
@@ -1032,26 +1032,26 @@ function clsoeModal()
                 console.error('Error uploading image:', error);
             }
         });
-        
+
         return false;
     }
-    
-    
+
+
     function addBnneraccount()
     {
-       $('#uploadBannerModal').modal('show') 
+       $('#uploadBannerModal').modal('show')
     }
-    
+
     function myaccount()
     {
       $('#checkCredits').modal('show')
     }
-    
+
     function buyExtra()
     {
       $('#buyNowModal').modal('show')
     }
-    
+
     function checkVehiclehistory()
     {
       $('#checkcarhistory').modal('show')
@@ -1067,7 +1067,7 @@ function getVehicleHistoeyData(self)
         type: 'GET',
         data:{vehicle_reg:vehicle_history_reg},
         dataType:'json',
-        success: function(data) 
+        success: function(data)
         {
           if(data.response == 'yes')
           {
@@ -1081,15 +1081,15 @@ function getVehicleHistoeyData(self)
             $('#carMileage').html(data.output.Mileage);
             $('#carNumberOfSeats').html(data.output.NumberOfSeats);
             $('#carDoors').html(data.output.carDoors);
-            $fullmodel = data.output.Make + ' ' + data.output.Model + ' ' + data.output.Year; 
+            $fullmodel = data.output.Make + ' ' + data.output.Model + ' ' + data.output.Year;
             $(self).html('<i class="fa fa-search" aria-hidden="true"></i>')
             $('#result_statuss').html('<span style="font-weight: 800;color: #574c4c;"><i class="fal fa-check" style="font-size: 20px;color: #05eb05;margin-right: 5px;"></i> '+$fullmodel+'</span>')
             $('#result_statuss').show()
-         
+
           }
           else
           {
-            
+
             $(self).html('<i class="fa fa-search" aria-hidden="true"></i>')
             if(data.message)
             {
@@ -1097,15 +1097,15 @@ function getVehicleHistoeyData(self)
             }
             else
             {
-              $('#result_statuss').html('<span style="color:red;"> <i class="fal fa-times" style="font-size: 20px;color: red;margin-right: 5px;"></i> Data Not found</span>')  
+              $('#result_statuss').html('<span style="color:red;"> <i class="fal fa-times" style="font-size: 20px;color: red;margin-right: 5px;"></i> Data Not found</span>')
             }
-            
+
             $('#result_statuss').show()
           }
-          
-        
+
+
         },
-        error: function(error) 
+        error: function(error)
         {
             console.error('Error:', error);
         }
@@ -1141,23 +1141,23 @@ function addnewuser(user_id = null , self = null)
         type: 'GET',
         data:{vehicle_reg:vehicle_reg , type:type},
         dataType:'json',
-        success: function(data) 
+        success: function(data)
         {
           if(data.response == 'yes')
           {
-           
+
         /////// for make ////////////
 
         var makeSelect = $('#make');
         var MakeValue = data.output.Make.toLowerCase();
 
         // Iterate through options
-        makeSelect.find('option').each(function() 
+        makeSelect.find('option').each(function()
         {
           var optionValue =  $(this).text().toLowerCase();
 
           // Check if option value matches NumberOfDoors
-        
+
             if (optionValue.includes(MakeValue)) {
             // Set the 'selected' attribute for the matching option
             $(this).prop('selected', true);
@@ -1173,12 +1173,12 @@ function addnewuser(user_id = null , self = null)
         var fuelTypeValue = data.output.FuelType.toLowerCase();
 
         // Iterate through options
-        fuelTypeSelect.find('option').each(function() 
+        fuelTypeSelect.find('option').each(function()
         {
           var optionValue =  $(this).text().toLowerCase();
 
           // Check if option value matches NumberOfDoors
-         
+
             if (optionValue.includes(fuelTypeValue)) {
             // Set the 'selected' attribute for the matching option
             $(this).prop('selected', true);
@@ -1194,7 +1194,7 @@ function addnewuser(user_id = null , self = null)
         var transmissionTypeValue = data.output.TransmissionType.toLowerCase();
 
         // Iterate through options
-        transmissionTypeSelect.find('option').each(function() 
+        transmissionTypeSelect.find('option').each(function()
         {
           var optionValue =  $(this).text().toLowerCase();
 
@@ -1214,7 +1214,7 @@ function addnewuser(user_id = null , self = null)
         var ColorSelectValue = data.output.Color.toLowerCase();
 
         // Iterate through options
-        ColorSelect.find('option').each(function() 
+        ColorSelect.find('option').each(function()
         {
           var optionValue =  $(this).text().toLowerCase();
 
@@ -1227,14 +1227,14 @@ function addnewuser(user_id = null , self = null)
           }
         });
 
-       
+
               /////// for carSeats ////////////
 
               var carSeatsSelect = $('#carSeats');
             var carSeatsValue = data.output.NumberOfSeats;
 
             // Iterate through options
-            carSeatsSelect.find('option').each(function() 
+            carSeatsSelect.find('option').each(function()
             {
               var optionValue =  $(this).text();
 
@@ -1248,9 +1248,9 @@ function addnewuser(user_id = null , self = null)
             });
 
 
-            
-             
-            setTimeout(function() { 
+
+
+            setTimeout(function() {
         /////// for carModel ////////////
 
         var carModelSelect = $('#carModel');
@@ -1260,7 +1260,7 @@ function addnewuser(user_id = null , self = null)
         url: '{{ route("vendor.car_management.get_cr_mdl") }}',
         type: 'GET',
         data:{carModelValue:carModelValue , makeSelect:makeSelect},
-        success: function(carmodelresponse) 
+        success: function(carmodelresponse)
         {
             // Set the value of the select element
             $('#carModel').val(carmodelresponse);
@@ -1268,21 +1268,21 @@ function addnewuser(user_id = null , self = null)
             // Trigger a change event to ensure any associated events are fired
             $('#carModel').change();
         },
-        error: function(error) 
+        error: function(error)
         {
             console.error('Error:', error);
         }
     });
 
     }, 1000);
-            
+
             $('#carYear').val(data.output.Year);
             $('#carRoadTax').val(data.output.Tax_Fee);
-           
+
             $(self).html('<i class="fa fa-search" aria-hidden="true"></i>')
             $('#result_status').html('<span style="color:#25b425;">Data  found</span>')
             $('#result_status').show()
-         
+
           }
           else
           {
@@ -1290,13 +1290,13 @@ function addnewuser(user_id = null , self = null)
             $('#result_status').html('<span style="color:red;">Data Not found</span>')
             $('#result_status').show()
           }
-          
-          setTimeout(function() { 
+
+          setTimeout(function() {
             $('#result_status').hide()
             }, 2000);
 
         },
-        error: function(error) 
+        error: function(error)
         {
             console.error('Error:', error);
         }
@@ -1305,7 +1305,7 @@ function addnewuser(user_id = null , self = null)
 
   }
 
-  
+
 
   function getVehicleValuationData(self)
   {
@@ -1316,7 +1316,7 @@ function addnewuser(user_id = null , self = null)
           type: 'GET',
           data:{'regisno': regisno},
           dataType:"json",
-          success: function(data) 
+          success: function(data)
           {
             if(data.response == 'yes')
             {
@@ -1347,12 +1347,12 @@ function addnewuser(user_id = null , self = null)
               $('#result_status').show()
             }
 
-            setTimeout(function() { 
+            setTimeout(function() {
             $('#result_status').hide()
             }, 2000);
 
           },
-          error: function(error) 
+          error: function(error)
           {
               console.error('Error:', error);
           }
@@ -1364,12 +1364,12 @@ function getSubMails()
     $.ajax({
         url: '{{ route("vendor.car_management.getsubemail") }}',
         type: 'GET',
-        success: function(response) 
+        success: function(response)
         {
           $('#emailForm').html(response);
           $('#emailSubscriptionModal').modal('show')
         },
-        error: function(error) 
+        error: function(error)
         {
             console.error('Error:', error);
         }
@@ -1395,7 +1395,7 @@ function loadAndPrint() {
                     // Place the fetched content into the 'printArea' div
                     $('#printArea').html(response);
 
-                    setTimeout(function() { 
+                    setTimeout(function() {
                       printSpecificArea();
                     }, 100);
                 },
@@ -1524,11 +1524,11 @@ function formSubmit()
                 url: '{{ route("ad.impression.count") }}',
                 method: 'GET',
                 data: {ad_id : ad_id },
-                success: function (response) 
+                success: function (response)
                 {
-                   
+
                 },
-                error: function (xhr, status, error) 
+                error: function (xhr, status, error)
                 {
                     console.error(xhr.responseText);
                 }
@@ -1544,7 +1544,29 @@ function formSubmit()
     });
 </script>
 
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const togglePassword = document.querySelector('#togglePassword');
+    const passwordField = document.querySelector('#password');
 
+    const togglePasswordConfirmation = document.querySelector('#togglePasswordConfirmation');
+    const passwordConfirmationField = document.querySelector('#password_confirmation');
+
+    togglePassword.addEventListener('click', function() {
+        const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordField.setAttribute('type', type);
+        this.querySelector('i').classList.toggle('fa-eye');
+        this.querySelector('i').classList.toggle('fa-eye-slash');
+    });
+
+    togglePasswordConfirmation.addEventListener('click', function() {
+        const type = passwordConfirmationField.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordConfirmationField.setAttribute('type', type);
+        this.querySelector('i').classList.toggle('fa-eye');
+        this.querySelector('i').classList.toggle('fa-eye-slash');
+    });
+});
+</script>
 
 <script type="text/javascript">
  $(document).ready(function () {
@@ -1556,7 +1578,7 @@ function formSubmit()
   $('.js-example-basic-single6').select2();
   $('.js-example-basic-single7').select2();
   //$('.subhidden').addClass('hidden');
-}); 
+});
 
 
 </script>

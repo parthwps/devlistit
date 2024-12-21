@@ -20,9 +20,9 @@
 
 @section('content')
     @includeIf('frontend.partials.breadcrumb', [
-         'breadcrumb' => $bgImg->breadcrumb,
-         'title' => !empty($pageHeading) ? $pageHeading->vendor_signup_page_title : __('Place Ad'),
-     ])
+        'breadcrumb' => $bgImg->breadcrumb,
+        'title' => !empty($pageHeading) ? $pageHeading->vendor_signup_page_title : __('Place Ad'),
+    ])
     <div class="user-dashboard pt-20 pb-60">
 
         <div class="container">
@@ -33,7 +33,9 @@
                 <div class="col-md-9">
 
                     @php
-                        $current_package = App\Http\Helpers\VendorPermissionHelper::packagePermission(Auth::guard('vendor')->user()->id);
+                        $current_package = App\Http\Helpers\VendorPermissionHelper::packagePermission(
+                            Auth::guard('vendor')->user()->id,
+                        );
                     @endphp
 
                     <div class="row">
@@ -58,7 +60,9 @@
                                         ->whereYear('start_date', '<>', '9999')
                                         ->orderBy('id', 'DESC')
                                         ->first();
-                                    $pendingPackage = isset($pendingMemb) ? \App\Models\Package::query()->findOrFail($pendingMemb->package_id) : null;
+                                    $pendingPackage = isset($pendingMemb)
+                                        ? \App\Models\Package::query()->findOrFail($pendingMemb->package_id)
+                                        : null;
                                 @endphp
                                 @if ($pendingPackage)
                                     <div class="alert alert-warning text-dark">
@@ -71,8 +75,8 @@
                                     </div>
                                 @else
                                     <!-- <div class="alert alert-warning text-dark">
-            {{ __('Your membership is expired. Please purchase a new package / extend the current package.') }}
-                                    </div> -->
+                        {{ __('Your membership is expired. Please purchase a new package / extend the current package.') }}
+                                                </div> -->
                                 @endif
                                 @includeIf('vendors.verify')
                                 @php
@@ -89,32 +93,38 @@
                                                 {{-- <h4 style="color:gray">Ad Details </h4> --}}
                                             </div>
                                         </div>
-                                    </div> <div class="alert alert-danger pb-1 dis-none" id="carErrors">
-                                      <button type="button" class="close" data-dismiss="alert">×</button>
-                                      <ul></ul>
-                                  </div>
+                                    </div>
+                                    <div class="alert alert-danger pb-1 dis-none" id="carErrors">
+                                        <button type="button" class="close" data-dismiss="alert">×</button>
+                                        <ul></ul>
+                                    </div>
                                     <div class="col-lg-12">
                                         <label for="" class="mb-2"><strong>{{ __('Gallery Images') }}
                                                 **</strong> <br> <small class="text-danger"> load up to <span
-                                                        id="change_text_photo_allow">15</span> images .jpg,
+                                                    id="change_text_photo_allow">15</span> images .jpg,
                                                 .png, & .gif </small></label>
 
-                                        @if($draft_ad == true && !empty($draft_ad->images))
+                                        <div id="imageCounter">Uploded Images: <span id="imageCount">0</span></div>
+
+                                        @if ($draft_ad == true && !empty($draft_ad->images))
                                             @php
                                                 $images = json_decode($draft_ad->images, true);
                                                 $items = [];
                                             @endphp
 
-                                            @if(count($images) > 0)
+                                            @if (count($images) > 0)
                                                 <div class="row">
                                                     <div class="col-12">
                                                         <table class="table table-striped" id="imgtable">
-                                                            @foreach($images as $image)
+                                                            @foreach ($images as $image)
                                                                 @php
-                                                                    $item = \App\Models\Car\CarImage::where('image', $image)->first();
+                                                                    $item = \App\Models\Car\CarImage::where(
+                                                                        'image',
+                                                                        $image,
+                                                                    )->first();
                                                                 @endphp
 
-                                                                @if($item)
+                                                                @if ($item)
                                                                     @php
                                                                         $items[] = [
                                                                             'id' => $item->id,
@@ -128,40 +138,42 @@
 
                                                             @php
                                                                 // Sort items by priority
-                                                                usort($items, function($a, $b) {
+                                                                usort($items, function ($a, $b) {
                                                                     return $a['priority'] <=> $b['priority'];
                                                                 });
                                                             @endphp
 
-                                                            @foreach($items as $item)
-                                                                <tr class="trdb table-row"
-                                                                    id="trdb{{ $item['id'] }}" draggable="true"
-                                                                    ondragstart="dragStart(event)"
-                                                                    ondrop="drop(event)"
-                                                                    ondragover="allowDrop(event)">
+                                                            @foreach ($items as $item)
+                                                                <tr class="trdb table-row" id="trdb{{ $item['id'] }}"
+                                                                    draggable="true" ondragstart="dragStart(event)"
+                                                                    ondrop="drop(event)" ondragover="allowDrop(event)">
                                                                     <td>
                                                                         <div class="">
-                                                                            <img id="preview-image" class="thumb-preview wf-150"
-                                                                                 src="{{ asset('assets/admin/img/car-gallery/' . $item['image']) }}"
-                                                                                 id="img_{{$item['id']}}"
-                                                                                 alt="Ad Image"
-                                                                                 style="height:120px; width:120px; object-fit: cover;transform: rotate({{$item['rotation_point']}}deg);" onchange="updateImagePreview('image-input', 'preview-image')">
+                                                                            <img id="preview-image"
+                                                                                class="thumb-preview wf-150"
+                                                                                src="{{ asset('assets/admin/img/car-gallery/' . $item['image']) }}"
+                                                                                id="img_{{ $item['id'] }}" alt="Ad Image"
+                                                                                style="height:120px; width:120px; object-fit: cover;transform: rotate({{ $item['rotation_point'] }}deg);"
+                                                                                onchange="updateImagePreview('image-input', 'preview-image')"
+                                                                                onclick="removethis({{ $item['id'] }});">
                                                                         </div>
 
-                                                                        <div style="text-align: center;margin-bottom: 5px;color: gray;">
-                                                                            Set Cover <input
-                                                                                    class='form-check-input'
-                                                                                    value="{{ $item['id'] }}"
-                                                                                    onclick="setCoverPhoto({{ $item['id'] }})"
-                                                                                    type='radio'
-                                                                                    name='flexRadioDefault'>
+                                                                        <div
+                                                                            style="text-align: center;margin-bottom: 5px;color: gray;">
+                                                                            Set Cover <input class='form-check-input'
+                                                                                value="{{ $item['id'] }}"
+                                                                                onclick="setCoverPhoto({{ $item['id'] }})"
+                                                                                type='radio' name='flexRadioDefault'>
+                                                                        </div>
+                                                                        <div>
                                                                         </div>
                                                                     </td>
+
                                                                     <td>
                                                                         <i class="fa fa-times"
-                                                                           onclick="removethis({{ $item['id'] }})"></i>
+                                                                            onclick="removethis({{ $item['id'] }})"></i>
                                                                         <i class="fa fa-undo rotatebtndb"
-                                                                           onclick="rotatePhoto({{ $item['id'] }})"></i>
+                                                                            onclick="rotatePhoto({{ $item['id'] }})"></i>
                                                                     </td>
 
                                                                 </tr>
@@ -172,31 +184,31 @@
                                             @endif
                                         @endif
 
-
                                         <form action="{{ route('car.imagesstore') }}" id="my-dropzone"
-                                              enctype="multipart/formdata"
-                                              class="dropzone create us_dropzone ad-creation">
+                                            enctype="multipart/formdata" class="dropzone create us_dropzone ad-creation">
                                             @csrf
                                             <div class="fallback">
-                                                <input name="file" type="file" multiple/>
+                                                <input name="file" type="file" multiple />
                                             </div>
                                         </form>
                                         <p class="em text-danger mb-0" id="errslider_images"></p>
                                     </div>
+
                                     <div class="row">
 
                                         <div class="col-lg-12 ">
 
 
                                             <form class="myajaxform" id="carForm"
-                                                  action="{{ route('vendor.car_management.store_car') }}" method="POST"
-                                                  enctype="multipart/form-data">
+                                                action="{{ route('vendor.car_management.store_car') }}" method="POST"
+                                                enctype="multipart/form-data">
                                                 @csrf
                                                 <div id="sliders">
-                                                    @if(!empty($items) && count($items) > 0 )
-                                                        @foreach($items as $itm)
+                                                    @if (!empty($items) && count($items) > 0)
+                                                        @foreach ($items as $itm)
                                                             <input type="hidden" name="slider_images[]"
-                                                                   id="slider{{$itm['id']}}" value="{{$itm['id']}}">
+                                                                id="slider{{ $itm['id'] }}"
+                                                                value="{{ $itm['id'] }}">
                                                         @endforeach
                                                     @endif
                                                 </div>
@@ -209,11 +221,11 @@
                                                     @foreach ($languages as $language)
                                                         <div class="">
                                                             <div id="collapse{{ $language->id }}"
-                                                                 class="collapse {{ $language->is_default == 1 ? 'show' : '' }}"
-                                                                 aria-labelledby="heading{{ $language->id }}"
-                                                                 data-parent="#accordion">
+                                                                class="collapse {{ $language->is_default == 1 ? 'show' : '' }}"
+                                                                aria-labelledby="heading{{ $language->id }}"
+                                                                data-parent="#accordion">
                                                                 <div class="version-body">
-                                                                      {{-- <div class="row">
+                                                                    {{-- <div class="row">
                                                                         <div class="col-md-12 mb-3">
                                                                           <div class="form-group {{ $language->direction == 1 ? 'rtl text-right' : '' }}">
                                                                               @php
@@ -225,7 +237,7 @@
                                                                               <label>{{ __('Ad Title') }} *</label>
                                                                               <input type="text" id="input-title" class="form-control"
                                                                                     onfocusout="saveDraftData(this , 'ad_title')"
-                                                                                    value="@if($draft_ad == true && !empty($draft_ad->ad_title)) {{$draft_ad->ad_title}} @endif"
+                                                                                    value="@if ($draft_ad == true && !empty($draft_ad->ad_title)) {{$draft_ad->ad_title}} @endif"
                                                                                     name="{{ $language->code }}_title"
                                                                                     placeholder="{{ $placeholder  }}">
                                                                               <span class="form-text">
@@ -235,8 +247,8 @@
                                                                       </div> --}}
 
 
-                                                                    </div>
-                                                                    {{-- <div class="row">
+                                                                </div>
+                                                                {{-- <div class="row">
                                                                       <div class="col-md-6 mb-3">
                                                                           <div class="form-group">
                                                                               @php
@@ -308,153 +320,165 @@
                                                                         });
 
                                                                     </script> --}}
-                                                                    <div class="row">
-                                                                        <div class="col-md-6 mb-3">
-                                                                            <div class="form-group ">
-                                                                                @php
-                                                                                    $categories = App\Models\Car\Category::where('parent_id', 0)->where('status', 1)
-                                                                                          ->get();
-                                                                                @endphp
-                                                                                <label>{{ __('Category') }} *</label>
-                                                                                <select name="en_main_category_id"
-                                                                                        class="form-control select2 @error('category_id') is-invalid @enderror"
-                                                                                        id="adsMaincat"
-                                                                                        onchange="saveDraftData(this , 'category_id')">
-                                                                                    <option selected
-                                                                                            disabled>{{ __('Select a Category') }}</option>
-                                                                                    @foreach ($categories as $category)
-                                                                                        <option value="{{ $category->id }}">{{ $category->name }}</option>
-                                                                                    @endforeach
-                                                                                </select>
-                                                                                @error('category_id')
-                                                                                <span class="text-danger">{{$message}}</span>
-                                                                                @enderror
-                                                                                  <script>
-                                                                                    $(document).ready(function () {
-                                                                                        $('#adsMaincat').select2({
-                                                                                            placeholder: "Search and select a category",
-                                                                                            allowClear: true
-                                                                                        });
+                                                                <div class="row">
+                                                                    <div class="col-md-6 mb-3">
+                                                                        <div class="form-group ">
+                                                                            @php
+                                                                                $categories = App\Models\Car\Category::where(
+                                                                                    'parent_id',
+                                                                                    0,
+                                                                                )
+                                                                                    ->where('status', 1)
+                                                                                    ->get();
+                                                                            @endphp
+                                                                            <label>{{ __('Category') }} *</label>
+                                                                            <select name="en_main_category_id"
+                                                                                class="form-control select2 @error('category_id') is-invalid @enderror"
+                                                                                id="adsMaincat"
+                                                                                onchange="saveDraftData(this , 'category_id')">
+                                                                                <option selected disabled>
+                                                                                    {{ __('Select a Category') }}</option>
+                                                                                @foreach ($categories as $category)
+                                                                                    <option value="{{ $category->id }}">
+                                                                                        {{ $category->name }}</option>
+                                                                                @endforeach
+                                                                            </select>
+                                                                            @error('category_id')
+                                                                                <span
+                                                                                    class="text-danger">{{ $message }}</span>
+                                                                            @enderror
+                                                                            <script>
+                                                                                $(document).ready(function() {
+                                                                                    $('#adsMaincat').select2({
+                                                                                        placeholder: "Search and select a category",
+                                                                                        allowClear: true
                                                                                     });
-                                                                                </script>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="col-md-6 sub_sub_sub_category mb-3" id="sub_catgry">
-                                                                            <div class="form-group">
-                                                                                <label>{{ __('Select a Sub Category') }}
-                                                                                    *</label>
-                                                                                <select disabled name="en_category_id"
-                                                                                        class="form-control  subhidden"
-                                                                                        id="adsSubcat"
-                                                                                        onchange="saveDraftData(this , 'sub_category_id')">
-                                                                                    <option selected
-                                                                                            disabled>{{ __('Select Sub Category') }}</option>
-                                                                                </select>
-                                                                            </div>
+                                                                                });
+                                                                            </script>
                                                                         </div>
                                                                     </div>
-                                                                    <div class="col-md-12 mb-3">
-                                                                      <div class="form-group">
-                                                                          <div class="form-check form-check-inline">
-                                                                              <label class="form-check-label" for="inlineRadio3">Ad
-                                                                                  Type</label>
-                                                                          </div>
-                                                                          <div class=" align-items-center d-flex">
-                                                                              <div class="form-check form-check-inline">
-                                                                                  <input class="form-check-input" type="radio"
-                                                                                         name="ad_type" id="inlineRadio1"
-                                                                                         @if($draft_ad == true && empty($draft_ad->ad_type) ) checked
-                                                                                         @endif @if($draft_ad == true && !empty($draft_ad->ad_type) && $draft_ad->ad_type == 'Sale') checked
-                                                                                         @endif onchange="saveDraftData(this , 'ad_type')"
-                                                                                         value="Sale">&nbsp;
-                                                                                  <label class="form-check-label" for="ad_type">For
-                                                                                      Sale</label>
-
-                                                                              </div>
-                                                                              <div class="form-check form-check-inline">
-                                                                                  <input class="form-check-input" type="radio"
-                                                                                         name="ad_type" id="inlineRadio2"
-                                                                                         @if($draft_ad == true && !empty($draft_ad->ad_type) && $draft_ad->ad_type == 'Wanted') checked
-                                                                                         @endif  onchange="saveDraftData(this , 'ad_type')"
-                                                                                         value="Wanted">&nbsp;
-                                                                                  <label class="form-check-label"
-                                                                                         for="ad_type">Wanted</label>
-                                                                              </div>
-                                                                          </div>
-
-                                                                      </div>
-                                                                  </div><hr/>
-                                                                  <h4 style="color:gray">Videos </h4>
-                                                                  <div class="col-lg-6 mb-3">
-                                                                    <div class="form-group">
-                                                                        <label>{{ __('Optional YouTube Video') }} </label>
-                                                                        <input type="text" class="form-control @error('youtube_video') is-invalid @enderror"
-                                                                               name="youtube_video"
-                                                                               placeholder="Enter youtube Video URL">
-                                                                               @error('youtube_video')
-                                                                                  <span class="invalid-feedback" role="alert">
-                                                                                      <strong>{{ $message }}</strong>
-                                                                                  </span>
-                                                                              @enderror
+                                                                    <div class="col-md-6 sub_sub_sub_category mb-3"
+                                                                        id="sub_catgry">
+                                                                        <div class="form-group">
+                                                                            <label>{{ __('Select a Sub Category') }}
+                                                                                *</label>
+                                                                            <select disabled name="en_category_id"
+                                                                                class="form-control  subhidden"
+                                                                                id="adsSubcat"
+                                                                                onchange="saveDraftData(this , 'sub_category_id')">
+                                                                                <option selected disabled>
+                                                                                    {{ __('Select Sub Category') }}
+                                                                                </option>
+                                                                            </select>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
-                                                                <hr/>
+                                                                <div class="col-md-12 mb-3">
+                                                                    <div class="form-group">
+                                                                        <div class="form-check form-check-inline">
+                                                                            <label class="form-check-label"
+                                                                                for="inlineRadio3">Ad
+                                                                                Type</label>
+                                                                        </div>
+                                                                        <div class=" align-items-center d-flex">
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input"
+                                                                                    type="radio" name="ad_type"
+                                                                                    id="inlineRadio1"
+                                                                                    @if ($draft_ad == true && empty($draft_ad->ad_type)) checked @endif
+                                                                                    @if ($draft_ad == true && !empty($draft_ad->ad_type) && $draft_ad->ad_type == 'Sale') checked @endif
+                                                                                    onchange="saveDraftData(this , 'ad_type')"
+                                                                                    value="Sale">&nbsp;
+                                                                                <label class="form-check-label"
+                                                                                    for="ad_type">For
+                                                                                    Sale</label>
+
+                                                                            </div>
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input"
+                                                                                    type="radio" name="ad_type"
+                                                                                    id="inlineRadio2"
+                                                                                    @if ($draft_ad == true && !empty($draft_ad->ad_type) && $draft_ad->ad_type == 'Wanted') checked @endif
+                                                                                    onchange="saveDraftData(this , 'ad_type')"
+                                                                                    value="Wanted">&nbsp;
+                                                                                <label class="form-check-label"
+                                                                                    for="ad_type">Wanted</label>
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </div>
+                                                                </div>
+                                                                <hr />
+                                                                <h4 style="color:gray">Videos </h4>
+                                                                <div class="col-lg-6 mb-3">
+                                                                    <div class="form-group">
+                                                                        <label>{{ __('Optional YouTube Video') }} </label>
+                                                                        <input type="text"
+                                                                            class="form-control @error('youtube_video') is-invalid @enderror"
+                                                                            name="youtube_video"
+                                                                            placeholder="Enter youtube Video URL">
+                                                                        @error('youtube_video')
+                                                                            <span class="invalid-feedback" role="alert">
+                                                                                <strong>{{ $message }}</strong>
+                                                                            </span>
+                                                                        @enderror
+                                                                    </div>
+                                                                </div>
+                                                                <hr />
                                                                 <h4 style="color:gray">Ad Details </h4>
 
-                                                                 <div class="row">
-                                                                        <div class="col-md-12 mb-3">
-                                                                          <div class="form-group {{ $language->direction == 1 ? 'rtl text-right' : '' }}">
-                                                                              @php
-                                                                                  $placeholder = 'What you are selling?';
-                                                                                  if ($draft_ad && !empty($draft_ad->ad_type) && $draft_ad->ad_type == 'Wanted') {
-                                                                                      $placeholder = 'What you are looking for?';
-                                                                                  }
-                                                                              @endphp
-                                                                              <label>{{ __('Ad Title') }} *</label>
-                                                                              <input
-                                                                              type="text"
-                                                                              id="input-title"
-                                                                              class="form-control"
-                                                                              oninput="updatePreview('input-title', 'preview-title')"
-                                                                              value="{{ old($language->code . '_title', ($draft_ad && !empty($draft_ad->ad_title)) ? $draft_ad->ad_title : '') }}"
-                                                                              name="{{ $language->code }}_title"
-                                                                              placeholder="{{ $placeholder }}">
-                                                                              <span class="form-text">
-                                                                              {{ __('Your ad title will be shown in search results') }}
-                                                                          </span>
-                                                                          </div>
-                                                                      </div>
+                                                                <div class="row">
+                                                                    <div class="col-md-12 mb-3">
+                                                                        <div
+                                                                            class="form-group {{ $language->direction == 1 ? 'rtl text-right' : '' }}">
+                                                                            @php
+                                                                                $placeholder = 'What you are selling?';
+                                                                                if (
+                                                                                    $draft_ad &&
+                                                                                    !empty($draft_ad->ad_type) &&
+                                                                                    $draft_ad->ad_type == 'Wanted'
+                                                                                ) {
+                                                                                    $placeholder =
+                                                                                        'What you are looking for?';
+                                                                                }
+                                                                            @endphp
+                                                                            <label>{{ __('Ad Title') }} *</label>
+                                                                            <input type="text" id="input-title"
+                                                                                class="form-control"
+                                                                                oninput="updatePreview('input-title', 'preview-title')"
+                                                                                value="{{ old($language->code . '_title', $draft_ad && !empty($draft_ad->ad_title) ? $draft_ad->ad_title : '') }}"
+                                                                                name="{{ $language->code }}_title"
+                                                                                placeholder="{{ $placeholder }}">
+                                                                            <span class="form-text">
+                                                                                {{ __('Your ad title will be shown in search results') }}
+                                                                            </span>
+                                                                        </div>
+                                                                    </div>
 
                                                                     <div class="row">
                                                                         <div class="col-lg-12 mb-3">
-                                                                            <div class="form-group {{ $language->direction == 1 ? 'rtl text-right' : '' }}">
+                                                                            <div
+                                                                                class="form-group {{ $language->direction == 1 ? 'rtl text-right' : '' }}">
                                                                                 <label>{{ __('Description') }} *</label>
-                                                                                <textarea
-                                                                                  id="description"
-                                                                                  oninput="updatePreview('description', 'preview-description')"
-                                                                                  class="form-control"
-                                                                                  name="{{ $language->code }}_description"
-                                                                                  style="height: 300px;"
-                                                                                  placeholder="Tell us a bit more about your ad, giving as much information as possible to help sell your items">{{ old($language->code . '_description', ($draft_ad && !empty($draft_ad->ad_description)) ? $draft_ad->ad_description : '') }}</textarea>
+                                                                                <textarea id="description" oninput="updatePreview('description', 'preview-description')" class="form-control"
+                                                                                    name="{{ $language->code }}_description" style="height: 300px;"
+                                                                                    placeholder="Tell us a bit more about your ad, giving as much information as possible to help sell your items">{{ old($language->code . '_description', $draft_ad && !empty($draft_ad->ad_description) ? $draft_ad->ad_description : '') }}</textarea>
 
                                                                             </div>
                                                                         </div>
                                                                     </div>
                                                                     <div class="row">
-                                                                       <div class="col-lg-6 d-flex align-items-center">
-                                                                          <div class="form-group flex-grow-1 mr-2">
-                                                                              <label>{{ __('Price') }}*</label>
-                                                                              <input
-                                                                                      name="price"
-                                                                              type="number"
-                                                                              class="form-control"
-                                                                              id="price"
-                                                                              oninput="updatePreview('price', 'preview-price')"
-                                                                              value="{{ old('price', ($draft_ad && !empty($draft_ad->price)) ? $draft_ad->price : '') }}"
-                                                                              placeholder="Enter Price in £">
-                                                                          </div>&nbsp;
-                                                                      </div>
-                                                                    </div><br/>
+                                                                        <div class="col-lg-6 d-flex align-items-center">
+                                                                            <div class="form-group flex-grow-1 mr-2">
+                                                                                <label>{{ __('Price') }}*</label>
+                                                                                <input name="price" type="number"
+                                                                                    class="form-control" id="price"
+                                                                                    oninput="updatePreview('price', 'preview-price')"
+                                                                                    value="{{ old('price', $draft_ad && !empty($draft_ad->price) ? $draft_ad->price : '') }}"
+                                                                                    placeholder="Enter Price in £">
+                                                                            </div>&nbsp;
+                                                                        </div>
+                                                                    </div><br />
 
                                                                 </div>
                                                                 <div class="row">
@@ -467,11 +491,13 @@
                                                                             <div class="form-check py-0">
                                                                                 <label class="form-check-label">
                                                                                     <input class="form-check-input"
-                                                                                           type="checkbox"
-                                                                                           onchange="cloneInput('collapse{{ $currLang->id }}', 'collapse{{ $language->id }}', event)">
-                                                                                    <span class="form-check-sign">{{ __('Clone for') }} <strong
-                                                                                                class="text-capitalize text-secondary">{{ $language->name }}</strong>
-                                                                         {{ __('language') }}</span>
+                                                                                        type="checkbox"
+                                                                                        onchange="cloneInput('collapse{{ $currLang->id }}', 'collapse{{ $language->id }}', event)">
+                                                                                    <span
+                                                                                        class="form-check-sign">{{ __('Clone for') }}
+                                                                                        <strong
+                                                                                            class="text-capitalize text-secondary">{{ $language->name }}</strong>
+                                                                                        {{ __('language') }}</span>
                                                                                 </label>
                                                                             </div>
                                                                         @endforeach
@@ -480,7 +506,7 @@
                                                             </div>
                                                         </div>
                                                 </div>
-                                            @endforeach
+                                                @endforeach
                                         </div>
                                         <div id="searcfilters" class="row">
                                         </div>
@@ -503,93 +529,106 @@
                                                 <div class="form-group">
                                                     <label>{{ __('Full Name') }}*</label>
                                                     <input type="text" class="form-control" name="full_name"
-                                                           value="{{ $vendor->vendor_info->name }}" disabled>
+                                                        value="{{ $vendor->vendor_info->name }}" disabled>
                                                 </div>
                                             </div>
                                             <div class="col-lg-6">
                                                 <div class="form-group">
                                                     <label>{{ __('Email') }}*</label>
-                                                    <input type="text" value="{{ $vendor->email }}" class="form-control"
-                                                           name="email" disabled>
+                                                    <input type="text" value="{{ $vendor->email }}"
+                                                        class="form-control" name="email" disabled>
                                                 </div>
                                             </div>
 
                                             <div class="col-lg-6">
-                                                <label style="margin-top: 5px;margin-left: 10px;font-size: 21px;color: #7b7b7b;">{{ __('Phone') }}*</label>
+                                                <label
+                                                    style="margin-top: 5px;margin-left: 10px;font-size: 21px;color: #7b7b7b;">{{ __('Phone') }}*</label>
                                                 <div class="form-group input-group" style="margin-top: 10px;">
 
                                                     <div class="d-flex col-lg-12" style="    margin-top: -12px;">
-                                                         <div class="custom-select">
-                                                             <div class="select-selected bg-light">
+                                                        <div class="custom-select" style="width:200px;">
+                                                            <div class="select-selected bg-light">
 
                                                                 @php
-                                                                    $ct = $country_codes->firstWhere('country', 'United Kingdom');
+                                                                    $ct = $country_codes->firstWhere(
+                                                                        'country',
+                                                                        'United Kingdom',
+                                                                    );
 
                                                                     $flagUrl = $ct->flag_url;
                                                                     $flagcode = $ct->code;
                                                                     $s_code = $ct->short_code;
 
-                                                                    if(!empty($vendor->country_code))
-                                                                    {
-                                                                        $ct = $country_codes->firstWhere('code', $vendor->country_code);
+                                                                    if (!empty($vendor->country_code)) {
+                                                                        $ct = $country_codes->firstWhere(
+                                                                            'code',
+                                                                            $vendor->country_code,
+                                                                        );
 
                                                                         $flagUrl = $ct->flag_url;
                                                                         $flagcode = $ct->code;
                                                                         $s_code = $ct->short_code;
-
                                                                     }
 
                                                                 @endphp
-                                                                <img src="{{ $flagUrl }}" alt="UK Flag" class="flag">
-                                                                <span class="short_code"> {{$s_code}} </span>
+                                                                <img src="{{ $flagUrl }}" alt="UK Flag"
+                                                                    class="flag">
+                                                                <span class="short_code"> {{ $s_code }} </span>
                                                                 ({{ $flagcode }})
                                                             </div>
-                                                             <div class="select-items select-hide" style="display: none;">
+                                                            <div class="select-items select-hide" style="display: none;">
                                                                 <div class="search-box">
                                                                     <input type="text" id="country-search"
-                                                                           placeholder="Search country...">
+                                                                        placeholder="Search country...">
                                                                 </div>
-                                                                @foreach($country_codes as $country)
+                                                                @foreach ($country_codes as $country)
                                                                     <div class="country-option"
-                                                                         data-value="{{ $country->code }}"
-                                                                         data-flag="{{ $country->flag_url }}">
+                                                                        data-value="{{ $country->code }}"
+                                                                        data-flag="{{ $country->flag_url }}">
                                                                         <img src="{{ $country->flag_url }}"
-                                                                             alt="{{ $country->country }}" class="flag">
-                                                                        <span class="short_code">  {{$country->short_code}} </span>
-                                                                        <span style="display:none;">{{$country->country}}</span>
+                                                                            alt="{{ $country->country }}" class="flag">
+                                                                        <span class="short_code">
+                                                                            {{ $country->short_code }} </span>
+                                                                        <span
+                                                                            style="display:none;">{{ $country->country }}</span>
                                                                         ({{ $country->code }})
                                                                     </div>
                                                                 @endforeach
                                                             </div>
-                                                         </div>
+                                                        </div>
                                                         <input type="hidden" name="c_code" id="c_code"
-                                                               value="{{ !empty(Auth::guard('vendor')->user()->country_code) ? Auth::guard('vendor')->user()->country_code : '+44' }}"/>
-                                                               {{-- <input value="{{ old('phone', $vendor->phone) }}" class="form-control" readonly> --}}
+                                                            value="{{ !empty(Auth::guard('vendor')->user()->country_code) ? Auth::guard('vendor')->user()->country_code : '+44' }}" />
+                                                        {{-- <input value="{{ old('phone', $vendor->phone) }}" class="form-control" readonly> --}}
 
                                                         <input type="number" value="{{ $vendor->phone }}"
-                                                               style="height: 40px;margin-top: 10px;    margin-right: 5px;"
-                                                               class="form-control" name="phone" required readonly>
+                                                            style="height: 40px;margin-top: 10px;    margin-right: 5px;"
+                                                            class="form-control" name="phone" required readonly>
 
 
-                                                         @if ($vendor->phone_verified == 1)
-                                                            <button disabled class="btn  btn-success2" style="    height: 40px;
+                                                        @if ($vendor->phone_verified == 1)
+                                                            <button disabled class="btn  btn-success2"
+                                                                style="    height: 40px;
                         margin-top: 10px;
                         font-size: 25px;
                         padding-top: 5px;
                         width: 50px;
                         padding-left: 12px;
                         background: transparent;
-                        color: #1b87f4;" type="button"><i class="fa fa-check" aria-hidden="true"></i></button>
+                        color: #1b87f4;"
+                                                                type="button"><i class="fa fa-check"
+                                                                    aria-hidden="true"></i></button>
                                                         @else
                                                             <button id="verifyPhone" class="btn btn-outline-secondary"
-                                                                    style="height: 40px;
+                                                                style="height: 40px;
                         margin-top: 10px;
                         font-size: 25px;
                         padding-top: 5px;
                         width: 50px;
                         padding-left: 12px;
                         background: transparent;
-                        color: #1b87f4;" type="button" title="verify"><i class='fas fa-fingerprint'></i></button>
+                        color: #1b87f4;"
+                                                                type="button" title="verify"><i
+                                                                    class='fas fa-fingerprint'></i></button>
                                                         @endif
 
                                                     </div>
@@ -600,42 +639,47 @@
                                                 </div>
                                             </div>
                                             <div class="col-lg-6">
-<br/>
+                                                <br />
                                                 <div class="form-group checkbox-xl row">
                                                     <div><label>{{ __('Allow contact by') }}</label></div>
                                                     <div class="col-lg-6">
 
                                                         <div class="form-check form-check-inline">
                                                             <input class="form-check-input" type="checkbox"
-                                                                   name="message_center" id="inlineRadio1" value="yes"
-                                                                   required checked>
-                                                            <label class="form-check-label"
-                                                                   for="message_center">Message </label>
+                                                                name="message_center" id="inlineRadio1" value="yes"
+                                                                required checked>
+                                                            <label class="form-check-label" for="message_center">Message
+                                                            </label>
                                                         </div>
                                                     </div>
 
                                                     <div class="col-lg-6">
                                                         <div class="form-check form-check-inline">
                                                             <input class="form-check-input" type="checkbox"
-                                                                   name="phone_text" id="inlineRadio2" value="yes"
-                                                                   checked>
-                                                            <label class="form-check-label" for="message_center">Phone/Text</label>
+                                                                name="phone_text" id="inlineRadio2" value="yes"
+                                                                checked>
+                                                            <label class="form-check-label"
+                                                                for="message_center">Phone/Text</label>
                                                         </div>
                                                     </div>
 
                                                 </div>
-                                            </div><br/>
-                                            <hr/>
+                                            </div><br />
+                                            <hr />
 
                                             <div class="col-lg-6" style="display:none;">
                                                 <div class="form-group">
                                                     <label>{{ __('Area') }}</label>
-                                                    <input id="packageId" type="hidden" name="package_id" value="">
-                                                    <input id="promoStatus" type="hidden" name="promo_status" value="0">
+                                                    <input id="packageId" type="hidden" name="package_id"
+                                                        value="">
+                                                    <input id="promoStatus" type="hidden" name="promo_status"
+                                                        value="0">
                                                     <select name="city" id="" class="form-control">
                                                         <option value="">Please select...</option>
                                                         @foreach ($countryArea as $area)
-                                                            <option value="{{ $area->slug }}" {{ $area->slug == $vendor->vendor_info->city ? 'selected' : '' }}>{{ $area->name }}</option>
+                                                            <option value="{{ $area->slug }}"
+                                                                {{ $area->slug == $vendor->vendor_info->city ? 'selected' : '' }}>
+                                                                {{ $area->name }}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
@@ -649,8 +693,8 @@
                                                         <div class="form-check form-check-inline">
 
                                                             <input class="form-check-input traderradio" type="checkbox"
-                                                                   name="traderstatus" id="inlineRadio1"
-                                                                   @if ($vendor->trader == 1) checked @endif>
+                                                                name="traderstatus" id="inlineRadio1"
+                                                                @if ($vendor->trader == 1) checked @endif>
                                                             <label class="form-check-label" for="message_center">Yes,
                                                                 I'm a trader</label>
                                                         </div>
@@ -660,36 +704,35 @@
                                             </div>
                                             <div class="row" id="trader">
                                                 <div class="col-lg-12 chkbox"
-                                                     @if ($vendor->trader == 0) style="display: none;" @endif>
+                                                    @if ($vendor->trader == 0) style="display: none;" @endif>
                                                     <div class="form-group ">
                                                         <label>{{ __('Business Name*') }} </label>
                                                         <input type="text"
-                                                               value="{{ $vendor->vendor_info->business_name }}"
-                                                               class="form-control" name="business_name">
+                                                            value="{{ $vendor->vendor_info->business_name }}"
+                                                            class="form-control" name="business_name">
                                                     </div>
                                                 </div>
 
                                                 <div class="col-lg-12 chkbox"
-                                                     @if ($vendor->trader == 0) style="display: none;" @endif>
+                                                    @if ($vendor->trader == 0) style="display: none;" @endif>
                                                     <div class="form-group ">
                                                         <label>{{ __('Business Address') }} </label>
-                                                        <textarea id="" class="form-control "
-                                                                  name="business_address"
-                                                                  data-height="300">{{ $vendor->vendor_info->business_address }}</textarea>
+                                                        <textarea id="" class="form-control " name="business_address" data-height="300">{{ $vendor->vendor_info->business_address }}</textarea>
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-8 chkbox"
-                                                     @if ($vendor->trader == 0) style="display: none;" @endif>
-                                                    <label style="margin-left:8px; font-size: 1.2rem; color: #0d0c1b;">{{ __('VAT Number') }}</label>
+                                                    @if ($vendor->trader == 0) style="display: none;" @endif>
+                                                    <label
+                                                        style="margin-left:8px; font-size: 1.2rem; color: #0d0c1b;">{{ __('VAT Number') }}</label>
                                                     <div class="form-group input-group">
 
                                                         <input type="text"
-                                                               value="{{ $vendor->vendor_info->vat_number }}"
-                                                               class="form-control" name="vat_number">
+                                                            value="{{ $vendor->vendor_info->vat_number }}"
+                                                            class="form-control" name="vat_number">
                                                         @if ($vendor->vendor_info->vatVerified == 1)
                                                             <button disabled title="Verified" class="btn btn-success2"
-                                                                    type="button"><i class='fa fa-check-circle fa-lg'
-                                                                                     aria-hidden='true'></i></button>
+                                                                type="button"><i class='fa fa-check-circle fa-lg'
+                                                                    aria-hidden='true'></i></button>
                                                         @endif
                                                     </div>
                                                 </div>
@@ -707,100 +750,11 @@
 
 
                                             </form>
-                                            {{-- <div class="col-lg-12">
-                                                <label for="" class="mb-2"><strong>{{ __('Gallery Images') }}
-                                                        **</strong> <br> <small class="text-danger"> load up to <span
-                                                                id="change_text_photo_allow">15</span> images .jpg,
-                                                        .png, & .gif </small></label>
 
-                                                @if($draft_ad == true && !empty($draft_ad->images))
-                                                    @php
-                                                        $images = json_decode($draft_ad->images, true);
-                                                        $items = [];
-                                                    @endphp
-
-                                                    @if(count($images) > 0)
-                                                        <div class="row">
-                                                            <div class="col-12">
-                                                                <table class="table table-striped" id="imgtable">
-                                                                    @foreach($images as $image)
-                                                                        @php
-                                                                            $item = \App\Models\Car\CarImage::where('image', $image)->first();
-                                                                        @endphp
-
-                                                                        @if($item)
-                                                                            @php
-                                                                                $items[] = [
-                                                                                    'id' => $item->id,
-                                                                                    'image' => $item->image,
-                                                                                    'rotation_point' => $item->rotation_point,
-                                                                                    'priority' => $item->priority,
-                                                                                ];
-                                                                            @endphp
-                                                                        @endif
-                                                                    @endforeach
-
-                                                                    @php
-                                                                        // Sort items by priority
-                                                                        usort($items, function($a, $b) {
-                                                                            return $a['priority'] <=> $b['priority'];
-                                                                        });
-                                                                    @endphp
-
-                                                                    @foreach($items as $item)
-                                                                        <tr class="trdb table-row"
-                                                                            id="trdb{{ $item['id'] }}" draggable="true"
-                                                                            ondragstart="dragStart(event)"
-                                                                            ondrop="drop(event)"
-                                                                            ondragover="allowDrop(event)">
-                                                                            <td>
-                                                                                <div class="">
-                                                                                    <img class="thumb-preview wf-150"
-                                                                                         src="{{ asset('assets/admin/img/car-gallery/' . $item['image']) }}"
-                                                                                         id="img_{{$item['id']}}"
-                                                                                         alt="Ad Image"
-                                                                                         style="height:120px; width:120px; object-fit: cover;transform: rotate({{$item['rotation_point']}}deg);">
-                                                                                </div>
-
-                                                                                <div style="text-align: center;margin-bottom: 5px;color: gray;">
-                                                                                    Set Cover <input
-                                                                                            class='form-check-input'
-                                                                                            value="{{ $item['id'] }}"
-                                                                                            onclick="setCoverPhoto({{ $item['id'] }})"
-                                                                                            type='radio'
-                                                                                            name='flexRadioDefault'>
-                                                                                </div>
-                                                                            </td>
-                                                                            <td>
-                                                                                <i class="fa fa-times"
-                                                                                   onclick="removethis({{ $item['id'] }})"></i>
-                                                                                <i class="fa fa-undo rotatebtndb"
-                                                                                   onclick="rotatePhoto({{ $item['id'] }})"></i>
-                                                                            </td>
-
-                                                                        </tr>
-                                                                    @endforeach
-                                                                </table>
-                                                            </div>
-                                                        </div>
-                                                    @endif
-                                                @endif
-
-
-                                                <form action="{{ route('car.imagesstore') }}" id="my-dropzone"
-                                                      enctype="multipart/formdata"
-                                                      class="dropzone create us_dropzone">
-                                                    @csrf
-                                                    <div class="fallback">
-                                                        <input name="file" type="file" multiple/>
-                                                    </div>
-                                                </form>
-                                                <p class="em text-danger mb-0" id="errslider_images"></p>
-                                            </div> --}}
 
                                             <form class="myajaxform" id="carForm"
-                                                  action="{{ route('vendor.car_management.store_car') }}" method="POST"
-                                                  enctype="multipart/form-data">
+                                                action="{{ route('vendor.car_management.store_car') }}" method="POST"
+                                                enctype="multipart/form-data">
                                                 <div class="col-lg-12">
 
                                                     <div class="form-group text-center d-flex justify-content-end">
@@ -808,142 +762,270 @@
                                                         <p class="col-lg-7 text-start">
                                                             By clicking "<b>Sell Now</b>", you agree to the Listit
                                                             <a href="https://listit.eegc.in/terms-&-condition"
-                                                               target="_blank" class="text-primary">Terms and
+                                                                target="_blank" class="text-primary">Terms and
                                                                 Conditions</a>.
                                                             <a href="#" target="_blank" class="text-primary">Read
                                                                 More</a> about payment options.
                                                         </p>
                                                         <div class="col-lg-4">
-                                                          <button type="button" id="previewAdButton">Preview Ad</button>
-                                                          <div id="previewAdModal" style="display: none; position: fixed; z-index: 1000; background: rgba(0,0,0,0.7); width: 100%; height: 100%; top: 0; left: 0; justify-content: center; align-items: center;">
-                                                              <div style="max-height:600px;background: white; padding: 0 20px 20px 20px; border-radius: 10px; max-width: 500px; width: 100%; text-align: center;overflow-y:auto;">
-                                                                  <div class="sticky-top bg-white  d-flex justify-content-between p-3 justify-content-center">
-                                                                      <h4 class="mb-0 d-flex align-items-center">
-                                                                          <span class="preview-icon me-2"><i class="fas fa-eye"></i>Preview</span>
-                                                                      </h4>
-                                                                      <button type="button" class="btn-close" id="closeModal" aria-label="Close"></button>
-                                                                  </div>
-                                                                  <!-- Image Input -->
-                                                                    @php
+                                                            <button type="button" id="previewAdButton">Preview
+                                                                Ad</button>
+                                                            <div id="previewAdModal"
+                                                                style="display: none; position: fixed; z-index: 1000; background: rgba(0,0,0,0.7); width: 100%; height: 100%; top: 0; left: 0; justify-content: center; align-items: center;">
+                                                                <div
+                                                                    style="max-height:600px;background: white; padding: 0 20px 20px 20px; border-radius: 10px; max-width: 500px; width: 100%; text-align: center;overflow-y:auto;">
+                                                                    <div
+                                                                        class="sticky-top bg-white  d-flex justify-content-between p-3 justify-content-center">
+                                                                        <h4 class="mb-0 d-flex align-items-center">
+                                                                            <span class="preview-icon me-2"><i
+                                                                                    class="fas fa-eye"></i>Preview</span>
+                                                                        </h4>
+                                                                        <button type="button" class="btn-close"
+                                                                            id="closeModal" aria-label="Close"></button>
+                                                                    </div>
+                                                                    <!-- Image Input -->
+                                                                    {{-- @php
                                                                         $items = isset($items) ? $items : [];
-                                                                    @endphp
+                                                                    @endphp --}}
 
                                                                     <!-- Image Preview -->
-                                                                    <div id="preview-images-container" style="display: flex; flex-wrap: wrap; gap: 10px;width:100%;justify-content:center;align-items:center;">
+                                                                    <div id="preview-images-container"
+                                                                        style="display: flex; flex-wrap: wrap; gap: 10px;width:100%;justify-content:center;align-items:center;">
 
-                                                                        @forelse($items as $index => $item)
+                                                                        {{-- @forelse($items as $index => $item)
                                                                             <img class="thumb-preview"
-                                                                                 src="{{ asset('assets/admin/img/car-gallery/' . $item['image']) }}"
-                                                                                 id="img_{{$item['id']}}"
-                                                                                 alt="Ad Image"
-                                                                                 style="{{ $index === 0 ? 'height:300px; width:300px;' : 'height:150px; width:150px;' }} object-fit: contain; transform: rotate({{$item['rotation_point']}}deg);"
-                                                                                 onchange="updateImagePreview('image-input', 'img_{{$item['id']}}')">
+                                                                                src="{{ asset('assets/admin/img/car-gallery/' . $item['image']) }}"
+                                                                                id="img_{{ $item['id'] }}"
+                                                                                alt="Ad Image"
+                                                                                style="{{ $index === 0 ? 'height:300px; width:300px;' : 'height:150px; width:150px;' }} object-fit: contain; transform: rotate({{ $item['rotation_point'] }}deg);"
+                                                                                onchange="updateImagePreview('image-input', 'img_{{ $item['id'] }}')">
                                                                         @empty
                                                                             <p>No images available.</p>
-                                                                        @endforelse
-                                                                    </div><br/>
+                                                                        @endforelse --}}
+                                                                    </div><br />
 
-                                                                  <p id="preview-title" style=" margin-bottom: 10px;text-align:left;">Default Title</p>
-                                                                  <h1 id="preview-price" style="font-weight: bold;text-align:left;">£0</h1>
-                                                                  <p style="text-align: justify;font-weight:bold;">Description</p>
-                                                                  <div id="over-flow-fade"></div>
+                                                                    <p id="preview-title"
+                                                                        style=" margin-bottom: 10px;text-align:left;">No
+                                                                        Title</p>
+                                                                    <h3 id="preview-price"
+                                                                        style="font-weight: bold;text-align:left;">£0</h3>
+                                                                    <p style="text-align: justify;font-weight:bold;">
+                                                                        Description</p>
+                                                                    <div id="over-flow-fade"></div>
 
-                                                                  <p id="preview-description" style="height: auto; min-height: 100px;text-align:left;">Default Description</p>
-                                                                  <!-- <button id="read-more" style=";" onclick="toggleDescription(true)">Read More</button>
-                                                                  <button id="read-less" style="" onclick="toggleDescription(false)">Read Less</button> -->
+                                                                    <p id="preview-description"
+                                                                        style="height: auto;display:flex;overflow:auto">No
+                                                                        Description</p>
 
-                                                                  <button type="button" id="closeModalButton" style="margin-top: 10px;" class="btn btn-primary text-white w-100">Close Preview</button>
-                                                              </div>
-                                                          </div>
-                                                      {{-- </div> --}}
+                                                                    <button type="button" id="closeModalButton"
+                                                                        style="margin-top: 10px;"
+                                                                        class="btn btn-primary text-white w-100">Close
+                                                                        Preview</button>
+                                                                </div>
+                                                            </div>
+                                                            {{-- </div> --}}
 
-                                                      <script>
-                                                          // Open modal
-                                                          document.getElementById('previewAdButton').addEventListener('click', function () {
-                                                              document.getElementById('previewAdModal').style.display = 'flex';
-                                                          });
+                                                            <script>
+                                                                // Open modal
+                                                                document.getElementById('previewAdButton').addEventListener('click', function() {
+                                                                    document.getElementById('previewAdModal').style.display = 'flex';
+                                                                    const previewBox = document.querySelector("#preview-images-container");
+                                                                    const images = document.querySelectorAll(".dropzone.create.us_dropzone.ad-creation img");
+                                                                    images.forEach(function(img) {
+                                                                        const imgClone = img.cloneNode(true);
+                                                                        previewBox.appendChild(imgClone);
+                                                                    });
 
-                                                          // Close modal
-                                                          document.getElementById('closeModal').addEventListener('click', function () {
-                                                              document.getElementById('previewAdModal').style.display = 'none';
-                                                          });
-                                                          document.getElementById('closeModalButton').addEventListener('click', function () {
-                                                              document.getElementById('previewAdModal').style.display = 'none';
-                                                          });
+                                                                    // Define sections
+                                                                    // const sections = ["#searcfilters", "#searcfiltersdata"];
+                                                                    // const result = [];
 
-                                                          // Update preview dynamically
-                                                          function updatePreview(inputId, previewId) {
-                                                              const inputValue = document.getElementById(inputId).value;
-                                                              const previewElement = document.getElementById(previewId);
-                                                              if (previewElement) {
-                                                                  previewElement.textContent = inputValue || (inputId === 'price' ? '£0' : 'Default');
-                                                              }
-                                                          }
-                                                          function updateImagePreview(inputId, previewId) {
-                                                            const inputElement = document.getElementById(inputId);
-                                                            const previewElement = document.getElementById(previewId);
+                                                                    // sections.forEach((section) => {
+                                                                    //     const container = document.querySelector(section);
 
-                                                            if (inputElement.files && inputElement.files[1]) {
-                                                                const file = inputElement.files[1];
-                                                                const reader = new FileReader();
+                                                                    //     // Get all inputs, selects, and textareas inside the section
+                                                                    //     const inputs = container.querySelectorAll("input, select, textarea");
 
-                                                                reader.onload = function (e) {
-                                                                    previewElement.src = e.target.result;
-                                                                };
+                                                                    //     inputs.forEach((input) => {
+                                                                    //         let label = null;
 
-                                                                reader.readAsDataURL(file);
-                                                            }
-                                                        }
+                                                                    //         // Attempt to find the associated label
+                                                                    //         if (input.id) {
+                                                                    //             // Match label using the `for` attribute
+                                                                    //             const associatedLabel = container.querySelector(`label[for="${input.id}"]`);
+                                                                    //             if (associatedLabel) {
+                                                                    //                 label = associatedLabel.textContent.trim();
+                                                                    //             }
+                                                                    //         }
+
+                                                                    //         if (!label) {
+                                                                    //             // Fall back to finding the closest preceding label in the DOM
+                                                                    //             const previousSiblingLabel = input.closest("div")?.querySelector("label");
+                                                                    //             if (previousSiblingLabel) {
+                                                                    //                 label = previousSiblingLabel.textContent.trim();
+                                                                    //             }
+                                                                    //         }
+
+                                                                    //         if (!label) {
+                                                                    //             label = "No Label Found";
+                                                                    //         }
+
+                                                                    //         // Get input value or state
+                                                                    //         let value;
+                                                                    //         if (input.type === "checkbox" || input.type === "radio") {
+                                                                    //             value = input.checked ? input.value : "Unchecked";
+                                                                    //         } else {
+                                                                    //             value = input.value;
+                                                                    //         }
+
+                                                                    //         // Store field data
+                                                                    //         result.push({
+                                                                    //             label,
+                                                                    //             value
+                                                                    //         });
+                                                                    //     });
+                                                                    // });
+
+                                                                    // // Output the result to the console or process further
+                                                                    // console.log(result);
 
 
-                                                          // Save and restore draft data
-                                                          document.addEventListener('DOMContentLoaded', function () {
-                                                              ['input-title', 'description', 'price'].forEach(id => {
-                                                                  const savedValue = localStorage.getItem(id);
-                                                                  if (savedValue) {
-                                                                      document.getElementById(id).value = savedValue;
-                                                                      updatePreview(id, `preview-${id}`);
-                                                                  }
-                                                              });
-                                                          });
+                                                                    const sections = ["#searcfilters", "#searcfiltersdata"];
+                                                                    const result = [];
 
-                                                          function saveDraftData(input) {
-                                                              localStorage.setItem(input.id, input.value);
-                                                          }
-                                                          function toggleDescription(isReadMore) {
-                                                            const description = document.getElementById("preview-description");
-                                                            const readMoreBtn = document.getElementById("read-more");
-                                                            const readLessBtn = document.getElementById("read-less");
+                                                                    sections.forEach((section) => {
+                                                                        const container = document.querySelector(section);
 
-                                                            if (isReadMore) {
-                                                                description.style.maxHeight = "none"; // Expand to show full content
-                                                                readMoreBtn.style.display = "none";
-                                                                readLessBtn.style.display = "inline";
-                                                            } else {
-                                                                description.style.maxHeight = "100px"; // Collapse to show limited content
-                                                                readMoreBtn.style.display = "inline";
-                                                                readLessBtn.style.display = "none";
-                                                            }
-                                                        }
+                                                                        // Get all inputs, selects, and textareas inside the section
+                                                                        const inputs = container.querySelectorAll("input, select, textarea");
 
-                                                      </script>
+                                                                        const checkboxRadioGroups = {}; // To group checkbox/radio values by label
 
-                                                          <button type="submit" id="CarSubmit"
-                                                                      data-can_car_add="{{ $can_car_add }}"
-                                                                      class="btn btn-success btn-lg btn-block ">
-                                                                  @if($draft_ad == true && !empty($draft_ad->ad_type) && $draft_ad->ad_type == 'Wanted')
-                                                                      Publish Now
-                                                                  @else
-                                                                      {{ __('Sell Now') }}
-                                                                  @endif
+                                                                        inputs.forEach((input) => {
+                                                                            let label = null;
 
-                                                              </button>
-                                                          </div>
-                                                      </div>
-                                                  </div>
+                                                                            // Attempt to find the associated label
+                                                                            if (input.id) {
+                                                                                // Match label using the `for` attribute
+                                                                                const associatedLabel = container.querySelector(`label[for="${input.id}"]`);
+                                                                                if (associatedLabel) {
+                                                                                    label = associatedLabel.textContent.trim();
+                                                                                }
+
+                                                                            }
+
+
+
+                                                                            if (!label) {
+                                                                                // Fall back to finding the closest preceding label in the DOM
+                                                                                const previousSiblingLabel = input.closest("div")?.querySelector("label");
+                                                                                if (previousSiblingLabel) {
+                                                                                    label = previousSiblingLabel.textContent.trim();
+                                                                                }
+                                                                            }
+
+                                                                            if (!label) {
+                                                                                label = "No Label Found";
+                                                                            }
+                                                                            console.log(label);
+                                                                            // Handle checkboxes and radios differently
+                                                                            if (input.type === "checkbox" || input.type === "radio") {
+                                                                                if (input.checked) {
+                                                                                    // Group values by label
+                                                                                    if (!checkboxRadioGroups[label]) {
+                                                                                        checkboxRadioGroups[label] = [];
+                                                                                    }
+                                                                                    checkboxRadioGroups[label].push(input.value);
+                                                                                }
+                                                                            } else {
+                                                                                // For other input types, directly store the value
+                                                                                result.push({
+                                                                                    label,
+                                                                                    value: input.value
+                                                                                });
+                                                                            }
+                                                                        });
+
+
+                                                                        // Add grouped checkbox/radio values to the result
+                                                                        for (const [label, values] of Object.entries(checkboxRadioGroups)) {
+                                                                            values.forEach((value) => {
+                                                                                result.push({
+                                                                                    label,
+                                                                                    value
+                                                                                });
+                                                                            });
+                                                                        }
+                                                                    });
+
+                                                                    // Output the result to the console or process further
+                                                                    console.log(result);
+                                                                });
+
+                                                                // Close modal
+                                                                document.getElementById('closeModal').addEventListener('click', function() {
+                                                                    document.getElementById('previewAdModal').style.display = 'none';
+                                                                });
+                                                                document.getElementById('closeModalButton').addEventListener('click', function() {
+                                                                    document.getElementById('previewAdModal').style.display = 'none';
+                                                                });
+
+                                                                // Update preview dynamically
+                                                                function updatePreview(inputId, previewId) {
+                                                                    const inputValue = document.getElementById(inputId).value;
+                                                                    const previewElement = document.getElementById(previewId);
+                                                                    if (previewElement) {
+                                                                        previewElement.textContent = inputValue || (inputId === 'price' ? '£0' : 'Default');
+                                                                    }
+                                                                }
+
+                                                                function updateImagePreview(inputId, previewId) {
+                                                                    const inputElement = document.getElementById(inputId);
+                                                                    const previewElement = document.getElementById(previewId);
+
+                                                                    if (inputElement && inputElement.files && inputElement.files[1]) {
+                                                                        const file = inputElement.files[1];
+                                                                        const reader = new FileReader();
+
+                                                                        reader.onload = function(e) {
+                                                                            previewElement.src = e.target.result;
+                                                                        };
+
+                                                                        reader.readAsDataURL(file);
+                                                                    }
+                                                                }
+                                                                // Save and restore draft data
+                                                                document.addEventListener('DOMContentLoaded', function() {
+                                                                    ['input-title', 'description', 'price'].forEach(id => {
+                                                                        const savedValue = localStorage.getItem(id);
+                                                                        if (savedValue) {
+                                                                            document.getElementById(id).value = savedValue;
+                                                                            updatePreview(id, `preview-${id}`);
+                                                                        }
+                                                                    });
+                                                                });
+
+                                                                function saveDraftData(input) {
+                                                                    localStorage.setItem(input.id, input.value);
+                                                                }
+                                                            </script>
+
+                                                            <button type="submit" id="CarSubmit"
+                                                                data-can_car_add="{{ $can_car_add }}"
+                                                                class="btn btn-success btn-lg btn-block ">
+                                                                @if ($draft_ad == true && !empty($draft_ad->ad_type) && $draft_ad->ad_type == 'Wanted')
+                                                                    Publish Now
+                                                                @else
+                                                                    {{ __('Sell Now') }}
+                                                                @endif
+
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
 
                                                 <input type="hidden" id="max_file_upload" name="max_file_upload"
-                                                       value="50"/>
+                                                    value="50" />
                                         </div>
                                         </form>
 
@@ -956,19 +1038,6 @@
                             <div class="">
                                 <button type="reset" id="resetFormButton" class="text-primary">Reset Form</button>
                             </div>
-
-                            <script>
-                                document.getElementById('resetFormButton').addEventListener('click', function() {
-                                    // Reset the form fields
-                                    document.getElementById('carForm').reset();
-
-                                    // Reset any other custom fields or states as needed
-                                    // For example, clear local storage if you are saving draft data
-                                    localStorage.clear();
-                                });
-                            </script>
-
-
                             <div class="card-footer">
                                 <div class="row">
                                     <div class="col-12 text-center">
@@ -989,8 +1058,8 @@
 
 
 
-    <div class="modal fade" id="vintageYearAlertModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-         aria-hidden="true">
+    <div class="modal fade" id="vintageYearAlertModal" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header" style="border-bottom: none;    padding-bottom: 0;">
@@ -1018,10 +1087,11 @@
                     <h5>
                         <i class="fa fa-info-circle" aria-hidden="true" style="color: #367ede;font-size: 25px;"></i>
                         <span style="position: relative;bottom: 3px;font-size: 17px;left: 5px;color:#585858;">
-                   You have a draft ad
-               </span>
+                            You have a draft ad
+                        </span>
 
-                        <a href="javascript:void(0);" class="btn btn-success" onclick="hidePanel()" style="background: white !important;
+                        <a href="javascript:void(0);" class="btn btn-success" onclick="hidePanel()"
+                            style="background: white !important;
                 color: black;
                 text-align: right;
                 float: right;
@@ -1040,18 +1110,22 @@
                     </div>
 
                     <div style="display:flex;">
-                        <button type="button" class="btn btn-secondary" style="    padding: 5px;
+                        <button type="button" class="btn btn-secondary"
+                            style="    padding: 5px;
     margin-right: 5px;
     width: 100%;
     color: black;
     background: white !important;
     border: 1px solid #000000 !important;
-    font-size: 11px;" onclick="deletDarftAd()"> Start new ad
+    font-size: 11px;"
+                            onclick="deletDarftAd()"> Start new ad
                         </button>
-                        <button type="button" class="btn btn-primary" style="    padding: 5px;
+                        <button type="button" class="btn btn-primary"
+                            style="    padding: 5px;
     margin-left: 5px;
     width: 100%;
-    font-size: 11px;" onclick="hidePanel()">Continue ad
+    font-size: 11px;"
+                            onclick="hidePanel()">Continue ad
                         </button>
                     </div>
 
@@ -1076,17 +1150,17 @@
             $direction = 'form-group';
         }
 
-        $labels .= "<div class='$direction'><input type='text' name='" . $label_name . "' class='form-control' placeholder='Label ($language->name)'></div>";
+        $labels .=
+            "<div class='$direction'><input type='text' name='" .
+            $label_name .
+            "' class='form-control' placeholder='Label ($language->name)'></div>";
         $values .= "<div class='$direction'><input type='text' name='$value_name' class='form-control' placeholder='Value ($language->name)'></div>";
     }
 @endphp
 
 @section('script')
-
-    @if($draft_ad == true)
-
+    @if ($draft_ad == true)
         <script>
-
             function hidePanel() {
                 $('#draftModal').remove();
 
@@ -1096,24 +1170,23 @@
             }
 
 
-            $(document).ready(function () {
+            $(document).ready(function() {
                 // Show the modal on page load
                 $('#draftModal').modal('show');
 
                 // Prevent modal from closing when clicking outside or pressing Esc key
-                $('#draftModal').on('hide.bs.modal', function (event) {
+                $('#draftModal').on('hide.bs.modal', function(event) {
                     event.preventDefault();
                     event.stopPropagation();
                 });
 
-                @if($draft_ad == true && !empty($draft_ad->category_id))
-                var selectedOption = "{{ $draft_ad->category_id }}";
-                $('#adsMaincat').val(selectedOption);
-                $('#adsMaincat').change()
+                @if ($draft_ad == true && !empty($draft_ad->category_id))
+                    var selectedOption = "{{ $draft_ad->category_id }}";
+                    $('#adsMaincat').val(selectedOption);
+                    $('#adsMaincat').change()
                 @endif
 
             });
-
         </script>
     @endif
 
@@ -1149,7 +1222,8 @@
             padding: 0px 8px 8px;
         }
 
-        .form-check [type="checkbox"]:not(:checked), .form-check [type="checkbox"]:checked {
+        .form-check [type="checkbox"]:not(:checked),
+        .form-check [type="checkbox"]:checked {
 
             left: inherit !important;
         }
@@ -1263,23 +1337,30 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
-            z-index: 1040; /* Set a high z-index */
+            background-color: rgba(0, 0, 0, 0.5);
+            /* Semi-transparent background */
+            z-index: 1040;
+            /* Set a high z-index */
         }
 
         /* Modal container */
         .modal {
-            display: none; /* Hidden by default */
-            position: fixed; /* Fixed position */
-            z-index: 1050; /* Set a higher z-index than the backdrop */
+            display: none;
+            /* Hidden by default */
+            position: fixed;
+            /* Fixed position */
+            z-index: 1050;
+            /* Set a higher z-index than the backdrop */
             left: 0;
             top: 0;
             width: 100%;
             height: 100%;
             overflow: auto;
-            background-color: rgba(0, 0, 0, 0.4); /* Semi-transparent background */
+            background-color: rgba(0, 0, 0, 0.4);
+            /* Semi-transparent background */
             transition: opacity 0.3s ease;
-            opacity: 0; /* Start with the modal invisible */
+            opacity: 0;
+            /* Start with the modal invisible */
         }
 
         /* Modal content */
@@ -1310,10 +1391,12 @@
         /* Show the modal with fading effect */
         .modal.show {
             display: block;
-            opacity: 1; /* Fully opaque when shown */
+            opacity: 1;
+            /* Fully opaque when shown */
         }
 
-        .form-group label, .form-check label {
+        .form-group label,
+        .form-check label {
             color: gray !important;
         }
 
@@ -1321,7 +1404,8 @@
             color: gray !important;
         }
 
-        #payplans h4, h2 {
+        #payplans h4,
+        h2 {
             color: gray !important;
         }
 
@@ -1366,8 +1450,14 @@
                 /* border: 1px solid yellow !important; */
             }
         }
-
     </style>
+
+    <script>
+        document.getElementById('resetFormButton').addEventListener('click', function() {
+            document.getElementById('carForm').reset();
+            localStorage.clear();
+        });
+    </script>
     <script>
         'use strict';
 
@@ -1455,7 +1545,6 @@
 
 
     <script>
-
         function closeModal() {
             $('#vintageYearAlertModal').modal('hide')
         }
@@ -1470,7 +1559,9 @@
 
                 if (yearDifference >= 30) {
                     $('#vintageYearAlertModal').modal('show')
-                    $('#apendHTML').html('This vehicle  reg over ' + yearDifference + ' years ago. So this will be added to the vintage section. All The ads over 30 years ago will be added to vintage section.');
+                    $('#apendHTML').html('This vehicle  reg over ' + yearDifference +
+                        ' years ago. So this will be added to the vintage section. All The ads over 30 years ago will be added to vintage section.'
+                    );
                 }
             }
         }
@@ -1521,9 +1612,10 @@
                 url: '/customer/ad-management/img-db-rotate',
                 type: requestMethid,
                 data: {
-                    fileid: fileid, rotationEvnt: rotationEvnt
+                    fileid: fileid,
+                    rotationEvnt: rotationEvnt
                 },
-                success: function (data) {
+                success: function(data) {
 
                 }
             });
@@ -1536,13 +1628,12 @@
                 data: {
                     fileid: fileid
                 },
-                success: function (data) {
+                success: function(data) {
                     $("#slider" + fileid).remove();
                     $('#trdb' + fileid).remove()
                 }
             });
         }
-
     </script>
 
     <script src="{{ asset('assets/js/car.js?v=9.6') }}"></script>
@@ -1552,5 +1643,4 @@
     </script>
     <script type="text/javascript" src="{{ asset('assets/js/admin-partial.js?v=0.2') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/js/admin-dropzone.js?v=0.9') }}"></script>
-
 @endsection

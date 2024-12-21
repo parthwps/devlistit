@@ -35,7 +35,7 @@
           <div class="title">
             <h4 class="mb-20">{{ __('Signup') }}</h4>
           </div>
-          
+
           <div class="form-group" hidden>
             <h5>Are You a</h5>
             <div class="form-check form-check-inline">
@@ -51,7 +51,7 @@
               </label>
             </div>
           </div>
-          
+
           <div class="form-group mb-20">
             <input type="text" class="form-control" name="email" placeholder="{{ __('Email') }}" required>
             @error('email')
@@ -65,14 +65,24 @@
             @enderror
           </div>
           <div class="form-group mb-20">
-            <input type="password" class="form-control" name="password" placeholder="{{ __('Password') }}" required>
-            @error('password')
-              <p class="text-danger mt-2">{{ $message }}</p>
-            @enderror
+            <div class="password-container">
+              <input type="password" id="password" class="form-control" autocomplete="off" name="password" placeholder="{{ __('Password') }}" required>
+              <span id="togglePassword" class="eye-icon">
+              <i class="fa fa-eye"></i>
+              </span>
+              </div>
+              @error('password')
+                <p class="text-danger mt-2">{{ $message }}</p>
+              @enderror
           </div>
           <div class="form-group mb-20">
-            <input type="password" name="password_confirmation" value="{{ old('password_confirmation') }}"
+            <div class="password-container">
+            <input type="password" name="password_confirmation" id="password_confirmation" value="{{ old('password_confirmation') }}"
               class="form-control" placeholder="{{ __('Confirm Password') }}" required>
+              <span id="togglePasswordConfirmation" class="eye-icon">
+                <i class="fa fa-eye"></i>
+                </span>
+            </div>
             @error('password_confirmation')
               <p class="text-danger mt-2">{{ $message }}</p>
             @enderror
@@ -83,7 +93,7 @@
               <p class="text-danger mt-2">{{ $message }}</p>
             @enderror
           </div>
-          @if ($recaptchaInfo->google_recaptcha_status == 1)
+          {{-- @if ($recaptchaInfo->google_recaptcha_status == 1)
             <div class="form-group mb-20">
               {!! NoCaptcha::renderJs() !!}
               {!! NoCaptcha::display() !!}
@@ -92,7 +102,7 @@
                 <p class="mt-1 text-danger">{{ $message }}</p>
               @enderror
             </div>
-          @endif
+          @endif --}}
 
           <div class="row align-items-center mb-20">
             <div class="col-12">
