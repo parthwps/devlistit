@@ -75,8 +75,8 @@
                                     </div>
                                 @else
                                     <!-- <div class="alert alert-warning text-dark">
-                        {{ __('Your membership is expired. Please purchase a new package / extend the current package.') }}
-                                                </div> -->
+                            {{ __('Your membership is expired. Please purchase a new package / extend the current package.') }}
+                                                    </div> -->
                                 @endif
                                 @includeIf('vendors.verify')
                                 @php
@@ -773,7 +773,7 @@
                                                             <div id="previewAdModal"
                                                                 style="display: none; position: fixed; z-index: 1000; background: rgba(0,0,0,0.7); width: 100%; height: 100%; top: 0; left: 0; justify-content: center; align-items: center;">
                                                                 <div
-                                                                    style="max-height:600px;background: white; padding: 0 20px 20px 20px; border-radius: 10px; max-width: 500px; width: 100%; text-align: center;overflow-y:auto;">
+                                                                    style="max-height:670px;background: white; padding: 0 20px 20px 20px; border-radius: 10px; max-width: 800px;width: 100%; text-align: center;overflow-y:auto;">
                                                                     <div
                                                                         class="sticky-top bg-white  d-flex justify-content-between p-3 justify-content-center">
                                                                         <h4 class="mb-0 d-flex align-items-center">
@@ -783,10 +783,7 @@
                                                                         <button type="button" class="btn-close"
                                                                             id="closeModal" aria-label="Close"></button>
                                                                     </div>
-                                                                    <!-- Image Input -->
-                                                                    {{-- @php
-                                                                        $items = isset($items) ? $items : [];
-                                                                    @endphp --}}
+
 
                                                                     <!-- Image Preview -->
                                                                     <div id="preview-images-container"
@@ -816,6 +813,9 @@
                                                                     <p id="preview-description"
                                                                         style="height: auto;display:flex;overflow:auto">No
                                                                         Description</p>
+                                                                    <p id="searcfiltersdata">
+
+                                                                    </p>
 
                                                                     <button type="button" id="closeModalButton"
                                                                         style="margin-top: 10px;"
@@ -824,70 +824,56 @@
                                                                 </div>
                                                             </div>
                                                             {{-- </div> --}}
-
+                                                            <style>
+                                                                @media (max-width: 474px) {
+                                                                #result-container {
+                                                                    flex-direction: column;
+                                                                    width: 100%;
+                                                                     /* Column layout for larger screens */
+                                                                }
+                                                                }
+                                                            </style>
                                                             <script>
                                                                 // Open modal
                                                                 document.getElementById('previewAdButton').addEventListener('click', function() {
+                                                                    // document.getElementById('previewAdModal').style.display = 'flex';
+                                                                    // const previewBox = document.querySelector("#preview-images-container");
+                                                                    // const images = document.querySelectorAll(".dropzone.create.us_dropzone.ad-creation img");
+                                                                    // images.forEach(function(img) {
+                                                                    //     const imgClone = img.cloneNode(true);
+                                                                    //     previewBox.appendChild(imgClone);
+                                                                    // });
                                                                     document.getElementById('previewAdModal').style.display = 'flex';
                                                                     const previewBox = document.querySelector("#preview-images-container");
+
+                                                                    // Clear previous images to avoid duplication
+                                                                    previewBox.innerHTML = '';
+
+                                                                    // Select all the images to clone
                                                                     const images = document.querySelectorAll(".dropzone.create.us_dropzone.ad-creation img");
-                                                                    images.forEach(function(img) {
+
+                                                                    // Iterate over the images
+                                                                    images.forEach(function (img, index) {
                                                                         const imgClone = img.cloneNode(true);
+
+                                                                        // Apply styles for the first image (100% width)
+                                                                        if (index === 0) {
+                                                                            imgClone.style.width = '100%';
+                                                                            imgClone.style.marginBottom = '16px'; // Add some spacing below the first image
+                                                                        } else {
+                                                                            // Styles for the small preview images
+                                                                            imgClone.style.width = '100px'; // Adjust the width for smaller previews
+                                                                            imgClone.style.height = 'auto'; // Maintain aspect ratio
+                                                                            imgClone.style.marginRight = '8px'; // Add spacing between small preview images
+                                                                        }
+
                                                                         previewBox.appendChild(imgClone);
                                                                     });
 
-                                                                    // Define sections
-                                                                    // const sections = ["#searcfilters", "#searcfiltersdata"];
-                                                                    // const result = [];
-
-                                                                    // sections.forEach((section) => {
-                                                                    //     const container = document.querySelector(section);
-
-                                                                    //     // Get all inputs, selects, and textareas inside the section
-                                                                    //     const inputs = container.querySelectorAll("input, select, textarea");
-
-                                                                    //     inputs.forEach((input) => {
-                                                                    //         let label = null;
-
-                                                                    //         // Attempt to find the associated label
-                                                                    //         if (input.id) {
-                                                                    //             // Match label using the `for` attribute
-                                                                    //             const associatedLabel = container.querySelector(`label[for="${input.id}"]`);
-                                                                    //             if (associatedLabel) {
-                                                                    //                 label = associatedLabel.textContent.trim();
-                                                                    //             }
-                                                                    //         }
-
-                                                                    //         if (!label) {
-                                                                    //             // Fall back to finding the closest preceding label in the DOM
-                                                                    //             const previousSiblingLabel = input.closest("div")?.querySelector("label");
-                                                                    //             if (previousSiblingLabel) {
-                                                                    //                 label = previousSiblingLabel.textContent.trim();
-                                                                    //             }
-                                                                    //         }
-
-                                                                    //         if (!label) {
-                                                                    //             label = "No Label Found";
-                                                                    //         }
-
-                                                                    //         // Get input value or state
-                                                                    //         let value;
-                                                                    //         if (input.type === "checkbox" || input.type === "radio") {
-                                                                    //             value = input.checked ? input.value : "Unchecked";
-                                                                    //         } else {
-                                                                    //             value = input.value;
-                                                                    //         }
-
-                                                                    //         // Store field data
-                                                                    //         result.push({
-                                                                    //             label,
-                                                                    //             value
-                                                                    //         });
-                                                                    //     });
-                                                                    // });
-
-                                                                    // // Output the result to the console or process further
-                                                                    // console.log(result);
+                                                                    // Style the preview container for small images
+                                                                    previewBox.style.display = 'flex';
+                                                                    previewBox.style.flexWrap = 'wrap'; // Ensure small images wrap to the next line if necessary
+                                                                    previewBox.style.alignItems = 'flex-start'; // Align the images at the top
 
 
                                                                     const sections = ["#searcfilters", "#searcfiltersdata"];
@@ -914,8 +900,6 @@
 
                                                                             }
 
-
-
                                                                             if (!label) {
                                                                                 // Fall back to finding the closest preceding label in the DOM
                                                                                 const previousSiblingLabel = input.closest("div")?.querySelector("label");
@@ -925,7 +909,7 @@
                                                                             }
 
                                                                             if (!label) {
-                                                                                label = "No Label Found";
+                                                                                label = "Enter vehicle registration";
                                                                             }
                                                                             console.log(label);
                                                                             // Handle checkboxes and radios differently
@@ -958,9 +942,71 @@
                                                                         }
                                                                     });
 
+
+                                                                const resultParagraph = document.getElementById('preview-description'); // The element after which you want to insert the content
+
+                                                                if (resultParagraph) {
+                                                                    // Check if an existing container already exists and remove it
+                                                                    const existingContainer = document.querySelector('#result-container');
+                                                                    if (existingContainer) {
+                                                                        existingContainer.remove(); // Remove the existing container
+                                                                    }
+
+                                                                    // Create a new container for the results
+                                                                    const resultContainer = document.createElement('div');
+                                                                    resultContainer.id = 'result-container'; // Add an ID to identify this container
+                                                                    resultContainer.style.marginTop = '16px'; // Add some margin for separation
+
+                                                                    // Iterate through the result array in pairs
+                                                                    result.forEach((item, index) => {
+                                                                        // Create a new row for every 2 pairs
+                                                                        if (index % 2 === 0) {
+                                                                            const rowContainer = document.createElement('div'); // Create a row
+                                                                            rowContainer.style.display = 'flex'; // Use flexbox for layout
+                                                                            rowContainer.style.justifyContent = 'space-between';
+                                                                            rowContainer.style.gap = '32px';  // Distribute space between items
+                                                                            rowContainer.style.marginBottom = '8px'; // Add spacing between rows
+
+                                                                            // Add the current and next items as pairs
+                                                                            [result[index], result[index + 1]].forEach(pair => {
+                                                                                if (pair) { // Check if the pair exists
+                                                                                    const pairContainer = document.createElement('div'); // Create a container for each label-value pair
+                                                                                    pairContainer.style.flex = '1'; // Take 50% of the space in the row
+                                                                                    pairContainer.style.display = 'flex'; // Inline layout for label and value
+                                                                                    pairContainer.style.justifyContent = 'space-between'; // Align label and value inline
+
+                                                                                    const labelDiv = document.createElement('div'); // Create a div for the label
+                                                                                    labelDiv.textContent = pair.label;
+                                                                                    labelDiv.style.fontWeight = 'normal'; // Make the label bold
+
+                                                                                    const valueDiv = document.createElement('div'); // Create a div for the value
+                                                                                    valueDiv.textContent = pair.value || '---';
+
+                                                                                    // Append the label and value to the pair container
+                                                                                    pairContainer.appendChild(labelDiv);
+                                                                                    pairContainer.appendChild(valueDiv);
+
+                                                                                    // Append the pair container to the row
+                                                                                    rowContainer.appendChild(pairContainer);
+                                                                                }
+                                                                            });
+
+                                                                            // Append the row container to the result container
+                                                                            resultContainer.appendChild(rowContainer);
+                                                                        }
+                                                                    });
+
+                                                                    // Insert the result container after preview-description
+                                                                    resultParagraph.parentNode.insertBefore(resultContainer, resultParagraph.nextSibling);
+                                                                }
+
+
+
+
                                                                     // Output the result to the console or process further
                                                                     console.log(result);
                                                                 });
+
 
                                                                 // Close modal
                                                                 document.getElementById('closeModal').addEventListener('click', function() {
@@ -1367,7 +1413,6 @@
         .modal-content {
             background-color: white;
             margin: 15% auto;
-
             border: 1px solid #888;
             width: 80%;
             max-width: 500px;
