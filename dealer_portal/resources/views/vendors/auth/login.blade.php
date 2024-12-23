@@ -58,7 +58,7 @@
             @enderror
           </div>
 
-          {{-- @if ($bs->google_recaptcha_status == 1)
+          @if ($bs->google_recaptcha_status == 1)
             <div class="form-group mb-30">
               {!! NoCaptcha::renderJs() !!}
               {!! NoCaptcha::display() !!}
@@ -67,7 +67,7 @@
                 <p class="mt-1 text-danger">{{ $message }}</p>
               @enderror
             </div>
-          @endif --}}
+          @endif
           <div class="row align-items-center mb-20">
             <div class="col-4 col-xs-12">
               <div class="link">
