@@ -666,8 +666,8 @@
                               <div class="col-12">
                                   <div class="form-group" style="padding:10px 0px;">
                                       <div class="col-12 mb-3">
-                                          <button class="btn btn-primary" id="total_price_button" onclick="updateUrl()">{{ __('Total Price') }}</button>
-                                          <button class="btn btn-primary" id="per_month_button" onclick="updateUrl()">{{ __('Per Month') }}</button>
+                                          <button class="btn btn-primary" id="total_price_button" onclick="updateUrl()" style="width: -webkit-fill-available;">{{ __('Total Price') }}</button>&nbsp;
+                                          <button class="btn btn-primary" id="per_month_button" onclick="updateUrl()" style="width: -webkit-fill-available;">{{ __('Per Month') }}</button>
                                       </div>
 
                                        @if($category->id == 24 || $category->parent_id == 24 || $category->id == 39 || $category->parent_id == 39)

@@ -14,7 +14,7 @@ use App\Models\SupportTicket;
 use App\Models\Language;
 use Carbon\Carbon;
 
-    if (!function_exists('createSlug')) 
+    if (!function_exists('createSlug'))
     {
       function createSlug($string)
       {
@@ -22,13 +22,13 @@ use Carbon\Carbon;
         $slug = str_replace('/', '', $slug);
         $slug = str_replace('?', '', $slug);
         $slug = str_replace(',', '', $slug);
-    
+
         return mb_strtolower($slug);
       }
     }
-    
-    
-    if (!function_exists('api_resource_user')) 
+
+
+    if (!function_exists('api_resource_user'))
     {
       function api_resource_user($user)
       {
@@ -36,9 +36,9 @@ use Carbon\Carbon;
           {
               return false;
           }
-          
+
           $user_photo = !empty($user->photo) ? url('assets/admin/img/vendor-photo/').'/'.$user->photo : asset('assets/img/blank-user.jpg');
-          
+
          return [
                 'id' => $user->id,
                 'photo' => $user_photo,
@@ -66,31 +66,31 @@ use Carbon\Carbon;
       }
     }
 
-    if (!function_exists('calculate_response_time')) 
+    if (!function_exists('calculate_response_time'))
     {
       function calculate_response_time($vendor_id)
       {
             $totl_per = 'N/A';
-            
+
             $totalSupportTicket = \App\Models\SupportTicket::where('admin_id', $vendor_id)->count();
-            
+
             if($totalSupportTicket > 0 )
             {
                  $totalSupportTicketWithMessages = \App\Models\SupportTicket::where('admin_id', $vendor_id )
                 ->has('messages')
                 ->count();
                 $responseRate = ($totalSupportTicketWithMessages / $totalSupportTicket) * 100;
-                
+
                 $totl_per =  round($responseRate, 2) . "%";
             }
-            
+
             return $totl_per;
       }
     }
 
 
 
-if (!function_exists('get_vendor_review_from_google')) 
+if (!function_exists('get_vendor_review_from_google'))
 {
   function get_vendor_review_from_google($cid , $need_review = false)
   {
@@ -100,7 +100,7 @@ if (!function_exists('get_vendor_review_from_google'))
         $show_rule_after_review = false; // true OR false
         $show_blank_star_till_5 = true;  // true OR false
         /* ------------------------------------------------------------------------- */
-        
+
         $ch = curl_init('https://www.google.com/maps?cid='.$cid);
         curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla / 5.0 (Windows; U; Windows NT 5.1; en - US; rv:1.8.1.6) Gecko / 20070725 Firefox / 2.0.0.6");
         curl_setopt($ch, CURLOPT_TIMEOUT, 60);
@@ -111,32 +111,32 @@ if (!function_exists('get_vendor_review_from_google'))
         $result = curl_exec($ch);
         curl_close($ch);
         $pattern = '/window\.APP_INITIALIZATION_STATE(.*);window\.APP_FLAGS=/ms';
-        
+
         $total_ratings = 0;
         $total_reviews = 0;
         $reviews_outout = '';
         $rating_stars = '';
-        if ( preg_match($pattern, $result, $match) ) 
+        if ( preg_match($pattern, $result, $match) )
         {
         $match[1] = trim($match[1], ' =;'); // fix json
         $reviews = json_decode($match[1]);
-        
+
         $reviews = ltrim($reviews[3][6], ")]}'"); // fix json
-        
+
         $reviews = json_decode($reviews);
-        
+
         //$customer = $reviews[0][1][0][14][18];
         $total_ratings = $reviews[6][4][7];
         $total_reviews = $reviews[6][4][8];
-        
+
         $customer = $reviews[6][18]; // NEW IN 2020
         $reviews  = $reviews[6][52][0]; // NEW IN 2020
         }
-        
-        if (isset($reviews)) 
+
+        if (isset($reviews))
         {
            $user_img = '<img style="    height: 50px;" src="'.asset('/public/comment_user.png').'" />';
-            foreach ($reviews as $review) 
+            foreach ($reviews as $review)
             {
                  $reviews_outout .= '<small>'.$user_img.'<b style="margin-left: 8px;">'.$review[0][1].'</b><span style="font-size: 30px;color: gray;"> . </span>' ; // AUTHOR
                 if ($show_only_if_with_text == true and empty($review[3])) continue;
@@ -145,140 +145,171 @@ if (!function_exists('get_vendor_review_from_google'))
                 if ($show_blank_star_till_5 == true)
                 for ($i=1; $i <= 5-$review[4]; ++$i)  $reviews_outout .= '☆'; // RATING
                  $reviews_outout .= '<span style="font-size: 30px;color: gray;"> . </span>'. $review[1] .'<span style="margin-top: 10px;display: block;">'.$review[3].'</span> </small><br>'; // TEXT
-                
-               
+
+
                 if ($show_rule_after_review == true)  $reviews_outout .= '<hr size="1">';
             }
-             
+
         }
-        
+
         if($total_ratings > 0 && $total_reviews > 0)
         {
-            
+
                      // Output filled stars for the integer part of the rating
             for ($i = 1; $i <= floor($total_ratings); $i++) {
                 $rating_stars .= '<span class="star on"></span>';
             }
-        
+
             // Output a half-filled star if the decimal part is greater than 0
             if (($total_ratings - floor($total_ratings)) > 0) {
                  $rating_stars .=  '<span class="star half"></span>';
             }
-        
+
             // Output unfilled stars for the remaining space up to 5
             for ($i = ceil($total_ratings); $i < 5; $i++) {
                  $rating_stars .=  '<span class="star"></span>';
             }
-    
-    
+
+
             if($need_review == true)
             {
-              return ['total_reviews' => $total_reviews , 'total_ratings' => $total_ratings , 'rating_stars' => $rating_stars , 'reviews_outout' => $reviews_outout];  
+              return ['total_reviews' => $total_reviews , 'total_ratings' => $total_ratings , 'rating_stars' => $rating_stars , 'reviews_outout' => $reviews_outout];
             }
-            
+
             return ['total_reviews' => $total_reviews , 'total_ratings' => $total_ratings ,  'rating_stars' => $rating_stars];
         }
-        
+
          return ['total_reviews' => $total_reviews , 'total_ratings' => $total_ratings];
   }
 }
 
 
-if (!function_exists('youtube_embed_link')) 
-{
-    function youtube_embed_link($youtube_url) 
-    {
-        // Parse the URL to get query parameters
-        $url_data = parse_url($youtube_url);
-        
-        // Get the query string from URL
-        parse_str($url_data['query'], $query_params);
-        
-        // Extract the video ID
-        $video_id = $query_params['v'];
-        
-        // Construct the embed URL
-        return "https://www.youtube.com/embed/" . $video_id;
+// if (!function_exists('youtube_embed_link'))
+// {
+//     function youtube_embed_link($youtube_url)
+//     {
+//         // Parse the URL to get query parameters
+//         $url_data = parse_url($youtube_url);
 
-    }
+//         // Get the query string from URL
+//         parse_str($url_data['query'], $query_params);
+
+//         // Extract the video ID
+//         $video_id = $query_params['v'];
+
+//         // Construct the embed URL
+//         return "https://www.youtube.com/embed/" . $video_id;
+
+//     }
+// }
+if (!function_exists('youtube_embed_link')) {
+  function youtube_embed_link($youtube_url) {
+      // Parse the URL to get query parameters
+      $url_data = parse_url($youtube_url);
+
+      // Check if 'query' key exists in the parsed URL
+      if (isset($url_data['query'])) {
+          // Get the query string from URL
+          parse_str($url_data['query'], $query_params);
+
+          // Check if 'v' parameter exists
+          if (isset($query_params['v'])) {
+              // Extract the video ID
+              $video_id = $query_params['v'];
+
+              // Construct the embed URL
+              return "https://www.youtube.com/embed/" . $video_id;
+          }
+      }
+
+      // Handle other YouTube URL formats (e.g., https://youtu.be/video_id)
+      if (isset($url_data['path'])) {
+          $video_id = ltrim($url_data['path'], '/');
+          return "https://www.youtube.com/embed/" . $video_id;
+      }
+
+      // Return null or handle invalid URLs
+      return null;
+  }
 }
 
-if (!function_exists('addUserName')) 
+
+if (!function_exists('addUserName'))
 {
-    function addUserName($user_id , $admin_id) 
+    function addUserName($user_id , $admin_id)
     {
         if(Auth::guard('vendor')->check())
         {
-           $current_user = Auth::guard('vendor')->user()->id; 
+           $current_user = Auth::guard('vendor')->user()->id;
         }
         else
         {
             $current_user = request()->user()->id;
         }
-       
+
         if($current_user == $user_id)
         {
-           $vendor = Vendor::find($admin_id); 
+           $vendor = Vendor::find($admin_id);
         }
         else
         {
             $vendor = Vendor::find($user_id);
         }
-        
+
         return [$vendor->vendor_info->name , $vendor->id];
     }
 }
 
 
 
-if (!function_exists('isOnline')) 
+if (!function_exists('isOnline'))
 {
-    function isOnline($user_id) 
+    function isOnline($user_id)
     {
          $vendor= Vendor::find($user_id);
-        
+
          $checkStatus =  $vendor->last_activity !== null && $vendor->last_activity > now()->subMinutes(2);
-         
+
          return [$checkStatus , date('d F y h:i a' , strtotime($vendor->last_activity))];
     }
 }
 
 
-if (!function_exists('roundEngineDisplacement')) 
+if (!function_exists('roundEngineDisplacement'))
 {
-    function roundEngineDisplacement($car) 
+    function roundEngineDisplacement($car)
 {
     $cc = $car->engineCapacity;
     // dd($car->car_content);
     if(isset($car->car_content->fuel_type->name ) && ($car->car_content->fuel_type->name == 'Diesel' || $car->car_content->fuel_type->name == 'Petrol') && ($car->car_content->category_id != '48' && $car->car_content->category_id != '62'))
     {
-       $unit = ' L'; 
+       $unit = ' L';
     }
     elseif($car->car_content->category_id == '48' || $car->car_content->category_id == '62')
     {
-        return $cc.' cc'; 
+        return $cc.' cc';
     }
     else
     {
-       return  $cc.' Kw'; 
+       return  $cc.' Kw';
     }
-    
+
     // Validate the input to ensure it is a number and does not contain alphabetic characters
-    if (!is_numeric($cc) || preg_match('/[a-zA-Z]/', $cc)) 
+    if (!is_numeric($cc) || preg_match('/[a-zA-Z]/', $cc))
     {
         return $cc;
     }
-    
+
     // If the input is already in a point value format (e.g., 2.0 or 3.7), return it as is with 'L'
     if (strpos($cc, '.') !== false && preg_match('/^\d+\.\d$/', $cc)) {
         return $cc . $unit;
     }
-    
+
     if($cc > 10)
     {
         // Convert cc to liters
         $liters = $cc / 1000;
-        
+
         // Round to one decimal place
         $roundedLiters = round($liters, 1);
     }
@@ -286,41 +317,41 @@ if (!function_exists('roundEngineDisplacement'))
     {
         $roundedLiters = $cc;
     }
-    
+
     return $roundedLiters . $unit;
 }
 
 }
 
-if (!function_exists('calulcateloanamount')) 
+if (!function_exists('calulcateloanamount'))
 {
   function calulcateloanamount($price)
   {
-        
+
         $interest_rate = 4.9 / 100; // Convert percentage to decimal
-        
-        if ($price > 10000) 
+
+        if ($price > 10000)
         {
          $duration_years = 5;
-        } 
-        elseif ($price >= 5000 && $price <= 10000) 
+        }
+        elseif ($price >= 5000 && $price <= 10000)
         {
           $duration_years = 3;
-        } 
-        else 
+        }
+        else
         {
           $duration_years = 1;
         }
-        
+
         // Convert years to months
         $duration_months = $duration_years * 12;
-        
+
         // Calculate monthly payment
         $monthly_interest_rate = $interest_rate / 12;
         $monthly_payment = ($price * $monthly_interest_rate) / (1 - pow(1 + $monthly_interest_rate, -$duration_months));
         $weekly_payment = $monthly_payment / 4;
-         
-          
+
+
         if($price < 5000)
         {
             $singleVal =round($weekly_payment). ' per week';
@@ -333,7 +364,7 @@ if (!function_exists('calulcateloanamount'))
             $netpay = (round($monthly_payment) * $duration_months) - $price;
            $val =  round($monthly_payment) . '<span style="font-size: 11px;display: block;" class="us_loan" > p/m </span>';
         }
-        
+
         $text = "This calculation is provided as a
         guideline only. The information on the
         quotation is indicative and does not
@@ -353,16 +384,16 @@ if (!function_exists('calulcateloanamount'))
         are subject to change. </p>";
 
         return [ $val , $text ];
-        
+
   }
 }
 
-if (!function_exists('getSetVal')) 
+if (!function_exists('getSetVal'))
 {
   function getSetVal($key)
   {
     $basic = Basic::where('uniqid', 12345)->select($key)->first();
-    
+
     return $basic->$key;
   }
 }
@@ -372,24 +403,24 @@ if (!function_exists('calculate_datetime')) {
   {
     $created_at = new DateTime($date);
     $now = new DateTime();
-    
+
     $interval = $created_at->diff($now);
-    
-    if ($interval->days == 0) 
+
+    if ($interval->days == 0)
     {
-        if ($interval->h == 0) 
+        if ($interval->h == 0)
         {
             if($interval->i == 0 || $interval->i == 1)
             {
-              $time_diff = $interval->i . ' min';  
+              $time_diff = $interval->i . ' min';
             }
             else
             {
-              $time_diff = $interval->i . ' mins';  
+              $time_diff = $interval->i . ' mins';
             }
-            
-        } 
-        else 
+
+        }
+        else
         {
             if($interval->h == 0 || $interval->h == 1)
             {
@@ -397,19 +428,19 @@ if (!function_exists('calculate_datetime')) {
             }
             else
             {
-             $time_diff = $interval->h . ' hours ';   
+             $time_diff = $interval->h . ' hours ';
             }
         }
-    } 
-    elseif ($interval->days == 1) 
+    }
+    elseif ($interval->days == 1)
     {
         $time_diff = '1 day';
-    } 
-    else 
+    }
+    else
     {
         $time_diff = $interval->days . ' days';
     }
-    
+
     return $time_diff;
   }
 }
@@ -501,23 +532,23 @@ if (!function_exists('showAd')) {
       }
 
         $expireAt = Carbon::parse($ad->expire_at);
-        
+
         // Check if the current date is not past the expire date
         if ($ad->ad_type == 'banner' && $expireAt->gte(Carbon::now()))
       {
     $now = Carbon::now();
-    
-  
-    
+
+
+
     $markUp = '<a href="' . url($ad->url) . '" target="_blank" onclick="adView(' . $ad->id . ')" class="ad-banner">
     <img data-src="' . asset('assets/img/advertisements/' . $ad->image) . '" alt="advertisement"  class="lazyload blur-up">
     </a>';
-        
-        
+
+
 
         return $markUp;
-      } 
-      else 
+      }
+      else
       {
         $markUp = '<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=' . $adsenseInfo->google_adsense_publisher_id . '" crossorigin="anonymous"></script>
         <ins class="adsbygoogle" style="display: block;" data-ad-client="' . $adsenseInfo->google_adsense_publisher_id . '" data-ad-slot="' . $ad->slot . '" data-ad-format="auto" data-full-width-responsive="true"></ins>
@@ -648,7 +679,7 @@ if (!function_exists('symbolPrice')) {
 if (!function_exists('checkWishList')) {
   function checkWishList($car_id, $user_id)
   {
-      
+
     $check = App\Models\Car\Wishlist::where('car_id', $car_id)
       ->where('user_id', $user_id)
       ->first();
@@ -716,20 +747,20 @@ if (!function_exists('carBrand')) {
 if (!function_exists('catslug')) {
   function catslug($id)
   {
-    
+
     $catname  = Category::where('id', $id)->first();
     $findincar = CarContent::where('category_id', $id)->first();
-   
+
     $in['category_slug'] =  createSlug($catname->name);
     //exit;
     //print_r($in); exit;
-       $findincar->update($in); 
-    
+       $findincar->update($in);
+
     return  createSlug($catname->name);
   }
 }
 
-if (!function_exists('contactNotification')) 
+if (!function_exists('contactNotification'))
 {
   function contactNotification($id)
   {
@@ -750,104 +781,104 @@ if (!function_exists('contactNotification'))
 if (!function_exists('countAds')) {
   function countAds($vendor_id,$status = "")
   {
-   
+
     if($status == "")
     {
       $count = Car::where('vendor_id', $vendor_id)->count();
-      } 
+      }
       else
-      {    
+      {
       $count = Car::where('status', $status);
-      
+
       if($status == 1)
       {
          $count = $count->where('is_sold', 0);
       }
-      
-      
+
+
       $count = $count->where('vendor_id', $vendor_id)->count();
     }
-    
+
     return  $count;
   }
 }
 if (!function_exists('countSaveAds')) {
   function countSaveAds($vendor_id,$status = "")
   {
-      
+
    $category_id = !empty($_GET['category_id']) ? $_GET['category_id'] : '';
-   
+
     if($status == "")
     {
       $count = Car::join('wishlists', 'cars.id', '=', 'wishlists.car_id')->where('wishlists.user_id', '=', $vendor_id);
-      
-        if (!empty($category_id)) 
+
+        if (!empty($category_id))
         {
             $count->whereHas('car_content', function ($query) use ($category_id) {
             $query->where('category_id', $category_id);
             });
         }
-            
+
       $count = $count->select('cars.*')->get();
-      } 
+      }
       else
-      {    
+      {
         $vendor_id =  Auth::guard('vendor')->user()->id;
-        
+
         $count = Car::join('wishlists', 'cars.id', '=', 'wishlists.car_id');
-        
+
         if($status == 1)
         {
             $count = $count->where('cars.status', $status)->where('cars.is_sold', 0);
         }
-        
+
         if(!empty($vendor_id))
         {
-           $count = $count->where('wishlists.user_id', $vendor_id); 
+           $count = $count->where('wishlists.user_id', $vendor_id);
         }
         else
         {
-          $count = $count->where('wishlists.user_id', 1);  
+          $count = $count->where('wishlists.user_id', 1);
         }
-        
-        
-        if (!empty($category_id)) 
+
+
+        if (!empty($category_id))
         {
             $count->whereHas('car_content', function ($query) use ($category_id) {
             $query->where('category_id', $category_id);
             });
         }
-        
-        
+
+
         $count = $count->select('cars.*')->get();
     }
-    
+
     return  count($count);
   }
 }
 
 
 
-if (!function_exists('noDaysLeftByAd')) 
+if (!function_exists('noDaysLeftByAd'))
 {
   function noDaysLeftByAd($id,$created_at)
   {
-      
+
       if($id == 0)
       {
-        return 'Listed';    
+        return 'Listed';
       }
-      
+
     $adPackage = PrivatePackage::where('id', $id)->first();
-    
+
     $createdAt = Carbon::parse($created_at);
     $currentDate = Carbon::now();
-    $adDuration = $adPackage->days_listing; 
+    $adDuration = $adPackage->days_listing;
 
     $daysSincePosted  = $createdAt->diffInDays($currentDate);
-    
+
     $daysLeft = $adDuration - $daysSincePosted;
-    
+
       if($daysLeft < 1)
       {
         return 'Expired';

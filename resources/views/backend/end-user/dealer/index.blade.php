@@ -73,6 +73,7 @@
                           <input type="checkbox" class="bulk-check" data-val="all">
                         </th>
                         <th scope="col" style="padding-left: 10px !important;min-width: 151px;" >Dealer name</th>
+                        <th scope="col" style="padding-left: 10px !important;min-width: 151px;">Total Ads</th>
                         <th scope="col" style="padding-left: 10px !important;">Email Address</th>
                         <th scope="col" style="padding-left: 10px !important;min-width: 151px;">Phone Number</th>
                         <th scope="col" style="padding-left: 10px !important;min-width: 151px;">Date Created</th>
@@ -81,7 +82,6 @@
                         <th scope="col" style="padding-left: 10px !important;min-width: 151px;">{{ __('Account Status') }}</th>
                         <th scope="col" style="padding-left: 10px !important;min-width: 151px;">{{ __('Email Status') }}</th>
                         <th scope="col" style="padding-left: 10px !important;min-width: 151px;">{{ __('Actions') }}</th>
-                        <th scope="col" style="padding-left: 10px !important;min-width: 151px;">Total Ads</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -91,6 +91,10 @@
                             <input type="checkbox" class="bulk-check" data-val="{{ $vendor->id }}">
                           </td>
                           <td style="padding-left: 10px !important;  padding: 0 10px !important;">{{ $vendor->username }}</td>
+                          <td >
+                            <span class="badge badge-success">{{ $totalAdsByDealer[$vendor->id] ?? 0 }}</span>
+
+                          </td>
                           <td style="padding-left: 10px !important;  padding: 0 10px !important;">{{ $vendor->email }}</td>
                           <td style="padding-left: 10px !important;  padding: 0 10px !important;">{{ empty($vendor->phone) ? '-' : $vendor->phone }}</td>
                           <td style="padding-left: 10px !important;width: 150px;">{{ date('d F,Y' , strtotime($vendor->created_at)) }}</td>
@@ -229,10 +233,7 @@
 
                             </div>
                           </td>
-                          <td>
-                            Total Ads: {{ $totalAdsByDealer[$vendor->id] ?? 0 }}
 
-                          </td>
 
                         </tr>
                       @endforeach

@@ -378,6 +378,7 @@ font-size: 20px !important;
               <button type="button" class="btn-close us_btn_close" data-bs-dismiss="offcanvas" data-bs-target="#widgetOffcanvas"
                 aria-label="Close"></button>
             </div>
+
             <div class="offcanvas-body p-3 p-lg-0 us_filter_design" style="box-shadow: 0px 0px 0px 0px;border-radius:0px;">
               <form action="{{ route('frontend.cars') }}" method="get" id="searchForm" class="w-100">
                 @if (!empty(request()->input('category')))

@@ -46,39 +46,39 @@ class UserController extends Controller
     Config::set('services.google.client_secret', $bs->google_client_secret);
     Config::set('services.google.redirect', url('login/google/callback'));
   }
-    
- 
+
+
       function deleteToDraft()
     {
        DraftAd::where('vendor_id', Auth::guard('vendor')->user()->id)->delete();
     }
-        
+
        function saveToDraftKeyFeature(Request $request)
     {
-        $c_value = $request->current_val; 
-        $isChecked = $request->isChecked;  
-        
+        $c_value = $request->current_val;
+        $isChecked = $request->isChecked;
+
         // If checkbox is checked
-        if ($isChecked == 'true') 
+        if ($isChecked == 'true')
         {
             KeyFeature::create(['name' => $c_value , 'value' => 'on' , 'user_id' => Auth::guard('vendor')->user()->id ]);
         }
-        
+
         // If checkbox is unchecked
-        if ($isChecked == 'false') 
+        if ($isChecked == 'false')
         {
             KeyFeature::where('name', $c_value)->where('user_id', Auth::guard('vendor')->user()->id )->delete();
         }
     }
-        
+
     function saveToDraft(Request $request)
     {
-       $c_value = $request->current_val; 
-       $column_name = $request->column_name; 
-       
+       $c_value = $request->current_val;
+       $column_name = $request->column_name;
+
        if(!empty($column_name))
        {
-           
+
            $storeAdInDraft = DraftAd::where('vendor_id', Auth::guard('vendor')->user()->id)->first();
 
 
@@ -92,14 +92,14 @@ class UserController extends Controller
             $enquirey_person = [];
         }
 
-        
+
         if ($request->isChecked == 'true') {
             if (!in_array($c_value, $enquirey_person)) {
                 // Add the current value if it's not already in the array
                 $enquirey_person[] = $c_value;
             }
         } elseif ($request->isChecked == 'false') {
-            
+
             if (($key = array_search($c_value, $enquirey_person, true)) !== false) {
                 unset($enquirey_person[$key]);
             }
@@ -116,17 +116,17 @@ class UserController extends Controller
 
 
 
-          
-            
-            if ($storeAdInDraft) 
+
+
+            if ($storeAdInDraft)
             {
                 $storeAdInDraft->$column_name = $c_value;
-            
+
                 $storeAdInDraft->save();
-            } 
-            else 
+            }
+            else
             {
-                
+
                 DraftAd::create([
                     'vendor_id' => Auth::guard('vendor')->user()->id,
                     $column_name  => $c_value ,
@@ -134,7 +134,7 @@ class UserController extends Controller
             }
        }
     }
-    
+
   public function login(Request $request)
   {
     $misc = new MiscellaneousController();
@@ -171,7 +171,7 @@ class UserController extends Controller
         return view('frontend.user.ads.create', $information);
     }
 
-    
+
 
   public function redirectToFacebook()
   {
@@ -249,8 +249,8 @@ class UserController extends Controller
       $user->provider = ($driver == 'facebook') ? 'facebook' : 'google';
       $user->provider_id = $userInfo['id'];
       $user->save();
-      
-      
+
+
     $vendor = new Vendor();
     $vendor->username = $user->name.$user->id;
     $vendor->email = $userInfo['email'];
@@ -737,83 +737,88 @@ class UserController extends Controller
    public function get_brand_model(Request $request)
     {
         $data = CarModel::where('brand_id', $request->id)->where('status', 1)->get();
-        return $data;
+        
+        if($data->count()>0)
+        {
+            $data->prepend(['id' => '', 'name' => __('Please select model')]);
+             return $data;
+        }
     }
        public function imagesstore(Request $request)
     {
       //echo "hello"; exit;
         $img = $request->file('file');
         $allowedExts = array('jpg', 'png', 'jpeg', 'svg', 'webp');
-        
-        $rules = 
+
+        $rules =
         [
-            'file' => 
+            'file' =>
             [
-                function ($attribute, $value, $fail) use ($img, $allowedExts) 
+                function ($attribute, $value, $fail) use ($img, $allowedExts)
                 {
                     $ext = $img->getClientOriginalExtension();
-                    if (!in_array($ext, $allowedExts)) 
+                    if (!in_array($ext, $allowedExts))
                     {
                         return $fail("Only png, jpg, jpeg images are allowed");
                     }
                 },
             ]
         ];
-        
+
         $validator = Validator::make($request->all(), $rules);
-        
-        if ($validator->fails()) 
+
+        if ($validator->fails())
         {
             $validator->getMessageBag()->add('error', 'true');
             return response()->json($validator->errors());
         }
-        
+
         $filename = uniqid() . '.jpg';
-        
+
         $img->move(public_path('assets/admin/img/car-gallery/'), $filename);
-        
+
         $count = CarImage::whereNull('car_id')->where('user_id' , Auth::guard('vendor')->user()->id )->count();
-        
+
         $pi = new CarImage();
-        
-        if (!empty($request->car_id)) 
+
+        if (!empty($request->car_id))
         {
             $pi->car_id = $request->car_id;
         }
-        
+
         $pi->user_id =  Auth::guard('vendor')->user()->id;
-        
+
         if($count > 0 )
         {
-           $pi->priority = $count + 1;  
+           $pi->priority = $count + 1;
         }
-       
+
         $pi->image = $filename;
-        
+
         $pi->save();
-        
+
         $storeAdInDraft = DraftAd::where('vendor_id', Auth::guard('vendor')->user()->id)->first();
-        
-        if ($storeAdInDraft) 
+
+        if ($storeAdInDraft)
         {
             $images = json_decode($storeAdInDraft->images, true);
-        
+
             $images[] = $filename;
-        
+
             $storeAdInDraft->images = json_encode($images);
-        
+
             $storeAdInDraft->save();
-        } 
-        else 
+        }
+        else
         {
             DraftAd::create([
                 'vendor_id' => Auth::guard('vendor')->user()->id,
                 'images' => json_encode([$filename]),
             ]);
         }
-        
+
         return response()->json(['status' => 'success', 'file_id' => $pi->id]);
-        
+
     }
     public function imagermv(Request $request)
     {
@@ -842,6 +847,6 @@ class UserController extends Controller
         }
     }
     //store
-   
+
 
 }

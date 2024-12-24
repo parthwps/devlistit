@@ -25,11 +25,11 @@
   ])
   <div class="user-dashboard pt-20 pb-60">
     <div class="container">
-      
+
   <div class="row gx-xl-5">
-  
+
        @includeIf('vendors.partials.side-custom')
-   
+
     <div class="col-md-9">
 
   <div class="row">
@@ -54,7 +54,7 @@
                           @foreach ($languages as $language)
               <form id="ajaxEditForm" action="{{ route('vendor.update_profile') }}" method="post">
                 @csrf
-                
+
                 <div class="row">
                   <div class="col-lg-12">
                         <div class="form-group">
@@ -64,8 +64,8 @@
                         @if ($vendor->photo != null)
                         @php
                         $photoUrl = env('HOME_URL').'assets/admin/img/vendor-photo/' . $vendor->photo;
-                        
-                        if (file_exists(public_path('assets/admin/img/vendor-photo/' . $vendor->photo))) 
+
+                        if (file_exists(public_path('assets/admin/img/vendor-photo/' . $vendor->photo)))
                         {
                             $photoUrl = asset('assets/admin/img/vendor-photo/' . $vendor->photo);
                         }
@@ -75,22 +75,22 @@
                         <img src="{{ asset('assets/img/noimage.jpg') }}" alt="..." class="uploaded-img">
                         @endif
                         </div>
-                        
+
                         <div class="mt-3">
                         <div role="button" class="btn btn-primary btn-sm upload-btn">
                         {{ __('Choose Photo') }}
                         <input type="file" id="uploadImage" class="img-input" name="photo">
                         </div>
                         <p id="editErr_photo" class="mt-1 mb-0 text-danger em"></p>
-                        
+
                         </div>
-                        
+
                         <!-- Crop Modal -->
                         <div id="cropModal" style="display:none;margin-top: 7px;">
                             <div id="dimensionDisplay" style="margin-bottom: 7px !important;" class="mt-2 mb-0 text-warning text-warning">Width: <span id="cropWidth">0</span> px, Height: <span id="cropHeight">0</span> px</div>
-                            
+
                         <img id="imageToCrop" style="max-width:100%;">
-                        
+
                         <button id="cropButton" type="button" style="margin-top: 1rem;" class="btn btn-success">Crop</button>
                         </div>
                         </div>
@@ -113,7 +113,7 @@
                       </div>
                   </div>
                 </div>
-                
+
                 <div class="col-lg-6 chkbox" @if ($vendor->trader == 0) style="display: none;" @endif>
                     <div class="form-group">
                       <label>{{ __('Business Name') }}</label>
@@ -132,11 +132,11 @@
                     <div class="form-group">
                       <label>{{ __('Business Address') }}</label>
                       <textarea class="form-control" name="business_address" placeholder="type your valid business address here ..." rows="3" style="height: 100px;">{{ $vendor_info->business_address }}</textarea>
-                      
+
                       <p id="editErr_business_address" class="mt-1 mb-0 text-danger em"></p>
                     </div>
                   </div>
-                  
+
                   <div class="col-lg-4">
                     <div class="form-group">
                       <label>{{ __('Username*') }}</label>
@@ -154,22 +154,64 @@
                   <div class="col-lg-4">
                     <label style="margin-left:8px; font-weight: 600;">{{ __('Phone') }}</label>
                     <div class="form-group input-group">
-                      
-                      <input  type="tel" value="{{ $vendor->phone }}" class="form-control" readonly name="phone" required> 
-                       
+
+                      <input   type="tel" value="{{ $vendor->phone }}" class="form-control" id="phone-number" readonly name="phone" required>
+                      <span id="verification-status" class="ml-2" style="font-size: 1.5rem; margin-bottom: 10px;"></span>
+
+
                      <!--<small>Verify your phone number and help reduce fraud and scam on Listit</small>-->
                       <p id="editErr_phone" class="mt-1 mb-0 text-danger em"></p>
                     </div>
                   </div>
 
+                  <script>
 
-                  
+                    document.addEventListener('DOMContentLoaded', function () {
+  const phoneInput = document.getElementById('phone-number');
+  const verificationStatus = document.getElementById('verification-status');
+
+  // Function to update verification status
+  const updateVerificationStatus = () => {
+    let phoneNumber = phoneInput.value.trim();
+
+    // Ensure numbers starting with 7624 are displayed as 07624
+    if (!phoneNumber.startsWith('0') && phoneNumber.startsWith('7624')) {
+      phoneNumber = '0' + phoneNumber;
+      phoneInput.value = phoneNumber; // Update displayed phone number
+    }
+
+    // Check if phone number starts with 07624
+        if (phoneNumber.startsWith('07624')) {
+          // Green Verification for Isle of Man
+          verificationStatus.innerHTML = `
+            <span style="color: green; font-weight: bold;margin-left: 10px; white-space: nowrap;font-size:16px;">
+              ✅ Isle of Man
+            </span>`;
+        } else {
+          // Orange Verification for others
+          verificationStatus.innerHTML = `
+            <span style="color: orange; font-weight: bold;margin-left: 10px; white-space: nowrap;font-size:16px">
+              🟧 Verified
+            </span>`;
+        }
+      };
+
+      // Initial call to set verification status
+      updateVerificationStatus();
+
+      // Update verification status when phone input changes
+      phoneInput.addEventListener('input', updateVerificationStatus);
+    });
+
+                  </script>
+
+
 
                   <div class="col-lg-12">
                     <div id="accordion" class="">
-                      
+
                         <div class="version" style="border: 0px !important;">
-                         
+
 
                           <div id="collapse{{ $language->id }}"
                             class="collapse {{ $language->is_default == 1 ? 'show' : '' }}"
@@ -184,7 +226,7 @@
                                     <p id="editErr_{{ $language->code }}_name" class="mt-1 mb-0 text-danger em"></p>
                                   </div>
                                 </div>
-                                
+
                                 <div class="col-lg-4">
                                   <div class="form-group">
                                     <label>{{ __('County') }}</label>
@@ -192,7 +234,7 @@
                                       value="Isle of Man"
                                       class="form-control" name="{{ $language->code }}_country"
                                       placeholder="Enter County" disabled >
-                                 
+
                                     <p id="editErr_{{ $language->code }}_country" class="mt-1 mb-0 text-danger em"></p>
                                   </div>
                                 </div>
@@ -205,12 +247,12 @@
                                     <option value="{{ $area->slug }}" {{ $area->slug == $vendor_info->city ? 'selected' : '' }}>{{ $area->name }}</option>
                                     @endforeach
                                     </select>
-                                  
+
                                     <p id="editErr_{{ $language->code }}_city" class="mt-1 mb-0 text-danger em"></p>
                                   </div>
                                 </div>
-                                
-                                
+
+
                                   <div class="col-lg-12">
                     <div class="form-group">
                     <label style="width: 100%;
@@ -220,7 +262,7 @@
                     color: white !important;
                     border-radius: 5px;
                     margin-bottom: 2rem;">Opening Hours</label>
-                    
+
                     <table style='width: 100%;'>
                         <tr>
                             <th>Day</th>
@@ -243,12 +285,12 @@
                             </tr>
                         @endforeach
                     </table>
-        
-        
+
+
                       </div>
                     </div>
-                    
-                    
+
+
                         <div class="col-lg-12">
                         <div class="form-group">
                         <label style="width: 100%;
@@ -257,44 +299,44 @@
                         text-align: center;
                         color: white !important;
                         border-radius: 5px;">Car Financing Dealer</label>
-                        
+
                         <label for="" class="mb-2" style="margin-top: 1rem;"><strong>Enter the url below to seamlessly direct users to your preferred financing dealer.</strong></label>
                         <input type="text" class="form-control"  placeholder="Enter url here where user redirect" value="{{$vendor->finance_url}}" name="finance_url" />
-                     
+
                          </div>
                         </div>
-                                
-                    
+
+
                                 <div class="col-lg-12">
                                 <div class="form-group">
                                 <label>{{ __('Address') }}</label>
-                                
-                                
+
+
                                 <textarea class="form-control" name="{{ $language->code }}_address" placeholder="type your valid address here ..." rows="3" style="height: 100px;">{{ !empty($vendor_info) ? $vendor_info->address : '' }}</textarea>
-                                
-                                
+
+
                                 <p id="editErr_{{ $language->code }}_address" class="mt-1 mb-0 text-danger em"></p>
                                 </div>
                                 </div>
-                                
-                                
-                                
+
+
+
                                 <div class="col-lg-12">
                                 <div class="form-group">
                                 <label>About Us </label>
-                                
+
                                 <textarea class="form-control" name="about_us" placeholder="type here ..." rows="3" style="height: 100px;">{{ !empty($vendor) ? $vendor->about_us : '' }}</textarea>
-                                
+
                                 </div>
                                 </div>
-                                
-                                
-                                
+
+
+
                               </div>
                             </div>
                           </div>
                         </div>
-                      
+
                     </div>
                   </div>
                   <div class="col-lg-12" >
@@ -352,7 +394,7 @@
     </div>
      </div>
   </div>
-  
+
   </div>
 </div>
 
@@ -369,7 +411,7 @@
       } else {
           $direction = 'form-group';
       }
-  
+
       $labels .= "<div class='$direction'><input type='text' name='" . $label_name . "' class='form-control' placeholder='Label ($language->name)'></div>";
       $values .= "<div class='$direction'><input type='text' name='$value_name' class='form-control' placeholder='Value ($language->name)'></div>";
   }
@@ -482,38 +524,38 @@
     const secret_login = "{{ Session::get('secret_login') }}";
   </script>
 
-  
+
   <script>
     var labels = "{!! $labels !!}";
     var values = "{!! $values !!}";
-    
+
     let cropper;
     let imageModal = document.getElementById('cropModal');
     let image = document.getElementById('imageToCrop');
     let fileInput = document.querySelector('.img-input');
     let cropWidthDisplay = document.getElementById('cropWidth');
     let cropHeightDisplay = document.getElementById('cropHeight');
-    
+
     // When the file input changes (user selects an image)
     $('.img-input').on('change', function (event) {
     let file = event.target.files[0];
-    
+
     if (file) {
         // Revoke any existing object URL to free up memory
         if (image.src.startsWith('blob:')) {
             URL.revokeObjectURL(image.src);
         }
-    
+
         // Clear any previous cropper instance if it exists
         if (cropper) {
             cropper.destroy();
             cropper = null;  // Ensure cropper is fully reset
         }
-    
+
         // Set the new image source
         image.src = URL.createObjectURL(file);
         imageModal.style.display = 'block'; // Show the modal for cropping
-    
+
         // Ensure the image is fully loaded before initializing Cropper.js
         image.onload = function() {
             // Initialize Cropper.js on the uploaded image without an aspectRatio constraint
@@ -529,42 +571,42 @@
         };
     }
     });
-    
+
     // When the "Crop" button is clicked
     document.getElementById('cropButton').addEventListener('click', function() {
     if (cropper) {
         // Create a canvas from the cropped area
         let canvas = cropper.getCroppedCanvas();
-    
+
         // Create another canvas to draw the cropped image with a white background
         let canvasWithBg = document.createElement('canvas');
         canvasWithBg.width = canvas.width;
         canvasWithBg.height = canvas.height;
-    
+
         let ctx = canvasWithBg.getContext('2d');
-    
+
         // Fill the canvas with white background
         ctx.fillStyle = "#fff";
         ctx.fillRect(0, 0, canvasWithBg.width, canvasWithBg.height);
-    
+
         // Draw the cropped image over the white background
         ctx.drawImage(canvas, 0, 0);
-    
+
         // Convert the canvas to data URL (JPEG format)
         let croppedImageData = canvasWithBg.toDataURL('image/jpeg');
-    
+
         // Set the cropped image data to the preview
         $('.uploaded-img').attr('src', croppedImageData);
-    
+
         imageModal.style.display = 'none';
-    
+
         let croppedImageInput = document.createElement('input');
         croppedImageInput.type = 'hidden';
         croppedImageInput.name = 'cropped_image';
         croppedImageInput.value = croppedImageData;
-    
+
         document.querySelector('form').appendChild(croppedImageInput);
-    
+
         cropper.destroy();  // Destroy the cropper instance
         cropper = null;     // Reset cropper to null
         URL.revokeObjectURL(image.src);  // Clean up the object URL
@@ -573,6 +615,6 @@
     });
 
   </script>
-  
-  
+
+
 @endsection

@@ -25,14 +25,14 @@
   ])
 <div class="user-dashboard pt-20 pb-60">
     <div class="container">
-      
-  
-      
+
+
+
   <div class="row gx-xl-5">
-  
+
        @includeIf('vendors.partials.side-custom')
-  <div class="col-md-9">      
-  
+  <div class="col-md-9">
+
 
   @php
     $current_package = App\Http\Helpers\VendorPermissionHelper::packagePermission(Auth::guard('vendor')->user()->id);
@@ -86,7 +86,7 @@
 
 
       <div class="card">
-        
+
         <div class="card-body">
           <div class="row">
             <div class="col-lg-12 ">
@@ -94,6 +94,7 @@
                 <button type="button" class="close" data-dismiss="alert">×</button>
                 <ul></ul>
               </div>
+              <div id="imageCounter">Uploded Images: <span id="imageCount">0</span></div>
               <div class="col-lg-12">
                 <label for="" class="mb-2"><strong>{{ __('Gallery Images') }} **</strong></label>
                 <form action="{{ route('car.imagesstore') }}" id="my-dropzone" enctype="multipart/formdata"
@@ -125,7 +126,7 @@
                     </div>
                   </div>
                 </div> -->
-                 
+
                 <div class="row">
                   <div class="col-lg-8">
                               <div class="form-group ">
@@ -163,7 +164,7 @@
                   <div class="col-lg-6 col-sm-6 col-md-6">
                       <div class="form-group">
                         <div class="form-check form-check-inline">
-    
+
                             <label class="form-check-label" for="inlineRadio3">Ad Type</label>
                         </div>
                         <div class="form-check form-check-inline">
@@ -177,15 +178,24 @@
                     </div>
                   </div>
                 </div>
-                
-                 <div id = "searcfilters" class="row">  
-                                        
-                </div>  
-                <div id = "searcfiltersdata" class="row">  
-                                        
-                </div>  
-               
-            
+                <hr/>
+                <div class="col-lg-6 ">
+                  <div class="form-group">
+                    <label>{{ __('Optional YouTube Video') }} </label>
+                        <input type="text" class="form-control" name="youtube_video" placeholder="Enter youtube Video URL">
+                  </div>
+                </div>
+
+                <hr/>
+                 <div id = "searcfilters" class="row">
+
+                </div>
+                <div id = "searcfiltersdata" class="row">
+
+                </div>
+
+                <h4 style="color:gray">Ad Details </h4>
+
                 <div id="accordion" class="mt-3">
                   @foreach ($languages as $language)
                     <div class="">
@@ -212,7 +222,7 @@
                                   placeholder="Insert your ad Title">
                                   <small><i class="fa fa-info-circle"  aria-hidden="false"></i> Your ad title will be shown in search results</small>
                               </div>
-                            </div>                         
+                            </div>
                           </div>
 
                           <div class="row">
@@ -231,15 +241,7 @@
                                   <label>{{ __('Price') }}  &pound;</label>
                                   <input type="text" class="form-control" name="price" placeholder="Enter Price in  &pound;">
                                 </div>
-                              </div> 
-                              <div class="col-lg-6 ">
-                                <div class="form-group">
-                                  <label>{{ __('Optional YouTube Video') }} </label>
-                                      <input type="text" class="form-control" name="youtube_video" placeholder="Enter youtube Video URL">
-                                </div>
-                              </div>                  
-                
-                          
+                              </div>
                   <!-- <div class="col-lg-6">
                     <div class="form-group">
                       <label>{{ __('Status') }} *</label>
@@ -250,7 +252,7 @@
                     </div>
                   </div>  -->
                 </div>
-                
+
 
                          <!--  <div class="row">
                             <div class="col-lg-12">
@@ -272,7 +274,7 @@
                             </div> -->
                           </div>
                           </div>
-                         
+
                           <div class="row">
                             <div class="col">
                               @php $currLang = $language; @endphp
@@ -303,8 +305,8 @@
                                 <div class="col-lg-8 ">
                                   <div class="form-group">
                                     <h4>{{ __('Contact Details') }} </h4>
-                                    
-                                
+
+
                                   </div>
                                 </div>
                               </div>
@@ -323,12 +325,12 @@
                       <label>{{ __('Email') }}</label>
                       <input type="text" value="{{ $vendor->email }}" class="form-control" name="email" disabled>
                     </div>
-                  </div> 
+                  </div>
                   <div class="col-lg-6">
                     <label style="margin-left:8px; font-size: 1.2rem; color: #0d0c1b;">{{ __('Phone') }}</label>
                     <div class="form-group input-group">
-                      
-                      <input  type="tel" value="{{ $vendor->phone }}" class="form-control" name="phone" required> 
+
+                      <input  type="tel" value="{{ $vendor->phone }}" class="form-control" name="phone" required>
                        @if ($vendor->phone_verified == 1)
                         <button disabled   class="btn btn-success2" type="button">Verified</button>
                          @else
@@ -338,7 +340,7 @@
                       <p id="editErr_phone" class="mt-1 mb-0 text-danger em"></p>
                     </div>
                   </div>
-                  
+
                   <div class="col-lg-6">
                     <div class="form-group">
                      <label>{{ __('Area') }}</label>
@@ -351,13 +353,13 @@
                     @endforeach
                     </select>
                     </div>
-                  </div> 
+                  </div>
                   <div class="row">
                   <div class="col-lg-8 col-sm-12 col-md-12">
                       <div class="form-group checkbox-xl">
                       <div> <label>{{ __('Allow contact by') }}</label></div>
                         <div class="form-check form-check-inline">
-                          
+
                         <input class="form-check-input" type="checkbox" name="message_center" id="inlineRadio1" value="yes" required  checked>
                         <label class="form-check-label" for="message_center">Message Center</label>
                         </div>
@@ -373,11 +375,11 @@
                       <div class="form-group checkbox-xl">
                       <div> <label>{{ __('Are you a professional trader?') }}</label></div>
                         <div class="form-check form-check-inline">
-                          
+
                         <input class="form-check-input traderradio" type="checkbox" name="traderstatus" id="inlineRadio1"     @if ($vendor->trader == 1) checked @endif>
                         <label class="form-check-label" for="message_center">Yes, I'm a trader</label>
                         </div>
-                        
+
                     </div>
                   </div>
                 </div>
@@ -387,8 +389,8 @@
                                 <label>{{ __('Business Name*') }} </label>
                                 <input type="text" value="{{ $vendor->vendor_info->business_name }}" class="form-control" name="business_name">
                               </div>
-                            </div>                         
-                          
+                            </div>
+
                             <div class="col-lg-12 chkbox" @if ($vendor->trader == 0) style="display: none;" @endif>
                               <div class="form-group ">
                                 <label>{{ __('Business Address') }} </label>
@@ -397,52 +399,52 @@
                               </div>
                             </div>
                             <div class="col-lg-8 chkbox" @if ($vendor->trader == 0) style="display: none;" @endif>
-                            <label style="margin-left:8px; font-size: 1.2rem; color: #0d0c1b;">{{ __('VAT Number') }}</label> 
+                            <label style="margin-left:8px; font-size: 1.2rem; color: #0d0c1b;">{{ __('VAT Number') }}</label>
                             <div class="form-group input-group">
-                           
+
                                 <input type="text" value="{{ $vendor->vendor_info->vat_number }}" class="form-control" name="vat_number">
                                 @if ($vendor->vendor_info->vatVerified == 1)
                                 <button disabled  title="Verified"  class="btn btn-success2" type="button"><i class='fa fa-check-circle fa-lg' aria-hidden='true'></i></button>
                                 @endif
                               </div>
-                            </div>    
-                            </div> 
+                            </div>
+                            </div>
 
-                  <div id = "payplans" class="row">  
-                    
-                    
-                  </div>  
-                  <div id ="packageSelected" class="row"></div> 
+                  <div id = "payplans" class="row">
+
+
+                  </div>
+                  <div id ="packageSelected" class="row"></div>
                   <div class="col-lg-12">
                   <div class="form-group text-center">
                   <button style="width:40%" type="submit" id="CarSubmit" data-can_car_add="{{ $can_car_add }}" class="btn btn-success btn-lg btn-block">
-                  
+
                 {{ __('Sell Now') }}
-              </button></div> </div> 
+              </button></div> </div>
               </form>
-                </div> 
-               
-                
-             
+                </div>
+
+
+
             </div>
           </div>
         </div>
-       
+
         <div class="card-footer">
           <div class="row">
             <div class="col-12 text-center">
-              
+
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-  
+
   </div>
   </div>
   </div>
-  </div> 
+  </div>
 @endsection
 @php
   $languages = App\Models\Language::get();
@@ -456,7 +458,7 @@
       } else {
           $direction = 'form-group';
       }
-  
+
       $labels .= "<div class='$direction'><input type='text' name='" . $label_name . "' class='form-control' placeholder='Label ($language->name)'></div>";
       $values .= "<div class='$direction'><input type='text' name='$value_name' class='form-control' placeholder='Value ($language->name)'></div>";
   }
@@ -495,7 +497,7 @@ option {
 }
 
 .form-check [type="checkbox"]:not(:checked), .form-check [type="checkbox"]:checked {
-  
+
     left: inherit !important;
 }
 
@@ -523,16 +525,16 @@ option {
       -webkit-filter: blur(8px);
       filter: blur(0px);
     }
-    .checkbox-xl .form-check-input 
+    .checkbox-xl .form-check-input
 {
     scale: 1.5;
-    
+
 }
-.checkbox-xl .form-check-label 
+.checkbox-xl .form-check-label
 {
     padding-left: 25px;
-    
-    
+
+
 }
 .form-check .form-check-input{
   margin-left: .0em !important;
@@ -707,5 +709,5 @@ button.rotate-btn {
   </script>
   <script type="text/javascript" src="{{ asset('assets/js/admin-partial.js?v=0.2') }}"></script>
   <script type="text/javascript" src="{{ asset('assets/js/admin-dropzone.js?v=0.13') }}"></script>
-  
+
 @endsection

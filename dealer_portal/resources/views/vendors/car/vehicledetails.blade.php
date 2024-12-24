@@ -1,38 +1,38 @@
   <div class="card car_category"  >
-        
+
                 <div class="card-body">
-                
+
                 <div class="row " >
                   <div class="col-lg-8 ">
                     <div class="form-group">
-                      <h3>{{ __('Add Details') }} </h3>
+                      <h3>{{ __('Ad Details') }} </h3>
                       <!--<label>Get all your vehicle details instantly</label>-->
-                  
+
                     </div>
                   </div>
-                  
+
                 </div>
-               
+
             <div class="row us_car_features" >
-                
+
                 <div class="col-lg-2">
                     <div class="form-group">
                       <label id="labael_new"> New </label>
                       &nbsp;&nbsp; <input type="radio"  name="what_type" value="brand_new" onchange="hide_owner_if_new(this);saveDraftData(this , 'what_type')"  id="what_type"  @if($draft_ad == true && empty($draft_ad->what_type) ) checked @endif @if($draft_ad == true && !empty($draft_ad->what_type) && $draft_ad->what_type == 'brand_new') checked @endif >
                     </div>
                 </div>
-                
+
                 <div class="col-lg-2">
                     <div class="form-group">
                       <label id="labael_used" >Used </label>
                       &nbsp;&nbsp; <input type="radio"   name="what_type" value="used" onchange="hide_owner_if_new(this);saveDraftData(this , 'what_type')"  id="what_type"  @if($draft_ad == true && empty($draft_ad->what_type) ) checked @endif @if($draft_ad == true && !empty($draft_ad->what_type) && $draft_ad->what_type == 'used') checked @endif >
                     </div>
                 </div>
-                
+
                 <div class="col-lg-8"></div>
-                
-                
-              @if ( in_array('registration', json_decode($categories->filters)) || in_array('registration_no', json_decode($categories->filters)) )   
+
+
+              @if ( in_array('registration', json_decode($categories->filters)) || in_array('registration_no', json_decode($categories->filters)) )
                 <div class="col-xl-6 col-lg-6 col-md-6 col-12 ">
                     <div class="form-group">
                           <label>Enter vehicle registration *</label>
@@ -40,85 +40,85 @@
                               <input type="text" class="form-control validateTextBoxs" name="vehicle_reg" style="border-top-right-radius:0px;border-bottom-right-radius:0px;" placeholder="Enter vehicle registration" id="vehicle_reg" >
                               <button class="btn btn-sm btn-success" type="button" onclick="getVehicleData(this , 1)" style="border-top-left-radius:0px;border-bottom-left-radius:0px;"><i class="fa fa-search" aria-hidden="true"></i></button>
                           </div>
-                        
+
                           <div id="result_status"></div>
                     </div>
                 </div>
                 @endif
-                
-            @if (in_array('make', json_decode($categories->filters))) 
+
+            @if (in_array('make', json_decode($categories->filters)))
                 <div class="col-xl-6 col-lg-6 col-md-6 col-12 ">
                   <div class="form-group">
                     @php
-                    
+
                         $brands = App\Models\Car\Brand::where('cat_id', $categories->id)
                         ->where('status', 1)
                         ->withCount('cars')
                         ->orderBy('cars_count', 'desc')
                         ->orderBy('name', 'asc')
-                        ->take(10) 
+                        ->take(10)
                         ->get();
-                        
-                        
+
+
                         $otherBrands = App\Models\Car\Brand::where('cat_id', $categories->id)
                         ->where('status', 1)
                         ->whereNotIn('id', $brands->pluck('id'))
                         ->orderBy('name', 'asc')
                         ->get();
-                        
+
                     @endphp
-                
+
                     <label>{{ __('Make') }} *</label>
                     <select name="en_brand_id"
                       class="form-control  validateTextBoxs" onchange="getModel(this);saveDraftData(this , 'make')" id="make" data-code="en">
                       <option value="" >{{ __('Select make') }}</option>
                       <option disabled>-- Popular Brands --</option>
                       @foreach ($brands as $brand)
-                      
+
                         @php
-                        
+
                         if($draft_ad == true && !empty($draft_ad->make) && $draft_ad->make == $brand->id)
                         {
                             $brandId = $draft_ad->make;
-                        } 
-                        
+                        }
+
                         @endphp
-                
+
                         <option value="{{ $brand->id }}" @if($draft_ad == true && !empty($draft_ad->make) && $draft_ad->make == $brand->id) selected @endif>{{ $brand->name }}</option>
                       @endforeach
                       <option disabled>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-- Other Brands --</option>
                       @foreach ($otherBrands as $brand)
-                      
+
                         @php
-                        
+
                         if($draft_ad == true && !empty($draft_ad->make) && $draft_ad->make == $brand->id)
                         {
                             $brandId = $draft_ad->make;
-                        } 
-                        
+                        }
+
                         @endphp
-                        
+
                         <option value="{{ $brand->id }}" @if($draft_ad == true && !empty($draft_ad->make) && $draft_ad->make == $brand->id) selected @endif >{{ $brand->name }}</option>
                       @endforeach
                     </select>
                   </div>
                 </div>
-             
-                 
-                 
+
+
+
                 <div class="col-xl-6 col-lg-6 col-md-6 col-12 ">
                   <div class="form-group">
-                
+
                     <label>{{ __('Model') }} *</label>
                     @php
-                    if(isset($brandId)) 
+                    if(isset($brandId))
                     {
                         $models = App\Models\Car\CarModel::where('brand_id', $brandId)->get();
-                    } 
+                    }
                     @endphp
-        
+
                     <select name="en_car_model_id" class="form-control validateTextBoxs en_car_brand_model_id" onchange="saveDraftData(this , 'model')"   id="carModel">
-                    @if(isset($brandId)) 
+                    @if(isset($brandId))
                     @foreach ($models as $model)
                         <option    value="{{ $model->id }}"   @if($draft_ad == true && !empty($draft_ad->model) && $draft_ad->model == $model->id) selected @endif    >{{ $model->name }}</option>
                     @endforeach
@@ -129,18 +129,18 @@
                   </div>
                 </div>
                 @endif
-                
-                @if (in_array('year', json_decode($categories->filters))) 
-                
+
+                @if (in_array('year', json_decode($categories->filters)))
+
                 <div class="col-xl-6 col-lg-6 col-md-6 col-12 ">
                 <div class="form-group">
                   <label>{{ __('Year') }} *</label>
-                  <input type="number" class="form-control validateTextBoxs" oninput="checkYearAgo(this)" 
+                  <input type="number" class="form-control validateTextBoxs" oninput="checkYearAgo(this)"
                   value="@if($draft_ad == true && !empty($draft_ad->year)){{$draft_ad->year}}@endif" onfocusout="saveDraftData(this , 'year')" name="year" placeholder="Enter Year" id="carYear" >
                 </div>
                 </div>
                   @endif
-          
+
             @if (in_array('fuel_types', json_decode($categories->filters)))
             <div class="col-xl-6 col-lg-6 col-md-6 col-12 ">
               <div class="form-group">
@@ -148,25 +148,25 @@
                   $fuel_types = App\Models\Car\FuelType::where('status', 1)
                       ->get();
                 @endphp
-            
+
                 <label>{{ __('Fuel Type') }} *</label>
                 <select name="en_fuel_type_id" id="fuelType" onchange="changeVal();saveDraftData(this , 'fuel')" class="form-control validateTextBoxs" >
                   <option value="" >{{ __('Select') }}</option>
-            
+
                   @foreach ($fuel_types as $fuel_type)
-                  
+
                   @if(( $categories->id == 48 || $categories->id == 62) && $fuel_type->name == 'Diesel' )
                         <option value="{{ $fuel_type->id }}" style="display:none;"  @if($draft_ad == true && !empty($draft_ad->fuel) && $draft_ad->fuel == $fuel_type->id) selected @endif >{{ $fuel_type->name }}</option>
                   @else
                         <option value="{{ $fuel_type->id }}"  @if($draft_ad == true && !empty($draft_ad->fuel) && $draft_ad->fuel == $fuel_type->id) selected @endif >{{ $fuel_type->name }}</option>
                   @endif
-            
+
                   @endforeach
                 </select>
               </div>
             </div>
             @endif
-                 
+
             @if (in_array('engine', json_decode($categories->filters)))
             <div class="col-xl-6 col-lg-6 col-md-6 col-12 " id="new_engine_caacity">
             <div class="form-group">
@@ -174,12 +174,12 @@
               <input type="text" class="form-control validateTextBoxs" name="engineCapacity" value="@if($draft_ad == true && !empty($draft_ad->engine)) {{$draft_ad->engine}}  @endif" onfocusout="saveDraftData(this , 'engine')" placeholder="Enter Size" id="EngineCapacity" >
             </div>
             </div>
-            
+
             @endif
-                   
-                 
+
+
                   @if (in_array('transmision_type', json_decode($categories->filters)))
-                   <!-- editable --> 
+                   <!-- editable -->
                    <div class="col-xl-6 col-lg-6 col-md-6 col-12 ">
                               <div class="form-group">
                                 @php
@@ -199,36 +199,36 @@
                               </div>
                             </div>
                               @endif
-                    
-                    @if (in_array('body_type', json_decode($categories->filters)))          
+
+                    @if (in_array('body_type', json_decode($categories->filters)))
                     <div class="col-xl-6 col-lg-6 col-md-6 col-12 ">
                     <div class="form-group">
-                        
+
                     @php
                         $body_types = App\Models\Car\BodyType::where('status', 1)->where('cat_id' , $categories->id)->orderBy('serial_number', 'asc')->get();
-                        
+
                         if($body_types->count() == 0)
                         {
                             $body_types =  App\Models\Car\BodyType::where('status', 1)->orderBy('serial_number', 'asc')->get();
                         }
                     @endphp
-                    
+
                     <label>{{ __('Body Type') }} </label>
                     <select name="body_type_id" id="bodyType" class="form-control" onchange="saveDraftData(this , 'body')" >
                     <option value="" >Please Select Body Type</option>
                     @foreach ($body_types as $body_type)
-                    
+
                     <option value="{{ $body_type->id }}"   @if($draft_ad == true && !empty($draft_ad->body) && $draft_ad->body == $body_type->id) selected @endif >{{ $body_type->name }}
                     </option>
                     @endforeach
                     </select>
                     </div>
                     </div>
-                    
+
                     @endif
-                  
+
                     @if (in_array('doors', json_decode($categories->filters)))
-                    
+
                     <div class="col-xl-6 col-lg-6 col-md-6 col-12 ">
                     <div class="form-group">
                     <label>{{ __('Doors') }} *</label>
@@ -244,22 +244,22 @@
                     </select>
                     </div>
                     </div>
-                    
+
                     @endif
-                  
+
                     @if (in_array('colour', json_decode($categories->filters)))
-                    
+
                     <div class="col-xl-6 col-lg-6 col-md-6 col-12 ">
                     <div class="form-group ">
                     @php
                       $colour = \DB::table('car_colors')->where('status', 1)
                           ->get(['id' , 'name']);
                     @endphp
-                    
+
                     <label>{{ __('Colour') }} *</label>
                     <select name="en_car_color_id" class="form-control validateTextBoxs" id="carColour" onchange="saveDraftData(this , 'color')">
                       <option value="">{{ __('Select Colour') }}</option>
-                    
+
                       @foreach ($colour as $colour)
                         <option value="{{ $colour->id }}" @if($draft_ad == true && !empty($draft_ad->color) && $draft_ad->color == $colour->id) selected @endif>{{ $colour->name }}</option>
                       @endforeach
@@ -267,9 +267,9 @@
                     </div>
                     </div>
                     @endif
-                   
+
                     @if (in_array('seat_count', json_decode($categories->filters)))
-                    
+
                     <div class="col-xl-6 col-lg-6 col-md-6 col-12 ">
                     <div class="form-group">
                     <label>{{ __('Seats') }} *</label>
@@ -286,22 +286,22 @@
                     </div>
                     </div>
                     @endif
-                
-                    @if (in_array('mileage', json_decode($categories->filters))) 
-                    
+
+                    @if (in_array('mileage', json_decode($categories->filters)))
+
                     <div class="col-xl-6 col-lg-6 col-md-6 col-12 ">
                     <div class="form-group">
                       <label>{{ __('Add your mileage') }} (M) *</label>
-                      <input type="number" class="form-control validateTextBoxs" name="mileage" step="any"  value="@if($draft_ad == true && !empty($draft_ad->milage)){{$draft_ad->milage}}@endif" onfocusout="saveDraftData(this , 'milage')" id="Mileage" placeholder="Enter Mileage"> 
+                      <input type="number" class="form-control validateTextBoxs" name="mileage" step="any"  value="@if($draft_ad == true && !empty($draft_ad->milage)){{$draft_ad->milage}}@endif" onfocusout="saveDraftData(this , 'milage')" id="Mileage" placeholder="Enter Mileage">
                     </div>
                     </div>
-                    
+
                     @endif
-                   
+
                 @if (in_array('owners', json_decode($categories->filters)))
                 <div class="col-xl-6 col-lg-6 col-md-6 col-12 " id="ownerParentDiv">
                 <div class="form-group">
-                <label>{{ __('Number of Owners') }} *</label>
+                <label>{{ __('Select Previous Owners') }} *</label>
                 <select name="number_of_owners" id="" class="form-control validateTextBoxs" onchange="saveDraftData(this , 'owners')">
                 <option value="1"  @if($draft_ad == true && !empty($draft_ad->owners) && $draft_ad->owners == 1 ) selected @endif >1</option>
                 <option value="2"   @if($draft_ad == true && !empty($draft_ad->owners) && $draft_ad->owners == 2 ) selected @endif>2</option>
@@ -315,27 +315,27 @@
                 </div>
                 </div>
                 @endif
-                 
-                 
+
+
                 @if (in_array('road-tax', json_decode($categories->filters)))
-                
+
                 <div class="col-xl-6 col-lg-6 col-md-6 col-12 ">
                 <div class="form-group">
                 @php
                 // Determine the value to display
                 $taxValue = !empty($draft_ad->tax) ? $draft_ad->tax : (isset($check_post->tax_fee) ? $check_post->tax_fee : '');
                 @endphp
-                
+
                 <label>Annual Road Tax </label>
                 <input type="number" class="form-control validateTextBoxs" name="annual_road_tax" onfocusout="saveDraftData(this , 'tax')"    value="{{ $taxValue }}"  placeholder="Enter Annual Road Tax" id="carRoadTax" >
-                
-                
+
+
                 </div>
                 </div>
                 @endif
-        
+
                  <input type="hidden" value="{{Auth::guard('vendor')->user()->vendor_info->city}}" name="current_area_regis" />
-        
+
                   <div class="col-lg-12">
                     <div class="form-group">
                      <hr>
@@ -348,14 +348,14 @@
                       &nbsp;&nbsp; <input type="checkbox"  style="zoom: 1.3;position: relative;top: 1px;" @if($draft_ad == true && !empty($draft_ad->sale) && $draft_ad->sale == '1') checked @endif onchange="saveDraftData(this , 'sale')" name="is_sale" value="1"  id="sale" >
                     </div>
                   </div>
-                  
+
                    <div class="col-2"  style="width: 130px;">
                     <div class="form-group" style="padding-left: 0px;padding-right: 0px;">
                       <label style="    font-size: 18px !important;" id="labael_sold" >Sold </label>
                       &nbsp;&nbsp; <input type="checkbox"  style="zoom: 1.3;position: relative;top: 1px;" onchange="saveDraftData(this , 'sold')" @if($draft_ad == true && !empty($draft_ad->sold) && $draft_ad->sold == '1') checked @endif  name="is_sold" value="1"  id="sold" >
                     </div>
                   </div>
-                  
+
                   <div class="col">
                     <div class="form-group">
                       <label style="    font-size: 18px !important;"  id="labael_reduced_price">Reduced Price </label>
@@ -379,28 +379,28 @@
 
 
                 </div>
-                
-                
+
+
                      </div>
          </div>
-  
+
   @if($categories->id == '44')
-    
+
         <div class="card car_category us_key_feture"  >
 
         <div class="card-body">
         <div class="row">
-    
+
                 <div class="col-lg-12" style="margin-bottom: 1rem;cursor:pointer;" onclick="openClosestBox(this)">
                     <b style="font-size: 20px;">Comfort & Convenience </b>
-                    
+
                     <i class="fa fa-caret-down" style="float: right;font-size: 1.5rem;" aria-hidden="true"></i>
                 </div>
 
-      
+
                 <div class="col-xl-6 col-lg-6 col-md-6 col-12 us_hide_by_default">
                     <div class="form-group ">
-                       
+
                          <input class="chekbox" name="comfort_n_convenience[]" value="air_conditioning" type="checkbox"    {{ in_array('air_conditioning', $key_features) ? 'checked' : '' }}   />
                          <label class="lbel">Air Conditioning </label>
                     </div>
@@ -410,7 +410,7 @@
 
                 <div class="col-xl-6 col-lg-6 col-md-6 col-12 us_hide_by_default">
                     <div class="form-group ">
-                        
+
                          <input class="chekbox" name="comfort_n_convenience[]" value="climate_control" type="checkbox"  {{ in_array('climate_control', $key_features) ? 'checked' : '' }} />
                          <label  class="lbel">Climate control </label>
                     </div>
@@ -420,32 +420,32 @@
 
                 <div class="col-xl-6 col-lg-6 col-md-6 col-12 us_hide_by_default">
                     <div class="form-group ">
-                         
+
                          <input  class="chekbox" name="comfort_n_convenience[]" value="dual_zone_climate_control" type="checkbox"  {{ in_array('dual_zone_climate_control', $key_features) ? 'checked' : '' }} />
                          <label  class="lbel">Dual zone  climate control </label>
                     </div>
                 </div>
 
-                
+
                 <div class="col-xl-6 col-lg-6 col-md-6 col-12 us_hide_by_default">
                     <div class="form-group ">
                          <input class="chekbox" name="seat_n_vantilation[]" value="seat_vantilation" type="checkbox"  {{ in_array('seat_vantilation', $key_features) ? 'checked' : '' }}/>
                          <label class="lbel">Seat Ventilation</label>
                     </div>
                 </div>
-                
-                
+
+
                  <div class="col-xl-6 col-lg-6 col-md-6 col-12 us_hide_by_default">
                     <div class="form-group ">
                          <input class="chekbox" name="electric_n_handbrake[]" value="electric_handbrake" type="checkbox" {{ in_array('electric_handbrake', $key_features) ? 'checked' : '' }} />
                          <label class="lbel">Electric Handbrake</label>
                     </div>
                 </div>
-                
+
 
                 <div class="col-xl-6 col-lg-6 col-md-6 col-12 us_hide_by_default">
                     <div class="form-group ">
-                       
+
                          <input class="chekbox" name="comfort_n_convenience[]" value="multi_zone_climate_control"  type="checkbox"  {{ in_array('multi_zone_climate_control', $key_features) ? 'checked' : '' }}/>
                          <label class="lbel">Multi zone  climate control</label>
                     </div>
@@ -454,7 +454,7 @@
 
                 <div class="col-xl-6 col-lg-6 col-md-6 col-12 us_hide_by_default">
                     <div class="form-group ">
-                        
+
                          <input class="chekbox" name="comfort_n_convenience[]" value="armrest" type="checkbox" {{ in_array('armrest', $key_features) ? 'checked' : '' }} />
                          <label  class="lbel">Armrest </label>
                     </div>
@@ -464,7 +464,7 @@
 
                 <div class="col-xl-6 col-lg-6 col-md-6 col-12 us_hide_by_default">
                     <div class="form-group ">
-                         
+
                          <input  class="chekbox"  name="comfort_n_convenience[]" value="keyless_entry" type="checkbox"  {{ in_array('keyless_entry', $key_features) ? 'checked' : '' }}/>
                          <label  class="lbel">Keyless Entry </label>
                     </div>
@@ -474,7 +474,7 @@
 
                 <div class="col-xl-6 col-lg-6 col-md-6 col-12 us_hide_by_default">
                     <div class="form-group ">
-                       
+
                          <input class="chekbox" name="comfort_n_convenience[]" value="electrically_adjustable_seats" type="checkbox"  {{ in_array('electrically_adjustable_seats', $key_features) ? 'checked' : '' }} />
                          <label class="lbel">Electrically adjustable seats </label>
                     </div>
@@ -484,7 +484,7 @@
 
                 <div class="col-xl-6 col-lg-6 col-md-6 col-12 us_hide_by_default">
                     <div class="form-group ">
-                        
+
                          <input class="chekbox"  name="comfort_n_convenience[]" value="heated_windshield" type="checkbox" {{ in_array('heated_windshield', $key_features) ? 'checked' : '' }} />
                          <label  class="lbel">Heated Windshield </label>
                     </div>
@@ -494,7 +494,7 @@
 
                 <div class="col-xl-6 col-lg-6 col-md-6 col-12 us_hide_by_default">
                     <div class="form-group ">
-                         
+
                          <input  class="chekbox"  name="comfort_n_convenience[]" value="electric_boot" type="checkbox"  {{ in_array('electric_boot', $key_features) ? 'checked' : '' }} />
                          <label  class="lbel">Electric boot </label>
                     </div>
@@ -503,7 +503,7 @@
 
                 <div class="col-xl-6 col-lg-6 col-md-6 col-12 us_hide_by_default">
                     <div class="form-group ">
-                       
+
                          <input class="chekbox"  name="comfort_n_convenience[]" value="electric_side_mirrors" type="checkbox" {{ in_array('electric_side_mirrors', $key_features) ? 'checked' : '' }}  />
                          <label class="lbel">Electric side mirrors </label>
                     </div>
@@ -515,7 +515,7 @@
 
                 <div class="col-xl-6 col-lg-6 col-md-6 col-12 us_hide_by_default">
                     <div class="form-group ">
-                         
+
                          <input  class="chekbox" name="comfort_n_convenience[]" value="heated_seats" type="checkbox"  {{ in_array('heated_seats', $key_features) ? 'checked' : '' }} />
                          <label  class="lbel">Heated seats</label>
                     </div>
@@ -524,7 +524,7 @@
 
                 <div class="col-xl-6 col-lg-6 col-md-6 col-12 us_hide_by_default">
                     <div class="form-group ">
-                       
+
                          <input class="chekbox" name="comfort_n_convenience[]" value="heated_steering_wheel" type="checkbox"  {{ in_array('heated_steering_wheel', $key_features) ? 'checked' : '' }}/>
                          <label class="lbel">Heated steering wheel </label>
                     </div>
@@ -534,7 +534,7 @@
 
                 <div class="col-xl-6 col-lg-6 col-md-6 col-12 us_hide_by_default">
                     <div class="form-group ">
-                        
+
                          <input class="chekbox" name="comfort_n_convenience[]" value="lumbar_support" type="checkbox" {{ in_array('lumbar_support', $key_features) ? 'checked' : '' }} />
                          <label  class="lbel">Lumbar support </label>
                     </div>
@@ -544,7 +544,7 @@
 
                 <div class="col-xl-6 col-lg-6 col-md-6 col-12 us_hide_by_default">
                     <div class="form-group ">
-                         
+
                          <input  class="chekbox" name="comfort_n_convenience[]" value="massage_seats" type="checkbox"  {{ in_array('massage_seats', $key_features) ? 'checked' : '' }} />
                          <label  class="lbel">Massage seats </label>
                     </div>
@@ -553,7 +553,7 @@
 
                 <div class="col-xl-6 col-lg-6 col-md-6 col-12 us_hide_by_default">
                     <div class="form-group ">
-                       
+
                          <input class="chekbox"  name="comfort_n_convenience[]" value="multi_func_steering_wheel" type="checkbox" {{ in_array('multi_func_steering_wheel', $key_features) ? 'checked' : '' }} />
                          <label class="lbel">Multi function steering wheel </label>
                     </div>
@@ -563,7 +563,7 @@
 
                 <div class="col-xl-6 col-lg-6 col-md-6 col-12 us_hide_by_default">
                     <div class="form-group ">
-                        
+
                          <input class="chekbox" name="comfort_n_convenience[]" value="rain_sensor" type="checkbox" {{ in_array('rain_sensor', $key_features) ? 'checked' : '' }}/>
                          <label  class="lbel">Rain sensor </label>
                     </div>
@@ -572,7 +572,7 @@
 
                 <div class="col-xl-6 col-lg-6 col-md-6 col-12 us_hide_by_default">
                     <div class="form-group ">
-                       
+
                          <input class="chekbox" name="comfort_n_convenience[]" value="rain_sensor" type="checkbox"  {{ in_array('rain_sensor', $key_features) ? 'checked' : '' }}/>
                          <label class="lbel">Spare tyre </label>
                     </div>
@@ -580,10 +580,10 @@
 
 
 
-               
+
                 <div class="col-xl-6 col-lg-6 col-md-6 col-12 us_hide_by_default">
                     <div class="form-group ">
-                         
+
                          <input  class="chekbox" name="comfort_n_convenience[]" value="electric_windows" type="checkbox" {{ in_array('electric_windows', $key_features) ? 'checked' : '' }} />
                          <label  class="lbel">Electric windows </label>
                     </div>
@@ -592,7 +592,7 @@
 
                 <div class="col-xl-6 col-lg-6 col-md-6 col-12 us_hide_by_default">
                     <div class="form-group ">
-                       
+
                          <input class="chekbox" name="comfort_n_convenience[]" value="gear_shift_paddles" type="checkbox"  {{ in_array('gear_shift_paddles', $key_features) ? 'checked' : '' }}/>
                          <label class="lbel">Gear Shift Paddles </label>
                     </div>
@@ -600,7 +600,7 @@
 
                 <div class="col-xl-6 col-lg-6 col-md-6 col-12 us_hide_by_default">
                     <div class="form-group ">
-                       
+
                          <input class="chekbox" name="comfort_n_convenience[]" value="split_rear_seats" type="checkbox"  {{ in_array('split_rear_seats', $key_features) ? 'checked' : '' }} />
                          <label class="lbel">Split rear seats</label>
                     </div>
@@ -618,10 +618,10 @@
 <div class="card-body">
 <div class="row">
 
-                
+
                  <div class="col-lg-12" style="margin-bottom: 1rem;cursor:pointer;" onclick="openClosestBox(this)">
                     <b style="font-size: 20px;">Media & Conectivity </b>
-                    
+
                     <i class="fa fa-caret-down" style="float: right;font-size: 1.5rem;" aria-hidden="true"></i>
                 </div>
 
@@ -704,7 +704,7 @@
     </div>
 </div>
 
-                
+
 
    </div>
 </div>
@@ -718,11 +718,11 @@
 
             <div class="col-lg-12" style="margin-bottom: 1rem;cursor:pointer;" onclick="openClosestBox(this)">
                 <b style="font-size: 20px;">Assistance & Utility </b>
-                
+
                 <i class="fa fa-caret-down" style="float: right;font-size: 1.5rem;" aria-hidden="true"></i>
             </div>
-                
-              
+
+
               <div class="col-xl-6 col-lg-6 col-md-6 col-12 us_hide_by_default">
     <div class="form-group">
         <input class="chekbox" name="assistance_n_utility[]" value="adaptive_cruise_control" type="checkbox" {{ in_array('adaptive_cruise_control', $key_features) ? 'checked' : '' }} />
@@ -845,11 +845,11 @@
 <div class="card car_category us_key_feture"  >
 <div class="card-body">
 <div class="row">
-    
+
 
             <div class="col-lg-12" style="margin-bottom: 1rem;cursor:pointer;" onclick="openClosestBox(this)">
             <b style="font-size: 20px;">Styling & Appearance </b>
-            
+
             <i class="fa fa-caret-down" style="float: right;font-size: 1.5rem;" aria-hidden="true"></i>
             </div>
 
@@ -931,7 +931,7 @@
 </div>
 
 
-    
+
    </div>
 </div>
 </div>
@@ -940,11 +940,11 @@
  <div class="card car_category us_key_feture"  >
 <div class="card-body">
 <div class="row">
-    
+
 
 <div class="col-lg-12" style="margin-bottom: 1rem;cursor:pointer;" onclick="openClosestBox(this)">
             <b style="font-size: 20px;">Lighting & Illumination </b>
-            
+
             <i class="fa fa-caret-down" style="float: right;font-size: 1.5rem;" aria-hidden="true"></i>
             </div>
 
@@ -1018,23 +1018,23 @@
     </div>
 </div>
 
-    
+
    </div>
 </div>
-</div>   
+</div>
 
 
 
     <div class="card car_category us_key_feture"  >
     <div class="card-body">
     <div class="row">
-        
+
      <div class="col-lg-12" style="margin-bottom: 1rem;cursor:pointer;" onclick="openClosestBox(this)">
             <b style="font-size: 20px;">Safety & Security </b>
-            
+
             <i class="fa fa-caret-down" style="float: right;font-size: 1.5rem;" aria-hidden="true"></i>
             </div>
-           
+
 
               <div class="col-xl-6 col-lg-6 col-md-6 col-12 us_hide_by_default">
     <div class="form-group">
@@ -1162,23 +1162,23 @@
     </div>
 </div>
 
- 
+
    </div>
 </div>
-</div>    
-    
-    
-    
+</div>
+
+
+
      <div class="card car_category us_key_feture" >
 <div class="card-body">
 <div class="row">
-    
+
      <div class="col-lg-12" style="margin-bottom: 1rem;cursor:pointer;" onclick="openClosestBox(this)">
             <b style="font-size: 20px;">Performance & Handling </b>
-            
+
             <i class="fa fa-caret-down" style="float: right;font-size: 1.5rem;" aria-hidden="true"></i>
             </div>
-    
+
               <div class="col-xl-6 col-lg-6 col-md-6 col-12 us_hide_by_default">
     <div class="form-group">
         <input class="chekbox" name="performance_n_handling[]" value="air_suspension" type="checkbox" {{ in_array('air_suspension', $key_features) ? 'checked' : '' }} />
@@ -1200,12 +1200,12 @@
     </div>
 </div>
 
-    
+
     </div>
 </div>
-</div>    
-    
- 
+</div>
 
-    
+
+
+
   @endif

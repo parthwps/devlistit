@@ -9,11 +9,19 @@
      Dropzone.autoDiscover = false;
 
         $(document).ready(function() {
+
           function updateImageCount() {
+
             let count = $(".dropzone .dz-preview").length;
             let remaining = 15 - count; // Calculate remaining images
+            if (count > 15) {
+              toastr.error("You can upload a maximum of 15 images.");
+              remaining = 0; // Ensure remaining count does not go negative
+              count = 15;
+          }
             $("#imageCount").text(`${count} uploaded, ${remaining} remaining out of 15`).css({"color": "red", "font-weight": "bold"}); // Update text to show remaining count
           }
+
 
             // Dropzone initialization
             var myDropzone = new Dropzone("#my-dropzone", {

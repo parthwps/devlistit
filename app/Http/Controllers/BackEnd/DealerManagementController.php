@@ -124,6 +124,7 @@ class DealerManagementController extends Controller
         ->pluck('total_ads', 'vendor_id')
         ->toArray();
 
+
         return view('backend.end-user.dealer.index', compact('vendors' ,  'startdate' , 'enddate','totalAdsByDealer' ));
     }
 

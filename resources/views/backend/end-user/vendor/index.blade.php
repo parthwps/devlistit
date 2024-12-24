@@ -89,7 +89,34 @@
                           </td>
                           <td>{{ ucwords($vendor->username) }}</td>
                           <td>{{ ucwords($vendor->email) }}</td>
-                          <td>{{ empty($vendor->phone) ? '-' : $vendor->phone }}</td>
+                          {{-- <td>{{ empty($vendor->phone) ? '-' : $vendor->phone }}</td> --}}
+                          <td>
+                            @if (empty($vendor->phone))
+                                -
+                            @else
+                            {{ strpos($vendor->phone, '7624') === 0 ? '0' . $vendor->phone : $vendor->phone }}
+                            @php
+                                    $isIsleOfMan = Str::startsWith($vendor->phone, '07624') || Str::startsWith($vendor->phone, '7624');
+                                    // Check if the phone starts with 07624
+                                @endphp
+
+                                <!-- Inline Verification Status -->
+                                @if ($isIsleOfMan)
+                                    <!-- Green Status for Isle of Man -->
+                                    <br/>
+                                    <span style="color: green; font-weight: bold; margin-left: 10px;display:contents;font-size:13px;">
+                                        ✅ Isle of Man
+                                    </span>
+                                @else($vendor->phone_verified == 1)
+                                    <!-- Orange Status for Verified -->
+                                    <br/>
+                                    <span style="color: orange; font-weight: bold; margin-left: 10px;display:contents;font-size:13px;">
+                                      🟧 Verified
+                                    </span>
+                                @endif
+                            @endif
+                        </td>
+
                           <td style="width: 150px;">{{ date('d F,Y' , strtotime($vendor->created_at)) }}</td>
                           <td>
                             <form id="accountStatusForm-{{ $vendor->id }}" class="d-inline-block"

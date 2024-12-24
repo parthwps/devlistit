@@ -540,13 +540,13 @@
                                                 </div>
                                             </div>
 
-                                            <div class="col-lg-6">
+                                            <div class="col-lg-9">
                                                 <label
                                                     style="margin-top: 5px;margin-left: 10px;font-size: 21px;color: #7b7b7b;">{{ __('Phone') }}*</label>
                                                 <div class="form-group input-group" style="margin-top: 10px;">
 
                                                     <div class="d-flex col-lg-12" style="    margin-top: -12px;">
-                                                        <div class="custom-select" style="width:200px;">
+                                                        <div class="custom-select" style="width:230px;">
                                                             <div class="select-selected bg-light">
 
                                                                 @php
@@ -600,9 +600,11 @@
                                                             value="{{ !empty(Auth::guard('vendor')->user()->country_code) ? Auth::guard('vendor')->user()->country_code : '+44' }}" />
                                                         {{-- <input value="{{ old('phone', $vendor->phone) }}" class="form-control" readonly> --}}
 
-                                                        <input type="number" value="{{ $vendor->phone }}"
+                                                        <input type="number" value="{{ $vendor->phone }}" id="phone-number"
                                                             style="height: 40px;margin-top: 10px;    margin-right: 5px;"
                                                             class="form-control" name="phone" required readonly>
+
+                                                           <span id="verification-status" class="ml-2" style="font-size: 1.5rem; margin-top: 10px;"></span>
 
 
                                                         @if ($vendor->phone_verified == 1)
@@ -632,6 +634,45 @@
                                                         @endif
 
                                                     </div>
+                                                    <script>
+                                                      document.addEventListener('DOMContentLoaded', function () {
+                                    const phoneInput = document.getElementById('phone-number');
+                                    const verificationStatus = document.getElementById('verification-status');
+
+                                    // Function to update verification status
+                                    const updateVerificationStatus = () => {
+                                      let phoneNumber = phoneInput.value.trim();
+
+                                      // Ensure numbers starting with 7624 are displayed as 07624
+                                      if (!phoneNumber.startsWith('0') && phoneNumber.startsWith('7624')) {
+                                        phoneNumber = '0' + phoneNumber;
+                                        phoneInput.value = phoneNumber; // Update displayed phone number
+                                      }
+
+                                      // Check if phone number starts with 07624
+                                          if (phoneNumber.startsWith('07624')) {
+                                            // Green Verification for Isle of Man
+                                            verificationStatus.innerHTML = `
+                                              <span style="color: green; font-weight: bold;margin-left: 10px; white-space: nowrap;font-size:16px;">
+                                                ✅ Isle of Man
+                                              </span>`;
+                                          } else {
+                                            // Orange Verification for others
+                                            verificationStatus.innerHTML = `
+                                              <span style="color: orange; font-weight: bold;margin-left: 10px; white-space: nowrap;font-size:16px">
+                                                🟧 Verified
+                                              </span>`;
+                                          }
+                                        };
+
+                                        // Initial call to set verification status
+                                        updateVerificationStatus();
+
+                                        // Update verification status when phone input changes
+                                        phoneInput.addEventListener('input', updateVerificationStatus);
+                                      });
+
+                                                    </script>
 
                                                     <small style="margin-top: 8px;">Verify your phone number and help
                                                         reduce fraud and scams on Listit</small>

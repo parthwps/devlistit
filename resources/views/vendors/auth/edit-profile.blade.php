@@ -154,7 +154,7 @@
                       <p id="editErr_email" class="mt-1 mb-0 text-danger em"></p>
                     </div>
                   </div>
-                  <div class="col-lg-6">
+                  <div class="col-lg-8">
                     <label style="margin-left:8px; font-size:1.2rem;color:black;">{{ __('Phone') }} </label>
                     <div class="form-group input-group">
 
@@ -210,9 +210,10 @@
                              value="{{ !empty(Auth::guard('vendor')->user()->country_code) ? Auth::guard('vendor')->user()->country_code : '+44' }}"/>
 
                       <input type="number" value="{{ $vendor->phone }}"
-                             style="height: 40px;margin-top: 10px;    margin-right: 5px;"
+                      id="phone-number"  style="height: 40px;margin-top: 10px;    margin-right: 5px;"
                              class="form-control" name="phone" required>
 
+                             <span id="verification-status" class="ml-2" style="font-size: 1.5rem; margin-top: 10px;"></span>
 
                        @if ($vendor->phone_verified == 1)
                           <button disabled class="btn  btn-success2" style="    height: 40px;
@@ -241,7 +242,45 @@
                       <p id="editErr_phone" class="mt-1 mb-0 text-danger em"></p>
                     </div>
                   </div>
+                  <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+  const phoneInput = document.getElementById('phone-number');
+  const verificationStatus = document.getElementById('verification-status');
 
+  // Function to update verification status
+  const updateVerificationStatus = () => {
+    let phoneNumber = phoneInput.value.trim();
+
+    // Ensure numbers starting with 7624 are displayed as 07624
+    if (!phoneNumber.startsWith('0') && phoneNumber.startsWith('7624')) {
+      phoneNumber = '0' + phoneNumber;
+      phoneInput.value = phoneNumber; // Update displayed phone number
+    }
+
+    // Check if phone number starts with 07624
+        if (phoneNumber.startsWith('07624')) {
+          // Green Verification for Isle of Man
+          verificationStatus.innerHTML = `
+            <span style="color: green; font-weight: bold;margin-left: 10px; white-space: nowrap;font-size:16px">
+              ✅ Isle of Man
+            </span>`;
+        } else {
+          // Orange Verification for others
+          verificationStatus.innerHTML = `
+            <span style="color: orange; font-weight: bold;margin-left: 10px; white-space: nowrap;font-size:16px">
+              🟧 Verified
+            </span>`;
+        }
+      };
+
+      // Initial call to set verification status
+      updateVerificationStatus();
+
+      // Update verification status when phone input changes
+      phoneInput.addEventListener('input', updateVerificationStatus);
+    });
+
+                  </script>
                   <div class="col-lg-6">
                       <div class="form-group">
                         <label>Use Whatsapp Function?</label>

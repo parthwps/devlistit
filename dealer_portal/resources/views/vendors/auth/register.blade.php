@@ -30,7 +30,7 @@
         @if (Session::has('success'))
           <div class="alert alert-success">{{ __(Session::get('success')) }}</div>
         @endif
-        <form action="{{ route('vendor.signup_submit') }}" method="POST">
+        <form action="{{ route('vendor.signup_submit') }}" method="POST"  id="signup-form">
           @csrf
           <div class="title">
             <h4 class="mb-20">{{ __('Signup') }}</h4>
@@ -113,10 +113,33 @@
               </div>
             </div>
           </div>
-          <button type="submit" class="btn btn-lg btn-primary radius-md w-100"> {{ __('Signup') }} </button>
+          <button id="signup-button" type="submit" class="btn btn-lg btn-primary radius-md w-100" disabled> {{ __('Signup') }} </button>
         </form>
       </div>
     </div>
   </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const form = document.getElementById('signup-form');
+      const inputs = form.querySelectorAll('input[required], select[required]');
+      const submitButton = document.getElementById('signup-button');
+
+      const validateForm = () => {
+        let isValid = true;
+        inputs.forEach(input => {
+          if (!input.value.trim()) {
+            isValid = false;
+          }
+        });
+        submitButton.disabled = !isValid;
+      };
+
+      inputs.forEach(input => {
+        input.addEventListener('input', validateForm);
+      });
+
+      validateForm();
+    });
+  </script>
   <!-- Authentication-area end -->
 @endsection
