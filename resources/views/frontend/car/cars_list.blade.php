@@ -627,6 +627,7 @@ font-size: 20px !important;
                         <div class="col-md-12" style="border-bottom: 2px solid #35373b;">
                     @endif
 
+
                         <div class="author mb-15 us_parent_cls" >
                             <a style="padding-top: 1rem;display: flex;padding-left: 1rem;" class="color-medium"
                             href="{{ route('frontend.vendor.details', [ 'id' => $car_content->vendor->id , 'username' => ($vendor = @$car_content->vendor->username)]) }}"
@@ -755,7 +756,7 @@ font-size: 20px !important;
                               left: 150%;
                           }
                       }
-                      </style>
+                      </styl>
 
 
                     <!-- @if ($car_content->is_sold == 1 || $car_content->status == 2)

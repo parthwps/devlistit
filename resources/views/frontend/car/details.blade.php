@@ -646,9 +646,24 @@ Thanks</textarea>
     }
 }
 </style>
+<div style="border-top: 5px solid #ff9e02; animation: glow 1.5s infinite alternate;">
+</div>
+					<div class="product-single-gallery mb-40"@if($car->is_featured == 1)    @endif>
+<style>
+  @keyframes glow {
+  0% {
+    box-shadow: 0 0 5px #ff9e02, 0 0 10px #ff9e02, 0 0 15px #ff9e02;
+  }
+  50% {
+    box-shadow: 0 0 20px #ff9e02, 0 0 30px #ff9e02, 0 0 40px #ff9e02;
+  }
+  100% {
+    box-shadow: 0 0 5px #ff9e02, 0 0 10px #ff9e02, 0 0 15px #ff9e02;
+  }
 
-					<div class="product-single-gallery mb-40"@if($car->is_featured == 1)  style="border-top: 5px solid #ff9e02;"  @endif>
+}
 
+</style>
 						<div class="swiper product-single-slider">
 
 						  <div class="swiper-wrapper" >

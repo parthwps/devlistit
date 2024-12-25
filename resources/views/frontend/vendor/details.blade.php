@@ -359,11 +359,30 @@ $review_data = null;
                     @if($car_content->vendor->vendor_type == 'dealer')
 
                     @if($car_content->is_featured == 1)
-                        <div class="col-md-12" style="border-bottom: 5px solid #ff9e02;">
+                        <div class="col-md-12 glowing-border" style="border-bottom: 5px solid #ff9e02;">
                     @else
                         <div class="col-md-12" style="border-bottom: 1px solid #e9e9e9;">
                     @endif
 
+                    <style>
+                      @keyframes glow {
+  0% {
+    box-shadow: 0 0 5px #ff9e02, 0 0 10px #ff9e02, 0 0 15px #ff9e02;
+  }
+  50% {
+    box-shadow: 0 0 20px #ff9e02, 0 0 30px #ff9e02, 0 0 40px #ff9e02;
+  }
+  100% {
+    box-shadow: 0 0 5px #ff9e02, 0 0 10px #ff9e02, 0 0 15px #ff9e02;
+  }
+}
+
+.glowing-border {
+  border-bottom: 5px solid #ff9e02;
+  animation: glow 1.5s infinite alternate; /* Apply the animation */
+}
+
+                    </style>
                         <div class="author mb-15 us_parent_cls" >
 
                             <a style="padding-top: 1rem;display: flex;padding-left: 1rem;" class="color-medium"
@@ -495,7 +514,7 @@ $review_data = null;
                               left: 150%;
                           }
                       }
-                      
+
                       </style>
 
 

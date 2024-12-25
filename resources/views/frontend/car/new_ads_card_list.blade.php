@@ -68,7 +68,21 @@
 
                   @if ($car_content->vendor_id != 0 && $car_content->vendor->vendor_type == 'dealer')
 
-                    <div class="w-100 p-3" style="border-bottom: 2px solid rgb(34, 40, 49);">
+                    <div class="w-100 p-3" style="animation: glow 1.5s infinite alternate;">
+                      <style>
+                        @keyframes glow {
+  0% {
+    box-shadow: 0 0 5px #ff9e02, 0 0 10px #ff9e02, 0 0 15px #ff9e02;
+  }
+  50% {
+    box-shadow: 0 0 20px #ff9e02, 0 0 30px #ff9e02, 0 0 40px #ff9e02;
+  }
+  100% {
+    box-shadow: 0 0 5px #ff9e02, 0 0 10px #ff9e02, 0 0 15px #ff9e02;
+  }
+}
+
+                      </style>
                       <div class="d-flex align-items-center gap-2">
                         <div >
                         <a  class="color-medium"

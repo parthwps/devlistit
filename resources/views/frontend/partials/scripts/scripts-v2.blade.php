@@ -456,9 +456,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     title="Whatsapp" href="//wa.me/?text=Check Out this ad on List it ${encodeURIComponent(url)}&amp;title="
                     target="_blank"><i class="fab fa-whatsapp"></i></a>
 
-                <a data-tooltip="tooltip" style="width: 50px;height: 50px;border-radius: 10%;line-height: 50px;background-color:white;color:black;box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);" data-bs-placement="top"
-                    title="Linkedin" href="//www.linkedin.com/shareArticle?mini=true&amp;url=${encodeURIComponent(url)}&amp;title=Check Out this ad on List it"
-                    target="_blank"><i class="fab fa-linkedin-in"></i></a>
+           
 
                 <a data-tooltip="tooltip" style="width: 50px;height: 50px;border-radius: 10%;line-height: 50px;background-color:white;color:black;box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);" data-bs-placement="top"
                     title="Email" href="mailto:?subject=Check Out this ad on List it&amp;body=Check Out this ad on List it ${encodeURIComponent(url)}&amp;title="
