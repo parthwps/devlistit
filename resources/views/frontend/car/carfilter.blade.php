@@ -1454,7 +1454,7 @@
 
 
       <div>
-        <button type="button"  class="us_btn_close bg-primary text-white px-3 py-3 w-100" data-bs-dismiss="offcanvas" data-bs-target="#widgetOffcanvas" aria-label="Close">Show Ads <span class="total_counter_with_category2">{{ $total_cars }}</span> {{ $total_cars > 1 ? __('Ads') : __('Results') }}</button>
+        <button type="button"  class="us_btn_close bg-primary text-white px-3 py-3 w-100 d-block d-sm-none" data-bs-dismiss="offcanvas" data-bs-target="#widgetOffcanvas" aria-label="Close">Show Ads <span class="total_counter_with_category2">{{ $total_cars }}</span> {{ $total_cars > 1 ? __('Ads') : __('Results') }}</button>
       </div>
 </div>
 
