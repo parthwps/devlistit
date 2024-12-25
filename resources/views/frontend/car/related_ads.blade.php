@@ -174,9 +174,50 @@
 
                         @if($car_content->is_featured == 1)
 
-                        <div class="price-tag" style="padding: 3px 10px;border-radius:5px;margin-left: 10px;background:#ff9e02;font-size: 8px;" >  Spotlight </span></div>
+                        <div class="price-tag" style="padding: 3px 10px;border-radius:5px;margin-left: 10px;" >  Spotlight </span></div>
 
                         @endif
+                        <style>
+                          .price-tag {
+                              border-radius: 7px;
+                              background: linear-gradient(45deg, #ff5900, #ffd700); /* Vibrant orange-to-gold gradient */
+                              color: white;
+                              font-weight: bold;
+                              /* padding: 5px 10px; */
+                              /* text-transform: uppercase; */
+                              font-size: 8px;
+                              position: relative;
+                              box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2), 0 0 20px rgba(255, 154, 2, 0.5);
+                              overflow: hidden;
+                              display: inline-block;
+                              cursor: pointer;
+                          }
+
+                          .price-tag::before {
+                              content: '';
+                              position: absolute;
+                              top: 0;
+                              left: -150%; /* Start shimmer off-screen */
+                              width: 150%;
+                              height: 100%;
+                              background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.7), transparent);
+                              transform: skewX(-20deg);
+                              animation: shine 2s infinite;
+                          }
+                          .price-tag:hover {
+  background: linear-gradient(45deg, #007bff, #0056b3); /* Primary blue gradient on hover */
+  transform: scale(1.05); /* Slight zoom effect */
+}
+
+                          @keyframes shine {
+                              0% {
+                                  left: -150%;
+                              }
+                              100% {
+                                  left: 150%;
+                              }
+                          }
+                          </style>
 
 
                         @if($car_content->reduce_price == 1)

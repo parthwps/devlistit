@@ -63,6 +63,7 @@
                           <input type="checkbox" class="bulk-check" data-val="all">
                         </th>
                         <th scope="col">{{ __('Email ID') }}</th>
+                        <th scope="col">{{ __('Account Created') }}</th>
                         <th scope="col">{{ __('Action') }}</th>
                       </tr>
                     </thead>
@@ -73,6 +74,8 @@
                             <input type="checkbox" class="bulk-check" data-val="{{ $subscriber->id }}">
                           </td>
                           <td>{{ $subscriber->email_id }}</td>
+                          <td>{{ $subscriber->created_at->format('d F, Y') }}</td>
+
                           <td>
                             <form class="deleteForm d-inline-block" action="{{ route('admin.user_management.subscriber.delete', ['id' => $subscriber->id]) }}" method="post">
                               @csrf

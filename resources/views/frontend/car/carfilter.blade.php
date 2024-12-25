@@ -1,5 +1,4 @@
 <div id="appendNewFilters">
-
   @php
       $category_filters = null;
 
@@ -1149,7 +1148,7 @@
                                                      @if(!in_array($car_condition->slug,['other-colour','any-colour']))
                                                        <div class="car-color-code" style="background-color: {{ $car_condition->hex_code  }}"></div>
                                                    @else
-                                                       <div class="car-color-code" style="background-color: transparent;"></div>
+                                                       <div class="car-color-code" style="background-color: {{ $car_condition->hex_code }};"></div>
                                                    @endif
                                                </label>
                                                 <input class="form-check-input ms-0 d-none" onchange="updateUrl()"
@@ -1454,7 +1453,11 @@
       <!-------------END--------------------------------->
 
 
+      <div>
+        <button type="button"  class="us_btn_close bg-primary text-white px-3 py-3 w-100" data-bs-dismiss="offcanvas" data-bs-target="#widgetOffcanvas" aria-label="Close">Show Ads <span class="total_counter_with_category2">{{ $total_cars }}</span> {{ $total_cars > 1 ? __('Ads') : __('Results') }}</button>
+      </div>
 </div>
+
 
 <script>
 

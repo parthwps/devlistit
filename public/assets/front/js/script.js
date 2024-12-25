@@ -1347,7 +1347,7 @@ $('body').on('submit', '#vendorContactForm', function(e) {
                   {
 
                       $('#carsFiltrs').hide();
-
+                      console.log("testadfasd")
                       $('#appendNewFilters').html(data.output);
 
                       $('#category').val(data.category_slug)
@@ -1355,12 +1355,13 @@ $('body').on('submit', '#vendorContactForm', function(e) {
                 }
             });
 
-        updateUrl()
+        updateUrl();
         loadBreadCrum(pid , category)
     }
 
     function updateUrl(request_type = 1,category = null)
     {
+      console.log("test121");
         if(request_type == 1 )
         {
             $('#pageno').val('1')
@@ -1416,8 +1417,6 @@ $('body').on('submit', '#vendorContactForm', function(e) {
                 newUrl += '?' + queryString;
             }
 
-             console.log(queryParams);
-             console.log(category);
 
             $.ajax({
                 type: 'GET',
@@ -1425,13 +1424,12 @@ $('body').on('submit', '#vendorContactForm', function(e) {
                 dataType:'json',
                 success:function(data)
                 {
-                    console.log(data);
                     $('#ajaxListing').html(data.html_view);
                     $('#total_counter_with_category').html(data.countHeading);
-                    $('.us_btn_close').click();
-
+                    console.log("tets11afdsa");
+                    jQuery('.total_counter_with_category2').text(data.countHeading.match(/\d+/)[0]);
+                    // $('.us_btn_close').click();
                     if (categoryField.value !== null && categoryField.value == 'cars-&-motors' || categoryField.value == 'all' ) {
-
                         setTimeout(function(){
                             $('#carFeature').css('display','');
                             $('#browse_style').css('display','');
@@ -1449,6 +1447,8 @@ $('body').on('submit', '#vendorContactForm', function(e) {
                     setTimeout(function(){
                         $('#ajaxListing').css('display','');
                     },500);
+
+
                 }
             });
     }
@@ -1604,6 +1604,8 @@ function updateUrl2(request_type = 1)
             success:function(data){
              $('#ajaxListing').html(data.html_view);
              $('#total_counter_with_category').html(data.countHeading);
+             console.log("tetsafdsa");
+             $('#total_counter_with_category2').html(data.countHeading);
             }
         });
 

@@ -183,7 +183,7 @@
     {
 
       .offsetCol{
-           position: absolute;bottom: 10px; right: 0px;
+           position: static;bottom: 10px; right: 0px;
          }
      .sticky-button
      {
@@ -600,8 +600,52 @@ Thanks</textarea>
                     </div>
 
                     @if($car->is_featured == 1)
-                            <div class="sale-tag" style="border-radius:0px;background:#ff9e02;">Spotlight</div>
+                    <div class="sale-tag">
+    Spotlight
+</div>
+
                     @endif
+                    <style>
+.sale-tag {
+    border-radius: 10px;
+    background: linear-gradient(45deg, #ff5900, #ffd700); /* Vibrant orange-to-gold gradient */
+    color: white;
+    font-weight: bold;
+    padding: 10px 20px;
+    /* text-transform: uppercase; */
+    font-size: 16px;
+    position: relative;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2), 0 0 20px rgba(255, 154, 2, 0.5);
+    overflow: hidden;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.sale-tag::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -150%; /* Start shimmer off-screen */
+    width: 150%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.7), transparent);
+    transform: skewX(-20deg);
+    animation: shine 2s infinite;
+}
+.sale-tag:hover {
+    background: linear-gradient(45deg, #007bff, #0056b3); /* Primary blue gradient on hover */
+    transform: scale(1.05); /* Slight zoom effect */
+}
+
+@keyframes shine {
+    0% {
+        left: -150%;
+    }
+    100% {
+        left: 150%;
+    }
+}
+</style>
 
 					<div class="product-single-gallery mb-40"@if($car->is_featured == 1)  style="border-top: 5px solid #ff9e02;"  @endif>
 
@@ -800,7 +844,7 @@ Thanks</textarea>
                             @endphp
 
                           @else
-                            <strong style="font-size: 18px; font-weight: bold;">Get Finance Approval</strong> 
+                            <strong style="font-size: 18px; font-weight: bold;">Get Finance Approval</strong>
                           @endif
                           </a>
                       @endif
@@ -911,7 +955,7 @@ Thanks</textarea>
                                 </div>
                         </div>
                         @endif
-     
+
 
                         <div class="{{$car->vendor->vendor_type == 'dealer' ? 'col-12 col-md-6' : 'col-12'}}">
                         <div class="d-flex border-bottom py-3 justify-content-between align-items-center">
@@ -933,7 +977,7 @@ Thanks</textarea>
                                     <div class="d-flex align-items-center gap-3">
                                         <div>
                                         <i class="fal fa-users" style="font-size: 19px;color: #1b87f4;"></i></div>
-                                        <div class="NotifyFont" >Total Owner</div>
+                                        <div class="NotifyFont" >Total Owners</div>
                                     </div>
                                     <div class="fw-bolder Notify-font-right">
                                     {{ (!empty($car->number_of_owners)) ? $car->number_of_owners : $car->owners }}
@@ -1958,6 +2002,20 @@ Thanks</textarea>
                           @endif
 
                         @endif
+                        <div style="display: flex;flex-wrap: wrap;">
+                          @if($car->vendor->email_verified_at) <!-- Check if email is verified -->
+                              <span class="email-verified" style="font-size: 12px;">
+                                  <i class="fa fa-check-circle" style="color: #4caf50;"></i> Email Verified
+                              </span>
+                          @endif &nbsp;
+                          @if ($car->vendor->phone_verified == 1)
+                              <span class="phone_verified" style="font-size: 12px;">
+                                  <i class="fa fa-check-circle" style="color: #4caf50;"></i> Phone Verified
+                              </span>
+                          @endif
+                        </div>
+
+
 
 
                         @if(!empty($review_data) &&  $review_data['total_reviews'] > 0 && $review_data['total_ratings'] > 0)

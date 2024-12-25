@@ -4,7 +4,7 @@
     /*============================================
         Mobile menu
     ============================================*/
-    
+
 
 
     /*============================================
@@ -626,7 +626,7 @@
     $('.car_condition').on('click', function() {
         $('.condition').val($(this).attr('data-id'));
     let mainCatID = $(this).attr('data-id');
-    $(".hero-banner.hero-banner-2").css("background-image", 'url(/assets/img/'+$(this).attr('data-image')+')'); 
+    $(".hero-banner.hero-banner-2").css("background-image", 'url(/assets/img/'+$(this).attr('data-image')+')');
     if(mainCatID == 39 || mainCatID == 0){
         if(mainCatID == 39){
         $('#tabsCat').val("property");
@@ -634,15 +634,15 @@
         if(mainCatID == 0){
             $('#tabsCat').val("");
             }
-       $('.carform').hide(); 
+       $('.carform').hide();
        $('.carformtxt').show();
     }else if(mainCatID == 24){
         $('#tabsCat').val("cars-&-motors");
         $('.carform').show();
         $('.carformtxt').hide();
-         
+
     }
-        
+
     let formURL = '/tabs-data/'+$(this).attr('data-id');
     let formMethod = "GET";
 
@@ -653,14 +653,14 @@
         success: function(response) {
             //$('input[name="email_id"]').val('');
             $('.tabsHtmlData').html(response.data);
-            
+
         },
         error: function(errorData) {
             // throw error -----
         }
     });
 
-        
+
     })
 
 })(jQuery);
@@ -737,18 +737,18 @@ $('#verifyPhone').on('click', function() {
  let formURL = '/vendor/verify-phone/'+$('input[name="phone"]').val();
     let formMethod = "GET";
    // $('.mycode').html('We have send you a verification code to <strong>'+$('input[name="phone"]').val()+'</strong>, verify your phone number to get  extra trust merit on your profile!');
-    
-    
+
+
     //return false;
-    
+
     $.ajax({
         url: formURL,
         type: "GET",
-        
-       
+
+
         success: function(response) {
 
-           
+
             if(response.status == 'success'){
                 $('#verifyProfilePhone').modal('show');
             toastr[response.status]('Enter the code via text to <strong>'+response.phone+'</strong> ')
@@ -827,11 +827,11 @@ $('body').on('enter', '#topSearchForm', function(event) {
         $('#topSearchForm').submit();
     }
 });
-// Autocomplete 
+// Autocomplete
 $('body').on('keyup', '#searchByTitle', function(event){
     $("#suggesstion-box").show();
     if($(this).val() && $(this).val().length >2){
-        
+
         $.ajax({
             type: "GET",
             url: "/autocomplete/suggestions",
@@ -846,12 +846,12 @@ $('body').on('keyup', '#searchByTitle', function(event){
             }
         });
     }
-}); 
+});
 // Autocomplete  top
 $('body').on('keyup', '#searchByTitleTop', function(event){
    // $("#suggesstion-box").show();
     if($(this).val() && $(this).val().length >2){
-        
+
         $.ajax({
             type: "GET",
             url: "/autocomplete/suggestions",
@@ -883,7 +883,7 @@ $('body').on('keyup', '#searchByTitleTop', function(event){
     }
 });
 $('body').on('focus', '#searchByTitle', function(event){
-    
+
         $.ajax({
             type: "GET",
             url: "/autocomplete/defaultsuggestions",
@@ -897,7 +897,7 @@ $('body').on('focus', '#searchByTitle', function(event){
                 //$("#search-box").css("background", "#FFF");
             }
         });
-    
+
 });
 
 $('body').on('focusout', '#searchByTitle', function(event){
@@ -955,7 +955,7 @@ $('.verifyopt-form').on('submit', function(event) {
         dataType: 'json',
         success: function(response) {
 
-           
+
             if(response.status == 'success'){
             toastr[response.status]('Enter the code via text to <strong>'+response.phone+'</strong>')
             toastr.options = {
@@ -1002,7 +1002,7 @@ $('.verifyopt-code').on('submit', function(event) {
             if (response.status == 'success') {
                 window.location.href= "/";
               } else {
-            
+
             toastr[response.status](response.message)
             toastr.options = {
                 "closeButton": true,
@@ -1039,7 +1039,7 @@ $('.verifyoptProfile-code').on('submit', function(event) {
             if (response.status == 'success') {
                 window.location.reload();
               } else {
-            
+
             //toastr[response.status](response.message)
             // toastr.options = {
             //     "closeButton": true,
@@ -1060,7 +1060,7 @@ $('.verifyoptProfile-code').on('submit', function(event) {
 
 });
 
-   
+
 // add user email for subscription
 $('.subscriptionForm').on('submit', function(event) {
     event.preventDefault();
@@ -1138,11 +1138,11 @@ $('#adtypeSale').on('click', function(event) {
 $('#ad_type').val('sale');
 
 updateUrl();
-}); 
+});
 $('#adtypeWanted').on('click', function(event) {
 $('#ad_type').val('wanted');
 updateUrl();
-}); 
+});
 // Function to update URL based on non-empty form inputs
 function updateUrl() {
     var formData = $('#searchForm').serializeArray();
@@ -1161,7 +1161,7 @@ function updateUrl() {
         newUrl += '?' + queryString;
     }
 
-    
+
 
     // Update the browser URL without reloading the page
     window.location.href = newUrl;
@@ -1183,7 +1183,7 @@ function updateUrlHome() {
         newUrl += '?' + queryString;
     }
 
-    
+
 
     // Update the browser URL without reloading the page
     window.location.href = newUrl;
