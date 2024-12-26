@@ -646,8 +646,10 @@ Thanks</textarea>
     }
 }
 </style>
+@if($car->is_featured == 1)
 <div style="border-top: 5px solid #ff9e02; animation: glow 1.5s infinite alternate;">
 </div>
+@endif
 					<div class="product-single-gallery mb-40"@if($car->is_featured == 1)    @endif>
 <style>
   @keyframes glow {

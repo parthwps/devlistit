@@ -66,7 +66,7 @@
 
                 @endif
 
-                  @if ($car_content->vendor_id != 0 && $car_content->vendor->vendor_type == 'dealer')
+                  @if ($car_content->vendor_id != 0 && $car_content->vendor->vendor_type == 'dealer' && $car_content->is_featured == 1)
 
                     <div class="w-100 p-3" style="animation: glow 1.5s infinite alternate;">
                       <style>
