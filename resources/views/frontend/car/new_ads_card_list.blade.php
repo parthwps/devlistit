@@ -155,6 +155,78 @@
                         </div>
                       </div>
                     </div>
+                  @elseif($car_content->vendor->vendor_type == 'normal' )
+                  <div class="w-100 p-3" style="display: none;">
+                    <div class="d-flex align-items-center gap-2">
+                      <div >
+                      <a  class="color-medium"
+                          href="{{ route('frontend.vendor.details', ['id' => $car_content->vendor->id ,'username' => ($vendor = @$car_content->vendor->username)]) }}"
+                          target="_self" title="{{ $vendor = @$car_content->vendor->username }}">
+                          @if ($car_content->vendor->photo != null)
+
+                            @php
+                            $photoUrl = env('SUBDOMAIN_APP_URL').'assets/admin/img/vendor-photo/' . $car_content->vendor->photo;
+
+                            if (file_exists(public_path('assets/admin/img/vendor-photo/' . $car_content->vendor->photo)))
+                            {
+                              $photoUrl = asset('assets/admin/img/vendor-photo/' . $car_content->vendor->photo);
+                            }
+                            @endphp
+
+                            <img
+                            style="border-radius: 10%; max-width: 60px;"
+                            class="lazyload blur-up"
+
+                            data-src="{{ $photoUrl }}"
+                            src="{{ $photoUrl }}"
+                            alt="Vendor"
+                            onload="handleImageLoad(this)"
+                            onerror="{{ asset('assets/img/blank-user.jpg') }}" >
+
+                          @else
+                            <img style="border-radius: 10%;max-width: 60px;" class="lazyload blur-up" data-src="{{ asset('assets/img/blank-user.jpg') }}"
+                            alt="Image">
+                          @endif
+
+                      </a>
+                      </div>
+                      <div>
+                          <p style="color: #222831;font-size: 14px;margin:0px!important;">{{ $car_content->vendor->vendor_info->name }}</p>
+                          <p style="color: #586176; font-size: 12px;margin:0px!important;">
+                            <svg width="15" height="15" fill="#1c9b40" viewBox="0 0 24 24" data-testid="shield-icon" class="BrandingStripstyled__TrustedDealerBadge-sc-n7l181-6 fEIxXh">
+                                <path fill="#1c9b40" d="M22.456 5.22a.75.75 0 00-.616-.69c-4.055-.728-5.747-1.254-9.531-2.963a.75.75 0 00-.618 0c-3.784 1.709-5.476 2.235-9.53 2.962a.75.75 0 00-.617.691c-.18 2.865.204 5.534 1.145 7.933a16.38 16.38 0 003.358 5.274c2.506 2.66 5.167 3.814 5.675 4.019a.75.75 0 00.563 0c.507-.205 3.168-1.36 5.675-4.019a16.379 16.379 0 003.351-5.274c.941-2.4 1.326-5.068 1.145-7.933zm-6.14 3.52l-5.194 6a.748.748 0 01-.535.26h-.03a.75.75 0 01-.526-.214l-2.306-2.26a.75.75 0 111.05-1.071l1.734 1.7 4.674-5.396a.75.75 0 111.134.982h-.001z"></path>
+                            </svg>
+                            @if($car_content->vendor->is_trusted == 1)
+                              <span>Trusted</span>
+                            @endif
+
+                            @if($car_content->vendor->is_franchise_dealer == 1)
+                              Franchise Dealership
+                            @else
+                              Independent Dealership
+                            @endif
+
+                            @php
+                              $review_data = null;
+                            @endphp
+
+                            @if($car_content->vendor->google_review_id > 0 )
+                              @php
+                                $review_data = get_vendor_review_from_google($car_content->vendor->google_review_id , true);
+                              @endphp
+                            @endif
+
+                            @if(!empty($review_data) && $review_data['total_reviews'] > 0 && $review_data['total_ratings'] > 0)
+                              <span>
+                                  <span class="star on"></span>  {{$review_data['total_ratings']}}/5
+                              </span>
+                            @endif
+
+                          </p>
+
+                      </div>
+                    </div>
+                  </div>
                   @else
                   <div class="w-100 p-3">
                     <div class="d-flex align-items-center gap-2">
