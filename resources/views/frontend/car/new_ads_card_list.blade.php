@@ -366,7 +366,7 @@
                               style="transform: rotate(0deg); width: 100%; height: 240px; object-fit: cover;"
                               data-src=" {{  $car_content->vendor->vendor_type == 'dealer' ? asset('assets/admin/img/car-gallery/' .$image_path) :  env('SUBDOMAIN_APP_URL').'assets/admin/img/car-gallery/' . $image_path }}  "
                               alt="Product" onerror="this.onerror=null;this.src='{{ asset('assets/img/noimage.jpg') }}';"
-                              src=" {{  $car_content->vendor->vendor_type == 'dealer' ?
+                              src=" {{  $car_content->vendor->vendor_type == 'normal' ?
                               asset('assets/admin/img/car-gallery/' .$image_path) :
                               env('SUBDOMAIN_APP_URL').'assets/admin/img/car-gallery/' . $image_path }}  ">
                           </a>
