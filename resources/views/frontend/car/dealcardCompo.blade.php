@@ -3,7 +3,7 @@
    <div class="w-100 p-3" style="border-bottom: 2px solid rgb(34, 40, 49);">
       <div class="d-flex gap-2">
          <div>
-            <img style="border-radius: 10%; max-width: 60px;" class="blur-up lazyloaded" src="http://localhost:8000/assets/admin/img/vendor-photo/66fb9d3ff3175.jpg" data-src="http://localhost:8000/assets/admin/img/vendor-photo/66fb9d3ff3175.jpg" alt="Vendor" onload="handleImageLoad(this)" onerror="this.onerror=null;this.src='http://localhost:8000/assets/img/blank-user.jpg'">
+            <img style="border-radius: 10%; max-width: 60px;" class="blur-up lazyloaded" src="/assets/admin/img/vendor-photo/66fb9d3ff3175.jpg" data-src="/assets/admin/img/vendor-photo/66fb9d3ff3175.jpg" alt="Vendor" onload="handleImageLoad(this)" onerror="this.onerror=null;this.src='/assets/img/blank-user.jpg'">
          </div>
          <div>
             <p style="color: #222831;font-size: 14px;margin:0px!important;">Newline Elite</p>
@@ -23,7 +23,7 @@
             <div class="imageSize " style="position: relative; cursor: pointer;">
                <a href="www.google.com" class="">
                <img class="ls-is-cached  lazyloaded card-design"  style="transform: rotate(0deg); width: 100%; height: 240px; object-fit: cover;" 
-                  data-src="https://dealer.listit.im/assets/admin/img/car-gallery/66fba393562ca.jpg" alt="Product" onerror="this.onerror=null;this.src='http://localhost:8000/assets/img/noimage.jpg';" src="https://dealer.listit.im/assets/admin/img/car-gallery/66fba393562ca.jpg"
+                  data-src="https://dealer.listit.im/assets/admin/img/car-gallery/66fba393562ca.jpg" alt="Product" onerror="this.onerror=null;this.src='/assets/img/noimage.jpg';" src="https://dealer.listit.im/assets/admin/img/car-gallery/66fba393562ca.jpg"
                   ></a>
                <div  onclick="addToWishlist(724);" 
                   class=" d-block d-sm-none shadow"   
@@ -35,13 +35,13 @@
             </div>
             <div class="d-flex gap-1 mt-1 w-100">
                <div class="imageSize flex-fill">
-                  <img class="ls-is-cached lazyloaded card-design-smalls" style="transform: rotate(0deg); height: 88px; width: 100%; object-fit: cover;" data-src="https://dealer.listit.im/assets/admin/img/car-gallery/66fba393562ca.jpg" alt="Product" onerror="this.onerror=null;this.src='http://localhost:8000/assets/img/noimage.jpg';" src="https://dealer.listit.im/assets/admin/img/car-gallery/66fba393562ca.jpg">
+                  <img class="ls-is-cached lazyloaded card-design-smalls" style="transform: rotate(0deg); height: 88px; width: 100%; object-fit: cover;" data-src="https://dealer.listit.im/assets/admin/img/car-gallery/66fba393562ca.jpg" alt="Product" onerror="this.onerror=null;this.src='/assets/img/noimage.jpg';" src="https://dealer.listit.im/assets/admin/img/car-gallery/66fba393562ca.jpg">
                </div>
                <div class="flex-fill">
-                  <img class="ls-is-cached lazyloaded card-design-smalls" style="transform: rotate(0deg); height: 88px; width: 100%; object-fit: cover;" data-src="https://dealer.listit.im/assets/admin/img/car-gallery/66fba393562ca.jpg" alt="Product" onerror="this.onerror=null;this.src='http://localhost:8000/assets/img/noimage.jpg';" src="https://dealer.listit.im/assets/admin/img/car-gallery/66fba393562ca.jpg">
+                  <img class="ls-is-cached lazyloaded card-design-smalls" style="transform: rotate(0deg); height: 88px; width: 100%; object-fit: cover;" data-src="https://dealer.listit.im/assets/admin/img/car-gallery/66fba393562ca.jpg" alt="Product" onerror="this.onerror=null;this.src='/assets/img/noimage.jpg';" src="https://dealer.listit.im/assets/admin/img/car-gallery/66fba393562ca.jpg">
                </div>
                <div class="flex-fill">
-                  <img class="ls-is-cached lazyloaded card-design-smalls" style="transform: rotate(0deg); height: 88px; width: 100%; object-fit: cover;" data-src="https://dealer.listit.im/assets/admin/img/car-gallery/66fba393562ca.jpg" alt="Product" onerror="this.onerror=null;this.src='http://localhost:8000/assets/img/noimage.jpg';" src="https://dealer.listit.im/assets/admin/img/car-gallery/66fba393562ca.jpg">
+                  <img class="ls-is-cached lazyloaded card-design-smalls" style="transform: rotate(0deg); height: 88px; width: 100%; object-fit: cover;" data-src="https://dealer.listit.im/assets/admin/img/car-gallery/66fba393562ca.jpg" alt="Product" onerror="this.onerror=null;this.src='/assets/img/noimage.jpg';" src="https://dealer.listit.im/assets/admin/img/car-gallery/66fba393562ca.jpg">
                </div>
             </div>
          </div>
