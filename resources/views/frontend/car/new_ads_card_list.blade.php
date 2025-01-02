@@ -246,7 +246,7 @@
                             @endphp
 
                             <img
-                            style="border-radius: 10%; max-width: 60px;"
+                            style="border-radius: 50%; max-width: 60px;object-fit:cover;"
                             class="lazyload blur-up"
 
                             data-src="{{ $photoUrl }}"

@@ -32,26 +32,26 @@ use Illuminate\Validation\Rule;
 
 class AdminController extends Controller
 {
-    
+
      public function change_trust_status(Request $request)
   {
-    
+
     Vendor::where('id' , $request->id)->update(['is_trusted' => $request->status ]);
-    
+
       $request->session()->flash('success', 'Status Changed Successfully');
 
     return redirect()->back();
   }
-  
+
     public function change_dealer_type(Request $request)
   {
-      
+
     Vendor::where('id' , $request->id)->update(['is_franchise_dealer' => $request->status ]);
-    
+
      return redirect()->back()->with('alert', 'Status Changed Successfully');
   }
-  
-  
+
+
   public function login()
   {
     return view('backend.login');
@@ -148,52 +148,66 @@ class AdminController extends Controller
     $information['totalSubscriber'] = Subscriber::query()->count();
     $information['payment_log'] = Membership::where('vendor_id', '!=', 0)->count();
     // $information['vendors'] = Vendor::where('id', '!=', 0)->get()->count();
-    
 
-    //income of event bookings 
+
+    //income of event bookings
     $totalPurchases = DB::table('cars')
       ->select(DB::raw('month(created_at) as month'), DB::raw('count(id) as total'))
       ->groupBy('month')
-      ->whereYear('created_at', '=', date('Y'))
+      ->whereYear('created_at', '=', date('Y') - 1)
       ->get();
+
+      $currentYear = date('Y');
+      $previousYear = $currentYear - 1;
+
+      // Try to get data for the current year first
+      $totalUsers = DB::table('vendors')
+          ->select(DB::raw('month(created_at) as month'), DB::raw('count(id) as total'))
+          ->whereYear('created_at', '=', $currentYear)
+          ->groupBy(DB::raw('month(created_at)'))
+          ->get();
+
+      // If no data for the current year, get data for the previous year
+      if ($totalUsers->isEmpty()) {
+          $totalUsers = DB::table('vendors')
+              ->select(DB::raw('month(created_at) as month'), DB::raw('count(id) as total'))
+              ->whereYear('created_at', '=', $previousYear)
+              ->groupBy(DB::raw('month(created_at)'))
+              ->get();
+      }
+
       
-     
-    $totalUsers = DB::table('vendors')
-      ->select(DB::raw('month(created_at) as month'), DB::raw('count(id) as total'))
-    //   ->where('status', '=', 1)
-      ->groupBy('month')
-      ->whereYear('created_at', '=', date('Y'))
-      ->get();
-    
+
+
     $tlt_ads = json_decode($totalPurchases , true);
     $tlt_users = json_decode($totalUsers , true);
-   
+
     $ad_sum = 0;
-    foreach ($tlt_ads as $item) 
+    foreach ($tlt_ads as $item)
     {
         $ad_sum += $item["total"];
     }
-    
+
     $user_sum = 0;
-    foreach ($tlt_users as $item) 
+    foreach ($tlt_users as $item)
     {
         $user_sum += $item["total"];
     }
-    
+
     $information['rating_btw_1_to_3'] = Car::withTrashed()
     ->whereIn('recommendation', [1, 2, 3])
     ->count();
 
-    
+
     $information['rating_btw_4_to_6'] = Car::withTrashed()
     ->whereIn('recommendation', [4, 5, 6])
     ->count();
-    
-    
+
+
     $information['rating_btw_7_to_10'] = Car::withTrashed()
     ->whereIn('recommendation', [7, 8, 9 , 10])
     ->count();
-    
+
      $currentYear = Carbon::now()->year;
 
     // Fetch data from database
@@ -223,41 +237,41 @@ class AdminController extends Controller
             ],
         ],
     ];
-    
-    for ($month = 1; $month <= 12; $month++) 
+
+    for ($month = 1; $month <= 12; $month++)
     {
         $chartData['labels'][] = Carbon::create()->month($month)->format('F');
     }
-    
+
     // Populate chart data
-    foreach ($data as $record) 
+    foreach ($data as $record)
     {
         $monthIndex = $record->month - 1; // Month is 1-based, array is 0-based
-        
-        if ($record->remove_option == 'I sold it on Listit') 
+
+        if ($record->remove_option == 'I sold it on Listit')
         {
             $chartData['datasets'][0]['data'][$monthIndex] = $record->count;
-        } 
-        elseif ($record->remove_option == 'I sold it elsewhere') 
+        }
+        elseif ($record->remove_option == 'I sold it elsewhere')
         {
             $chartData['datasets'][1]['data'][$monthIndex] = $record->count;
         }
     }
-    
+
     $information['chartData'] = $chartData;
 
     $information['totalCars'] = $ad_sum ;
-    
+
     $information['vendors'] = $user_sum ;
-    
+
     $months = [];
-    
+
     $packagePurchaseIncomes = [];
-    
+
     $totalUsersArr = [];
 
     //event icome calculation
-    for ($i = 1; $i <= 12; $i++) 
+    for ($i = 1; $i <= 12; $i++)
     {
       // get all 12 months name
       $monthNum = $i;
@@ -291,8 +305,8 @@ class AdminController extends Controller
         array_push($totalUsersArr, 0);
       }
     }
-    
-    
+
+
     $information['monthArr'] = $months;
     $information['packagePurchaseIncomesArr'] = $packagePurchaseIncomes;
     $information['totalUsersArr'] = $totalUsersArr;

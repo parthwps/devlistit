@@ -976,6 +976,7 @@ Thanks</textarea>
 
                         <div class="{{$car->vendor->vendor_type == 'dealer' ? 'col-12 col-md-6' : 'col-12'}}">
                         <div class="d-flex border-bottom py-3 justify-content-between align-items-center">
+
                                     <div class="d-flex align-items-center gap-3">
                                         <div>
                                         <i class="fal fa-shipping-fast"" style="font-size: 19px;color: #1b87f4;"></i></div>
@@ -983,8 +984,13 @@ Thanks</textarea>
 
                                         </div>
                                     </div>
+
                                     <div class="fw-bolder Notify-font-right">
-                                    Yes
+                                      @if($car->delivery_available == 1)
+                                          Yes
+                                      @else
+                                          No
+                                      @endif
                                     </div>
                                 </div>
                         </div>
