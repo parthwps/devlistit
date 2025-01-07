@@ -590,7 +590,7 @@ font-weight: 700;}
 @media (max-width: 991px) {
 
   .offSetLeft:first-child{
-    margin-left: 690px !important;
+    margin-left: 719px !important;
     /* border: 1px solid green; */
   }
 
@@ -1226,7 +1226,7 @@ font-weight: 700;}
         </div>
 
         <div class="kp col-md-6 col-lg-4 mb-4">
-          <h4 class="mb-3 text-primary"><i class="fas fa-dollar-sign text-primary pe-2"></i>
+          <h4 class="mb-3 text-primary"><i class="fas fa-pound-sign text-primary pe-2"></i>
             Are there any fees for listing?
           </h4>
           <p style="text-align: justify;">

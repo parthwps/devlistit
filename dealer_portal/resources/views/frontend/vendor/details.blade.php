@@ -29,7 +29,7 @@ $review_data = null;
         $review_data = get_vendor_review_from_google($vendor->google_review_id , true);
     @endphp
 @endif
-                                
+
   <style>
 
 @media screen and (min-width: 580px) {
@@ -39,23 +39,23 @@ $review_data = null;
     }
 }
 
-@media screen and (max-width: 580px) 
+@media screen and (max-width: 580px)
 {
 .us_trusted
     {
         float:right;
         margin-top:1rem;
         margin-bottom:1rem;
-    } 
-    
+    }
+
     .us_font_15
     {
         font-size:15px !important;
     }
 }
 
-   
-</style>                              
+
+</style>
   <!-- Page title start-->
   <div
     class="page-title-area ptb-100 bg-img {{ $basicInfo->theme_version == 2 || $basicInfo->theme_version == 3 ? 'has_header_2' : '' }}"
@@ -63,7 +63,7 @@ $review_data = null;
     src="{{ asset('assets/front/images/placeholder.png') }}">
     <div class="container">
       <div class="content">
-          
+
             <ul class="list-unstyled">
           <li class="d-inline"><a href="{{ route('index') }}">{{ __('Home') }}</a></li>
           <li class="d-inline">/</li>
@@ -71,8 +71,8 @@ $review_data = null;
           <li class="d-inline">/</li>
           <li class="d-inline active opacity-75"><a href="{{ route('frontend.vendor.details' , [$vendor->username]) }}">{{ $vendor->vendor_info->name }}</a></li>
         </ul>
-        
-        
+
+
         <div class="vendor " style="margin-top:2%;margin-bottom:-30px;justify-content: center;">
           <figure class="vendor-img">
             <a href="javaScript:void(0)" class="lazy-container ratio ratio-1-1" style="border-radius: 10px;">
@@ -87,7 +87,7 @@ $review_data = null;
           </figure>
           <div class="vendor-info">
             <h4 class="mb-2 color-white">{{ $vendor->vendor_info->name }}</h4>
-            <span class="text-light">Established since 
+            <span class="text-light">Established since
                 {{date('F Y' , strtotime($vendor->est_year))}}  </span>
             <span class="text-light d-block mt-2" style="display: flex !important;">Ads
               @if (request()->filled('admin'))
@@ -100,18 +100,18 @@ $review_data = null;
               @else
                 {{ count($vendor->cars()->get()) }}
               @endif
-              
+
               @if(!empty($review_data['total_ratings']))
-                &nbsp;. <span> 
+                &nbsp;. <span>
                 <div class="rating-container" style="font-size: 15px;margin-top: -0.5rem;margin-left: 0.5rem;">
                 <span class="star on"></span>  {{$review_data['total_ratings']}}/5
                 </div>
                 </span>
-                  @endif          
+                  @endif
             </span>
           </div>
         </div>
-      
+
       </div>
     </div>
   </div>
@@ -122,7 +122,7 @@ $review_data = null;
     <div class="container">
       <div class="row gx-xl-5">
         <div class="col-lg-8">
-         
+
           <div class="tabs-navigation tabs-navigation-2 mb-20">
             <ul class="nav nav-tabs">
               <li class="nav-item">
@@ -136,18 +136,18 @@ $review_data = null;
                     $vendor_id = $vendor->id;
                 }
               @endphp
-              
+
               <li class="nav-item">
-                    <button class="nav-link btn-md" data-bs-toggle="modal" data-bs-target="#contactModal" 
+                    <button class="nav-link btn-md" data-bs-toggle="modal" data-bs-target="#contactModal"
                       type="button">Contact us</button>
                   </li>
-                  
-                  
+
+
                    <li class="nav-item">
                     <button class="nav-link btn-md" data-bs-toggle="tab" data-bs-target="#tab_review"
                       type="button">Review</button>
                   </li>
-                  
+
             </ul>
           </div>
           <div class="tab-content" data-aos="fade-up">
@@ -155,11 +155,11 @@ $review_data = null;
               <div class="row">
                 @if (count($all_cars) > 0)
                   @foreach ($all_cars as $car_content)
-                
+
                     @if (!empty($car_content))
-                    
-                    @php 
-                  
+
+                    @php
+
                         if(empty($car_content->feature_image))
                         {
                             $image_path = $car_content->galleries[0]->image;
@@ -170,34 +170,34 @@ $review_data = null;
                         }
                     $vendor = $car_content->vendor;
                     @endphp
-            
-            
-            
+
+
+
               <div class="col-12" data-aos="fade-up">
-                  
+
                 @if($car_content->is_featured == 1)
                     <div class="row g-0 product-default product-column border mb-30 align-items-center p-15" style="transform: translateY(-5px);border-color: transparent !important;border-bottom-color: var(--color-primary) !important;box-shadow: 0px 0px 20px 0px rgba(76, 87, 125, 0.1);" data-id="{{$car_content->id}}">
                     @else
                         <div class="row g-0 product-default product-column border mb-30 align-items-center p-15" data-id="{{$car_content->id}}">
                     @endif
-                    
-                    
-                    @if ($car_content->vendor_id != 0)   
-                    
+
+
+                    @if ($car_content->vendor_id != 0)
+
                     @if($car_content->is_featured == 1)
                         <div class="col-md-12" style="border-bottom: 1px solid #ee2c7b;">
                     @else
                         <div class="col-md-12" style="border-bottom: 1px solid #e9e9e9;">
                     @endif
-                    
+
                         <div class="author mb-15 us_parent_cls" >
-                        
+
                             <a style="display:flex;" class="color-medium"
                             href="{{ route('frontend.vendor.details', ['username' => ( @$car_content->vendor->username)]) }}"
                             target="_self" title="{{ $car_content->vendor->username }}">
                             @if ($car_content->vendor->photo != null)
-                           
-                            
+
+
                             <img
                             style="border-radius: 10%; max-width: 60px;"
                             class="lazyload blur-up"
@@ -211,90 +211,90 @@ $review_data = null;
                             alt="Image">
                             @endif
                             <span>
-                           
+
                              <strong class="us_font_15" style="color: black;font-size: 20px;">{{ request()->input('admin') == true ? @$car_content->vendor->first_name : @$vendorInfo->name }}</strong>
-                            
+
                             @if($car_content->vendor->is_franchise_dealer == 1)
-                            
-                             <div style="display: flex;">Franchise Dealer 
-                             
-                             
+
+                             <div style="display: flex;">Franchise Dealer
+
+
                               @if(!empty($review_data) && $review_data['total_reviews'] > 0 && $review_data['total_ratings'] > 0)
-                            . <span> 
+                            . <span>
                             <div class="rating-container" style="font-size: 15px;margin-top: -0.4rem;">
                             <span class="star on"></span>  {{$review_data['total_ratings']}}/5
                             </div>
                             </span>
                         @endif
                         </div>
-                        
+
                         @else
-                        
-                        <div>Independent Dealer</div> 
+
+                        <div>Independent Dealer</div>
                             @endif
                             </span>
                             </a>
                         @if($car_content->vendor->is_trusted == 1)
                               <div class="us_trusted">  <span style="background: #0fbd0f;color: white;padding: 1px 10px;border-radius: 20px;font-size: 12px;margin-left: 0.5rem;"><i class="fa fa-check" aria-hidden="true"></i> Trusted Dealer </span></div>
-                          @endif 
-                          
+                          @endif
+
                              @if($car_content->is_sold == 1)
                            <div class="us_trusted">  <span style="background: #ff2f00; margin-left:5px;color: white;padding: 1px 10px;border-radius: 20px;font-size: 12px;"><i class="fa fa-check" aria-hidden="true"></i> Sold </span></div>
                         @endif
-                        
+
                          @if($car_content->is_featured == 1)
                            <div class="us_trusted">  <span style="background: #ee2c7b; margin-left:5px;color: white;padding: 1px 10px;border-radius: 20px;font-size: 12px;"><i class="fa fa-check" aria-hidden="true"></i> Spotlight </span></div>
                         @endif
-                        
-                        
+
+
                         </div>
-                        
+
                     </div>
                     @endif
-            
+
                   <figure class="product-img col-xl-4 col-lg-5 col-md-6 col-sm-12">
-                      
+
                     @if($car_content->is_sale == 1)
                     <div class="sale-tag">Sale</div>
                     @endif
-                    
+
                     @if($car_content->reduce_price == 1)
                     <div class="red-tag" style="margin-left: 195px;">REDUCED</div>
                     @endif
-                
+
                     <a href="{{ route('frontend.car.details', ['cattitle' => catslug($car_content->category_id),'slug' => $car_content->slug, 'id' => $car_content->id]) }}"
                       class="lazy-container ratio ratio-2-3">
                       <img class="lazyload"
                         data-src="{{ asset('assets/admin/img/car-gallery/' .$image_path) }}" alt="Product" onerror="this.onerror=null;this.src='{{ asset('assets/img/default.png') }}';">
                     </a>
-                    
+
                     @if($car_content->deposit_taken  == 1)
                         <div class="reduce-tag">DEPOSIT TAKEN</div>
                     @endif
-            
+
                   </figure>
-                  
+
                     <div class="product-details col-xl-5 col-lg-5 col-md-6 col-sm-12 border-lg-end pe-lg-2" style="margin-top:0.5rem;" >
                         <span class="product-category font-sm" style=" display: flex;margin-bottom: 1rem;"  >
                         {{ carBrand($car_content->car_content->brand_id) }}
                         {{ carModel($car_content->car_content->car_model_id) }}
-                      
+
                         @if ($car_content->manager_special  == 1)
                         <div class="price-tag" style="margin-left: 1rem;padding: 2px 10px;" >Manage Special</div>
                         @endif
-                    
+
                     </span>
-                    
+
                     <h5 class="product-title mb-10"><a
                         href="{{ route('frontend.car.details', ['cattitle' => catslug($car_content->category_id),'slug' => $car_content->slug, 'id' => $car_content->id]) }}">{{ $car_content->car_content->title }}</a>
                     </h5>
-                    
+
                     <div class="author mb-10">
-                     
+
                          <span>  <?= (new DateTime($car_content->car_content->created_at))->diff(new DateTime())->format('%a') == 0 ? 'Today' : (new DateTime($car_content->car_content->created_at))->diff(new DateTime())->format('%a') . ' days ago' ?> </span>
-                    
+
                     </div>
-                    
+
                     <p class="text mb-0 lc-2">
                       {!! strlen(strip_tags($car_content->car_content->description)) > 100
                           ? mb_substr(strip_tags($car_content->car_content->description), 0, 100, 'utf-8') . '...'
@@ -340,10 +340,10 @@ $review_data = null;
                         {{ __('View Details') }}
                       </a>
                   </div>
-                  
-                  
-                   
-                   
+
+
+
+
                   @if (Auth::guard('web')->check())
                     @php
                       $user_id = Auth::guard('web')->user()->id;
@@ -354,8 +354,8 @@ $review_data = null;
                       $checkWishList = false;
                     @endphp
                   @endif
-                  
-                 
+
+
                   <a href="{{ $checkWishList == false ? route('addto.wishlist', $car_content->id) : route('remove.wishlist', $car_content->id) }}"
                     class="btn btn-icon {{ $checkWishList == false ? '' : 'wishlist-active' }}" data-tooltip="tooltip"
                     data-bs-placement="right"
@@ -371,17 +371,17 @@ $review_data = null;
                 @endif
               </div>
             </div>
-           
-           
-           
-           
+
+
+
+
           <div class="tab-pane fade " id="tab_review">
-				     
+
 					<div class="card-body">
 						<div class="product-desc">
 						  <h4 class="mb-20">
-						    
-						  
+
+
 						  @if(!empty($review_data) &&  $review_data['total_reviews'] > 0 && $review_data['total_ratings'] > 0)
 						  {{ request()->input('admin') == true ? @$car_content->vendor->first_name : @$vendorInfo->name }}
                             <div class="rating-container" style="font-size: 13px;font-weight: 500;">
@@ -398,8 +398,8 @@ $review_data = null;
 						</div>
 					</div>
 				</div>
-           
-           
+
+
           </div>
 
           @if (!empty(showAd(3)))
@@ -428,12 +428,12 @@ $review_data = null;
                   </span>
                   <br>
                     @if(!empty($review_data['total_ratings']))
-                 <span> 
+                 <span>
                 <div class="rating-container" style="font-size: 15px;">
                 <span class="star on"></span>  {{$review_data['total_ratings']}}/5
                 </div>
                 </span>
-                  @endif 
+                  @endif
                 </div>
               </div>
               <!-- about text -->
@@ -463,8 +463,8 @@ $review_data = null;
                 @endif
               @endif
               <hr>
-              
-            
+
+
               <!-- Toggle list start -->
               <ul class="toggle-list list-unstyled mt-15" id="toggleList" data-toggle-show="6">
                 <li>
@@ -473,7 +473,7 @@ $review_data = null;
                     class="last">{{ request()->input('admin') == true? $total_cars: $vendor->cars()->get()->count() }}</span>
                 </li>
 
-         
+
 
                 @if ($vendor->show_phone_number == 1)
                   <li>
@@ -497,18 +497,18 @@ $review_data = null;
                     </li>
                   @endif
 
-               
+
                 @endif
-                
-                
+
+
                   @if (request()->input('admin') != true)
                   <li>
                     <span class="first">{{ __('Member since') . ':' }}</span>
                     <span class="last font-sm">{{ \Carbon\Carbon::parse($vendor->created_at)->format('F Y') }}</span>
                   </li>
                 @endif
-                
-                
+
+
 
                 @if (request()->input('admin') == true)
                   <li>
@@ -532,14 +532,14 @@ $review_data = null;
                 @endif
 
 
-              
+
 
               </ul>
               <span class="show-more-btn" data-toggle-btn="toggleListBtn">
                 {{ __('Show More') . ' +' }}
               </span>
-            
-             
+
+
             </div>
 
             @if (!empty(showAd(1)))
@@ -600,7 +600,7 @@ $review_data = null;
                   <p class="text-danger em" id="err_message"></p>
                 </div>
               </div>
-              
+
               <div class="col-lg-12 text-center">
                 <button class="btn btn-lg btn-primary" id="vendorSubmitBtn" type="submit"
                   aria-label="button">{{ __('Send message') }}</button>

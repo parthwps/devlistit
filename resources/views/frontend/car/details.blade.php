@@ -599,7 +599,7 @@ Thanks</textarea>
                         @endif
                     </div>
 
-                    @if($car->is_featured == 1)
+                    @if($car->is_featured == 1 && $car->updated_at && now()->diffInDays($car->updated_at) <= 3)
                     <div class="sale-tag">
     Spotlight
 </div>
@@ -646,7 +646,7 @@ Thanks</textarea>
     }
 }
 </style>
-@if($car->is_featured == 1)
+@if($car->is_featured == 1 && $car->updated_at && now()->diffInDays($car->updated_at) <= 3)
 <div style="border-top: 5px solid #ff9e02; animation: glow 1.5s infinite alternate;">
 </div>
 @endif
@@ -1673,7 +1673,7 @@ Thanks</textarea>
 
                             @if($car->phone_text == 1)
 
-                                <a href="tel:{{$car->vendor->country_code.$car->vendor->phone}}" id="userphonebutton" style="margin-top:1rem;" onclick="savePhoneView({{@$car->id}} , this)"  class="btn btn-md btn-primary w-100 showLoader mb-3 us_hider" data-phone_number="{{$car->vendor->country_code.$car->vendor->phone}}">Call Now</a>
+                                <a href="tel:{{$car->vendor->country_code.$car->vendor->phone}}" id="userphonebutton" style="margin-top:1rem;" onclick="savePhoneView({{@$car->id}} , this)"  class="btn btn-md btn-primary w-100 showLoader mb-3  us_hider" data-phone_number="{{$car->vendor->country_code.$car->vendor->phone}}">Call Now</a>
 
                                 @if($car->vendor->also_whatsapp == 1)
                                 <a href="https://api.whatsapp.com/send?phone={{ $car->vendor->country_code.$car->vendor->phone }}&text=I'm%20interested%20in%20this%20item%3A%20{{ urlencode(route('frontend.car.details', ['cattitle' => catslug($car->car_content->category_id), 'slug' => $car->car_content->slug, 'id' => $car->id])) }}"
@@ -2102,7 +2102,7 @@ Thanks</textarea>
                 @if($car->phone_text == 1)
                     <a href="tel:{{$car->vendor->country_code.$car->vendor->phone}}" id="userphonebutton"  onclick="savePhoneView({{@$car->id}} , this)"
                     class="btn btn-md btn-outline w-100 showLoader mb-3  us_button_st  @if($car->phone_text == 1 && $car->message_center == 0) us_sing_doub @else sticky-button @endif " data-phone_number="{{$car->vendor->country_code.$car->vendor->phone}}">
-                        <span class="original_text">Call Now</span>  <span class="mobile_icon" style="display:none;"> <i class="fa fa-phone"></i></span>
+                        <span class="original_text">Call Now</span>  <span class="mobile_icon" style="display:none;"> <i class="fa fa-phone fa-rotate-90"></i></span>
                     </a>
 
                 @if($car->vendor->also_whatsapp == 1)
@@ -2299,8 +2299,7 @@ Thanks</textarea>
 
                         <a href="{{ route('frontend.car.details', ['cattitle' => catslug($car->car_content->category_id),'slug' => $car->car_content->slug, 'id' => $car->id]) }}"
                           class="lazy-container ratio ratio-1-1">
-
-
+                          <img src="{{ asset('assets/admin/img/car-gallery/' . $car->feature_image) }}" alt="{{ @$car->title }}" class="lazyload" style="width: 100%; height: auto; transform: rotate({{ $rotation }}deg);" onerror="this.onerror=null;this.src='{{ asset('assets/img/Image_not_available.png') }}';">
                         </a>
                       </figure>
 

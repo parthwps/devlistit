@@ -120,7 +120,7 @@ Route::prefix('vendor')->middleware('auth:vendor', 'Deactive')->group(function (
     Route::post('update/{id}', 'Vendor\CarController@update')->name('vendor.car_management.update_car');
     Route::post('update-dealer-ad/{id}', 'Vendor\CarController@dealerUpdate')->name('vendor.car_management.update_dealer_ad');
     Route::post('delete', 'Vendor\CarController@delete')->name('vendor.cars_management.delete_car');
-Route::get('status/{status}/{id}', 'Vendor\CarController@adStatus')->name('vendor.cars_management.ad_status');
+    Route::get('status/{status}/{id}', 'Vendor\CarController@adStatus')->name('vendor.cars_management.ad_status');
     Route::post('bulk_delete', 'Vendor\CarController@bulkDelete')->name('vendor.car_management.bulk_delete.car');
 
     //==========car slider image

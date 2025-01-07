@@ -39,12 +39,12 @@
               <div class="row">
                 <div class="col-lg-3 col-12">
                   <div class="form-group icon-start ">
-                   
+
                     <input type="text" name="name" style="height: 40px;" value="{{ request()->input('name') }}"
                       class="form-control" placeholder="Search Dealer">
                   </div>
                 </div>
-                
+
                 <div class="col-lg-4 col-12">
                   <div class="form-group icon-start ">
                     <select class="form-control" name="dealer_type" style="    height: 40px;">
@@ -54,15 +54,15 @@
                     </select>
                   </div>
                 </div>
-                
+
                 <div class="col-lg-3 col-12">
                   <div class="form-group icon-start ">
-                   
+
                     <input type="text" style="height: 40px;" name="location" class="form-control"
                       value="{{ request()->input('location') }}" placeholder="Search by location">
                   </div>
                 </div>
-                
+
                 <div class="col-md-2 col-12">
                   <div class="form-group icon-start">
                     <button type="submit" style="height: 40px;" class="btn btn-icon bg-primary color-white btn-sm w-100">
@@ -79,7 +79,7 @@
       <!-- Products -->
       <div class="row" >
         @foreach ($vendors as $vendor)
-            
+
             <div class="col-md-4  col-12" style="margin: 2rem 0rem;">
             <div class="card" style="background: #07072e; border-radius: 10px; display: flex; flex-direction: column; justify-content: space-between; height: 100%;   min-height: 450px; /* Adjust this height as needed */
             max-height: 600px;
@@ -88,11 +88,11 @@
             justify-content: space-between;">
         <div class="author us_parent_cls" style="padding: 1rem;">
             <a style="display: flex;" class="color-medium" href="{{ route('frontend.vendor.details', ['username' => $vendor->username]) }}" target="_self" title="{{ $vendor->username }}">
-                
+
             @php
             // Define the image path based on whether the vendor has a photo or not
             $imagePath = $vendor->photo ? public_path('assets/admin/img/vendor-photo/' . $vendor->photo) : public_path('assets/img/default.png');
-            
+
             // Get the image dimensions using getimagesize()
             if (file_exists($imagePath)) {
             $imageSize = getimagesize($imagePath);
@@ -100,27 +100,27 @@
             } else {
             $imageHeight = 0; // Default height if the image file doesn't exist
             }
-            
+
             // Set the max-width based on the height
             $maxWidth = $imageHeight < 100 ? '80px' : '60px';
             @endphp
-            
+
             @if ($vendor->photo)
-            <img style="border-radius: 10%; max-width: {{ $maxWidth }};" class="lazyload blur-up" 
-            data-src="{{ asset('assets/admin/img/vendor-photo/' . $vendor->photo) }}" 
+            <img style="border-radius: 10%; max-width: {{ $maxWidth }};" class="lazyload blur-up"
+            data-src="{{ asset('assets/admin/img/vendor-photo/' . $vendor->photo) }}"
             onerror="this.onerror=null;this.src='{{ asset('assets/img/default.png') }}';" alt="Image">
             @else
-            <img style="border-radius: 10%; max-width: {{ $maxWidth }};" class="lazyload blur-up" 
-            data-src="{{ asset('assets/img/default.png') }}" 
+            <img style="border-radius: 10%; max-width: {{ $maxWidth }};" class="lazyload blur-up"
+            data-src="{{ asset('assets/img/default.png') }}"
             alt="Image">
             @endif
 
 
-                
+
                 <span style="margin-left: 1rem;">
                     <strong class="us_font_15" style="color: white; font-size: 20px;">
                         {{ !empty($vendor->vendor_info) ? $vendor->vendor_info->name : 'deleted' }}
-                        @if(!empty($vendor->est_year)) <b>.</b> 
+                        @if(!empty($vendor->est_year)) <b>.</b>
                         <span style="font-size: 15px; font-weight: normal; color: #e5e5e5;">Est {{date('Y' , strtotime($vendor->est_year))}}</span> @endif
                     </strong>
                     @if(!empty($vendor->is_franchise_dealer) && $vendor->is_franchise_dealer == 1)
@@ -152,7 +152,7 @@
         @else
          <img src="{{ asset('assets/img/noimage.jpg') }}" style="width: 100%; object-fit: cover; height: 300px;" alt="banner">
         @endif
-        
+
         <div class="container" style="border: 1px solid #bcbcbc; border-radius: 10px; box-shadow: 0px 0px 10px gray; background: white;">
             <div class="row" style="margin-top: 1rem; padding: 1rem;">
                 <div class="col-md-12">
@@ -174,12 +174,12 @@
     </div>
 </div>
 
-                   
-                    
-                    
-                    
-                   
-                    
+
+
+
+
+
+
         @endforeach
       </div>
       <div class="pagination mt-20 mb-25 justify-content-center" data-aos="fade-up">
@@ -200,9 +200,9 @@
 <script>
     function savePhoneView(self)
     {
-        
+
         var phoneNumber = document.getElementById('userphonebutton').getAttribute('data-phone-number');
 $(self).html(phoneNumber)
-    
+
     }
 </script>

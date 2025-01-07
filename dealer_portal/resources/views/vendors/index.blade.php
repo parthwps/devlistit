@@ -25,15 +25,15 @@
   ])
   <div class="user-dashboard pt-20 pb-60">
     <div class="container">
-      
-  
-      
-  <div class="row gx-xl-5">
-  
-       @includeIf('vendors.partials.side-custom')
-   
 
-    
+
+
+  <div class="row gx-xl-5">
+
+       @includeIf('vendors.partials.side-custom')
+
+
+
     <div class="col-md-9">
   <div class="mt-2 mb-4">
     <h2 class="pb-2">{{ __('Welcome back,') }} {{ Auth::guard('vendor')->user()->username . '!' }}</h2>
@@ -61,7 +61,7 @@
       $pendingPackage = isset($pendingMemb) ? \App\Models\Package::query()->findOrFail($pendingMemb->package_id) : null;
     @endphp
 
-   
+
 
     @if ($pendingPackage)
       <div class="alert alert-warning text-dark">
@@ -139,7 +139,7 @@
               <div class="col-7 col-stats">
                 <div class="numbers">
                   <p class="card-category">{{ __('Ads') }}</p>
-                  <h4 class="card-title">{{ $totalCars }}</h4>
+                  <h4 class="card-title">{{ $totalCars - $totalSoldCars }}</h4>
                 </div>
               </div>
             </div>
@@ -171,8 +171,8 @@
         </a>
       </div>
     @endif
-    
-    
+
+
       <div class="col-sm-6 col-md-4">
         <a href="{{ route('vendor.car_management.myads', ['language' => 'en' , 'tab' => 'all-ads']) }}">
           <div class="card card-stats card-warning card-round">
@@ -195,7 +195,7 @@
           </div>
         </a>
       </div>
-    
+
 
     <div class="col-lg-6">
       <div class="card">
