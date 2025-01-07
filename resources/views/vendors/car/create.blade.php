@@ -468,7 +468,7 @@
                                                                         </div>
                                                                     </div>
                                                                     <div class="row">
-                                                                        <div class="col-lg-6 d-flex align-items-center">
+                                                                        <div class="col-lg-6 d-flex align-items-center mb-2">
                                                                             <div class="form-group flex-grow-1 mr-2">
                                                                                 <label>{{ __('Price') }}*</label>
                                                                                 <input name="price" type="number"
@@ -478,8 +478,21 @@
                                                                                     placeholder="Enter Price in £">
                                                                             </div>&nbsp;
                                                                         </div>
+                                                                        <div class="col-lg-6 d-flex align-items-center mb-2">
+                                                                            <div class="form-group w-100">
+                                                                                <label>{{ __('Delivery Available') }}*</label>
+                                                                                <select name="delivery_available"
+                                                                                        class="form-control">
+                                                                                    <option value="1" selected >
+                                                                                        {{ __('Yes') }}
+                                                                                    </option>
+                                                                                    <option value="0">
+                                                                                        {{ __('No') }}
+                                                                                    </option>
+                                                                                </select>
+                                                                            </div>
+                                                                        </div>
                                                                     </div><br />
-
                                                                 </div>
                                                                 <div class="row">
                                                                     <div class="col">

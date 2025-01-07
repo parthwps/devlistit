@@ -606,9 +606,10 @@ class CarController extends Controller
             // return response()->json([$bodyTypeArray,$bodyTypesArrayIds,$category_carIds]);
         // }
 
-        $price = $body_type = $location =  $seat_min = $seat_max = $adtype = $engine_size = $engine_power = $doors = $road_tax = $battery = $verification = $warranty = $owners = $mot = $year_min = $year_max = $engine_min = $engine_max = $power_min = $power_max = $dealer_type = "";
-
+        $price = $body_type = $location =  $seat_min = $seat_max = $adtype = $delivery_available = $engine_size = $engine_power = $doors = $road_tax = $battery = $verification = $warranty = $owners = $mot = $year_min = $year_max = $engine_min = $engine_max = $power_min = $power_max = $dealer_type = "";
+        
         if ($request->filled('adtype')) { $adtype = $request->adtype;  }
+        if ($request->filled('delivery_available')) { $delivery_available = $request->delivery_available; }
         if ($request->filled('dealer_type')) { $dealer_type = $request->dealer_type;  }
         if ($request->filled('doors')) { $doors = $request->doors;  }
         if ($request->filled('engine_size')) { $engine_size = $request->engine_size;  }
@@ -649,6 +650,9 @@ class CarController extends Controller
             })
              ->when($adtype, function ($query) use ($adtype) {
                  return $query->where('cars.ad_type','LIKE', '%'.$adtype.'%');
+            })
+            ->when($delivery_available === '0' || $delivery_available === '1', function ($query) use ($delivery_available) {
+                return $query->where('cars.delivery_available', $delivery_available);
             })
             ->when($dealer_type, function ($query) use ($dealer_type) {
                 return $query->whereHas('vendor', function ($vendorQuery) use ($dealer_type) {
@@ -805,6 +809,7 @@ class CarController extends Controller
                 'cars.status',
                 'cars.city',
                 'cars.ad_type',
+                'cars.delivery_available',
                 'cars.doors',
                 'cars.road_tax',
                 'cars.verification',
@@ -939,6 +944,9 @@ class CarController extends Controller
             })
              ->when($adtype, function ($query) use ($adtype) {
                  return $query->where('cars.ad_type','LIKE', '%'.$adtype.'%');
+            })
+            ->when($delivery_available === '0' || $delivery_available === '1', function ($query) use ($delivery_available) {
+                return $query->where('cars.delivery_available', $delivery_available);
             })
             ->when($dealer_type, function ($query) use ($dealer_type) {
                 return $query->whereHas('vendor', function ($vendorQuery) use ($dealer_type) {
@@ -1794,11 +1802,12 @@ class CarController extends Controller
             $order_by_column = 'cars.id';
             $order = 'desc';
         }
-
-
-        $location =$seat_min = $seat_max = $adtype = $doors = $engine_size = $engine_power = $road_tax = $battery = $verification = $warranty = $owners = $mot = $year_min = $year_max = $engine_min = $engine_max = $power_min = $power_max = $dealer_type = "";
-
+        
+        
+        $location =$seat_min = $seat_max = $adtype = $delivery_available = $doors = $engine_size = $engine_power = $road_tax = $battery = $verification = $warranty = $owners = $mot = $year_min = $year_max = $engine_min = $engine_max = $power_min = $power_max = $dealer_type = "";
+        
         if ($request->filled('adtype')) { $adtype = $request->adtype;  }
+        if ($request->filled('delivery_available')) { $delivery_available = $request->delivery_available;  }
         if ($request->filled('dealer_type')) { $dealer_type = $request->dealer_type;  }
         if ($request->filled('doors')) { $doors = $request->doors;  }
         if ($request->filled('engine_size')) { $engine_size = $request->engine_size;  }
@@ -1829,6 +1838,9 @@ class CarController extends Controller
             })
              ->when($adtype, function ($query) use ($adtype) {
                 return $query->where('cars.ad_type','LIKE', '%'.$adtype.'%');
+            })
+            ->when($delivery_available === '0' || $delivery_available === '1', function ($query) use ($delivery_available) {
+                return $query->where('cars.delivery_available', $delivery_available);
             })
             ->when($dealer_type, function ($query) use ($dealer_type) {
                 return $query->whereHas('vendor', function ($vendorQuery) use ($dealer_type) {
