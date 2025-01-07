@@ -163,7 +163,7 @@
 
                                 <label>{{ __('Section') }} *</label>
                                 <select name="en_main_category_id"
-                                  class="form-control " onchange="checkIfVhecleCat(this); saveDraftData(this , 'category_id') " id="adsMaincat">
+                                  class="form-control select2" onchange="checkIfVhecleCat(this); saveDraftData(this , 'category_id') " id="adsMaincat">
                                   <option selected disabled>{{ __('Select a Category') }}</option>
 
                                   @foreach ($categories as $category)
@@ -172,7 +172,14 @@
                                 </select>
                               </div>
                             </div>
-
+                            <script>
+                              $(document).ready(function() {
+                                  $('#adsMaincat').select2({
+                                      placeholder: "Search and select a category",
+                                      allowClear: true
+                                  });
+                              });
+                          </script>
 
                             <div class="col-lg-6 ">
 
@@ -2382,6 +2389,7 @@ function getModel(self)
 {{-- core js files --}}
 
 
+<script type="text/javascript" src="{{ asset('assets/js/select2.min.js') }}"></script>
 
 {{-- jQuery ui --}}
 <script type="text/javascript" src="{{ asset('assets/js/jquery-ui.min.js') }}"></script>

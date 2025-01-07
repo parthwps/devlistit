@@ -25,14 +25,14 @@
   ])
 <div class="user-dashboard pt-20 pb-60 us_top">
     <div class="container">
-      
-  
-      
+
+
+
   <div class="row gx-xl-5">
-  
+
        @includeIf('vendors.partials.side-custom')
-  <div class="col-md-9">      
-  
+  <div class="col-md-9">
+
 
   @php
     $current_package = App\Http\Helpers\VendorPermissionHelper::packagePermission(Auth::guard('vendor')->user()->id);
@@ -83,16 +83,16 @@
         @endphp
       @endif
        <div class="alert alert-danger text-dark" id="error_list" style="display:none;"> </div>
-      
-      
+
+
         <form  id="myForm"  method="POST" enctype="multipart/form-data">
             @csrf
-            
+
             <div id="sliders"></div>
-              
-                  
+
+
                 <div class="card">
-        
+
                 <div class="card-body">
                 <div class="row">
 
@@ -124,7 +124,7 @@
                         @endphp
 
                         <label>{{ __('Section') }} *</label>
-                        
+
                         <select name="en_main_category_id"
                           class="form-control " onchange="checkIfVhecleCat(this)" id="adsMaincats">
                           <option selected disabled>{{ __('Select a Category') }}</option>
@@ -135,7 +135,7 @@
                         </select>
                       </div>
                     </div>
-         
+
 
                     <div class="col-lg-6 ">
 
@@ -150,44 +150,44 @@
 
 
                         </div>
-              
+
                 </div>
         </div>
 
          <div id="loadFiltersCategoryWise">
-             
+
                 <div class="card car_category"  style="display:none;">
-                
+
                 <div class="card-body">
 
 
-    
+
         <div class="row " >
                   <div class="col-lg-8 ">
                     <div class="form-group">
                       <h3>{{ __('Add Details') }} </h3>
                     </div>
                   </div>
-                  
+
                 </div>
-              
-                
+
+
             <div class="row us_car_features" >
-        
+
               <div class="col-lg-2">
                 <div class="form-group">
                   <label id="labael_new"> New </label>
                   &nbsp;&nbsp; <input type="radio"  name="what_type" value="brand_new" onchange="hide_owner_if_new(this)"  <?= ($car->what_type == 'brand_new') ? 'checked' : ''  ?>  id="what_type" >
                 </div>
               </div>
-              
+
               <div class="col-lg-2">
                 <div class="form-group">
                   <label id="labael_used">Used </label>
                   &nbsp;&nbsp; <input type="radio"   name="what_type" value="used" onchange="hide_owner_if_new(this)" <?= ($car->what_type == 'used') ? 'checked' : ''  ?>  id="what_type" >
                 </div>
               </div>
-              
+
               <div class="col-lg-8"></div>
 
                 <div class="col-xl-6 col-lg-6 col-md-6 col-12 ">
@@ -211,10 +211,10 @@
                                     ->withCount('cars')
                                     ->orderBy('cars_count', 'desc')
                                     ->orderBy('name', 'asc')
-                                    ->take(10) 
+                                    ->take(10)
                                     ->get();
-                                    
-                                    
+
+
                                     $otherBrands = App\Models\Car\Brand::where('cat_id', 44)
                                     ->where('status', 1)
                                     ->whereNotIn('id', $brands->pluck('id'))
@@ -244,7 +244,7 @@
                                 <label>{{ __('Model') }} *</label>
                                 <select name="en_car_model_id"
                                   class="form-control validateTextBoxs en_car_brand_model_id"   id="carModel">
-                                  
+
                                 </select>
                               </div>
                             </div>
@@ -273,13 +273,13 @@
                                 </select>
                               </div>
                             </div>
-                 
+
 
                   <div class="col-xl-6 col-lg-6 col-md-6 col-12 " id="new_engine_caacity">
                     <div class="form-group">
                       <label>
                            Engine Size
-                           
+
                        @if($car->car_content->category_id == 48 || $car->car_content->category_id == 62 )
                        (cc)
                        @elseif($car->car_content->fuel_type_id  == 14 || $car->car_content->fuel_type_id  == 15)
@@ -293,8 +293,8 @@
                   </div>
                   </div>
                    <div class="row us_car_features" >
-                  
-                   <!-- editable --> 
+
+                   <!-- editable -->
                    <div class="col-xl-6 col-lg-6 col-md-6 col-12 ">
                               <div class="form-group">
                                 @php
@@ -362,7 +362,7 @@
                                 </select>
                               </div>
                             </div>
-                  
+
                   <div class="col-xl-6 col-lg-6 col-md-6 col-12 ">
                     <div class="form-group">
                    <label>{{ __('Seats') }} *</label>
@@ -382,7 +382,7 @@
                   <div class="col-xl-6 col-lg-6 col-md-6 col-12 ">
                     <div class="form-group">
                       <label>{{ __('Add your mileage') }} (M) *</label>
-                      <input type="number" class="form-control validateTextBoxs" value="{{$car->mileage}}" name="mileage" id="Mileage" placeholder="Enter Mileage"> 
+                      <input type="number" class="form-control validateTextBoxs" value="{{$car->mileage}}" name="mileage" id="Mileage" placeholder="Enter Mileage">
                     </div>
                   </div>
 
@@ -400,19 +400,19 @@
                             </select>
                         </div>
                   </div>
-                
-                
+
+
                  <div class="col-xl-6 col-lg-6 col-md-6 col-12 ">
                 <div class="form-group">
                   <label>Annual Road Tax </label>
                   <input type="number" class="form-control validateTextBoxs" value="{{$car->road_tax}}" name="annual_road_tax" placeholder="Enter Annual Road Tax" id="carRoadTax" >
                 </div>
                 </div>
-                
+
 
                  <input type="hidden" value="{{$car->current_area_regis}}" name="current_area_regis" />
 
-                 
+
 
                   <div class="col-lg-12">
                     <div class="form-group">
@@ -426,7 +426,7 @@
                       &nbsp;&nbsp; <input type="checkbox" style="zoom: 1.3;position: relative;top: 1px;"  {{  $car->is_sale == 1 ? 'checked' : '' }}  name="is_sale" value="1"  id="sale" >
                     </div>
                   </div>
-                  
+
                     <div class="col-2"  style="width: 130px;">
                     <div class="form-group" style="padding-left: 0px;padding-right: 0px;">
                       <label style="    font-size: 18px !important;" id="labael_sold">Sold </label>
@@ -464,10 +464,10 @@
 
         <div class="card-body">
         <div class="row">
-    
+
                 <div class="col-lg-12" style="margin-bottom: 1rem;cursor:pointer;" onclick="openClosestBox(this)">
                     <b style="font-size: 20px;">Comfort & Convenience </b>
-                    
+
                     <i class="fa fa-caret-down" style="float: right;font-size: 1.5rem;" aria-hidden="true"></i>
                 </div>
 
@@ -635,21 +635,21 @@
 </div>
 
   </div>
-  
-  
-  
+
+
+
   <div class="card car_category"  style="display:none;">
 <div class="card-body">
 <div class="row">
 
-                
+
                  <div class="col-lg-12" style="margin-bottom: 1rem;cursor:pointer;" onclick="openClosestBox(this)">
                     <b style="font-size: 20px;">Media & Conectivity </b>
-                    
+
                     <i class="fa fa-caret-down" style="float: right;font-size: 1.5rem;" aria-hidden="true"></i>
                 </div>
-                
-   
+
+
               <div class="col-xl-6 col-lg-6 col-md-6 col-12 us_hide_by_default">
     <div class="form-group">
         <input class="chekbox" name="media_n_conectivity[]" value="andriod_auto" type="checkbox" <?= \App\Http\Controllers\Vendor\CarController::isFeatureChecked(['parent_name' => 'media_n_conectivity', 'value' => 'andriod_auto'], $vehicle_features); ?> />
@@ -727,25 +727,25 @@
     </div>
 </div>
 
-   
+
     </div>
 </div>
 
   </div>
-  
-  
-  
+
+
+
    <div class="card car_category"  style="display:none;">
 <div class="card-body">
 <div class="row">
 
             <div class="col-lg-12" style="margin-bottom: 1rem;cursor:pointer;" onclick="openClosestBox(this)">
                 <b style="font-size: 20px;">Assistance & Utility </b>
-                
+
                 <i class="fa fa-caret-down" style="float: right;font-size: 1.5rem;" aria-hidden="true"></i>
             </div>
-  
-  
+
+
       <div class="col-xl-6 col-lg-6 col-md-6 col-12 us_hide_by_default">
     <div class="form-group">
         <input class="chekbox" name="assistance_n_utility[]" value="adaptive_cruise_control" type="checkbox" <?= \App\Http\Controllers\Vendor\CarController::isFeatureChecked(['parent_name' => 'assistance_n_utility', 'value' => 'adaptive_cruise_control'], $vehicle_features); ?> />
@@ -863,21 +863,21 @@
 </div>
 
   </div>
-  
-  
-  
-  
+
+
+
+
 <div class="card car_category"  style="display:none;">
 <div class="card-body">
 <div class="row">
-    
+
 
             <div class="col-lg-12" style="margin-bottom: 1rem;cursor:pointer;" onclick="openClosestBox(this)">
             <b style="font-size: 20px;">Styling & Appearance </b>
-            
+
             <i class="fa fa-caret-down" style="float: right;font-size: 1.5rem;" aria-hidden="true"></i>
             </div>
-            
+
                <div class="col-xl-6 col-lg-6 col-md-6 col-12 us_hide_by_default">
     <div class="form-group">
         <input class="chekbox" name="styling_n_appearance[]" value="digital_instrument_panel" type="checkbox" <?= \App\Http\Controllers\Vendor\CarController::isFeatureChecked(['parent_name' => 'styling_n_appearance', 'value' => 'digital_instrument_panel'], $vehicle_features); ?> />
@@ -955,24 +955,24 @@
     </div>
 </div>
 
-  
+
  </div>
 </div>
 </div>
-  
-  
+
+
    <div class="card car_category"  style="display:none;">
 <div class="card-body">
 <div class="row">
-    
+
 
 <div class="col-lg-12" style="margin-bottom: 1rem;cursor:pointer;" onclick="openClosestBox(this)">
             <b style="font-size: 20px;">Lighting & Illumination </b>
-            
+
             <i class="fa fa-caret-down" style="float: right;font-size: 1.5rem;" aria-hidden="true"></i>
             </div>
-  
-  
+
+
                <div class="col-xl-6 col-lg-6 col-md-6 col-12 us_hide_by_default">
     <div class="form-group">
         <input class="chekbox" name="lighting_n_illumination[]" value="night_vision_assist" type="checkbox" <?= \App\Http\Controllers\Vendor\CarController::isFeatureChecked(['parent_name' => 'lighting_n_illumination', 'value' => 'night_vision_assist'], $vehicle_features); ?> />
@@ -1043,7 +1043,7 @@
     </div>
 </div>
 
-  
+
    </div>
 </div>
 </div>
@@ -1053,10 +1053,10 @@
 <div class="card car_category"  style="display:none;">
 <div class="card-body">
 <div class="row">
-    
+
  <div class="col-lg-12" style="margin-bottom: 1rem;cursor:pointer;" onclick="openClosestBox(this)">
             <b style="font-size: 20px;">Safety & Security </b>
-            
+
             <i class="fa fa-caret-down" style="float: right;font-size: 1.5rem;" aria-hidden="true"></i>
             </div>
 
@@ -1188,23 +1188,23 @@
 </div>
 
 
-   
+
    </div>
 </div>
 </div>
 
 
-    
+
      <div class="card car_category"  style="display:none;">
 <div class="card-body">
 <div class="row">
-    
+
      <div class="col-lg-12" style="margin-bottom: 1rem;cursor:pointer;" onclick="openClosestBox(this)">
             <b style="font-size: 20px;">Performance & Handling </b>
-            
+
             <i class="fa fa-caret-down" style="float: right;font-size: 1.5rem;" aria-hidden="true"></i>
             </div>
-            
+
               <div class="col-xl-6 col-lg-6 col-md-6 col-12 us_hide_by_default">
     <div class="form-group">
         <input class="chekbox" name="performance_n_handling[]" value="air_suspension" type="checkbox" <?= \App\Http\Controllers\Vendor\CarController::isFeatureChecked(['parent_name' => 'performance_n_handling', 'value' => 'air_suspension'], $vehicle_features); ?> />
@@ -1233,7 +1233,7 @@
 
 
 <div class="card car_category"  style="display:none;">
-        
+
         <div class="card-body">
 
         <div class="row">
@@ -1242,7 +1242,7 @@
         <div class="col-lg-12 ">
                     <div class="form-group">
                       <h3>Key Selling Points </h3>
-                  
+
                     </div>
                   </div>
 
@@ -1250,26 +1250,26 @@
 
             <div class="col-lg-6">
                         <div class="form-group ">
-                            
+
                             <input  class="chekbox" name="history_checked" <?= ($car->history_checked == 1) ? 'checked' : '' ?> value="1" type="checkbox" />
                             <label  class="lbel">History checked</label>
                         </div>
-                    
+
             </div>
 
             <div class="col-lg-6">
                         <div class="form-group ">
-                            
+
                             <input  class="chekbox" name="delivery_available" <?= ($car->delivery_available == 1) ? 'checked' : '' ?>  value="1" type="checkbox" />
                             <label  class="lbel">Delivery available</label>
                         </div>
-                   
+
             </div>
 
 
                      <div class="col-lg-6">
                         <div class="form-group ">
-                            
+
                             <label  class="lbel">Warranty Type *</label>
 
                             <select name="warranty_type" class="form-control" onclick="checkwarrenty_type(this)">
@@ -1280,15 +1280,15 @@
 
                         </div>
                     </div>
-          
+
 
                     <div class="col-lg-6">
                         <div class="form-group">
-                            
+
                                 <label  class="lbel">Warranty Duration *</label>
-                                
+
                                 <select name="warranty_duration" id="warranty_duration" class="form-control">
-                                    
+
                                     <option value="0" <?= ($car->warranty_duration == '0 month') ? 'selected' : '' ?>  >0 month  </option>
                                     <option value="3 month" <?= ($car->warranty_duration == '3 month') ? 'selected' : '' ?> >3 month  </option>
                                     <option value="6 month" <?= ($car->warranty_duration == '6 month') ? 'selected' : '' ?> >6 month  </option>
@@ -1303,11 +1303,11 @@
                                     <option value="7 year" <?= ($car->warranty_duration == '7 year') ? 'selected' : '' ?>  >7 year   </option>
 
                                     <option value="8 year" <?= ($car->warranty_duration == '8 year') ? 'selected' : '' ?> >8 year   </option>
-                                    
+
                                 </select>
                         </div>
                     </div>
-            
+
 
                 </div>
 
@@ -1315,7 +1315,7 @@
 
     </div>
 
- 
+
 
 
 
@@ -1323,7 +1323,7 @@
 
 
     <div class="card car_category"  style="display:none;">
-        
+
         <div class="card-body">
 
         <div class="row">
@@ -1343,18 +1343,18 @@
                   <div class="col-lg-12">
                         <div class="form-group ">
                                 <label  class="lbel">Sales Contact *</label>
-                               
+
                                 @php
                                     $jsonArray = json_decode($car->enquiry_person_id , true);
                                 @endphp
-                                
+
                                 <div class="row">
                                         @foreach( $enquire_persons as  $enquire_person)
                                           <div class="col-md-3">
-                                              <span style="font-size: 16px;font-weight: 700;color: gray;    margin-right: 7px;"> 
+                                              <span style="font-size: 16px;font-weight: 700;color: gray;    margin-right: 7px;">
                                               {{ucfirst($enquire_person->name)}}
-                                          </span>    
-                                          
+                                          </span>
+
                                           <input type="checkbox" style="zoom: 1.2;position: relative;top: 1px;" @if(!empty($jsonArray) && in_array($enquire_person->id , $jsonArray)) checked @endif value="{{$enquire_person->id}}" name="enquirey_person[]" />
                                           </div>
                                         @endforeach
@@ -1373,7 +1373,7 @@
                   <div class="col-lg-6 col-sm-6 col-md-6">
                       <div class="form-group">
                         <div class="form-check form-check-inline">
-    
+
                             <label class="form-check-label" for="inlineRadio3">Ad Type</label>
                         </div>
                         <div class="form-check form-check-inline">
@@ -1392,7 +1392,7 @@
                     <div class="">
                       <div class="version-header" id="heading{{ $language->id }}">
                         <h5 class="mb-0">
-                        
+
                         </h5>
                       </div>
 
@@ -1418,14 +1418,14 @@
                                   name="{{ $language->code }}_description" data-height="300" style="    height: 200px;" >{{$car->car_content->description }}</textarea>
                               </div>
                             </div>
-                            
+
                               <div class="col-lg-6">
                                 <div class="form-group">
                                   <label>{{ __('Price') }} £</label>
                                   <input type="number" class="form-control" name="price" value="{{$car->price }}" placeholder="Enter  Price">
                                 </div>
-                              </div> 
-                              
+                              </div>
+
                               <div class="col-lg-6" >
                                 <div class="form-group">
                                   <label>Vat Status </label>
@@ -1435,7 +1435,7 @@
                                   </select>
                                 </div>
                               </div>
-                              
+
                               <div class="col-lg-6" style="display:none;">
                                 <div class="form-group">
                                   <label>{{ __('Status') }} *</label>
@@ -1444,13 +1444,13 @@
                                     <option value="0"  <?= ($car->status == '0' ) ? 'selected' : '' ?> >{{ __('Deactive') }}</option>
                                   </select>
                                 </div>
-                              </div> 
+                              </div>
                             </div>
-                            
-                            
+
+
                           </div>
                           </div>
-                         
+
                           <div class="row">
                             <div class="col">
                               @php $currLang = $language; @endphp
@@ -1493,7 +1493,7 @@
             <div class="col-lg-8 ">
                 <div class="form-group">
                 <h4>{{ __('Contact Details') }} </h4>
-                
+
 
                 </div>
             </div>
@@ -1516,17 +1516,17 @@
                       <label>{{ __('Email') }}</label>
                       <input type="text" value="{{ $vendor->email }}" class="form-control" name="email" disabled>
                     </div>
-                  </div> 
+                  </div>
                   <div class="col-lg-6">
                     <label style="margin-left:8px; font-weight: 600;">{{ __('Phone') }}</label>
                     <div class="form-group input-group">
-                      
-                      <input  type="tel" value="{{ $vendor->phone }}" readonly class="form-control" name="phone" required> 
-                       
+
+                      <input  type="tel" value="{{ $vendor->phone }}" readonly class="form-control" name="phone" required>
+
                       <p id="editErr_phone" class="mt-1 mb-0 text-danger em"></p>
                     </div>
                   </div>
-                 
+
                   <div class="col-lg-6">
                     <div class="form-group">
                      <label>{{ __('Area') }}</label>
@@ -1537,59 +1537,59 @@
                     @endforeach
                     </select>
                     </div>
-                  </div> 
-                  
-                  
+                  </div>
+
+
                   <div class="col-lg-3">
                     <div class="form-group">
                          <input type="checkbox" style="zoom: 1.2;position: relative;top: 3px;margin-right: 5px;" <?= ($car->message_center == 1) ? 'checked' : '' ?> required checked name="message_center" value="yes">
                       <label>Message Centre </label>
-                     
+
                     </div>
                   </div>
                   <div class="col-lg-3">
                     <div class="form-group">
                           <input type="checkbox"  style="zoom: 1.2;position: relative;top: 3px;margin-right: 5px;" <?= ($car->phone_text == 1) ? 'checked' : '' ?> name="phone_text" value="yes">
                       <label>Phone/Text</label>
-                    
+
                     </div>
-                  </div> 
-                  
-                  
-                  
-                </div> 
+                  </div>
+
+
+
+                </div>
                  <input type="hidden" name="can_car_add" value="1">
                 <input type="hidden" id="defaultImg" name="car_cover_image" value="">
                 <input type="hidden" name="car_id" value="{{$car->id}}">
                 <input type="hidden" name="rotation_point" id="feature_photo_rotation" value="{{$car->rotation_point}}">
                 <input type="hidden" name="photo_frma" id="photoframe" />
-             
+
             </div>
 
 
-            
+
           </div>
 
 
 
-    
+
     <div class="card" style="display:none;">
-    
+
         <input type="text" class="form-control" placeholder="enter dealer name " readonly value="{{$car->financing_dealer}}"  name="financing_dealer" />
-    
+
         <input type="text" class="form-control"  placeholder="Enter url here where user redirect" value="{{$car->vendor->finance_url}}" name="financing_url" />
-    
+
     </div>
-        
-    
-    
-        
+
+
+
+
     <div class="card">
-    
+
     <div class="card-body">
-    
+
     <div class="row">
-    
+
     <div class="col-lg-12 ">
     <div class="form-group">
     <h3>{{ __('Optional YouTube Video') }}  </h3>
@@ -1603,30 +1603,30 @@
             <input type="text" class="form-control" name="youtube_video"  value="{{$car->youtube_video}}"  placeholder="Enter youtube Video URL">
         </div>
       </div>
-    
+
     </div>
 
     </div>
-    
+
     </div>
-    
+
     </div>
-    
-    
-    
+
+
+
 </form>
 
 
-    
-    
+
+
  @if(Auth::guard('vendor')->user()->is_trusted  == 1)
     <div class="card car_category"  style="display:none;">
-    
+
     <div class="card-body">
-    
+
     <div class="row">
-    
-  
+
+
     <div class="col-lg-12 ">
         <div class="form-group">
           <h3>Photo Frame </h3>
@@ -1640,7 +1640,7 @@
                         <input type="file" class="form-control" id="image" name="photo_frame" accept="image/*" onchange="uploadImage()" />
                 </div>
             </div>
-            
+
             <div class="col-lg-12">
                   <div id="imagePreview">
                       @if(!empty($car->feature_image))
@@ -1652,28 +1652,28 @@
                         padding: 5px;
                         border-radius: 50%;" onclick="rotateFeatureImg()" title="rotate" ></i>
                         <i class="fa fa-times " style="position: relative;top: -65px !important;right: 40px;background: white;padding: 5px;border-radius: 50%;" onclick="removeFeatureImg(this)" title="remove" ></i>
-                        
+
                       @endif
                           </div>
-                          
+
                     </div>
-                
+
                 </form>
-                
+
             </div>
-            
+
         </div>
-            
+
     </div>
-    
+
 @endif
 
           <div class="card">
-        
+
         <div class="card-body">
 
         <div class="row">
-          
+
               <div class="col-lg-12">
                 <label for="" class="mb-2"><strong>{{ __('Gallery Images') }} **</strong> <br> <small class="text-danger">load up to 30 images .jpg, .png, & .gif</small></label>
                 <form action="{{ route('car.imagesstore') }}" id="my-dropzone" enctype="multipart/form-data"
@@ -1685,26 +1685,26 @@
                 </form>
                 <p class="em text-danger mb-0" id="errslider_images"></p>
               </div>
-                
+
                    @php
                 // Sort galleries by priority
                 $sortedGalleries = $car->galleries->sortBy('priority');
-                
+
                 // Extract the feature image
                 $featureImage = $sortedGalleries->firstWhere('image', $car->feature_image);
-                
+
                 // Remove the feature image from the sorted galleries
                 if ($featureImage) {
                 $sortedGalleries = $sortedGalleries->reject(function($item) use ($featureImage) {
                 return $item->id === $featureImage->id;
                 });
-                
+
                 // Prepend the feature image to the sorted galleries
                 $sortedGalleries->prepend($featureImage);
                 }
                 @endphp
-                
-                
+
+
               <div class="col-12">
                     <table class="table table-striped" id="imgtable">
                       @foreach ($sortedGalleries as $item)
@@ -1723,7 +1723,7 @@
                       @endforeach
                      </table>
                   </div>
-                  
+
                 </div>
                 </div>
 
@@ -1750,12 +1750,12 @@
 
     </div>
   </div>
-  
+
   </div>
   </div>
   </div>
   </div>
-  
+
   <input type="hidden" id="request_method" value="GET" />
 @endsection
 @php
@@ -1770,7 +1770,7 @@
       } else {
           $direction = 'form-group';
       }
-  
+
       $labels .= "<div class='$direction'><input type='text' name='" . $label_name . "' class='form-control' placeholder='Label ($language->name)'></div>";
       $values .= "<div class='$direction'><input type='text' name='$value_name' class='form-control' placeholder='Value ($language->name)'></div>";
   }
@@ -1833,7 +1833,7 @@
   font-size: 14px;
   font-weight: 600;
  }
- 
+
   button.rotate-btn {
     font-size: 12px;
     position: absolute;
@@ -1851,11 +1851,11 @@
 
 .rotatebtndb
 {
-     
+
     top: 30px !important;
-   
+
     color: #004eabd6 !important;
-   
+
     cursor: pointer !important;
 }
 
@@ -1864,9 +1864,9 @@
 var rotationAngle1 = 0;
 var rotationAnglef = 0;
 
-function rmvimg(fileid , self) 
+function rmvimg(fileid , self)
   {
-    
+
     $.ajax({
       url: '{{ route('user.car.imagermvs') }}',
       type: 'GET',
@@ -1883,93 +1883,93 @@ function rmvimg(fileid , self)
     {
         $(self).closest('.car_category').find('.us_hide_by_default').toggle()
     }
-  
+
 function rotateFeatureImg()
 {
     // Find the image element within the file preview element
     var imageElement = $('#previewImg');
-    
-    
+
+
     if (imageElement.length) {
         // Increment the rotation angle by 90 degrees
         rotationAnglef += 90;
-    
+
         // Apply the rotation to the image element
         imageElement.css('transform', 'rotate(' + rotationAnglef + 'deg)');
-    
+
         // Reset rotation to 0 if it reaches 360 degrees
         if (rotationAnglef === 360) {
             rotationAnglef = 0;
         }
-        
+
         $('#feature_photo_rotation').val(rotationAnglef);
     }
-    
-    return false; 
+
+    return false;
 }
 
-function rotatePhoto(id) 
+function rotatePhoto(id)
 {
     // Find the image element within the file preview element
     var imageElement = $('#img_'+id);
-    
-    
+
+
     if (imageElement.length) {
         // Increment the rotation angle by 90 degrees
         rotationAngle1 += 90;
-    
+
         // Apply the rotation to the image element
         imageElement.css('transform', 'rotate(' + rotationAngle1 + 'deg)');
-    
+
         // Reset rotation to 0 if it reaches 360 degrees
         if (rotationAngle1 === 360) {
             rotationAngle1 = 0;
         }
-        
+
         rotationSave(id, rotationAngle1);
     }
-    
+
     return false;
 }
 
-    
+
      function rotationSave(fileid , rotationEvnt)
     {
         var requestMethid = "POST";
-        
+
         if($('#request_method').val() != '')
         {
-           var requestMethid = "GET"; 
+           var requestMethid = "GET";
         }
-        
+
            $.ajax({
           url: '/vendor/car-management/img-db-rotate',
           type: requestMethid,
           data: {
             fileid: fileid , rotationEvnt:rotationEvnt
           },
-          success: function (data) 
+          success: function (data)
           {
-           
+
           }
-        }); 
+        });
     }
-    
-     
+
+
     function removeFeatureImg(self)
     {
         $(self).closest('#imagePreview').html('');
     }
-    
-    
+
+
     function uploadImage() {
         var formData = new FormData($('#imageUploadForm')[0]);
         var fileInput = document.getElementById('image');
 
         formData.append('photo_frame', fileInput.files[0]);
-    
+
         $('#CarSubmits').prop('disabled' , true);
-        
+
         // Display image preview (you can customize this part)
         var reader = new FileReader();
         reader.onload = function(e) {
@@ -1984,23 +1984,23 @@ function rotatePhoto(id)
             data: formData,
             contentType: false,
             processData: false,
-            success: function(response) 
+            success: function(response)
             {
                 $('#photoframe').val(response.image_path)
                 $('#CarSubmits').prop('disabled' , false);
-                
+
                 // Handle the success response, e.g., display a message or update the UI
                 console.log(response);
             },
-            error: function(error) 
+            error: function(error)
             {
                 // Handle the error response, e.g., display an error message
                 console.log(error);
             }
         });
     }
-    
-    
+
+
 function checkwarrenty_type(self)
 {
     if($(self).val() == 'No Warranty')
@@ -2037,12 +2037,14 @@ function checkwarrenty_type(self)
 
                     // Iterate through the errors object and create list items
                     $.each(errors, function (fieldName, errorMessages) {
+                      var capitalizedFieldName = fieldName.charAt(0).toUpperCase() + fieldName.slice(1);
+
                         // Iterate through the array of error messages for each field
                         $.each(errorMessages, function (index, errorMessage) {
                             // Create a list item
-                            
+
                             console.log(errorMessage)
-                            var $errorItem = $('<li style="    color: red;">').text(fieldName + ': ' + errorMessage);
+                            var $errorItem = $('<li style="    color: red;">').text(capitalizedFieldName  + ': ' + errorMessage);
 
                             // Append the list item to the list
                             $errorList.append($errorItem);
@@ -2077,30 +2079,30 @@ function checkwarrenty_type(self)
 function checkIfVhecleCat(self)
 {
     getSubCtegory()
-    
+
     var searchWord = "car";
-    
-    if ($(self).text().toLowerCase().includes(searchWord.toLowerCase())) 
+
+    if ($(self).text().toLowerCase().includes(searchWord.toLowerCase()))
     {
         $('.car_category').show();
         $('.us_car_features .col-lg-4').show();
-    } 
-    else 
+    }
+    else
     {
         $('.car_category').hide();
         $('.us_car_features .col-lg-4').hide();
     }
 }
 
-$(document).ready(function() 
+$(document).ready(function()
 {
     var searchWord = "car";
-     
+
     $('#make').change();
-    
-    $('#adsMaincats option').each(function() 
+
+    $('#adsMaincats option').each(function()
     {
-        if ($(this).text().toLowerCase().includes(searchWord.toLowerCase())) 
+        if ($(this).text().toLowerCase().includes(searchWord.toLowerCase()))
         {
             $(this).prop('selected', true);
             $(this).change()
@@ -2122,27 +2124,27 @@ function getSubCtegory()
                 success: function(data) {
                      $('#adsSubcat').prop('disabled' , false)
                      $('#adsSubcat').html(data);
-                     
+
                         var sub_cat = '{{$car->car_content->sub_category->id}}';
-                        
-                        $('#adsSubcat option').each(function() 
+
+                        $('#adsSubcat option').each(function()
                         {
-                            
-                            if ($(this).val().includes(sub_cat)) 
+
+                            if ($(this).val().includes(sub_cat))
                             {
                                 $(this).prop('selected', true);
                             }
                         });
-    
-    
+
+
                 },
                 error: function(xhr, status, error) {
                     console.error('Error fetching car models: ' + status);
                 }
             });
     }
-    
-    
+
+
 
 function getModel(self)
     {
@@ -2162,20 +2164,20 @@ function getModel(self)
 
                     // Enable the car models dropdown
                     $('#carModel').prop('disabled', false);
-                    
-                    
+
+
                     var car_model = '{{$car->car_content->model->id}}';
-                        
-                        $('#carModel option').each(function() 
+
+                        $('#carModel option').each(function()
                         {
-                            
-                            if ($(this).val().includes(car_model)) 
+
+                            if ($(this).val().includes(car_model))
                             {
                                 $(this).prop('selected', true);
                             }
                         });
-                        
-                        
+
+
                 },
                 error: function(xhr, status, error) {
                     console.error('Error fetching car models: ' + status);

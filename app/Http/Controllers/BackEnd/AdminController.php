@@ -149,34 +149,62 @@ class AdminController extends Controller
     $information['payment_log'] = Membership::where('vendor_id', '!=', 0)->count();
     // $information['vendors'] = Vendor::where('id', '!=', 0)->get()->count();
 
-
     //income of event bookings
-    $totalPurchases = DB::table('cars')
-      ->select(DB::raw('month(created_at) as month'), DB::raw('count(id) as total'))
-      ->groupBy('month')
-      ->whereYear('created_at', '=', date('Y') - 1)
-      ->get();
+    // $thisyear = date('Y');
+    // $preyear = $thisyear - 1;
+    // $totalPurchases = DB::table('cars')
+    //   ->select(DB::raw('month(created_at) as month'), DB::raw('count(id) as total'))
+    //   ->groupBy('month')
+    //   ->whereYear('created_at', '=', $thisyear)
+    //   ->groupBy(DB::raw('month(created_at)'))
+    //   ->get();
 
-      $currentYear = date('Y');
-      $previousYear = $currentYear - 1;
+    //   if ($totalPurchases->isEmpty()) {
+    //     $totalPurchases = DB::table('cars')
+    //         ->select(DB::raw('month(created_at) as month'), DB::raw('count(id) as total'))
+    //         ->whereYear('created_at', '=', $preyear)
+    //         ->groupBy(DB::raw('month(created_at)'))
+    //         ->get();
+    // }
 
-      // Try to get data for the current year first
+      // $currentYear = date('Y');
+      // $previousYear = $currentYear - 1;
+
+      // // Try to get data for the current year first
+      // $totalUsers = DB::table('vendors')
+      //     ->select(DB::raw('month(created_at) as month'), DB::raw('count(id) as total'))
+      //     ->whereYear('created_at', '=', $currentYear)
+      //     ->groupBy(DB::raw('month(created_at)'))
+      //     ->get();
+
+      // // If no data for the current year, get data for the previous year
+      // if ($totalUsers->isEmpty()) {
+      //     $totalUsers = DB::table('vendors')
+      //         ->select(DB::raw('month(created_at) as month'), DB::raw('count(id) as total'))
+      //         ->whereYear('created_at', '=', $previousYear)
+      //         ->groupBy(DB::raw('month(created_at)'))
+      //         ->get();
+      // }
+      $totalPurchases = DB::table('cars')
+    ->select(
+        DB::raw('YEAR(created_at) as year'),
+        DB::raw('MONTH(created_at) as month'),
+        DB::raw('COUNT(id) as total')
+    )
+    ->groupBy(DB::raw('YEAR(created_at)'), DB::raw('MONTH(created_at)'))
+    ->get();
+
       $totalUsers = DB::table('vendors')
-          ->select(DB::raw('month(created_at) as month'), DB::raw('count(id) as total'))
-          ->whereYear('created_at', '=', $currentYear)
-          ->groupBy(DB::raw('month(created_at)'))
-          ->get();
+    ->select(
+        DB::raw('YEAR(created_at) as year'),
+        DB::raw('MONTH(created_at) as month'),
+        DB::raw('COUNT(id) as total')
+    )
+    ->groupBy(DB::raw('YEAR(created_at)'), DB::raw('MONTH(created_at)'))
+    ->get();
 
-      // If no data for the current year, get data for the previous year
-      if ($totalUsers->isEmpty()) {
-          $totalUsers = DB::table('vendors')
-              ->select(DB::raw('month(created_at) as month'), DB::raw('count(id) as total'))
-              ->whereYear('created_at', '=', $previousYear)
-              ->groupBy(DB::raw('month(created_at)'))
-              ->get();
-      }
 
-      
+
 
 
     $tlt_ads = json_decode($totalPurchases , true);

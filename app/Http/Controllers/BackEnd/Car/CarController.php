@@ -25,17 +25,17 @@ class CarController extends Controller
     public function index(Request $request)
     {
     $information['langs'] = Language::all();
-    
+
     $language = Language::where('is_default', 1)->first();
     $information['language'] = $language;
-    
+
     $language_id = $language->id;
     $vendor_id = $title = null;
     if (request()->filled('vendor_id')) {
     $vendor_id = $request->vendor_id;
     }
-    
-    
+
+
     $carIds = [];
     if (request()->filled('title')) {
     $title = $request->title;
@@ -46,7 +46,7 @@ class CarController extends Controller
     }
     }
     }
-    
+
     $cars = Car::with([
     'support_tickets',
     'car_content' => function ($q) use ($language_id) {
@@ -54,7 +54,7 @@ class CarController extends Controller
     },
     'vendor'
     ]);
-    
+
     if (!empty($vendor_id)) {
     $cars->where(function ($query) use ($vendor_id) {
     if ($vendor_id == 'admin') {
@@ -64,46 +64,46 @@ class CarController extends Controller
     }
     });
     }
-    
-    if(!empty($title)) 
+
+    if(!empty($title))
     {
         $cars->whereIn('id', $carIds);
     }
-    
-    if (!empty($request->rating)) 
+
+    if (!empty($request->rating))
     {
         $cars->where('recommendation', $request->rating);
     }
-    
-    if (!empty($request->status)) 
+
+    if (!empty($request->status))
     {
-        if ($request->status == 'sold') 
+        if ($request->status == 'sold')
         {
-                $cars->where(function ($query) 
+                $cars->where(function ($query)
             {
                 $query->where('is_sold', 1)
                 ->orWhere('status', 2);
             });
-        } 
-        else 
+        }
+        else
         {
             $cars->onlyTrashed();
         }
     }
-    else 
+    else
     {
         $cars->where('is_sold', 0)->where('status', 1);
     }
-    
+
     $cars = $cars->orderBy('id', 'desc')->paginate(10);
-    
+
     $information['cars'] = $cars;
-    
-   
-    
-    
+
+
+
+
     $information['vendors'] = Vendor::where('id', '!=', 0)->get();
-    
+
     return view('backend.car.index', $information);
     }
     //create

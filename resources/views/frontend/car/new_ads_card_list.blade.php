@@ -68,7 +68,7 @@
 
 
 
-                  @if ($car_content->vendor_id != 0 && $car_content->vendor->vendor_type == 'dealer' && $car_content->is_featured == 1)
+                  @if ($car_content->vendor_id != 0 && $car_content->vendor->vendor_type == 'dealer' && $car_content->is_featured == 1 && $car_content->updated_at && now()->diffInDays($car_content->updated_at) <= 3)
 
                     <div class="w-100 p-3" style="animation: glow 1.5s infinite alternate;">
                       <style>
@@ -306,7 +306,7 @@
                       <div class="left-container" style="position: relative; cursor: pointer;">
                           <div class="imageSize" >
 
-                            @if($car_content->is_featured == 1)
+                            @if($car_content->is_featured == 1 && $car_content->updated_at && now()->diffInDays($car_content->updated_at) <= 3)
                             <div class="sale-tag">
                               Spotlight
                           </div>                            @endif

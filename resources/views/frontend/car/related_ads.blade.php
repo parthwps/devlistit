@@ -172,7 +172,7 @@
                         @endif
 
 
-                        @if($car_content->is_featured == 1)
+                        @if($car_content->is_featured == 1 && $car->updated_at && now()->diffInDays($car->updated_at) <= 3)
 
                         <div class="price-tag" style="padding: 3px 10px;border-radius:5px;margin-left: 10px;" >  Spotlight </span></div>
 

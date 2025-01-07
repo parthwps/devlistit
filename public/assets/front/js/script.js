@@ -1283,6 +1283,9 @@ $('body').on('submit', '#vendorContactForm', function(e) {
         }
     })
 });
+$(document).on('change','.delivery_available',function(){
+  updateUrl();
+});
 
     $(document).on('change','.dealer_type',function(){
         updateUrl();
@@ -1399,7 +1402,6 @@ $('body').on('submit', '#vendorContactForm', function(e) {
             });
         }
 
-         console.log(formData);
 
             let categoryField = formData.find(item => item.name === 'category');
 
@@ -1424,7 +1426,9 @@ $('body').on('submit', '#vendorContactForm', function(e) {
                 dataType:'json',
                 success:function(data)
                 {
+                  console.log(document.getElementById('ajaxListing'));
                     $('#ajaxListing').html(data.html_view);
+                    console.log(document.getElementById('ajaxListing'));
                     $('#total_counter_with_category').html(data.countHeading);
                     console.log("tets11afdsa");
                     jQuery('.total_counter_with_category2').text(data.countHeading.match(/\d+/)[0]);

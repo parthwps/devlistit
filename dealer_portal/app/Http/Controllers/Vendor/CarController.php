@@ -53,52 +53,52 @@ class CarController extends Controller
         {
             return view('vendors.car.price-assist');
         }
-        
+
         function saveMoreCredits(Request $request)
         {
             $numberOfData = $request->numberOfData;
             $type = $request->type;
             $accountBalance = Auth::guard('vendor')->user()->amount;
-            
+
             if($numberOfData <= 0)
             {
                 return response()->json(['response' => 'error' , 'message' => 'Please add some quantity to buy.']);
             }
-            
+
             if($type == 0)
             {
                 $totalBumpWantToBuy = $numberOfData * getSetVal('per_bump_price');
-                
+
                 if($totalBumpWantToBuy > $accountBalance)
                 {
-                   return response()->json(['response' => 'error' , 'message' => 'Your account balance is not enough to buy these quantity. Please contact admin to add amount in your wallet.']); 
+                   return response()->json(['response' => 'error' , 'message' => 'Your account balance is not enough to buy these quantity. Please contact admin to add amount in your wallet.']);
                 }
-                
+
                 Vendor::where('id' , Auth::guard('vendor')->user()->id)->update(['bump' => (Auth::guard('vendor')->user()->bump + $numberOfData) , 'amount' => ( $accountBalance - $totalBumpWantToBuy ) ]);
-                
+
                  Deposit::create(['amount' =>$totalBumpWantToBuy , 'deposit_type' => 'withdrawl' , 'vendor_id' => Auth::guard('vendor')->user()->id  , 'short_des' => 'Balance deduct for buying bump(s) credits.']);
             }
             else
             {
                 $totalBumpWantToBuy = $numberOfData * getSetVal('per_ad_price');
-                
+
                 if($totalBumpWantToBuy > $accountBalance)
                 {
-                   return response()->json(['response' => 'error' , 'message' => 'Your account balance is not enough to buy these quantity. Please contact admin to add amount in your wallet.']); 
+                   return response()->json(['response' => 'error' , 'message' => 'Your account balance is not enough to buy these quantity. Please contact admin to add amount in your wallet.']);
                 }
-                
+
                 Vendor::where('id' , Auth::guard('vendor')->user()->id)->update(['no_of_ads' => (Auth::guard('vendor')->user()->no_of_ads + $numberOfData)  , 'amount' => ( $accountBalance - $totalBumpWantToBuy )  ]);
-                
+
                 Deposit::create(['amount' =>$totalBumpWantToBuy , 'deposit_type' => 'withdrawl' , 'vendor_id' => Auth::guard('vendor')->user()->id  , 'short_des' => 'Balance deduct for buying ad(s) credits.']);
             }
-            
+
             return response()->json(['response' => 'success' , 'message' => 'Your Credit has been added successfully. You can check by visit my account section.']);
         }
-        
+
         function imagerotate(Request $request)
         {
            DB::table('car_images')->where('id' , $request->fileid)->update(['rotation_point' => $request->rotationEvnt]);
-           
+
            echo $request->fileid;
         }
 
@@ -107,7 +107,7 @@ class CarController extends Controller
             $regisno = $request->regisno;
 
             $curl = curl_init();
-            
+
             curl_setopt_array($curl, array(
             CURLOPT_URL => 'https://uk1.ukvehicledata.co.uk/api/datapackage/ValuationData?v=2&api_nullitems=1&auth_apikey='.env('UKVEHICLEAPIKEY').'&key_VRM='.$regisno.'',
             CURLOPT_RETURNTRANSFER => true,
@@ -120,13 +120,13 @@ class CarController extends Controller
             ));
 
             $response = curl_exec($curl);
-    
+
             curl_close($curl);
-            
+
             $response = json_decode($response , true);
-    
+
             $dataArray = array();
-            
+
             if($response['Response']['StatusCode'] == 'Success')
             {
                 $dataArray['VehicleDescription'] = $response['Response']['DataItems']['VehicleDescription'];
@@ -148,17 +148,17 @@ class CarController extends Controller
                 echo json_encode(array('response' => 'yes' , 'output' =>  $dataArray));
                 exit;
             }
-    
+
             echo json_encode(array('response' => 'no' , 'output' =>  [] ));
 
         }
 
     //--- Change status -------
-    
+
     public function adStatus(Request $request)
     {
         $car = Car::findOrFail($request->id);
-        
+
         if($request->status == "withdraw")
         {
             $inuser['status'] = 2;
@@ -167,21 +167,21 @@ class CarController extends Controller
         {
             $inuser['status'] = 1;
         }
-        
+
         $car->update($inuser);
-        
+
         Session::flash('success', 'Status updated successfully!');
-        
+
         return redirect()->back();
     }
-    
+
     public function BoostPackage(Request $request)
     {
         $data = Car::where('id', $request->ad_id)->first();
         $data->update(['package_id' => $request->package_id]);
         return redirect()->route('vendor.package.payment_method',$request->ad_id);
     }
-    
+
     public function index(Request $request)
     {
 
@@ -204,12 +204,12 @@ class CarController extends Controller
         {
             $status = 1;
         }
-        
+
         if(Auth::guard('vendor')->user()->vendor_type == 'normal')
         {
             $information['cars']  = Car::where('vendor_id', Auth::guard('vendor')->user()->id)->with('car_content')
             ->orderBy('id', 'desc')
-            ->get();   
+            ->get();
         }
         else
         {
@@ -222,8 +222,8 @@ class CarController extends Controller
             ->orderBy('id', 'desc')
             ->get();
         }
-        
-          
+
+
             $information['totalPublish'] = Car::where('vendor_id', Auth::guard('vendor')->user()->id)->with([
                 'car_content' => function ($q) use ($language_id) {
                     $q->where('language_id', $language_id);
@@ -251,21 +251,21 @@ class CarController extends Controller
                 },
             ])
             ->where('status', $status)->pluck('id');
-        
+
             $information['impressions'] = DB::table('ad_impressions')->whereIn('ad_id' , $car_ids)->sum('impressions');
             $information['visitors'] = DB::table('visitors')->whereIn('car_id' , $car_ids)->count();
-            $information['saves'] = Wishlist::whereIn('car_id' , $car_ids)->count(); 
+            $information['saves'] = Wishlist::whereIn('car_id' , $car_ids)->count();
             $information['leads'] = SupportTicket::where('admin_id', Auth::guard('vendor')->user()->id)->where('user_type', 'vendor')->count();
-            
+
             if(Auth::guard('vendor')->user()->vendor_type == 'dealer')
             {
-               return view('vendors.car.index', $information); 
+               return view('vendors.car.index', $information);
             }
-            
+
             return view('vendors.car.index_2', $information);
     }
-    
-    
+
+
      public function indexAjax(Request $request)
     {
        if($request->status=="all"){
@@ -278,11 +278,11 @@ class CarController extends Controller
         ->get();
        }
        $html = view('vendors.car.indexajax', compact('cars'))->render();
-    
-        return response()->json(['code' => 200, 'data' =>$html]); 
+
+        return response()->json(['code' => 200, 'data' =>$html]);
         return view('vendors.car.index_2', $information);
     }
-    
+
     public function indexSaveAdsAjax(Request $request)
     {
        if($request->status=="all"){
@@ -290,21 +290,21 @@ class CarController extends Controller
       ->join('wishlists', function ($join) {
           $join->on(['wishlists.car_id' => 'cars.id']);
       })->where('wishlists.user_id', '=', Auth::guard('vendor')->user()->id)->orderBy('cars.id', 'desc')->get();
-        
+
        } else {
         $cars  = Car::select('cars.*', 'wishlists.*')
       ->join('wishlists', function ($join) {
           $join->on(['wishlists.car_id' => 'cars.id']);
       })->where('wishlists.user_id', '=', Auth::guard('vendor')->user()->id)->where('status', $request->status)->orderBy('cars.id', 'desc')->get();
-        
-        
+
+
        }
        $html = view('vendors.car.indexajaxsaveads', compact('cars'))->render();
-    
-        return response()->json(['code' => 200, 'data' =>$html]); 
+
+        return response()->json(['code' => 200, 'data' =>$html]);
         return view('vendors.car.index_2', $information);
     }
-    
+
 
     function printCarStock()
     {
@@ -330,7 +330,7 @@ class CarController extends Controller
 
     static function getAdStats($car_id)
     {
-        
+
         $information['impressions'] = DB::table('ad_impressions')->where('ad_id' , $car_id)->sum('impressions');
         $information['visitors'] = DB::table('visitors')->where('car_id' , $car_id)->count();
         $information['leads'] = SupportTicket::where('admin_id', Auth::guard('vendor')->user()->id)->where('ad_id' , $car_id)->where('user_type', 'vendor')->count();
@@ -341,29 +341,29 @@ class CarController extends Controller
 
     function addBump(Request $request)
     {
-        
+
         $setting = Basic::latest('id')->first();
-        
+
         if(Auth::guard('vendor')->user()->bump == 0)
         {
             $validMembership = Auth::guard('vendor')->user()->memberships()
             ->where('expire_date', '>', Carbon::now())
             ->first();
-            
+
             if($validMembership == false)
             {
                $invoice  = Invoice::create([
                      'vendor_id' => Auth::guard('vendor')->user()->id,
                     ]);
-            
+
                 DB::table('deposits')->insert([
                     'amount' => $setting->per_bump_price,
                     'invoice_id' => $invoice->id,
                     'vendor_id' => Auth::guard('vendor')->user()->id,
                     'short_des' => 'ad bump'
-                ]); 
+                ]);
             }
-            
+
             if($validMembership == true)
             {
                 DB::table('deposits')->insert([
@@ -372,41 +372,41 @@ class CarController extends Controller
                     'vendor_id' => Auth::guard('vendor')->user()->id,
                     'short_des' => 'ad bump',
                     'created_at' => now()
-                ]); 
+                ]);
             }
         }
-            
+
         $car_id = $request->car;
 
         $car = Car::find($car_id);
-        
+
         if(!empty($car->bump_date))
         {
             $startDate = Carbon::parse($car->created_at);
-            
+
             $endDate = Carbon::parse(date('Y-m-d'));
-            
+
             $diffInDays = $endDate->diffInDays($startDate);
-            
+
              if($diffInDays < 5 )
              {
                  Session::flash('error', 'Bump ad is not available until the last bump request has been made at least 5 days ago.');
-                 
-                 return redirect()->back();  
+
+                 return redirect()->back();
              }
         }
-        
+
        $created_at = $car->created_at;
-       
+
        $bump = $car->bump;
 
        Car::where('id' , $car_id )->update(['bump_date' => $created_at , 'bump' => $bump+1 , 'created_at' => date('Y-m-d H:i:s')]);
-     
+
         if(Auth::guard('vendor')->user()->bump > 0)
         {
             Vendor::where('id' , Auth::guard('vendor')->user()->id)->update(['bump' => Auth::guard('vendor')->user()->bump - 1 , 'bump_used' => Auth::guard('vendor')->user()->bump_used + 1 ]);
         }
-        
+
        Session::flash('success', 'Updated successfully!');
 
        return redirect()->back();
@@ -456,7 +456,7 @@ class CarController extends Controller
                 $end_date = trim($explode[1]);
                 $start_date = date('Y-m-d' , strtotime($start_date));
                 $end_date = date('Y-m-d' , strtotime($end_date));
-                
+
                 $cars = $cars->whereBetween('created_at', [$start_date, $end_date]);
             }
 
@@ -465,12 +465,12 @@ class CarController extends Controller
             ->get();
 
             $information['cars'] = $cars;
-            
-                        
+
+
             // Initialize arrays to hold brand and model IDs
             $brandIds = [];
             $modelIds = [];
-            
+
             // Loop through each car and collect brand and model IDs from car_content
             foreach ($information['cars'] as $car) {
                 if ($car->car_content) {
@@ -481,7 +481,7 @@ class CarController extends Controller
                       {
                           $brandIds[] =  $contents['brand_id'];
                       }
-                      
+
                       if( $contents['car_model_id'])
                       {
                           $modelIds[] =  $contents['car_model_id'];
@@ -489,31 +489,31 @@ class CarController extends Controller
                     }
                 }
             }
-            
+
             $brandIds = array_unique(array_filter($brandIds));
             $modelIds = array_unique(array_filter($modelIds));
-            
+
             // Fetch all brands with the collected brand IDs
             $information['brands'] = Brand::where('status', 1)
                 ->whereIn('id', $brandIds)
                 ->get(['id', 'name']);
-            
+
             // Fetch all car models with the collected model IDs
             $information['models'] = CarModel::where('status', 1)
                 ->whereIn('id', $modelIds)
                 ->get(['id', 'name']);
-  
- 
+
+
             $car_ids = Car::where('vendor_id', Auth::guard('vendor')->user()->id)->where('status', $status)->pluck('id');
-        
+
             $information['impressions'] = DB::table('ad_impressions')->whereIn('ad_id' , $car_ids)->sum('impressions');
             $information['visitors'] = DB::table('visitors')->whereIn('car_id' , $car_ids)->count();
-            $information['saves'] = Wishlist::where('user_id', Auth::guard('vendor')->user()->id)->count(); 
+            $information['saves'] = Wishlist::where('user_id', Auth::guard('vendor')->user()->id)->count();
             $information['leads'] = SupportTicket::where('admin_id', Auth::guard('vendor')->user()->id)->where('user_type', 'vendor')->count();
             $information['phone_no_revel'] = DB::table('cars')->whereIn('id' , $car_ids)->sum('phone_no_revel');
 
-           
-           
+
+
             $information['registration_no'] = Car::whereNotNull('vregNo')->get(['vregNo']);
 
             return view('vendors.car.dealer-analytics', $information);
@@ -577,10 +577,10 @@ class CarController extends Controller
                 },
             ])
             ->where('status', $status)->pluck('id');
-        
+
             $information['impressions'] = DB::table('ad_impressions')->whereIn('ad_id' , $car_ids)->sum('impressions');
             $information['visitors'] = DB::table('visitors')->whereIn('car_id' , $car_ids)->count();
-            $information['saves'] = Wishlist::whereIn('car_id' , $car_ids)->count(); 
+            $information['saves'] = Wishlist::whereIn('car_id' , $car_ids)->count();
             $information['leads'] = SupportTicket::where('admin_id', Auth::guard('vendor')->user()->id)->where('user_type', 'vendor')->count();
             $information['phone_no_revel'] = DB::table('cars')->whereIn('id' , $car_ids)->sum('phone_no_revel');
 
@@ -602,21 +602,21 @@ class CarController extends Controller
         $models = CarModel::where('brand_id', $makeSelect)->get(['id' , 'name']);
 
         $matchedModel = null;
-        
+
         foreach ($models as $model) {
             // Split strings into arrays
             $databaseWords = explode(' ', strtolower($model->name));
             $searchWords = explode(' ', strtolower($carModelValue));
-        
+
             // Check if any word in $databaseWords matches any word in $searchWords
             $matchFound = count(array_intersect($databaseWords, $searchWords)) > 0;
-        
+
             if ($matchFound) {
                 $matchedModel = $model;
                 break;
             }
         }
-        
+
         echo $matchedModel->id;
     }
 
@@ -702,26 +702,26 @@ class CarController extends Controller
             return 'false';
         }
     }
-    
-    
+
+
     function frameImage(Request $request)
     {
-    
+
         if ($request->hasFile('photo_frame'))
         {
             $image = $request->file('photo_frame');
-            
+
             $imageName = time() . '.' . $image->getClientOriginalExtension();
-            
+
             $image->move(public_path('assets/admin/img/car-gallery'), $imageName);
 
             // Optionally, you can store the image path in the database or use it as needed
             $imagePath = $imageName;
- 
+
             return response()->json(['message' => 'Image uploaded successfully', 'image_path' => $imagePath], 200);
         }
     }
-    
+
     //select payment method
     public function PaymentMethod(Request $request)
     {
@@ -736,21 +736,21 @@ class CarController extends Controller
         if($information['data']->price == 0 && session::get('promo_status')==0){
             $statusUpdate = Car::findOrFail($request->ad_id);
             $statusUpdate->update(['status' => 1]);
-            
+
             // ------Send email if no payment ----
             $headermail =   view('email.mailheader')->render();
-            $footermail =  view('email.mailfooter')->render();  
+            $footermail =  view('email.mailfooter')->render();
 
             $mailSubject = $information['ad_id']->car_content->title .' -  ad is Published';
-            $mailBody = view('email.ads.newad', $information); 
+            $mailBody = view('email.ads.newad', $information);
 
             $info = DB::table('basic_settings')
             ->select('website_title', 'smtp_status', 'smtp_host', 'smtp_port', 'encryption', 'smtp_username', 'smtp_password', 'from_mail', 'from_name')
-            ->first();      
+            ->first();
 
-        
-            $headermail .= $mailBody; 
-        //$headermail =view('email.mailbody')->render(); 
+
+            $headermail .= $mailBody;
+        //$headermail =view('email.mailbody')->render();
         $headermail .= $footermail;
         $data = [
             'subject' => $mailSubject,
@@ -786,7 +786,7 @@ class CarController extends Controller
                     ->from($fromMail, $fromName)
                     ->html($data['body'], 'text/html');
             });
-          //  efdm uzfl fenk czvd 
+          //  efdm uzfl fenk czvd
            // Session::flash('success', 'A verification mail has been sent to your email address');
         } catch (\Exception $e) {
             //echo "<pre>";
@@ -802,115 +802,115 @@ class CarController extends Controller
         return view('vendors.car.payment', $information);
         }
     }
-    
+
 
     //store
     public function store(CarStoreRequest $request)
     {
-      
+
         if ($request->can_car_add != 1) {
            return back();
         }
         $vendor_id = Auth::guard('vendor')->user()->id;
-      
-        DB::transaction(function () use ($request,&$lastcarID) 
+
+        DB::transaction(function () use ($request,&$lastcarID)
         {
 
             $languages = Language::all();
             $in = $request->all();
 
-            if(!empty($request->car_cover_image)) 
+            if(!empty($request->car_cover_image))
             {
               $fImage =  CarImage::select('id','image')->where('id',$request->car_cover_image)->first();
-             
-            } 
+
+            }
             else
             {
                 $fImage =  CarImage::select('id','image')->where('id',$request->slider_images[0])->first();
             }
-            
+
             $in['feature_image'] = $fImage->image;
-            
-            if (!empty($request->label)) 
+
+            if (!empty($request->label))
             {
                 $specification = [];
-                foreach ($request->label as $key => $varName) 
+                foreach ($request->label as $key => $varName)
                 {
                     $specification[] = [
                         'label' => $varName,
                         'value' => $request->value[$key]
                     ];
                 }
-                
+
                 $in['specification'] = json_encode($specification);
             }
 
             $in['vendor_id'] = Auth::guard('vendor')->user()->id;
-            
+
             $packg = PrivatePackage::where('id', $request->package_id)->first();
-            
+
             if($packg->price == 0 && $request->promo_status==0)
             {
-                $in['status'] =1; 
-            } 
+                $in['status'] =1;
+            }
             else
             {
-                $in['status'] =0;  
+                $in['status'] =0;
             }
-            
+
             $in['package_id'] = $request->package_id;
-            
+
             $in['order_id'] = $this->getNextOrderNumber();
 
 
             $car = Car::create($in);
-            
+
             $lastcarID=$car->id;
-            
+
             $vendor  = Vendor::where('id',$in['vendor_id'])->first();
-           
+
             $inuser['phone'] = $request->phone;
-            
-            if(isset($request->traderstatus)) 
+
+            if(isset($request->traderstatus))
             {
                 $inuser['trader'] = 1;
-            } 
-            else 
+            }
+            else
             {
                 $inuser['trader'] = 0;
             }
-            
+
             $vendor->update($inuser);
-            
+
             $catinfo  = Category::where('id', $request['en_category_id'])->first();
-            
+
             $vendorinfo  = VendorInfo::where('vendor_id', $in['vendor_id'])->first();
-            
-            if ($request->traderstatus) 
-            {    
+
+            if ($request->traderstatus)
+            {
                 $inuserinfo['business_name'] = $request['business_name'];
                 $inuserinfo['vat_number'] = $request['vat_number'];
-                $inuserinfo['business_address'] = $request['business_address'];   
+                $inuserinfo['business_address'] = $request['business_address'];
             }
-         
+
             $inuserinfo['city'] = $request->city;
-           
+
             $vendorinfo->update($inuserinfo);
 
             $slders = $request->slider_images;
-            
-            if ($slders) 
+
+            if ($slders)
             {
                 $pis = CarImage::findOrFail($slders);
-                
-                foreach ($pis as $key => $pi) 
+
+                foreach ($pis as $key => $pi)
                 {
                     $pi->car_id = $car->id;
                     $pi->save();
                 }
             }
 
-            foreach ($languages as $language) 
+            foreach ($languages as $language)
             {
                 $carContent = new CarContent();
                 $carContent->language_id = $language->id;
@@ -926,7 +926,7 @@ class CarController extends Controller
                 $carContent->fuel_type_id = $request['fuel_type_id'];
                 $carContent->transmission_type_id = $request['transmission_type_id'];
                 $carContent->address = $request['address'];
-                
+
                 $carContent->description = Purifier::clean($request[$language->code . '_description'], 'youtube');
                 $carContent->meta_keyword = $request[$language->code . '_meta_keyword'];
                 $carContent->meta_description = $request[$language->code . '_meta_description'];
@@ -951,16 +951,16 @@ class CarController extends Controller
                     }
                 }
             }
-           
+
         });
-        
+
         Session::put('package_id', $request->package_id);
         Session::put('promo_status', $request->promo_status);
-       
+
         return Response::json(['status' => 'success', 'action' => 'add','ad_id'=>$lastcarID], 200);
     }
-      
-    
+
+
     public function getNextOrderNumber()
     {
     // Get the last created order
@@ -997,27 +997,27 @@ class CarController extends Controller
 
     return sprintf('%s%0' . $length . 'd', $prefix, intval($number) + 1);
     }
-    
-    
+
+
     function getVheicleDeatails(Request $request)
     {
-        
+
         if(Auth::guard('vendor')->user()->history_check == 0 && $request->type != 1)
         {
             echo json_encode(array('response' => 'no' , 'message' => 'Your History Check limit exceed please contact to admin.'));
             exit;
         }
-        
+
         $reg_no = $request->vehicle_reg;
-    
+
         $formatted_reg_no = str_replace([' ', '-'], '', $reg_no);
 
         $check_post = DB::table('registration_records')
         ->whereRaw('REPLACE(REPLACE(vrm, " ", ""), "-", "") LIKE ?', ['%' . $formatted_reg_no . '%'])
         ->first();
-        
-        
-    
+
+
+
         // $curl = curl_init();
 
         // curl_setopt_array($curl, array(
@@ -1036,8 +1036,8 @@ class CarController extends Controller
         // curl_close($curl);
         // $response = json_decode($response , true);
         // $data = array();
-        
-        
+
+
         if($check_post == true)
         {
             $data['NumberOfSeats'] =$check_post->seats;
@@ -1049,16 +1049,16 @@ class CarController extends Controller
             $data['Color'] = ucfirst(strtolower($check_post->color));
             $data['Tax_Fee'] = $check_post->tax_fee;
         }
-    
+
         if(count($data) > 0 )
         {
             Vendor::where('id' , Auth::guard('vendor')->user()->id)
             ->update(['history_check' => Auth::guard('vendor')->user()->history_check - 1 , 'history_check_used' => Auth::guard('vendor')->user()->history_check_used	 + 1 ]);
-            
+
             echo json_encode(array('response' => 'yes' , 'output' => $data));
             exit;
         }
-    
+
         echo json_encode(array('response' => 'no' , 'output' => []));
 
     }
@@ -1090,23 +1090,23 @@ class CarController extends Controller
            return $response['Response']['DataItems']['Mileage'];
         }
     }
-    
+
      function imagerotates(Request $request)
     {
        DB::table('car_images')->where('id' , $request->fileid)->update(['rotation_point' => $request->rotationEvnt]);
        echo $request->fileid;
     }
-    
-    
+
+
      public function imageDrag(Request $request)
     {
-        
+
         if(!empty($request->order))
         {
             foreach($request->order as $order)
             {
                 $car_image = CarImage::find($order['id']);
-                
+
                 if($car_image == true)
                 {
                     $car_image->priority = $order['priority'];
@@ -1115,7 +1115,7 @@ class CarController extends Controller
             }
         }
     }
-    
+
 
     function getSubEmail()
     {
@@ -1161,11 +1161,11 @@ class CarController extends Controller
         </div>
         <div class="col-md-12 text-center" style="font-size: 13.5px;">
         <hr>
-          <p style="margin-bottom: 2rem;">  
+          <p style="margin-bottom: 2rem;">
           <button type="submit" class="btn btn-sm btn-info" style="color:white;">Save</button>
         </p>
         </div>
-      
+
        </div>';
 
        return $output;
@@ -1178,7 +1178,7 @@ class CarController extends Controller
         $vendor_id = Auth::guard('vendor')->user()->id;
 
         EmailSubscriptionReport::where('dealer_id' , $vendor_id)->whereIn('mails' , $mails)->delete();
-        
+
         if($request->is_enable == 1)
         {
             for($i=0; $i<count($mails); $i++)
@@ -1186,9 +1186,9 @@ class CarController extends Controller
                 EmailSubscriptionReport::create(['dealer_id' => $vendor_id , 'mails' => $mails[$i] ]);
             }
         }
-        
+
         Vendor::where('id' , $vendor_id)->update(['email_subscription_enable' => $request->is_enable??0 ]);
-        
+
         Session::flash('success', 'Settings Successfully');
 
         return redirect()->back();
@@ -1197,108 +1197,108 @@ class CarController extends Controller
     public function storeData(CarStoreRequest $request)
     {
 
-        if ($request->can_car_add != 1) 
+        if ($request->can_car_add != 1)
         {
            return back();
         }
-        
+
          $errorArray = [];
-         
-      
-        
+
+
+
         $category = Category::find($request['en_main_category_id']);
 
         $vendor_id = Auth::guard('vendor')->user()->id;
-       
-        DB::transaction(function () use ($request) 
+
+        DB::transaction(function () use ($request)
         {
-            
+
         if(Auth::guard('vendor')->user()->no_of_ads == 0)
         {
             $bs = Basic::first();
-            
+
             $validMembership = Auth::guard('vendor')->user()->memberships()
             ->where('expire_date', '>', Carbon::now())
             ->first();
-            
+
             if($validMembership == false)
             {
                $invoice  = Invoice::create([
                      'vendor_id' => Auth::guard('vendor')->user()->id,
                     ]);
-            
+
                 Deposit::create([
                     'amount' => $bs->per_ad_price,
                     'invoice_id' => $invoice->id,
                     'vendor_id' => Auth::guard('vendor')->user()->id,
                     'short_des' => 'extra one ad'
-                ]); 
+                ]);
             }
-            
+
             if($validMembership == true)
             {
-               
+
                 DB::table('deposits')->insert([
                     'amount' => $bs->per_ad_price,
                     'invoice_id' => $validMembership->invoice_id,
                     'vendor_id' => Auth::guard('vendor')->user()->id,
                     'short_des' => 'extra one ad',
                     'created_at' => now()
-                ]); 
+                ]);
             }
-        
+
         }
-        
-        
+
+
             $languages = Language::all();
-            
+
             $in = $request->all();
-            
+
             $fImage =  CarImage::select('id','image')->where('id',$request->car_cover_image)->first();
-            
+
             if(!empty($fImage))
             {
                 $in['feature_image'] = $fImage->image;
             }
 
-            if (!empty($request->label)) 
+            if (!empty($request->label))
             {
                 $specification = [];
-                foreach ($request->label as $key => $varName) 
+                foreach ($request->label as $key => $varName)
                 {
                     $specification[] = [
                         'label' => $varName,
                         'value' => $request->value[$key]
                     ];
                 }
-                
+
                 $in['specification'] = json_encode($specification);
             }
 
             $in['vendor_id'] = Auth::guard('vendor')->user()->id;
-            
+
             if(!empty($request->vehicle_reg))
             {
                 $in['vregNo'] = $request->vehicle_reg;
             }
-            
-            if (!empty($request->photo_frma)) 
+
+            if (!empty($request->photo_frma))
             {
                 $in['feature_image'] = $request->photo_frma;
             }
-            
+
              if(isset($in['message_center']) && $in['message_center'] == 'yes')
             {
-               $in['message_center'] = 1; 
+               $in['message_center'] = 1;
             }
-            
+
             if(isset($in['phone_text']) && $in['phone_text'] == 'yes')
             {
-               $in['phone_text'] = 1; 
+               $in['phone_text'] = 1;
             }
-        
+
             $in['enquiry_person_id'] = json_encode($request->enquirey_person);
-            
+
             $car = Car::create($in);
 
             ////  logic for comfort_n_convenience///
@@ -1307,11 +1307,11 @@ class CarController extends Controller
             {
                     for($i = 0; $i<count($request->comfort_n_convenience); $i++)
                 {
-                    DB::table('vehicle_features')->insert(['add_id' => $car->id , 'parent_name' => 'comfort_n_convenience' 
+                    DB::table('vehicle_features')->insert(['add_id' => $car->id , 'parent_name' => 'comfort_n_convenience'
                     , 'value' =>$request->comfort_n_convenience[$i] , 'created_at' => date('Y-m-d H:i:s') , 'updated_at' => date('Y-m-d H:i:s') ]);
                 }
             }
-            
+
 
             /// END////////////////////////////////
 
@@ -1321,7 +1321,7 @@ class CarController extends Controller
             {
                 for($i = 0; $i<count($request->media_n_conectivity); $i++)
                 {
-                    DB::table('vehicle_features')->insert(['add_id' => $car->id , 'parent_name' => 'media_n_conectivity' 
+                    DB::table('vehicle_features')->insert(['add_id' => $car->id , 'parent_name' => 'media_n_conectivity'
                     , 'value' =>$request->media_n_conectivity[$i] , 'created_at' => date('Y-m-d H:i:s') , 'updated_at' => date('Y-m-d H:i:s') ]);
                 }
              }
@@ -1334,7 +1334,7 @@ class CarController extends Controller
             {
                 for($i = 0; $i<count($request->assistance_n_utility); $i++)
                 {
-                    DB::table('vehicle_features')->insert(['add_id' => $car->id , 'parent_name' => 'assistance_n_utility' 
+                    DB::table('vehicle_features')->insert(['add_id' => $car->id , 'parent_name' => 'assistance_n_utility'
                     , 'value' =>$request->assistance_n_utility[$i] , 'created_at' => date('Y-m-d H:i:s') , 'updated_at' => date('Y-m-d H:i:s') ]);
                 }
             }
@@ -1347,7 +1347,7 @@ class CarController extends Controller
             {
                 for($i = 0; $i<count($request->styling_n_appearance); $i++)
                 {
-                    DB::table('vehicle_features')->insert(['add_id' => $car->id , 'parent_name' => 'styling_n_appearance' 
+                    DB::table('vehicle_features')->insert(['add_id' => $car->id , 'parent_name' => 'styling_n_appearance'
                     , 'value' =>$request->styling_n_appearance[$i] , 'created_at' => date('Y-m-d H:i:s') , 'updated_at' => date('Y-m-d H:i:s') ]);
                 }
             }
@@ -1360,7 +1360,7 @@ class CarController extends Controller
             {
                 for($i = 0; $i<count($request->lighting_n_illumination); $i++)
                 {
-                    DB::table('vehicle_features')->insert(['add_id' => $car->id , 'parent_name' => 'lighting_n_illumination' 
+                    DB::table('vehicle_features')->insert(['add_id' => $car->id , 'parent_name' => 'lighting_n_illumination'
                     , 'value' =>$request->lighting_n_illumination[$i] , 'created_at' => date('Y-m-d H:i:s') , 'updated_at' => date('Y-m-d H:i:s') ]);
                 }
              }
@@ -1373,7 +1373,7 @@ class CarController extends Controller
             {
                 for($i = 0; $i<count($request->safety_n_security); $i++)
                 {
-                    DB::table('vehicle_features')->insert(['add_id' => $car->id , 'parent_name' => 'safety_n_security' 
+                    DB::table('vehicle_features')->insert(['add_id' => $car->id , 'parent_name' => 'safety_n_security'
                     , 'value' =>$request->safety_n_security[$i] , 'created_at' => date('Y-m-d H:i:s') , 'updated_at' => date('Y-m-d H:i:s') ]);
                 }
             }
@@ -1386,7 +1386,7 @@ class CarController extends Controller
             {
                 for($i = 0; $i<count($request->performance_n_handling); $i++)
                 {
-                    DB::table('vehicle_features')->insert(['add_id' => $car->id , 'parent_name' => 'performance_n_handling' 
+                    DB::table('vehicle_features')->insert(['add_id' => $car->id , 'parent_name' => 'performance_n_handling'
                     , 'value' =>$request->performance_n_handling[$i] , 'created_at' => date('Y-m-d H:i:s') , 'updated_at' => date('Y-m-d H:i:s') ]);
                 }
             }
@@ -1431,17 +1431,17 @@ class CarController extends Controller
                 $carContent->body_type_id = $request->body_type_id;
                 $carContent->save();
             }
-            
+
         if(Auth::guard('vendor')->user()->no_of_ads > 0)
         {
             Vendor::where('id' , Auth::guard('vendor')->user()->id)->update(['no_of_ads' => Auth::guard('vendor')->user()->no_of_ads - 1 , 'no_of_ads_used' => Auth::guard('vendor')->user()->no_of_ads_used + 1 ]);
         }
-        
+
         });
-        
+
         DraftAd::where('vendor_id', Auth::guard('vendor')->user()->id)->delete();
         KeyFeature::where('user_id', Auth::guard('vendor')->user()->id)->delete();
-        
+
         Session::flash('success', 'New ad added successfully!');
         //return redirect()->route('vendor.car_management.car');
         return Response::json(['status' => 'success'], 200);
@@ -1459,14 +1459,14 @@ class CarController extends Controller
 
         if(!empty( $request->enquiry_id))
         {
-            EnquiryPreference::where('id' , $request->enquiry_id)->update(['name' => $request->name , 
+            EnquiryPreference::where('id' , $request->enquiry_id)->update(['name' => $request->name ,
             'email' => $request->email , 'phone_no' => $request->phone_no ]);
             Session::flash('success', 'New User Updated successfully!');
         }
         else
         {
-            EnquiryPreference::create(['vendor_id' => Auth::guard('vendor')->user()->id , 'name' => $request->name , 
-            'email' => $request->email , 'phone_no' => $request->phone_no ]); 
+            EnquiryPreference::create(['vendor_id' => Auth::guard('vendor')->user()->id , 'name' => $request->name ,
+            'email' => $request->email , 'phone_no' => $request->phone_no ]);
             Session::flash('success', 'New User added successfully!');
         }
 
@@ -1493,67 +1493,67 @@ class CarController extends Controller
         $draftad = DraftAd::where('vendor_id', Auth::guard('vendor')->user()->id)->first();
         $cat = $cat::where('parent_id', '=', $request->id)->get();
         $option .="<option selected disabled>Select Sub Category</option>";
-         foreach ($cat as $key => $value) 
+         foreach ($cat as $key => $value)
          {
              $selected = '';
-             
+
              if($draftad == true && !empty($draftad->sub_category_id) && $draftad->sub_category_id == $value->id)
              {
                  $selected = 'selected';
              }
-            
+
              $option .="<option value=".$value->id."  ".$selected.">".$value->name."</option>";
          }
-         
+
          echo $option;
     }
-    
+
     public function updateFeatured(Request $request)
     {
         $car = Car::findOrFail($request->carId);
 
-        if ($request->is_featured == 1) 
+        if ($request->is_featured == 1)
         {
-            
+
           $setting = Basic::latest('id')->first();
-         
+
             if(!empty(Auth::guard('vendor')->user()->last_spotlight_used))
             {
                 $startDate = Carbon::parse(Auth::guard('vendor')->user()->last_spotlight_used);
-                
+
                 $endDate = Carbon::parse(date('Y-m-d'));
-                
+
                 $diffInDays = $endDate->diffInDays($startDate);
-                
+
                  if($diffInDays < $setting->day_after_spotlight )
                  {
                      Session::flash('error', 'Spotlighting is not available until the last spotlight request has been made at least '.$setting->day_after_spotlight.' days ago.');
-                     
-                     return redirect()->back();  
+
+                     return redirect()->back();
                  }
             }
-            
-            
+
+
             if(Auth::guard('vendor')->user()->spotlight == 0)
             {
                 $validMembership = Auth::guard('vendor')->user()->memberships()
                 ->where('expire_date', '>', Carbon::now())
                 ->first();
-                
+
                 if($validMembership == false)
                 {
                    $invoice  = Invoice::create([
                          'vendor_id' => Auth::guard('vendor')->user()->id,
                         ]);
-                
+
                     DB::table('deposits')->insert([
                         'amount' => $setting->per_spotlight_price,
                         'invoice_id' => $invoice->id,
                         'vendor_id' => Auth::guard('vendor')->user()->id,
                         'short_des' => 'ad featured'
-                    ]); 
+                    ]);
                 }
-                
+
                 if($validMembership == true)
                 {
                     DB::table('deposits')->insert([
@@ -1562,31 +1562,31 @@ class CarController extends Controller
                         'vendor_id' => Auth::guard('vendor')->user()->id,
                         'short_des' => 'ad featured',
                         'created_at' => now()
-                    ]); 
+                    ]);
                 }
             }
-        
-        
+
+
             $car->update(['is_featured' => 1 , 'featured_date' =>  date('Y-m-d') ]);
-            
+
             $total_blance_aval = Auth::guard('vendor')->user()->amount - $setting->per_spotlight_price;
-            
+
             if(Auth::guard('vendor')->user()->spotlight > 0)
             {
                 Vendor::where('id' , Auth::guard('vendor')->user()->id)->update([ 'last_spotlight_used' => date('Y-m-d')  , 'amount' => $total_blance_aval ]);
             }
-            
+
             $day_after_spotlight = 1;
-            
+
             if(!empty($setting->day_after_spotlight))
             {
                 $day_after_spotlight =   $setting->day_after_spotlight;
             }
-            
+
             Session::flash('success', 'Your ad has been successfully boost till '.$day_after_spotlight. ' days.');
-            
-        } 
-        else 
+
+        }
+        else
         {
             $car->update(['is_featured' => 0]);
 
@@ -1595,55 +1595,55 @@ class CarController extends Controller
 
         return redirect()->back();
     }
-    
+
     public function updateStatus(Request $request)
     {
-       
+
         $car = Car::findOrFail($request->carId);
 
-        if ($request->status == 1) 
+        if ($request->status == 1)
         {
-          
+
             $car->update(['status' => 1]);
             Session::flash('success', 'Car Publish successfully!');
         }
-        else if($request->status == 2)  
+        else if($request->status == 2)
         {
             $car->update(['status' => 2]);
 
             Session::flash('success', 'Car Withdrawn successfully!');
-        } 
-        else 
+        }
+        else
         {
             $car->update(['status' => 0]);
 
             Session::flash('success', 'Car draft successfully!');
         }
-        
-       
+
+
 
         return redirect()->back();
     }
     public function edit($id)
     {
         $car = Car::with('galleries')->findOrFail($id);
-        
+
         $information['car'] = $car;
 
         // get all the languages from db
         $information['languages'] = Language::all();
 
         $specifications = CarSpecification::where('car_id', $car->id)->get();
-        
+
         $information['specifications'] = $specifications;
-        
+
         $misc = new MiscellaneousController();
         $information['bgImg'] = $misc->getBreadcrumb();
         $vendor_id = Auth::guard('vendor')->user()->id;
         $information['vendor'] = Vendor::with('vendor_info')->where('id', $vendor_id)->first();
         $data = CountryArea::where('status', 1)->orderBy('name', 'asc')->get();
         $information['countryArea'] = $data;
-        
+
         if(Auth::guard('vendor')->user()->vendor_type == 'dealer')
         {
             $misc = new MiscellaneousController();
@@ -1653,10 +1653,10 @@ class CarController extends Controller
             $information['countryArea'] = CountryArea::where('status', 1)->orderBy('name', 'asc')->get();
             $vehicle_features = DB::table('vehicle_features')->where('add_id' , $car->id)->get();
             $information['vehicle_features'] = json_decode(json_encode($vehicle_features) , true );
-           
+
             return view('vendors.car.dealer-edit', $information);
         }
-        
+
         return view('vendors.car.edit', $information);
     }
 
@@ -1680,7 +1680,7 @@ class CarController extends Controller
    public function dealerUpdate(Request $request, $id)
     {
         $vendor_id = Auth::guard('vendor')->user()->id;
-      
+
         $rules = [
             'price' => 'required',
             'year' => 'required',
@@ -1689,10 +1689,10 @@ class CarController extends Controller
 
         $category = Category::find($request['en_main_category_id']);
 
-        
+
         $languages = Language::all();
-        
-        foreach ($languages as $language) 
+
+        foreach ($languages as $language)
         {
             $rules[$language->code . '_title'] = 'required|max:255';
             $rules[$language->code . '_category_id'] = 'required';
@@ -1710,7 +1710,7 @@ class CarController extends Controller
         }
 
         $in = $request->all();
-       
+
 
         if (!empty($request->label)) {
             $specification = [];
@@ -1722,60 +1722,60 @@ class CarController extends Controller
             }
             $in['specification'] = json_encode($specification);
         }
-        
+
         if(!empty($request->vehicle_reg))
         {
             $in['vregNo'] = $request->vehicle_reg;
         }
-        
-        
+
+
         if(empty($request->is_sale))
         {
             $in['is_sale'] = 0;
         }
-        
+
         if(empty($request->is_sold))
         {
             $in['is_sold'] = 0;
         }
-        
+
         if(empty($request->reduce_price))
         {
             $in['reduce_price'] = 0;
         }
-        
+
         if(empty($request->manager_special))
         {
             $in['manager_special'] = 0;
         }
-        
+
         if(empty($request->deposit_taken))
         {
             $in['deposit_taken'] = 0;
         }
-        
+
          if(isset($in['message_center']) && $in['message_center'] == 'yes')
             {
-               $in['message_center'] = 1; 
+               $in['message_center'] = 1;
             }
-            
+
             if(isset($in['phone_text']) && $in['phone_text'] == 'yes')
             {
-               $in['phone_text'] = 1; 
+               $in['phone_text'] = 1;
             }
-            
-        
+
+
         $in['enquiry_person_id'] = json_encode($request->enquirey_person);
-            
-        if (!empty($request->photo_frma)) 
+
+        if (!empty($request->photo_frma))
         {
             $in['feature_image'] = $request->photo_frma;
         }
-        
+
         $car = Car::findOrFail($request->car_id);
-        
+
         $in['vendor_id'] = Auth::guard('vendor')->user()->id;
-        
+
         $car = $car->update($in);
 
         $slders = $request->slider_images;
@@ -1786,7 +1786,7 @@ class CarController extends Controller
                 $pi->save();
             }
         }
-        
+
         $features_to_remove = array();
 
         ////  logic for comfort_n_convenience///
@@ -1796,27 +1796,27 @@ class CarController extends Controller
                     for($i = 0; $i<count($request->comfort_n_convenience); $i++)
                 {
                     $check_point =  DB::table('vehicle_features')->where('add_id' ,  $request->car_id )->where('parent_name' , 'comfort_n_convenience')->where('value' , $request->comfort_n_convenience[$i])->first();
-                    
+
                      if($check_point == true)
                     {
-                        
+
                         $curnt_id = $check_point->id;
                          DB::table('vehicle_features')->where('id' , $check_point->id)->update(['value' =>$request->comfort_n_convenience[$i] , 'updated_at' => date('Y-m-d H:i:s') ]);
                     }
-                    
-                    
+
+
                     if($check_point == false)
                     {
-                       $check_point = DB::table('vehicle_features')->insertGetId(['add_id' => $request->car_id , 'parent_name' => 'comfort_n_convenience' 
-                    , 'value' =>$request->comfort_n_convenience[$i] , 'created_at' => date('Y-m-d H:i:s') , 'updated_at' => date('Y-m-d H:i:s') ]); 
+                       $check_point = DB::table('vehicle_features')->insertGetId(['add_id' => $request->car_id , 'parent_name' => 'comfort_n_convenience'
+                    , 'value' =>$request->comfort_n_convenience[$i] , 'created_at' => date('Y-m-d H:i:s') , 'updated_at' => date('Y-m-d H:i:s') ]);
                     $curnt_id =$check_point ;
                     }
-                    
+
                    $features_to_remove[] = $curnt_id;
-                   
+
                 }
             }
-            
+
 
             /// END////////////////////////////////
 
@@ -1826,24 +1826,24 @@ class CarController extends Controller
             {
                 for($i = 0; $i<count($request->media_n_conectivity); $i++)
                 {
-                    
+
                     $check_point =  DB::table('vehicle_features')->where('add_id' ,  $request->car_id )->where('parent_name' , 'media_n_conectivity')->where('value' , $request->media_n_conectivity[$i])->first();
-                    
+
                      if($check_point == true)
                     {
                         $curnt_id =$check_point->id ;
                          DB::table('vehicle_features')->where('id' , $check_point->id)->update(['value' =>$request->media_n_conectivity[$i] , 'updated_at' => date('Y-m-d H:i:s') ]);
                     }
-                    
+
                     if($check_point == false)
                     {
-                        $check_point = DB::table('vehicle_features')->insertGetId(['add_id' => $request->car_id , 'parent_name' => 'media_n_conectivity' 
+                        $check_point = DB::table('vehicle_features')->insertGetId(['add_id' => $request->car_id , 'parent_name' => 'media_n_conectivity'
                          , 'value' =>$request->media_n_conectivity[$i] , 'created_at' => date('Y-m-d H:i:s') , 'updated_at' => date('Y-m-d H:i:s') ]);
                          $curnt_id =$check_point ;
                     }
-                    
+
                      $features_to_remove[] = $curnt_id;
-                    
+
                 }
              }
 
@@ -1856,23 +1856,23 @@ class CarController extends Controller
                 for($i = 0; $i<count($request->assistance_n_utility); $i++)
                 {
                      $check_point =  DB::table('vehicle_features')->where('add_id' ,  $request->car_id )->where('parent_name' , 'assistance_n_utility')->where('value' , $request->assistance_n_utility[$i])->first();
-                    
+
                     if($check_point == true)
                     {
                          $curnt_id =$check_point->id ;
                          DB::table('vehicle_features')->where('id' , $check_point->id)->update(['value' =>$request->assistance_n_utility[$i] , 'updated_at' => date('Y-m-d H:i:s') ]);
                     }
-                    
+
                     if($check_point == false)
                     {
-                       $check_point =   DB::table('vehicle_features')->insertGetId(['add_id' => $request->car_id , 'parent_name' => 'assistance_n_utility' 
+                       $check_point =   DB::table('vehicle_features')->insertGetId(['add_id' => $request->car_id , 'parent_name' => 'assistance_n_utility'
                     , 'value' =>$request->assistance_n_utility[$i] , 'created_at' => date('Y-m-d H:i:s') , 'updated_at' => date('Y-m-d H:i:s') ]);
                      $curnt_id =$check_point ;
                     }
-                    
+
                     $features_to_remove[] = $curnt_id;
-                    
-                    
+
+
                 }
             }
 
@@ -1884,27 +1884,27 @@ class CarController extends Controller
             {
                 for($i = 0; $i<count($request->styling_n_appearance); $i++)
                 {
-                    
+
                     $check_point =  DB::table('vehicle_features')->where('add_id' ,  $request->car_id )->where('parent_name' , 'styling_n_appearance')->where('value' , $request->styling_n_appearance[$i])->first();
-                    
+
                      if($check_point == true)
                     {
                          $curnt_id =$check_point->id ;
                          DB::table('vehicle_features')->where('id' , $check_point->id)->update(['value' =>$request->styling_n_appearance[$i] , 'updated_at' => date('Y-m-d H:i:s') ]);
                     }
-                    
-                    
+
+
                     if($check_point == false)
                     {
-                       $check_point =   DB::table('vehicle_features')->insertGetId(['add_id' => $request->car_id , 'parent_name' => 'styling_n_appearance' 
+                       $check_point =   DB::table('vehicle_features')->insertGetId(['add_id' => $request->car_id , 'parent_name' => 'styling_n_appearance'
                     , 'value' =>$request->styling_n_appearance[$i] , 'created_at' => date('Y-m-d H:i:s') , 'updated_at' => date('Y-m-d H:i:s') ]);
                      $curnt_id =$check_point ;
                     }
-                    
-                   
+
+
                     $features_to_remove[] = $curnt_id;
-                    
-                    
+
+
                 }
             }
 
@@ -1916,26 +1916,26 @@ class CarController extends Controller
             {
                 for($i = 0; $i<count($request->lighting_n_illumination); $i++)
                 {
-                    
+
                     $check_point =  DB::table('vehicle_features')->where('add_id' ,  $request->car_id )->where('parent_name' , 'lighting_n_illumination')->where('value' , $request->lighting_n_illumination[$i])->first();
-                    
+
                     if($check_point == true)
                     {
                         $curnt_id =$check_point->id ;
                          DB::table('vehicle_features')->where('id' , $check_point->id)->update(['value' =>$request->lighting_n_illumination[$i] , 'updated_at' => date('Y-m-d H:i:s') ]);
                     }
-                    
+
                     if($check_point == false)
                     {
-                        $check_point =  DB::table('vehicle_features')->insertGetId(['add_id' => $request->car_id , 'parent_name' => 'lighting_n_illumination' 
+                        $check_point =  DB::table('vehicle_features')->insertGetId(['add_id' => $request->car_id , 'parent_name' => 'lighting_n_illumination'
                     , 'value' =>$request->lighting_n_illumination[$i] , 'created_at' => date('Y-m-d H:i:s') , 'updated_at' => date('Y-m-d H:i:s') ]);
                     $curnt_id =$check_point ;
                     }
-                    
+
                      $features_to_remove[] = $curnt_id;
-                    
-                    
-                    
+
+
+
                 }
              }
 
@@ -1947,27 +1947,27 @@ class CarController extends Controller
             {
                 for($i = 0; $i<count($request->safety_n_security); $i++)
                 {
-                    
+
                     $check_point =  DB::table('vehicle_features')->where('add_id' ,  $request->car_id)->where('parent_name' , 'safety_n_security')->where('value' , $request->safety_n_security[$i])->first();
-                    
+
                     if($check_point == true)
                     {
                          $curnt_id =$check_point->id ;
                          DB::table('vehicle_features')->where('id' , $check_point->id)->update(['value' =>$request->safety_n_security[$i] , 'updated_at' => date('Y-m-d H:i:s') ]);
                     }
-                    
-                    
+
+
                     if($check_point == false)
                     {
-                       $check_point =  DB::table('vehicle_features')->insertGetId(['add_id' => $request->car_id , 'parent_name' => 'safety_n_security' 
+                       $check_point =  DB::table('vehicle_features')->insertGetId(['add_id' => $request->car_id , 'parent_name' => 'safety_n_security'
                     , 'value' =>$request->safety_n_security[$i] , 'created_at' => date('Y-m-d H:i:s') , 'updated_at' => date('Y-m-d H:i:s') ]);
                      $curnt_id =$check_point ;
                     }
-                    
-                    
+
+
                     $features_to_remove[] = $curnt_id;
-                    
-                    
+
+
                 }
             }
 
@@ -1979,36 +1979,36 @@ class CarController extends Controller
             {
                 for($i = 0; $i<count($request->performance_n_handling); $i++)
                 {
-                    
+
                      $check_point =  DB::table('vehicle_features')->where('add_id' ,  $request->car_id )->where('parent_name' , 'performance_n_handling')->where('value' , $request->performance_n_handling[$i])->first();
-                    
+
                     if($check_point == true)
                     {
                          $curnt_id =$check_point->id ;
                          DB::table('vehicle_features')->where('id' , $check_point->id)->update(['value' =>$request->performance_n_handling[$i] , 'updated_at' => date('Y-m-d H:i:s') ]);
                     }
-                    
-                    
+
+
                     if($check_point == false)
                     {
-                     $check_point =  DB::table('vehicle_features')->insertGetId(['add_id' => $request->car_id , 'parent_name' => 'performance_n_handling' 
+                     $check_point =  DB::table('vehicle_features')->insertGetId(['add_id' => $request->car_id , 'parent_name' => 'performance_n_handling'
                     , 'value' =>$request->performance_n_handling[$i] , 'created_at' => date('Y-m-d H:i:s') , 'updated_at' => date('Y-m-d H:i:s') ]);
                      $curnt_id =$check_point ;
                     }
-                    
+
                      $features_to_remove[] = $curnt_id;
-                    
-                    
+
+
                 }
             }
 
             /// END////////////////////////////////
-            
+
             if(count($features_to_remove) > 0 )
             {
                 DB::table('vehicle_features')->whereNotIn('id' , $features_to_remove)->delete();
             }
-            
+
         foreach ($languages as $language) {
             $carContent =  CarContent::where('car_id', $request->car_id)->where('language_id', $language->id)->first();
             if (empty($carContent)) {
@@ -2035,29 +2035,29 @@ class CarController extends Controller
         Session::flash('success', 'Ad Updated successfully!');
         return Response::json(['status' => 'success'], 200);
     }
-    
-    
-    
+
+
+
     public function update(Request $request, $id)
     {
-      
+
       if ($request->can_car_add != 1) {
         return back();
      }
      $vendor_id = Auth::guard('vendor')->user()->id;
-     
+
      DB::transaction(function () use ($request) {
 
-      
-       
+
+
          $languages = Language::all();
          $in = $request->all();
 
          if(!empty($request->car_cover_image)) {
            $fImage =  CarImage::select('id','image')->where('id',$request->car_cover_image)->first();
           $in['feature_image'] = $fImage->image;
-         } 
-         
+         }
+
          if (!empty($request->label)) {
              $specification = [];
              foreach ($request->label as $key => $varName) {
@@ -2083,7 +2083,7 @@ class CarController extends Controller
          $inuserinfo['city'] = $request->city;
          $vendorinfo->update($inuserinfo);
 
-         
+
 
          foreach ($languages as $language) {
             $carContent =  CarContent::where('car_id', $request->car_id)->first();
@@ -2195,59 +2195,59 @@ class CarController extends Controller
         }
 
         Session::flash('success', 'Car deleted successfully!');
-       
+
         return response()->json(['status' => 'success'], 200);
     }
-    
-    
+
+
      public function PaymentOptions(Request $request)
      {
         $categories = Category::where('id', $request->category_id)->first();
-        
+
         $apiarray = [];
         $filters = "";
         $draft_ad =  DraftAd::where('vendor_id', Auth::guard('vendor')->user()->id)->first();
-      
+
         if (!empty($categories->filters) && in_array('make', json_decode($categories->filters))) {
         //yes: $id exits in array
         $make = 1;
         $filters = view('vendors.car.carfilteroptions', compact('categories' , 'draft_ad'))->render();
          }
         else {
-            
+
             if($categories == null)
             {
                 $filters = '';
                 exit;
             }
-            
+
         $filters = view('vendors.car.vehicledetails', compact('categories','apiarray','draft_ad'))->render();
 
         $make = 0;
 
         }
-        
+
         $data = PrivatePackage::where('category_id', $categories->parent_id)->where('status', 1)->get();
 
         $html = view('vendors.car.paymentoptions', compact('data'))->render();
-    
-        return response()->json(['code' => 200, 'message' => 'successful.','data' =>$html, "make" => $make, "filters" => $filters]); 
+
+        return response()->json(['code' => 200, 'message' => 'successful.','data' =>$html, "make" => $make, "filters" => $filters]);
      }
      public function PlanSelected(Request $request)
      {
         $data = PrivatePackage::where('id', $request->package_id)->where('status', 1)->first();
 
         $html = view('vendors.car.packageselected', compact('data'))->render();
-    
-        return response()->json(['code' => 200, 'message' => 'successful.','data' =>$html]); 
+
+        return response()->json(['code' => 200, 'message' => 'successful.','data' =>$html]);
      }
      public function PromoSelected(Request $request)
      {
         $data = PrivatePackage::where('id', $request->package_id)->where('status', 1)->first();
 
         $html = view('vendors.car.packageselected', compact('data'))->render();
-    
-        return response()->json(['code' => 200, 'message' => 'successful.','data' =>$html]); 
+
+        return response()->json(['code' => 200, 'message' => 'successful.','data' =>$html]);
      }
 
      public function BoostPayment(Request $request)
@@ -2257,9 +2257,9 @@ class CarController extends Controller
 
        // $html = view('vendors.car.packageselected', compact('data'))->render();
        return view('vendors.car.boost', compact('data'));
-    
-        //return response()->json(['code' => 200, 'message' => 'successful.','data' =>$html]); 
+
+        //return response()->json(['code' => 200, 'message' => 'successful.','data' =>$html]);
      }
-     
-     
+
+
 }

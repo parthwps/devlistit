@@ -355,9 +355,9 @@
                     </div>
                   </div>
                 </div>
-                
+
               <hr/>
-              <div class="widget widget-select p-0 mb-20 us">
+              {{-- <div class="widget widget-select p-0 mb-20 us">
                   <h5 class="title mb-3">
                     <button class="accordion-button" type="button" data-bs-toggle="collapse"
                             data-bs-target="#select4" aria-expanded="true" aria-controls="select">
@@ -395,7 +395,78 @@
                       </div>
                     </div>
                   </div>
-                </div>
+                </div> --}}
+                <div class="widget widget-select p-0 mb-20 us">
+                  <h5 class="title mb-3">
+                      <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                              data-bs-target="#select4" aria-expanded="true" aria-controls="select">
+                          {{ __('Delivery Available') }}
+                      </button>
+                  </h5>
+
+                  <div id="select4" class="collapse show">
+                      <div class="accordion-body scroll-y">
+                          <div class="row">
+                              <div class="col-12">
+                                  <div class="form-group" style="padding:10px 0px;">
+                                      <div class="row">
+                                          <div class="col-6 float-start">
+                                              <div class="form-check">
+                                                  <input class="form-check-input ms-0 delivery_available" type="radio"
+                                                         name="delivery_available" value="1"
+                                                         id="delivery_yes" {{ request('delivery_available') == '1' ? 'checked' : '' }}>
+                                                  <label class="form-check-label ms-4" for="delivery_yes">
+                                                      Yes
+                                                  </label>
+                                              </div>
+                                          </div>
+                                          <div class="col-6 float-end">
+                                              <div class="form-check">
+                                                  <input class="form-check-input ms-0 delivery_available" type="radio"
+                                                         name="delivery_available" value="0"
+                                                         id="delivery_no" {{ request('delivery_available') == '0' ? 'checked' : '' }}>
+                                                  <label class="form-check-label ms-4" for="delivery_no">
+                                                      No
+                                                  </label>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+
+              <script>
+               document.addEventListener('DOMContentLoaded', () => {
+
+               document.querySelectorAll('.delivery_available').forEach(radio => {
+
+                radio.addEventListener('change', () => {
+                  console.log("Radio button changed:", radio.name); // Log when a radio button changes.
+
+                  const radioName = radio.name;
+
+                  const selectedValue = document.querySelector('input[name="delivery_available"]:checked').value;
+                  console.log("Selected value:", selectedValue); // Log the selected value.
+
+                  fetch('/load-filters?delivery_available=' + selectedValue + '&category={{ request("category") }}', {
+                      method: 'get',
+                  })
+                  .then(response => {
+                      if (response.ok) {
+                        document.getElementById('ajaxListing').innerHTML = data.output;
+
+                      } else {
+                                  throw new Error("Network response was not ok");
+                              }
+                      })
+              });
+          });
+      });
+
+              </script>
                 <hr/>
               @if($category_filters && in_array('make' , $category_filters))
                 <div class="widget widget-ratings p-0 mb-20">
