@@ -619,7 +619,6 @@ class CarController extends Controller
     //store
     public function store(CarStoreRequest $request)
     {
-        // dd($request->all());
         $max_file_upload = 15;
         $slider_images_count = count($request->slider_images);
         if ($slider_images_count > $max_file_upload) {

@@ -466,6 +466,8 @@ $categories = App\Models\Car\Category::where('id', $carContent->category_id)->fi
                               <input type="number" class="form-control" @if($carContent->main_category_id == 233 || $carContent->main_category_id == 347 ) readonly @endif name="previous_price" placeholder="Enter Previous Price"
                                 value="{{ (!empty($car->previous_price)) ? $car->previous_price :  $car->price }}">
                             </div>
+                          </div>
+                              <div class="col-lg-6">
                             <div class="form-group" style="margin-top: 35px;">
                               <select class="form-control" name="sign">
                                   <option value="£" {{ old('sign', $draft_ad->sign ?? '£') == '£' ? 'selected' : '' }}>£</option>
@@ -479,7 +481,22 @@ $categories = App\Models\Car\Category::where('id', $carContent->category_id)->fi
                                  <input type="text" class="form-control" name="youtube_video" value="{{$car->youtube_video}}" placeholder="Enter youtube Video URL">
                               </div>
                               </div>
+                              <div class="col-lg-6 d-flex align-items-center mb-2">
+                                  <div class="form-group w-100">
+                                      <label>{{ __('Delivery Available') }}*</label>
+                                      <select name="delivery_available"
+                                              class="form-control">
+                                          <option value="1" {{ $car->delivery_available === 1 ? 'selected' : '' }}>
+                                              {{ __('Yes') }}
+                                          </option>
+                                          <option value="0" {{ $car->delivery_available === 0 ? 'selected' : '' }}>
+                                              {{ __('No') }}
+                                          </option>
+                                      </select>
+                                  </div>
+                              </div>
                            </div>
+
 
                           @endforeach
                         </div>

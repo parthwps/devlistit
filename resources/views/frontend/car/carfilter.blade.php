@@ -1336,6 +1336,42 @@
                   </div>
                 </div>
               <hr/>
+              <div class="widget widget-select p-0 mb-20">
+                  <h5 class="title mb-3">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#deliveryAvailable" aria-expanded="true" aria-controls="select">
+                      {{ __('Delivery Available') }}
+                    </button>
+                  </h5>
+                  <div id="deliveryAvailable" class="collapse show">
+                    <div class="accordion-body scroll-y">
+                      <div class="row">
+                        <div class="col-12">
+                          <div class="form-group" style="padding:10px 0px;">
+                              <div class="row">
+                                  <div class="col-6">
+                                      <div class="d-flex align-items-center">
+                                            <input class="ms-0" onchange="updateUrl()"
+                                                   type="radio" name="delivery_available"
+                                                   value="1" id="delivery-available-yes" @checked(request('delivery_available') === 1)>
+                                            <label class="mb-0 ms-2" for="delivery-available-yes">Yes</label>
+                                       </div>
+                                  </div>
+                                  <div class="col-6">
+                                       <div class="d-flex align-items-center">
+                                            <input class="ms-0" onchange="updateUrl()"
+                                                   type="radio" name="delivery_available"
+                                                   value="0" id="delivery-available-no" @checked(request('delivery_available') === 0)>
+                                            <label class="mb-0 ms-2" for="delivery-available-no">No</label>
+                                       </div>
+                                  </div>
+                              </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
           @endif
 
 

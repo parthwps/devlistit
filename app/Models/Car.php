@@ -19,6 +19,7 @@ class Car extends Model
         'order_id',
         'vendor_id',
         'package_id',
+        'delivery_available',
         'price',
         'sign',
         'previous_price',
