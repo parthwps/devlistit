@@ -1675,3 +1675,4 @@ $('.body-type-filter .form-check-input, .colour-filter .form-check-input').on('c
         $formCheck.removeClass('checked'); // Remove the class when unchecked
     }
 });
+updateUrl();
