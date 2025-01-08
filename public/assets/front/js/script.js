@@ -1283,9 +1283,9 @@ $('body').on('submit', '#vendorContactForm', function(e) {
         }
     })
 });
-$(document).on('change','.delivery_available',function(){
-  updateUrl();
-});
+// $(document).on('change','.delivery_available',function(){
+//   updateUrl();
+// });
 
     $(document).on('change','.dealer_type',function(){
         updateUrl();

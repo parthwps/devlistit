@@ -70,7 +70,7 @@
               </div>
             </form>
           </div>
-        </div> 
+        </div>
 
         {{-- dashboard --}}
         <li class="nav-item @if (request()->routeIs('admin.dashboard')) active @endif">
@@ -87,13 +87,13 @@
               <p>Menu Builder</p>
             </a>
           </li> -->
-        @endif  
+        @endif
 
         {{-- package management --}}
          @if (is_null($roleInfo) || (!empty($rolePermissions) && in_array('Package Management', $rolePermissions)))
           <li
-            class="nav-item @if (request()->routeIs('admin.package.settings')) active 
-            @elseif (request()->routeIs('admin.package.index')) active 
+            class="nav-item @if (request()->routeIs('admin.package.settings')) active
+            @elseif (request()->routeIs('admin.package.index')) active
             @elseif (request()->routeIs('admin.package.edit')) active @endif">
             <a data-toggle="collapse" href="#packageManagements">
               <i class="fal fa-receipt"></i>
@@ -102,9 +102,9 @@
             </a>
 
             <div id="packageManagements"
-              class="collapse 
-              @if (request()->routeIs('admin.package.settings')) show 
-              @elseif (request()->routeIs('admin.package.index')) show 
+              class="collapse
+              @if (request()->routeIs('admin.package.settings')) show
+              @elseif (request()->routeIs('admin.package.index')) show
               @elseif (request()->routeIs('admin.package.edit')) show @endif">
               <ul class="nav nav-collapse">
 
@@ -122,13 +122,13 @@
               </ul>
             </div>
           </li>
-        @endif 
+        @endif
 
         {{-- package management --}}
         @if (is_null($roleInfo) || (!empty($rolePermissions) && in_array('Package Management', $rolePermissions)))
           <li
-            class="nav-item @if (request()->routeIs('admin.private_package.settings')) active 
-            @elseif (request()->routeIs('admin.private_package.index')) active 
+            class="nav-item @if (request()->routeIs('admin.private_package.settings')) active
+            @elseif (request()->routeIs('admin.private_package.index')) active
             @elseif (request()->routeIs('admin.private_package.edit')) active @endif">
             <a data-toggle="collapse" href="#packageManagement">
               <i class="fal fa-receipt"></i>
@@ -137,9 +137,9 @@
             </a>
 
             <div id="packageManagement"
-              class="collapse 
-              @if (request()->routeIs('admin.private_package.settings')) show 
-              @elseif (request()->routeIs('admin.private_package.index')) show 
+              class="collapse
+              @if (request()->routeIs('admin.private_package.settings')) show
+              @elseif (request()->routeIs('admin.private_package.index')) show
               @elseif (request()->routeIs('admin.private_package.edit')) show @endif">
               <ul class="nav nav-collapse">
 
@@ -166,39 +166,39 @@
               <i class="fas fa-list-ol"></i>
               <p>Invoices</p>
             </a>
-          </li> 
+          </li>
         @endif
-        
+
 
           <li class="nav-item @if (request()->routeIs('admin.payment-log.uploadcsv')) active @endif">
             <a href="{{ route('admin.payment-log.uploadcsv') }}">
               <i class="fas fa-file"></i>
               <p>Api  CSV Uploading</p>
             </a>
-          </li> 
-        
-        
-        
+          </li>
+
+
+
         <li class="nav-item @if (request()->routeIs('admin.reported.ads')) active @endif">
             <a href="{{ route('admin.reported.ads') }}">
               <i class="fas fa-flag" style="@if($new_report > 0) color:red  @endif"></i>
               <p>Report Ads</p>
-              
+
                @if($new_report > 0)  <i class="fa fa-circle blink" style="font-size: 13px;color: #ff9e00;margin-left: 73px;"></i>   @endif
             </a>
-        </li> 
-          
+        </li>
+
 
         {{-- car specifications --}}
         @if (is_null($roleInfo) || (!empty($rolePermissions) && in_array('Car Specifications', $rolePermissions)))
           <li
-            class="nav-item @if (request()->routeIs('admin.car_specification.categories')) active 
-            @elseif (request()->routeIs('admin.car_specification.condition')) active 
-            @elseif (request()->routeIs('admin.car_specification.condition')) active 
-            @elseif (request()->routeIs('admin.car_specification.brand')) active 
+            class="nav-item @if (request()->routeIs('admin.car_specification.categories')) active
+            @elseif (request()->routeIs('admin.car_specification.condition')) active
+            @elseif (request()->routeIs('admin.car_specification.condition')) active
+            @elseif (request()->routeIs('admin.car_specification.brand')) active
             @elseif (request()->routeIs('admin.car_specification.model')) active
-            @elseif (request()->routeIs('admin.car_specification.fuel')) active 
-            @elseif (request()->routeIs('admin.car_specification.body_type')) active 
+            @elseif (request()->routeIs('admin.car_specification.fuel')) active
+            @elseif (request()->routeIs('admin.car_specification.body_type')) active
             @elseif (request()->routeIs('admin.car_specification.transmission')) active @endif">
             <a data-toggle="collapse" href="#carSpecification">
               <i class="far fa-file-alt"></i>
@@ -207,13 +207,13 @@
             </a>
 
             <div id="carSpecification"
-              class="collapse 
-              @if (request()->routeIs('admin.car_specification.categories')) show 
-              @elseif (request()->routeIs('admin.car_specification.condition')) show 
-              @elseif (request()->routeIs('admin.car_specification.brand')) show 
-              @elseif (request()->routeIs('admin.car_specification.model')) show 
-              @elseif (request()->routeIs('admin.car_specification.fuel')) show 
-              @elseif (request()->routeIs('admin.car_specification.body_type')) active 
+              class="collapse
+              @if (request()->routeIs('admin.car_specification.categories')) show
+              @elseif (request()->routeIs('admin.car_specification.condition')) show
+              @elseif (request()->routeIs('admin.car_specification.brand')) show
+              @elseif (request()->routeIs('admin.car_specification.model')) show
+              @elseif (request()->routeIs('admin.car_specification.fuel')) show
+              @elseif (request()->routeIs('admin.car_specification.body_type')) active
               @elseif (request()->routeIs('admin.car_specification.transmission')) show @endif">
               <ul class="nav nav-collapse">
                                   <li class="{{ request()->routeIs('admin.car_specification.categories') ? 'active' : '' }}">
@@ -232,7 +232,7 @@
                     <span class="sub-item">Form Fields</span>
                   </a>
                 </li>
-                
+
                 <li class="{{ request()->routeIs('admin.car_specification.brand') ? 'active' : '' }}">
                   <a href="{{ route('admin.car_specification.brand', ['language' => $defaultLang->code]) }}">
                     <span class="sub-item">Make</span>
@@ -249,14 +249,14 @@
                     <span class="sub-item">Fuel Types</span>
                   </a>
                 </li>
-                
+
                 <li class="{{ request()->routeIs('admin.car_specification.body_type') ? 'active' : '' }}">
                   <a href="{{ route('admin.car_specification.body_type', ['language' => $defaultLang->code]) }}">
                     <span class="sub-item">Body Types</span>
                   </a>
                 </li>
-                
-                
+
+
                 <li class="{{ request()->routeIs('admin.car_specification.transmission') ? 'active' : '' }}">
                   <a href="{{ route('admin.car_specification.transmission', ['language' => $defaultLang->code]) }}">
                     <span class="sub-item">Transmission Types</span>
@@ -270,8 +270,8 @@
         {{-- car management --}}
         @if (is_null($roleInfo) || (!empty($rolePermissions) && in_array('Ads Management', $rolePermissions)))
           <li
-            class="nav-item @if (request()->routeIs('admin.car_management.car')) active 
-            @elseif (request()->routeIs('admin.cars_management.create_car')) active 
+            class="nav-item @if (request()->routeIs('admin.car_management.car')) active
+            @elseif (request()->routeIs('admin.cars_management.create_car')) active
             @elseif (request()->routeIs('admin.cars_management.edit_car')) active @endif">
             <a data-toggle="collapse" href="#carManagement">
               <i class="far fa-car"></i>
@@ -280,9 +280,9 @@
             </a>
 
             <div id="carManagement"
-              class="collapse 
-              @if (request()->routeIs('admin.car_management.car')) show 
-              @elseif (request()->routeIs('admin.cars_management.create_car')) show 
+              class="collapse
+              @if (request()->routeIs('admin.car_management.car')) show
+              @elseif (request()->routeIs('admin.cars_management.create_car')) show
               @elseif (request()->routeIs('admin.cars_management.edit_car')) show @endif">
               <ul class="nav nav-collapse">
 
@@ -310,8 +310,8 @@
     </a>
 </li>
 
-                
-                
+
+
               </ul>
             </div>
           </li>
@@ -321,17 +321,17 @@
        {{-- shop --}}
         @if (is_null($roleInfo) || (!empty($rolePermissions) && in_array('Shop Management', $rolePermissions)))
           <!-- <li
-            class="nav-item @if (request()->routeIs('admin.shop_management.tax_amount')) active 
-            @elseif (request()->routeIs('admin.shop_management.shipping_charges')) active 
-            @elseif (request()->routeIs('admin.shop_management.coupons')) active 
-            @elseif (request()->routeIs('admin.shop_management.product.categories')) active 
-            @elseif (request()->routeIs('admin.shop_management.products')) active 
-            @elseif (request()->routeIs('admin.shop_management.select_product_type')) active 
-            @elseif (request()->routeIs('admin.shop_management.create_product')) active 
-            @elseif (request()->routeIs('admin.shop_management.edit_product')) active 
-            @elseif (request()->routeIs('admin.shop_management.orders')) active 
-            @elseif (request()->routeIs('admin.shop_management.order.details')) active 
-            @elseif (request()->routeIs('admin.shop_management.settings')) active 
+            class="nav-item @if (request()->routeIs('admin.shop_management.tax_amount')) active
+            @elseif (request()->routeIs('admin.shop_management.shipping_charges')) active
+            @elseif (request()->routeIs('admin.shop_management.coupons')) active
+            @elseif (request()->routeIs('admin.shop_management.product.categories')) active
+            @elseif (request()->routeIs('admin.shop_management.products')) active
+            @elseif (request()->routeIs('admin.shop_management.select_product_type')) active
+            @elseif (request()->routeIs('admin.shop_management.create_product')) active
+            @elseif (request()->routeIs('admin.shop_management.edit_product')) active
+            @elseif (request()->routeIs('admin.shop_management.orders')) active
+            @elseif (request()->routeIs('admin.shop_management.order.details')) active
+            @elseif (request()->routeIs('admin.shop_management.settings')) active
             @elseif (request()->routeIs('admin.shop_management.report')) active @endif">
             <a data-toggle="collapse" href="#shop">
               <i class="fal fa-store-alt"></i>
@@ -340,18 +340,18 @@
             </a>
 
             <div id="shop"
-              class="collapse 
-              @if (request()->routeIs('admin.shop_management.tax_amount')) show 
-              @elseif (request()->routeIs('admin.shop_management.shipping_charges')) show 
-              @elseif (request()->routeIs('admin.shop_management.coupons')) show 
-              @elseif (request()->routeIs('admin.shop_management.product.categories')) show 
-              @elseif (request()->routeIs('admin.shop_management.products')) show 
-              @elseif (request()->routeIs('admin.shop_management.select_product_type')) show 
-              @elseif (request()->routeIs('admin.shop_management.create_product')) show 
-              @elseif (request()->routeIs('admin.shop_management.edit_product')) show 
-              @elseif (request()->routeIs('admin.shop_management.orders')) show 
-              @elseif (request()->routeIs('admin.shop_management.order.details')) show 
-              @elseif (request()->routeIs('admin.shop_management.settings')) show 
+              class="collapse
+              @if (request()->routeIs('admin.shop_management.tax_amount')) show
+              @elseif (request()->routeIs('admin.shop_management.shipping_charges')) show
+              @elseif (request()->routeIs('admin.shop_management.coupons')) show
+              @elseif (request()->routeIs('admin.shop_management.product.categories')) show
+              @elseif (request()->routeIs('admin.shop_management.products')) show
+              @elseif (request()->routeIs('admin.shop_management.select_product_type')) show
+              @elseif (request()->routeIs('admin.shop_management.create_product')) show
+              @elseif (request()->routeIs('admin.shop_management.edit_product')) show
+              @elseif (request()->routeIs('admin.shop_management.orders')) show
+              @elseif (request()->routeIs('admin.shop_management.order.details')) show
+              @elseif (request()->routeIs('admin.shop_management.settings')) show
               @elseif (request()->routeIs('admin.shop_management.report')) show @endif">
               <ul class="nav nav-collapse">
                 <li class="{{ request()->routeIs('admin.shop_management.settings') ? 'active' : '' }}">
@@ -384,11 +384,11 @@
                   </a>
 
                   <div id="product"
-                    class="collapse 
-                    @if (request()->routeIs('admin.shop_management.product.categories')) show 
-                    @elseif (request()->routeIs('admin.shop_management.products')) show 
-                    @elseif (request()->routeIs('admin.shop_management.select_product_type')) show 
-                    @elseif (request()->routeIs('admin.shop_management.create_product')) show 
+                    class="collapse
+                    @if (request()->routeIs('admin.shop_management.product.categories')) show
+                    @elseif (request()->routeIs('admin.shop_management.products')) show
+                    @elseif (request()->routeIs('admin.shop_management.select_product_type')) show
+                    @elseif (request()->routeIs('admin.shop_management.create_product')) show
                     @elseif (request()->routeIs('admin.shop_management.edit_product')) show @endif">
                     <ul class="nav nav-collapse subnav">
                       <li
@@ -400,9 +400,9 @@
                       </li>
 
                       <li
-                        class="@if (request()->routeIs('admin.shop_management.products')) active 
-                        @elseif (request()->routeIs('admin.shop_management.select_product_type')) active 
-                        @elseif (request()->routeIs('admin.shop_management.create_product')) active 
+                        class="@if (request()->routeIs('admin.shop_management.products')) active
+                        @elseif (request()->routeIs('admin.shop_management.select_product_type')) active
+                        @elseif (request()->routeIs('admin.shop_management.create_product')) active
                         @elseif (request()->routeIs('admin.shop_management.edit_product')) active @endif">
                         <a href="{{ route('admin.shop_management.products', ['language' => $defaultLang->code]) }}">
                           <span class="sub-item">Products</span>
@@ -413,7 +413,7 @@
                 </li>
 
                 <li
-                  class="@if (request()->routeIs('admin.shop_management.orders')) active 
+                  class="@if (request()->routeIs('admin.shop_management.orders')) active
                   @elseif (request()->routeIs('admin.shop_management.order.details')) active @endif">
                   <a href="{{ route('admin.shop_management.orders') }}">
                     <span class="sub-item">Orders</span>
@@ -428,18 +428,18 @@
               </ul>
             </div>
           </li> -->
-        @endif 
+        @endif
 
         {{-- user --}}
         @if (is_null($roleInfo) || (!empty($rolePermissions) && in_array('User Management', $rolePermissions)))
           <li
-            class="nav-item @if (request()->routeIs('admin.user_management.registered_users')) active 
-            @elseif (request()->routeIs('admin.user_management.registered_user.create')) active 
-            @elseif (request()->routeIs('admin.user_management.registered_user.edit')) active 
-            @elseif (request()->routeIs('admin.user_management.user.change_password')) active 
-            @elseif (request()->routeIs('admin.user_management.subscribers')) active 
-            @elseif (request()->routeIs('admin.user_management.mail_for_subscribers')) active 
-            @elseif (request()->routeIs('admin.user_management.push_notification.settings')) active 
+            class="nav-item @if (request()->routeIs('admin.user_management.registered_users')) active
+            @elseif (request()->routeIs('admin.user_management.registered_user.create')) active
+            @elseif (request()->routeIs('admin.user_management.registered_user.edit')) active
+            @elseif (request()->routeIs('admin.user_management.user.change_password')) active
+            @elseif (request()->routeIs('admin.user_management.subscribers')) active
+            @elseif (request()->routeIs('admin.user_management.mail_for_subscribers')) active
+            @elseif (request()->routeIs('admin.user_management.push_notification.settings')) active
             @elseif (request()->routeIs('admin.user_management.push_notification.notification_for_visitors')) active
              @endif">
             <a data-toggle="collapse" href="#user">
@@ -449,18 +449,18 @@
             </a>
 
             <div id="user"
-              class="collapse 
-              @if (request()->routeIs('admin.user_management.registered_users')) show 
-              @elseif (request()->routeIs('admin.user_management.registered_user.create')) show 
-              @elseif (request()->routeIs('admin.user_management.registered_user.edit')) show 
-              @elseif (request()->routeIs('admin.user_management.user.change_password')) show 
-              @elseif (request()->routeIs('admin.user_management.subscribers')) show 
-              @elseif (request()->routeIs('admin.user_management.mail_for_subscribers')) show 
-              @elseif (request()->routeIs('admin.user_management.push_notification.settings')) show 
+              class="collapse
+              @if (request()->routeIs('admin.user_management.registered_users')) show
+              @elseif (request()->routeIs('admin.user_management.registered_user.create')) show
+              @elseif (request()->routeIs('admin.user_management.registered_user.edit')) show
+              @elseif (request()->routeIs('admin.user_management.user.change_password')) show
+              @elseif (request()->routeIs('admin.user_management.subscribers')) show
+              @elseif (request()->routeIs('admin.user_management.mail_for_subscribers')) show
+              @elseif (request()->routeIs('admin.user_management.push_notification.settings')) show
               @elseif (request()->routeIs('admin.user_management.push_notification.notification_for_visitors')) show @endif">
               <ul class="nav nav-collapse">
                 <!-- <li
-                  class="@if (request()->routeIs('admin.user_management.registered_users')) active 
+                  class="@if (request()->routeIs('admin.user_management.registered_users')) active
                   @elseif (request()->routeIs('admin.user_management.user.change_password')) active
 @elseif (request()->routeIs('admin.user_management.registered_user.edit'))
 active @endif
@@ -478,7 +478,7 @@ active @endif
                 </li> -->
 
                 <li
-                  class="@if (request()->routeIs('admin.user_management.subscribers')) active 
+                  class="@if (request()->routeIs('admin.user_management.subscribers')) active
                   @elseif (request()->routeIs('admin.user_management.mail_for_subscribers')) active @endif">
                   <a href="{{ route('admin.user_management.subscribers') }}">
                     <span class="sub-item">Subscribers</span>
@@ -492,8 +492,8 @@ active @endif
                   </a>
 
                   <div id="push_notification"
-                    class="collapse 
-                    @if (request()->routeIs('admin.user_management.push_notification.settings')) show 
+                    class="collapse
+                    @if (request()->routeIs('admin.user_management.push_notification.settings')) show
                     @elseif (request()->routeIs('admin.user_management.push_notification.notification_for_visitors')) show @endif">
                     <ul class="nav nav-collapse subnav">
                       <li
@@ -511,7 +511,7 @@ active @endif
                       </li>
                     </ul>
                   </div>
-                </li> 
+                </li>
               </ul>
             </div>
           </li>
@@ -564,8 +564,8 @@ active @endif
             </div>
           </li>
         @endif
-        
-        
+
+
          {{-- Dealer --}}
         @if (is_null($roleInfo) || (!empty($rolePermissions) && in_array('Vendors Management', $rolePermissions)))
           <li
@@ -590,7 +590,7 @@ active @endif
               @elseif (request()->routeIs('admin.dealer_management.settings')) show
               @elseif (request()->routeIs('admin.vendor_management.vendor.change_password')) show @endif">
               <ul class="nav nav-collapse">
-                
+
                 <li
                   class="@if (request()->routeIs('admin.dealer_management.registered_dealer')) active
                   @elseif (request()->routeIs('admin.vendor_management.vendor_details')) active
@@ -609,24 +609,24 @@ active @endif
             </div>
           </li>
         @endif
-        
-        
+
+
 
          {{-- home page --}}
         @if (is_null($roleInfo) || (!empty($rolePermissions) && in_array('Home Page', $rolePermissions)))
           <li
-            class="nav-item @if (request()->routeIs('admin.home_page.hero_section.slider_version')) active 
-            @elseif (request()->routeIs('admin.home_page.about_section')) active 
-            @elseif (request()->routeIs('admin.home_page.category_section')) active 
-            @elseif (request()->routeIs('admin.home_page.banners')) active 
-            @elseif (request()->routeIs('admin.home_page.work_process_section')) active 
-            @elseif (request()->routeIs('admin.home_page.feature_section')) active 
-            @elseif (request()->routeIs('admin.home_page.counter_section')) active 
-            @elseif (request()->routeIs('admin.home_page.testimonial_section')) active 
-            @elseif (request()->routeIs('admin.home_page.product_section')) active 
-            @elseif (request()->routeIs('admin.home_page.call_to_action_section')) active 
-            @elseif (request()->routeIs('admin.home_page.blog_section')) active 
-            @elseif (request()->routeIs('admin.home_page.section_customization')) active 
+            class="nav-item @if (request()->routeIs('admin.home_page.hero_section.slider_version')) active
+            @elseif (request()->routeIs('admin.home_page.about_section')) active
+            @elseif (request()->routeIs('admin.home_page.category_section')) active
+            @elseif (request()->routeIs('admin.home_page.banners')) active
+            @elseif (request()->routeIs('admin.home_page.work_process_section')) active
+            @elseif (request()->routeIs('admin.home_page.feature_section')) active
+            @elseif (request()->routeIs('admin.home_page.counter_section')) active
+            @elseif (request()->routeIs('admin.home_page.testimonial_section')) active
+            @elseif (request()->routeIs('admin.home_page.product_section')) active
+            @elseif (request()->routeIs('admin.home_page.call_to_action_section')) active
+            @elseif (request()->routeIs('admin.home_page.blog_section')) active
+            @elseif (request()->routeIs('admin.home_page.section_customization')) active
             @elseif (request()->routeIs('admin.home_page.partners')) active @endif">
             <a data-toggle="collapse" href="#home_page">
               <i class="fal fa-layer-group"></i>
@@ -635,20 +635,20 @@ active @endif
             </a>
 
             <div id="home_page"
-              class="collapse 
-              @if (request()->routeIs('admin.home_page.hero_section.slider_version')) show 
-               
-              @elseif (request()->routeIs('admin.home_page.about_section')) show 
-              @elseif (request()->routeIs('admin.home_page.banners')) show 
-              @elseif (request()->routeIs('admin.home_page.category_section')) show 
-              @elseif (request()->routeIs('admin.home_page.work_process_section')) show 
-              @elseif (request()->routeIs('admin.home_page.feature_section')) show 
-              @elseif (request()->routeIs('admin.home_page.counter_section')) show 
-              @elseif (request()->routeIs('admin.home_page.testimonial_section')) show 
-              @elseif (request()->routeIs('admin.home_page.product_section')) show 
-              @elseif (request()->routeIs('admin.home_page.call_to_action_section')) show 
-              @elseif (request()->routeIs('admin.home_page.blog_section')) show 
-              @elseif (request()->routeIs('admin.home_page.section_customization')) show 
+              class="collapse
+              @if (request()->routeIs('admin.home_page.hero_section.slider_version')) show
+
+              @elseif (request()->routeIs('admin.home_page.about_section')) show
+              @elseif (request()->routeIs('admin.home_page.banners')) show
+              @elseif (request()->routeIs('admin.home_page.category_section')) show
+              @elseif (request()->routeIs('admin.home_page.work_process_section')) show
+              @elseif (request()->routeIs('admin.home_page.feature_section')) show
+              @elseif (request()->routeIs('admin.home_page.counter_section')) show
+              @elseif (request()->routeIs('admin.home_page.testimonial_section')) show
+              @elseif (request()->routeIs('admin.home_page.product_section')) show
+              @elseif (request()->routeIs('admin.home_page.call_to_action_section')) show
+              @elseif (request()->routeIs('admin.home_page.blog_section')) show
+              @elseif (request()->routeIs('admin.home_page.section_customization')) show
               @elseif (request()->routeIs('admin.home_page.partners')) show @endif">
               <ul class="nav nav-collapse">
                 <li class="submenu">
@@ -658,7 +658,7 @@ active @endif
                   </a>
 
                   <div id="hero_section"
-                    class="collapse 
+                    class="collapse
                     @if (request()->routeIs('admin.home_page.hero_section.slider_version')) show @endif">
                     <ul class="nav nav-collapse subnav">
                       <li
@@ -737,15 +737,15 @@ active @endif
               </ul>
             </div>
           </li>
-        @endif 
+        @endif
 
 
 
         {{-- footer --}}
         @if (is_null($roleInfo) || (!empty($rolePermissions) && in_array('Footer', $rolePermissions)))
           <li
-            class="nav-item @if (request()->routeIs('admin.footer.logo_and_image')) active 
-            @elseif (request()->routeIs('admin.footer.content')) active 
+            class="nav-item @if (request()->routeIs('admin.footer.logo_and_image')) active
+            @elseif (request()->routeIs('admin.footer.content')) active
             @elseif (request()->routeIs('admin.footer.quick_links')) active @endif">
             <a data-toggle="collapse" href="#footer">
               <i class="fal fa-shoe-prints"></i>
@@ -754,8 +754,8 @@ active @endif
             </a>
 
             <div id="footer"
-              class="collapse @if (request()->routeIs('admin.footer.logo_and_image')) show 
-              @elseif (request()->routeIs('admin.footer.content')) show 
+              class="collapse @if (request()->routeIs('admin.footer.logo_and_image')) show
+              @elseif (request()->routeIs('admin.footer.content')) show
               @elseif (request()->routeIs('admin.footer.quick_links')) show @endif">
               <ul class="nav nav-collapse">
                 <li class="{{ request()->routeIs('admin.footer.logo_and_image') ? 'active' : '' }}">
@@ -783,8 +783,8 @@ active @endif
         {{-- custom page --}}
         @if (is_null($roleInfo) || (!empty($rolePermissions) && in_array('Custom Pages', $rolePermissions)))
           <li
-            class="nav-item @if (request()->routeIs('admin.custom_pages')) active 
-            @elseif (request()->routeIs('admin.custom_pages.create_page')) active 
+            class="nav-item @if (request()->routeIs('admin.custom_pages')) active
+            @elseif (request()->routeIs('admin.custom_pages.create_page')) active
             @elseif (request()->routeIs('admin.custom_pages.edit_page')) active @endif">
             <a href="{{ route('admin.custom_pages', ['language' => $defaultLang->code]) }}">
               <i class="la flaticon-file"></i>
@@ -796,9 +796,9 @@ active @endif
         {{-- blog --}}
         @if (is_null($roleInfo) || (!empty($rolePermissions) && in_array('Blog Management', $rolePermissions)))
           <li
-            class="nav-item @if (request()->routeIs('admin.blog_management.categories')) active 
-            @elseif (request()->routeIs('admin.blog_management.blogs')) active 
-            @elseif (request()->routeIs('admin.blog_management.create_blog')) active 
+            class="nav-item @if (request()->routeIs('admin.blog_management.categories')) active
+            @elseif (request()->routeIs('admin.blog_management.blogs')) active
+            @elseif (request()->routeIs('admin.blog_management.create_blog')) active
             @elseif (request()->routeIs('admin.blog_management.edit_blog')) active @endif">
             <a data-toggle="collapse" href="#blog">
               <i class="fal fa-blog"></i>
@@ -807,10 +807,10 @@ active @endif
             </a>
 
             <div id="blog"
-              class="collapse 
-              @if (request()->routeIs('admin.blog_management.categories')) show 
-              @elseif (request()->routeIs('admin.blog_management.blogs')) show 
-              @elseif (request()->routeIs('admin.blog_management.create_blog')) show 
+              class="collapse
+              @if (request()->routeIs('admin.blog_management.categories')) show
+              @elseif (request()->routeIs('admin.blog_management.blogs')) show
+              @elseif (request()->routeIs('admin.blog_management.create_blog')) show
               @elseif (request()->routeIs('admin.blog_management.edit_blog')) show @endif">
               <ul class="nav nav-collapse">
                 <li class="{{ request()->routeIs('admin.blog_management.categories') ? 'active' : '' }}">
@@ -820,8 +820,8 @@ active @endif
                 </li>
 
                 <li
-                  class="@if (request()->routeIs('admin.blog_management.blogs')) active 
-                  @elseif (request()->routeIs('admin.blog_management.create_blog')) active 
+                  class="@if (request()->routeIs('admin.blog_management.blogs')) active
+                  @elseif (request()->routeIs('admin.blog_management.create_blog')) active
                   @elseif (request()->routeIs('admin.blog_management.edit_blog')) active @endif">
                   <a href="{{ route('admin.blog_management.blogs', ['language' => $defaultLang->code]) }}">
                     <span class="sub-item">Posts</span>
@@ -840,12 +840,12 @@ active @endif
               <p>FAQ Management</p>
             </a>
           </li>
-        @endif 
+        @endif
 
         {{-- advertise --}}
         @if (is_null($roleInfo) || (!empty($rolePermissions) && in_array('Advertise', $rolePermissions)))
           <li
-            class="nav-item @if (request()->routeIs('admin.advertise.settings')) active 
+            class="nav-item @if (request()->routeIs('admin.advertise.settings')) active
             @elseif (request()->routeIs('admin.advertise.all_advertisement')) active @endif">
             <a data-toggle="collapse" href="#customid">
               <i class="fab fa-buysellads"></i>
@@ -854,7 +854,7 @@ active @endif
             </a>
 
             <div id="customid"
-              class="collapse @if (request()->routeIs('admin.advertise.settings')) show 
+              class="collapse @if (request()->routeIs('admin.advertise.settings')) show
               @elseif (request()->routeIs('admin.advertise.all_advertisement')) show @endif">
               <ul class="nav nav-collapse">
                 <li class="{{ request()->routeIs('admin.advertise.settings') ? 'active' : '' }}">
@@ -871,14 +871,14 @@ active @endif
               </ul>
             </div>
           </li>
-        @endif 
+        @endif
 
          {{-- announcement popup --}}
         @if (is_null($roleInfo) || (!empty($rolePermissions) && in_array('Announcement Popups', $rolePermissions)))
           <li
-            class="nav-item @if (request()->routeIs('admin.announcement_popups')) active 
-            @elseif (request()->routeIs('admin.announcement_popups.select_popup_type')) active 
-            @elseif (request()->routeIs('admin.announcement_popups.create_popup')) active 
+            class="nav-item @if (request()->routeIs('admin.announcement_popups')) active
+            @elseif (request()->routeIs('admin.announcement_popups.select_popup_type')) active
+            @elseif (request()->routeIs('admin.announcement_popups.create_popup')) active
             @elseif (request()->routeIs('admin.announcement_popups.edit_popup')) active @endif">
             <a href="{{ route('admin.announcement_popups', ['language' => $defaultLang->code]) }}">
               <i class="fal fa-bullhorn"></i>
@@ -938,12 +938,12 @@ active @endif
               </ul>
             </div>
           </li> -->
-        @endif 
+        @endif
 
          {{-- payment gateway --}}
         @if (is_null($roleInfo) || (!empty($rolePermissions) && in_array('Payment Gateways', $rolePermissions)))
        <!--   <li
-            class="nav-item @if (request()->routeIs('admin.payment_gateways.online_gateways')) active 
+            class="nav-item @if (request()->routeIs('admin.payment_gateways.online_gateways')) active
             @elseif (request()->routeIs('admin.payment_gateways.offline_gateways')) active @endif">
             <a data-toggle="collapse" href="#payment_gateways">
               <i class="la flaticon-paypal"></i>
@@ -952,8 +952,8 @@ active @endif
             </a>
 
             <div id="payment_gateways"
-              class="collapse 
-              @if (request()->routeIs('admin.payment_gateways.online_gateways')) show 
+              class="collapse
+              @if (request()->routeIs('admin.payment_gateways.online_gateways')) show
               @elseif (request()->routeIs('admin.payment_gateways.offline_gateways')) show @endif">
               <ul class="nav nav-collapse">
                 <li class="{{ request()->routeIs('admin.payment_gateways.online_gateways') ? 'active' : '' }}">
@@ -970,12 +970,12 @@ active @endif
               </ul>
             </div>
           </li> -->
-        @endif 
+        @endif
 
         {{-- basic settings --}}
         @if (is_null($roleInfo) || (!empty($rolePermissions) && in_array('Basic Settings', $rolePermissions)))
           <li
-            class="nav-item 
+            class="nav-item
             @if (request()->routeIs('admin.basic_settings.contact_page')) active
             @elseif (request()->routeIs('admin.basic_settings.mail_from_admin')) active
             @elseif (request()->routeIs('admin.basic_settings.mail_to_admin')) active
@@ -997,7 +997,7 @@ active @endif
             </a>
 
             <div id="basic_settings"
-              class="collapse 
+              class="collapse
               @if (request()->routeIs('admin.basic_settings.contact_page')) show
               @elseif (request()->routeIs('admin.basic_settings.mail_from_admin')) show
               @elseif (request()->routeIs('admin.basic_settings.mail_to_admin')) show
@@ -1032,8 +1032,8 @@ active @endif
                   </a>
 
                   <div id="mail-settings"
-                    class="collapse 
-                    @if (request()->routeIs('admin.basic_settings.mail_from_admin')) show 
+                    class="collapse
+                    @if (request()->routeIs('admin.basic_settings.mail_from_admin')) show
                     @elseif (request()->routeIs('admin.basic_settings.mail_to_admin')) show
                     @elseif (request()->routeIs('admin.basic_settings.mail_templates')) show
                     @elseif (request()->routeIs('admin.basic_settings.edit_mail_template')) show @endif">
@@ -1051,7 +1051,7 @@ active @endif
                       </li>
 
                       <li
-                        class="@if (request()->routeIs('admin.basic_settings.mail_templates')) active 
+                        class="@if (request()->routeIs('admin.basic_settings.mail_templates')) active
                         @elseif (request()->routeIs('admin.basic_settings.edit_mail_template')) active @endif">
                         <a href="{{ route('admin.basic_settings.mail_templates') }}">
                           <span class="sub-item">Mail Templates</span>
@@ -1111,13 +1111,13 @@ active @endif
               </ul>
             </div>
           </li>
-        @endif 
+        @endif
 
         {{-- admin --}}
         @if (is_null($roleInfo) || (!empty($rolePermissions) && in_array('Admin Management', $rolePermissions)))
           <li
-            class="nav-item @if (request()->routeIs('admin.admin_management.role_permissions')) active 
-            @elseif (request()->routeIs('admin.admin_management.role.permissions')) active 
+            class="nav-item @if (request()->routeIs('admin.admin_management.role_permissions')) active
+            @elseif (request()->routeIs('admin.admin_management.role.permissions')) active
             @elseif (request()->routeIs('admin.admin_management.registered_admins')) active @endif">
             <a data-toggle="collapse" href="#admin">
               <i class="fal fa-users-cog"></i>
@@ -1126,13 +1126,13 @@ active @endif
             </a>
 
             <div id="admin"
-              class="collapse 
-              @if (request()->routeIs('admin.admin_management.role_permissions')) show 
-              @elseif (request()->routeIs('admin.admin_management.role.permissions')) show 
+              class="collapse
+              @if (request()->routeIs('admin.admin_management.role_permissions')) show
+              @elseif (request()->routeIs('admin.admin_management.role.permissions')) show
               @elseif (request()->routeIs('admin.admin_management.registered_admins')) show @endif">
               <ul class="nav nav-collapse">
                 <li
-                  class="@if (request()->routeIs('admin.admin_management.role_permissions')) active 
+                  class="@if (request()->routeIs('admin.admin_management.role_permissions')) active
                   @elseif (request()->routeIs('admin.admin_management.role.permissions')) active @endif">
                   <a href="{{ route('admin.admin_management.role_permissions') }}">
                     <span class="sub-item">Role & Permissions</span>
@@ -1152,14 +1152,14 @@ active @endif
          {{-- language --}}
         @if (is_null($roleInfo) || (!empty($rolePermissions) && in_array('Language Management', $rolePermissions)))
           <li
-            class="nav-item @if (request()->routeIs('admin.language_management')) active 
+            class="nav-item @if (request()->routeIs('admin.language_management')) active
             @elseif (request()->routeIs('admin.language_management.edit_keyword')) active @endif">
             <a href="{{ route('admin.language_management') }}">
               <i class="fal fa-language"></i>
               <p>Language Management</p>
             </a>
           </li>
-        @endif 
+        @endif
       </ul>
     </div>
   </div>

@@ -124,8 +124,29 @@ class DealerManagementController extends Controller
         ->pluck('total_ads', 'vendor_id')
         ->toArray();
 
+        $soldAds = Car::select('vendor_id', DB::raw('COUNT(*) as sold_ads'))
+        ->where('is_sold', 1)
+        ->groupBy('vendor_id')
+        ->pluck('sold_ads', 'vendor_id')
+        ->toArray();
 
-        return view('backend.end-user.dealer.index', compact('vendors' ,  'startdate' , 'enddate','totalAdsByDealer' ));
+        // $remainingAds = Car::select('vendor_id', DB::raw('COUNT(*) as remaining_ads'))
+        // ->where('is_sold', 0)
+        // ->groupBy('vendor_id')
+        // ->pluck('remaining_ads', 'vendor_id')
+        // ->toArray();
+
+        $remainingAds = Car::select(
+          'vendor_id',
+          DB::raw('COUNT(*) - SUM(CASE WHEN is_sold = 1 THEN 1 ELSE 0 END) as remaining_ads')
+      )
+      ->groupBy('vendor_id')
+      ->pluck('remaining_ads', 'vendor_id')
+      ->toArray();
+
+
+
+        return view('backend.end-user.dealer.index', compact('vendors' ,  'startdate' , 'enddate','totalAdsByDealer','soldAds','remainingAds' ));
     }
 
     public function invoice(Request $request)

@@ -74,6 +74,8 @@
                         </th>
                         <th scope="col" style="padding-left: 10px !important;min-width: 151px;" >Dealer name</th>
                         <th scope="col" style="padding-left: 10px !important;min-width: 151px;">Total Ads</th>
+                        <th scope="col" style="padding-left: 10px !important;min-width: 151px;">Solds Ads</th>
+                        <th scope="col" style="padding-left: 10px !important;min-width: 151px;">Live Ads</th>
                         <th scope="col" style="padding-left: 10px !important;">Email Address</th>
                         <th scope="col" style="padding-left: 10px !important;min-width: 151px;">Phone Number</th>
                         <th scope="col" style="padding-left: 10px !important;min-width: 151px;">Date Created</th>
@@ -93,6 +95,14 @@
                           <td style="padding-left: 10px !important;  padding: 0 10px !important;">{{ $vendor->username }}</td>
                           <td >
                             <span class="badge badge-success">{{ $totalAdsByDealer[$vendor->id] ?? 0 }}</span>
+
+                          </td>
+                          <td >
+                            <span class="badge badge-success">{{ $soldAds[$vendor->id] ?? 0  }}</span>
+
+                          </td>
+                          <td >
+                            <span class="badge badge-success">{{ $remainingAds[$vendor->id] ?? 0  }}</span>
 
                           </td>
                           <td style="padding-left: 10px !important;  padding: 0 10px !important;">{{ $vendor->email }}</td>

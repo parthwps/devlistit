@@ -396,7 +396,7 @@
                     </div>
                   </div>
                 </div> --}}
-                <div class="widget widget-select p-0 mb-20 us">
+                {{-- <div class="widget widget-select p-0 mb-20 us">
                   <h5 class="title mb-3">
                       <button class="accordion-button" type="button" data-bs-toggle="collapse"
                               data-bs-target="#select4" aria-expanded="true" aria-controls="select">
@@ -466,8 +466,8 @@
           });
       });
 
-              </script>
-                <hr/>
+              </script> --}}
+                {{-- <hr/> --}}
               @if($category_filters && in_array('make' , $category_filters))
                 <div class="widget widget-ratings p-0 mb-20">
                     <h5 class="title">
@@ -1000,21 +1000,31 @@
                         <div class="col-xl-12">
                           <div class="form-group" style="padding:10px 0px;">
                               <div class="row">
-                                  @foreach ($body_type->where('cat_id', 44)->sortBy('name') as $bodytype)
-                                      <div class="col-6 float-start">
-                                           <div class="form-check">
-                                               <label for="{{ $bodytype->slug }}">
-                                                    <img src="{{ $bodytype->image ? asset('assets/img/body_types/'.$bodytype->image) : asset('assets/img/noimage.jpg')  }}">
-                                               </label>
-                                                <input class="form-check-input ms-0 d-none" onchange="updateUrl()"
-                                                       type="checkbox" name="bodyTypeArray[]"
-                                                       value="{{ $bodytype->slug }}" id="{{ $bodytype->slug }}" @checked(is_array(request('bodyTypeArray')) && in_array($bodytype->slug,request('bodyTypeArray')))>
-                                                <label class="form-check-label body-type-filter-label mb-0" for="{{ $bodytype->slug }}">
-                                                              {{ $bodytype->name }}
-                                                            </label>
-                                           </div>
-                                      </div>
-                                    @endforeach
+                                @php
+                                $sortedBodyTypes = $body_type
+                                    ->where('cat_id', 44)
+                                    ->sortBy(function($item) {
+                                        return strtolower($item->name) === 'other' ? 'zzz' : strtolower($item->name);
+                                    });
+                            @endphp
+
+                            @foreach ($sortedBodyTypes as $bodytype)
+                                <div class="col-6 float-start">
+                                    <div class="form-check">
+                                        <label for="{{ $bodytype->slug }}">
+                                            <img src="{{ $bodytype->image ? asset('assets/img/body_types/'.$bodytype->image) : asset('assets/img/noimage.jpg') }}">
+                                        </label>
+                                        <input class="form-check-input ms-0 d-none" onchange="updateUrl()"
+                                               type="checkbox" name="bodyTypeArray[]"
+                                               value="{{ $bodytype->slug }}" id="{{ $bodytype->slug }}"
+                                               @checked(is_array(request('bodyTypeArray')) && in_array($bodytype->slug, request('bodyTypeArray')))>
+                                        <label class="form-check-label body-type-filter-label mb-0" for="{{ $bodytype->slug }}">
+                                            {{ $bodytype->name }}
+                                        </label>
+                                    </div>
+                                </div>
+                            @endforeach
+
                               </div>
                           </div>
                         </div>
@@ -1156,11 +1166,11 @@
               <div class="widget widget-select p-0 mb-20">
                   <h5 class="title mb-3">
                     <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#select3" aria-expanded="true" aria-controls="select">
+                            data-bs-target="#select2" aria-expanded="true" aria-controls="select">
                       {{ __('Seat count') }}
                     </button>
                   </h5>
-                  <div id="select3" class="collapse show">
+                  <div id="select2" class="collapse show">
                     <div class="accordion-body scroll-y">
                       <div class="row">
                         <div class="col-12">
@@ -1203,11 +1213,11 @@
               <div class="widget widget-select p-0 mb-20">
                   <h5 class="title mb-3">
                     <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#select3" aria-expanded="true" aria-controls="select">
+                            data-bs-target="#select5" aria-expanded="true" aria-controls="select">
                       {{ __('Number of doors') }}
                     </button>
                   </h5>
-                  <div id="select3" class="collapse show">
+                  <div id="select5" class="collapse show">
                     <div class="accordion-body scroll-y">
                       <div class="row">
                         <div class="col-12">
@@ -1253,7 +1263,7 @@
                         <div class="col-12">
                           <div class="form-group" style="padding:10px 0px;">
                               <div class="row">
-                                   @foreach ($car_conditions->sortBy('name') as $car_condition)
+                                   {{-- @foreach ($car_conditions->sortBy('name') as $car_condition)
                                       <div class="col-6 float-start">
                                            <div class="form-check">
                                                <label for="{{ $car_condition->slug }}">
@@ -1271,7 +1281,45 @@
                                                 </label>
                                            </div>
                                        </div>
-                                  @endforeach
+                                  @endforeach --}}
+                                  @php
+    $sortedConditions = $car_conditions->sortBy('name');
+    $nonOtherConditions = $sortedConditions->filter(fn($condition) => $condition->slug !== 'other-colour');
+    $otherConditions = $sortedConditions->filter(fn($condition) => $condition->slug === 'other-colour');
+@endphp
+
+@foreach ($nonOtherConditions as $car_condition)
+    <div class="col-6 float-start">
+        <div class="form-check">
+            <label for="{{ $car_condition->slug }}">
+                <div class="car-color-code" style="background-color: {{ $car_condition->hex_code }}"></div>
+            </label>
+            <input class="form-check-input ms-0 d-none" onchange="updateUrl()"
+                   type="checkbox" name="colourTypeArray[]"
+                   value="{{ $car_condition->slug }}" id="{{ $car_condition->slug }}" @checked(is_array(request('colourTypeArray')) && in_array($car_condition->slug,request('colourTypeArray')))>
+            <label class="form-check-label colour-filter-label mb-0" for="{{ $car_condition->slug }}">
+                {{ $car_condition->name }}
+            </label>
+        </div>
+    </div>
+@endforeach
+
+@foreach ($otherConditions as $car_condition)
+    <div class="col-6 float-start">
+        <div class="form-check">
+            <label for="{{ $car_condition->slug }}">
+                <div class="car-color-code" style="background-color: {{ $car_condition->hex_code }}"></div>
+            </label>
+            <input class="form-check-input ms-0 d-none" onchange="updateUrl()"
+                   type="checkbox" name="colourTypeArray[]"
+                   value="{{ $car_condition->slug }}" id="{{ $car_condition->slug }}" @checked(is_array(request('colourTypeArray')) && in_array($car_condition->slug,request('colourTypeArray')))>
+            <label class="form-check-label colour-filter-label mb-0" for="{{ $car_condition->slug }}">
+                {{ $car_condition->name }}
+            </label>
+        </div>
+    </div>
+@endforeach
+
                               </div>
                           </div>
                         </div>
@@ -1316,11 +1364,11 @@
               <div class="widget widget-select p-0 mb-20">
                   <h5 class="title mb-3">
                     <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#select3" aria-expanded="true" aria-controls="select">
+                            data-bs-target="#select6" aria-expanded="true" aria-controls="select">
                       {{ __('Number of owners') }}
                     </button>
                   </h5>
-                  <div id="select3" class="collapse show">
+                  <div id="select6" class="collapse show">
                     <div class="accordion-body scroll-y">
                       <div class="row">
                         <div class="col-12">
