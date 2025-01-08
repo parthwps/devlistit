@@ -692,7 +692,7 @@ class CarController extends Controller
                 return $query->where('cars.power', $engine_power);
             })
             ->when($road_tax, function ($query) use ($road_tax) {
-                return $query->where('cars.road_tax', $road_tax);
+                return $query->where('cars.road_tax','<=', $road_tax);
             })
             ->when($battery, function ($query) use ($battery) {
                 return $query->where('cars.battery', $battery);
@@ -985,7 +985,7 @@ class CarController extends Controller
                 return $query->where('cars.power', $engine_power);
             })
             ->when($road_tax, function ($query) use ($road_tax) {
-                return $query->where('cars.road_tax', $road_tax);
+                return $query->where('cars.road_tax','<=', $road_tax);
             })
             ->when($battery, function ($query) use ($battery) {
                 return $query->where('cars.battery', $battery);
@@ -1175,7 +1175,16 @@ class CarController extends Controller
 
         $information['engine_power'] = Car::select('power')->whereNotNull('power')->where('status', 1)->orderBy('power','ASC')->get()->unique('power')->values()->pluck('power');
 
-        $information['road_taxes'] = Car::select('road_tax')->whereNotNull('road_tax')->where('status', 1)->orderBy('road_tax','ASC')->get()->unique('road_tax')->values()->pluck('road_tax');
+        $information['road_taxes'] = 
+            [
+                150 => __('Up to £150'),
+                200 => __('Up to £200'),
+                300 => __('Up to £300'),
+                400 => __('Up to £400'),
+                500 => __('Up to £500'),
+                1000 => __('Up to £1000'),
+            ]
+        ;
 
         $information['breadcrumb'] = array_reverse($parr);
 
@@ -1381,7 +1390,16 @@ class CarController extends Controller
 
             $information['engine_power'] = Car::select('power')->whereNotNull('power')->where('status', 1)->orderBy('power','ASC')->get()->unique('power')->values()->pluck('power');
 
-            $information['road_taxes'] = Car::select('road_tax')->whereNotNull('road_tax')->where('status', 1)->orderBy('road_tax','ASC')->get()->unique('road_tax')->values()->pluck('road_tax');
+            $information['road_taxes'] = 
+            [
+                150 => __('Up to £150'),
+                200 => __('Up to £200'),
+                300 => __('Up to £300'),
+                400 => __('Up to £400'),
+                500 => __('Up to £500'),
+                1000 => __('Up to £1000'),
+            ]
+        ;
 
             $HTML = view('frontend.car.carfilter', $information)->render();
 
@@ -1878,7 +1896,7 @@ class CarController extends Controller
                 return $query->where('cars.power', $engine_power);
             })
             ->when($road_tax, function ($query) use ($road_tax) {
-                return $query->where('cars.road_tax', $road_tax);
+                return $query->where('cars.road_tax', '<=' , $road_tax);
             })
             ->when($battery, function ($query) use ($battery) {
                 return $query->where('cars.battery', $battery);
