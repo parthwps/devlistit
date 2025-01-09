@@ -2030,15 +2030,34 @@ Thanks</textarea>
                               <span class="email-verified" style="font-size: 12px;">
                                   <i class="fa fa-check-circle" style="color: #4caf50;"></i> Email Verified
                               </span>
-                          @endif &nbsp;
-                          @if ($car->vendor->phone_verified == 1)
+                          @endif
+                          
+                        </div>
+                        <div style="display: flex;flex-wrap: wrap;">
+                        @if ($car->vendor->phone_verified == 1)
                               <span class="phone_verified" style="font-size: 12px;">
                                   <i class="fa fa-check-circle" style="color: #4caf50;"></i> Phone Verified
                               </span>
                           @endif
                         </div>
-
-
+                            <span class="verification-info" style="position: relative; display: inline-block;">
+                                <span style="font-size:12px;">                                <i class="fa fa-info-circle" style="color: #4caf50; cursor: pointer;"></i>
+                                Verification information</span>
+                                <div class="popup-content" style="display: none; position: absolute; background-color: white; border: 1px solid #ccc; padding: 15px; z-index: 10; width: 250px; left: 50%; transform: translateX(-50%); box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border-radius: 5px; max-height: 200px; overflow-y: auto;">
+                                    <strong style="text-align: center; display: block;">Understanding Phone Number Verification:</strong>
+                                    <span style="color: #4caf50; display: block; margin-top: 5px;">Green Verification:</span> A green checkmark means the phone number is registered in the Isle of Man.<br>
+                                    <span style="color: orange; display: block; margin-top: 5px;">Orange Verification:</span> An orange checkmark means the phone number is verified but not registered in the Isle of Man.<br><br><br><br>
+                                    <span style="color: red; display: block; margin-top: 5px;"></span>
+                                </div>
+                            </span>
+                            <script>
+                                document.querySelector('.verification-info').addEventListener('mouseenter', function() {
+                                    this.querySelector('.popup-content').style.display = 'block';
+                                });
+                                document.querySelector('.verification-info').addEventListener('mouseleave', function() {
+                                    this.querySelector('.popup-content').style.display = 'none';
+                                });
+                            </script>
 
 
                         @if(!empty($review_data) &&  $review_data['total_reviews'] > 0 && $review_data['total_ratings'] > 0)
