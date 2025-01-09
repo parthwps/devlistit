@@ -2299,7 +2299,7 @@ Thanks</textarea>
 
                         <a href="{{ route('frontend.car.details', ['cattitle' => catslug($car->car_content->category_id),'slug' => $car->car_content->slug, 'id' => $car->id]) }}"
                           class="lazy-container ratio ratio-1-1">
-                          <img src="{{ asset('assets/admin/img/car-gallery/' . $car->feature_image) }}" alt="{{ @$car->title }}" class="lazyload" style="width: 100%; height: auto; transform: rotate({{ $rotation }}deg);" onerror="this.onerror=null;this.src='{{ asset('assets/img/Image_not_available.png') }}';">
+                          <img src="{{  $car->vendor->vendor_type == 'normal' ? asset('assets/admin/img/car-gallery/' . $car->feature_image) :  env('SUBDOMAIN_APP_URL').'assets/admin/img/car-gallery/' .  $car->feature_image }}" alt="{{ @$car->title }}" class="lazyload" style="width: 100%; height: auto; transform: rotate({{ $rotation }}deg);" onerror="this.onerror=null;this.src='{{ asset('assets/img/Image_not_available.png') }}';">
                         </a>
                       </figure>
 
