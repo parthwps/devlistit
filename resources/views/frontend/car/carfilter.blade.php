@@ -1347,14 +1347,8 @@
                                           <select class="form-select form-control js-example-basic-single1"
                                                   onchange="updateUrl()" name="road_tax">
                                               <option value="">{{ __('Any') }}</option>
-<<<<<<< Updated upstream
                                               @foreach ($road_taxes as $arrayKey => $road_tax)
                                                   <option value="{{ $arrayKey }}" @selected(request()->input('road_tax') == $arrayKey)>{{ $road_tax }}</option>
-=======
-                                              {{-- @foreach ($road_taxes as $road_tax)
-                                                  <option value="{{ $road_tax }}" @selected(request()->input('road_tax') == $road_tax)>Up To {{ $road_tax }}</option>
->>>>>>> Stashed changes
-                                              @endforeach --}}
                                               @endforeach
                                           </select>
                                       </div>
