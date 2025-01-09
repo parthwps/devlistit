@@ -989,7 +989,7 @@ font-weight: 700;}
     }
     .kp{
       padding: 20px;
-    word-break: break-all;
+    /* word-break: break-all; */
     margin: 0;
     }
 

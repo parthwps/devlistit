@@ -607,7 +607,7 @@ class CarController extends Controller
         // }
 
         $price = $body_type = $location =  $seat_min = $seat_max = $adtype = $delivery_available = $engine_size = $engine_power = $doors = $road_tax = $battery = $verification = $warranty = $owners = $mot = $year_min = $year_max = $engine_min = $engine_max = $power_min = $power_max = $dealer_type = "";
-        
+
         if ($request->filled('adtype')) { $adtype = $request->adtype;  }
         if ($request->filled('delivery_available')) { $delivery_available = $request->delivery_available; }
         if ($request->filled('dealer_type')) { $dealer_type = $request->dealer_type;  }
@@ -652,8 +652,8 @@ class CarController extends Controller
                  return $query->where('cars.ad_type','LIKE', '%'.$adtype.'%');
             })
             ->when($delivery_available === '0' || $delivery_available === '1', function ($query) use ($delivery_available) {
-                return $query->where('cars.delivery_available', $delivery_available);
-            })
+              return $query->where('cars.delivery_available', $delivery_available);
+          })->groupBy('cars.delivery_available')
             ->when($dealer_type, function ($query) use ($dealer_type) {
                 return $query->whereHas('vendor', function ($vendorQuery) use ($dealer_type) {
                     $vendorQuery->whereIn('vendor_type',$dealer_type);
@@ -1820,10 +1820,10 @@ class CarController extends Controller
             $order_by_column = 'cars.id';
             $order = 'desc';
         }
-        
-        
+
+
         $location =$seat_min = $seat_max = $adtype = $delivery_available = $doors = $engine_size = $engine_power = $road_tax = $battery = $verification = $warranty = $owners = $mot = $year_min = $year_max = $engine_min = $engine_max = $power_min = $power_max = $dealer_type = "";
-        
+
         if ($request->filled('adtype')) { $adtype = $request->adtype;  }
         if ($request->filled('delivery_available')) { $delivery_available = $request->delivery_available;  }
         if ($request->filled('dealer_type')) { $dealer_type = $request->dealer_type;  }

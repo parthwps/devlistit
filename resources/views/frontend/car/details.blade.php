@@ -2213,39 +2213,43 @@ Thanks</textarea>
             </div>
             <!-- Widget share -->
             <div class="widget widget-share card us_share_laptop_view">
-              <h5 class="title">
-                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#share"
-                  aria-expanded="true" aria-controls="share">
-                  {{ __('Share Now') }}
-                </button>
-              </h5>
-              <div id="share" class="collapse show">
-                <div class="accordion-body">
-                  <div class="social-link style-2 mb-20 ">
-                    <a data-tooltip="tooltip" data-bs-placement="top"
-                        title="facebook" href="https://www.facebook.com/sharer/sharer.php?quote=Check Out this ad on List It&utm_source=facebook&utm_medium=social&u={{ urlencode(url()->current()) }}"
-                      target="_blank"><i class="fab fa-facebook-f"></i></a>
+    <h5 class="title">
+        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#share"
+            aria-expanded="true" aria-controls="share">
+            {{ __('Share Now') }}
+        </button>
+    </h5>
+    <div id="share" class="collapse show">
+        <div class="accordion-body">
+            <div class="social-link style-2 mb-20 d-flex justify-content-start ">
+                <a data-tooltip="tooltip" data-bs-placement="top"
+                    title="Facebook" href="https://www.facebook.com/sharer/sharer.php?quote=Check Out this ad on List It&utm_source=facebook&utm_medium=social&u={{ urlencode(url()->current()) }}"
+                    target="_blank"><i class="fab fa-facebook-f"></i></a>
 
-                    <a data-tooltip="tooltip" data-bs-placement="top"
-                        title="Twitter" href="//twitter.com/intent/tweet?text=Check Out this ad on List It&amp;url={{ urlencode(url()->current()) }}"
-                      target="_blank"><i class="fab fa-twitter"></i></a>
+                <a data-tooltip="tooltip" data-bs-placement="top"
+                    title="Twitter" href="//twitter.com/intent/tweet?text=Check Out this ad on List It&amp;url={{ urlencode(url()->current()) }}"
+                    target="_blank"><i class="fab fa-twitter"></i></a>
 
-                    <a data-tooltip="tooltip" data-bs-placement="top"
-                        title="Whatsapp" href="//wa.me/?text=Check Out this ad on List it {{ urlencode(url()->current()) }}&amp;title= "
-                      target="_blank"><i class="fab fa-whatsapp"></i></a>
-                      <a data-tooltip="tooltip" data-bs-placement="top"
-                        title="Linkedin" href="//www.linkedin.com/shareArticle?mini=true&amp;url={{ urlencode(url()->current()) }}&amp;title=Check Out this ad on List it"
-                      target="_blank"><i class="fab fa-linkedin-in"></i></a>
-                      <a data-tooltip="tooltip" data-bs-placement="top"
-                        title="Email" href="mailto:?subject=Check Out this ad on List it&amp;body=Check Out this ad on List it {{ urlencode(url()->current()) }}&amp;title="
-                      target="_blank"><i class="fas fa-envelope"></i></a>
-                      <a data-tooltip="tooltip" data-bs-placement="top"
-                        title="Copy Link" id = "copy_url" onclick="copy('{{ (url()->current()) }}','#copy_url')" id="copy_button_1" href="javascript:void(0)"
-                      ><i class="fas fa-link"></i></a>
-                  </div>
-                </div>
-              </div>
+                <a data-tooltip="tooltip" data-bs-placement="top"
+                    title="Whatsapp" href="//wa.me/?text=Check Out this ad on List it {{ urlencode(url()->current()) }}&amp;title= "
+                    target="_blank"><i class="fab fa-whatsapp"></i></a>
+
+                <a data-tooltip="tooltip" data-bs-placement="top"
+                    title="LinkedIn" href="//www.linkedin.com/shareArticle?mini=true&amp;url={{ urlencode(url()->current()) }}&amp;title=Check Out this ad on List it"
+                    target="_blank"><i class="fab fa-linkedin-in"></i></a>
+
+                <a data-tooltip="tooltip" data-bs-placement="top"
+                    title="Email" href="mailto:?subject=Check Out this ad on List it&amp;body=Check Out this ad on List it {{ urlencode(url()->current()) }}&amp;title="
+                    target="_blank"><i class="fas fa-envelope"></i></a>
+
+                <a data-tooltip="tooltip" data-bs-placement="top"
+                    title="Copy Link" id="copy_url" onclick="copy('{{ (url()->current()) }}','#copy_url')" id="copy_button_1" href="javascript:void(0)">
+                    <i class="fas fa-link"></i></a>
             </div>
+        </div>
+    </div>
+</div>
+
             <!-- widget product -->
             <div class="widget widget-product card">
               <h5 class="title pb-0">

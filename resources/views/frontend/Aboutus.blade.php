@@ -37,7 +37,7 @@
   </section>
 
   <!-- Why Choose ListIt Section -->
-  <section class="features-area bg-light py-5">
+  {{-- <section class="features-area bg-light py-5">
     <div class="container">
       <div class="section-title text-center mb-5">
 
@@ -48,7 +48,7 @@
         </h2>
     </div>
 
-      <div class="row mt-0">
+      <div class="row mt-0 ">
         @php
           $features = [
               ['icon' => 'fas fa-pound-sign', 'title' => 'Simple Price Comparison', 'text' => 'Effortlessly compare prices, makes, models, and more, so you can find the best deal in just a few clicks & made Exclusive Deals & Models.
@@ -73,7 +73,43 @@
         @endforeach
       </div>
     </div>
-  </section>
+  </section> --}}
+  <section class="features-area bg-light py-5">
+    <div class="container">
+        <div class="section-title text-center mb-5">
+            <h2>
+                {{ __('Here’s how ') }}
+                <span class="text-primary">{{ __('ListIt.im') }}</span>
+                {{ __(' stands out:') }}
+            </h2>
+        </div>
+
+        <div class="row mt-0">
+            @php
+                $features = [
+                    ['icon' => 'fas fa-pound-sign', 'title' => 'Simple Price Comparison', 'text' => 'Effortlessly compare prices, makes, models, and more, so you can find the best deal in just a few clicks & made Exclusive Deals & Models.'],
+                    ['icon' => 'fas fa-shield-alt', 'title' => 'Safe Transactions', 'text' => 'Shop or sell with confidence, knowing that our platform is equipped with robust security features to ensure a safe experience every time.'],
+                    ['icon' => 'fas fa-check-circle', 'title' => 'Secure Listings', 'text' => 'Our team diligently reviews all listings to ensure they’re legitimate, so you can browse without worrying about scams or misleading offers.'],
+                    ['icon' => 'fas fa-map-marker-alt', 'title' => 'Filter by Location', 'text' => 'Quickly find options near you by filtering results by location, helping you narrow down your choices and saving you time.'],
+                    ['icon' => 'fas fa-th-large', 'title' => 'Diverse Options', 'text' => 'Access a wide variety of listings from both private sellers and trusted dealerships, giving you more options to choose from.'],
+                    ['icon' => 'fas fa-headset', 'title' => 'Dedicated Support', 'text' => 'Our expert customer service team is always ready to assist, ensuring a smooth and stress-free experience from start to finish.']
+                ];
+            @endphp
+            @foreach ($features as $feature)
+                <div class="col-lg-4 col-md-6 d-flex align-items-stretch">
+                    <div class="card feature-card text-center p-4 w-100">
+                        <div class="card-icon mb-3">
+                            <i class="{{ $feature['icon'] }} fa-2x color-primary"></i>
+                        </div>
+                        <h4 class="card-title text-dark">{{ $feature['title'] }}</h4>
+                        <p class="card-text">{{ $feature['text'] }}</p>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    </div>
+</section>
+
 
   <!-- Team Message Section -->
   <section class="team-message-area pt-50 pb-50">
