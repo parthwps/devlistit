@@ -1670,10 +1670,44 @@ Thanks</textarea>
 
 
                         @endif
+                        <br><br>
 
                             @if($car->phone_text == 1)
 
-                                <a href="tel:{{$car->vendor->country_code.$car->vendor->phone}}" id="userphonebutton" style="margin-top:1rem;" onclick="savePhoneView({{@$car->id}} , this)"  class="btn btn-md btn-primary w-100 showLoader mb-3  us_hider" data-phone_number="{{$car->vendor->country_code.$car->vendor->phone}}">Call Now</a>
+                            <a href="tel:{{$car->vendor->country_code.$car->vendor->phone}}"
+   id="userphonebutton"
+   onclick="handlePhoneClick({{@$car->id}}, this)"
+   class="btn btn-md btn-outline w-100 showLoader mb-3 us_button_st
+          @if($car->phone_text == 1 && $car->message_center == 0) us_sing_doub
+          @else sticky-button @endif"
+   data-phone_number="{{$car->vendor->country_code.$car->vendor->phone}}">
+    <span class="original_text">Show Phone Number</span>
+    <span class="mobile_icon" style="display:none;">
+        <i class="fa fa-phone fa-rotate-90"></i>
+    </span>
+</a>
+
+<script>
+    function handlePhoneClick(carId, element) {
+        // Save the phone view as per your existing functionality
+        savePhoneView(carId, element);
+
+        // Copy the phone number to clipboard
+        const phoneNumber = element.getAttribute('data-phone_number');
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(phoneNumber)
+                .then(() => {
+                    toastr.success("Phone number copied to clipboard!");
+                })
+                .catch(err => {
+                    console.error("Failed to copy phone number: ", err);
+                });
+        } else {
+            console.warn("Clipboard API not supported.");
+        }
+    }
+</script>
+
 
                                 @if($car->vendor->also_whatsapp == 1)
                                 <a href="https://api.whatsapp.com/send?phone={{ $car->vendor->country_code.$car->vendor->phone }}&text=I'm%20interested%20in%20this%20item%3A%20{{ urlencode(route('frontend.car.details', ['cattitle' => catslug($car->car_content->category_id), 'slug' => $car->car_content->slug, 'id' => $car->id])) }}"
@@ -2031,7 +2065,7 @@ Thanks</textarea>
                                   <i class="fa fa-check-circle" style="color: #4caf50;"></i> Email Verified
                               </span>
                           @endif
-                          
+
                         </div>
                         <div style="display: flex;flex-wrap: wrap;">
                         @if ($car->vendor->phone_verified == 1)
@@ -2040,14 +2074,13 @@ Thanks</textarea>
                               </span>
                           @endif
                         </div>
-                            <span class="verification-info" style="position: relative; display: inline-block;">
+                        <span class="verification-info" style="position: relative; display: inline-block;">
                                 <span style="font-size:12px;">                                <i class="fa fa-info-circle" style="color: #4caf50; cursor: pointer;"></i>
                                 Verification information</span>
-                                <div class="popup-content" style="display: none; position: absolute; background-color: white; border: 1px solid #ccc; padding: 15px; z-index: 10; width: 250px; left: 50%; transform: translateX(-50%); box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border-radius: 5px; max-height: 200px; overflow-y: auto;">
-                                    <strong style="text-align: center; display: block;">Understanding Phone Number Verification:</strong>
+                                <div class="popup-content" style="display: none;  background-color: white; border: 1px solid #ccc; padding: 15px; z-index: 10; width: 250px; left: 40%; transform: translateX(-50%); box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border-radius: 5px; max-height: 200px; overflow-y: auto;bottom:5px;">
+                                    <strong style="text-align: center; display: block;margin-top: 20px;">Understanding Phone Number Verification:</strong>
                                     <span style="color: #4caf50; display: block; margin-top: 5px;">Green Verification:</span> A green checkmark means the phone number is registered in the Isle of Man.<br>
-                                    <span style="color: orange; display: block; margin-top: 5px;">Orange Verification:</span> An orange checkmark means the phone number is verified but not registered in the Isle of Man.<br><br><br><br>
-                                    <span style="color: red; display: block; margin-top: 5px;"></span>
+                                    <span style="color: orange; display: block; margin-top: 5px;">Orange Verification:</span> An orange checkmark means the phone number is verified but not registered in the Isle of Man.<br><br>
                                 </div>
                             </span>
                             <script>
@@ -2119,10 +2152,41 @@ Thanks</textarea>
                 @endif
 
                 @if($car->phone_text == 1)
-                    <a href="tel:{{$car->vendor->country_code.$car->vendor->phone}}" id="userphonebutton"  onclick="savePhoneView({{@$car->id}} , this)"
-                    class="btn btn-md btn-outline w-100 showLoader mb-3  us_button_st  @if($car->phone_text == 1 && $car->message_center == 0) us_sing_doub @else sticky-button @endif " data-phone_number="{{$car->vendor->country_code.$car->vendor->phone}}">
-                        <span class="original_text">Call Now</span>  <span class="mobile_icon" style="display:none;"> <i class="fa fa-phone fa-rotate-90"></i></span>
-                    </a>
+                <a href="tel:{{$car->vendor->country_code.$car->vendor->phone}}"
+   id="userphonebutton"
+   onclick="handlePhoneClick({{@$car->id}}, this)"
+   class="btn btn-md btn-outline w-100 showLoader mb-3 us_button_st
+          @if($car->phone_text == 1 && $car->message_center == 0) us_sing_doub
+          @else sticky-button @endif"
+   data-phone_number="{{$car->vendor->country_code.$car->vendor->phone}}">
+    <span class="original_text">Show Phone Number</span>
+    <span class="mobile_icon" style="display:none;">
+        <i class="fa fa-phone fa-rotate-90"></i>
+    </span>
+</a>
+
+<script>
+    function handlePhoneClick(carId, element) {
+        // Save the phone view as per your existing functionality
+        savePhoneView(carId, element);
+
+        // Copy the phone number to clipboard
+        const phoneNumber = element.getAttribute('data-phone_number');
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(phoneNumber)
+                .then(() => {
+                    toastr.success("Phone number copied to clipboard!");
+                })
+                .catch(err => {
+                    console.error("Failed to copy phone number: ", err);
+                });
+        } else {
+            console.warn("Clipboard API not supported.");
+        }
+    }
+</script>
+
+
 
                 @if($car->vendor->also_whatsapp == 1)
                 <a href="https://api.whatsapp.com/send?phone={{ $car->vendor->country_code.$car->vendor->phone }}&text=I'm%20interested%20in%20this%20item%3A%20{{ urlencode(route('frontend.car.details', ['cattitle' => catslug($car->car_content->category_id), 'slug' => $car->car_content->slug, 'id' => $car->id])) }}"
