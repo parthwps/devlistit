@@ -256,7 +256,7 @@ if (!function_exists('addUserName'))
             $vendor = Vendor::find($user_id);
         }
 
-        return [$vendor->vendor_info->name , $vendor->id];
+        return $vendor ? [$vendor->vendor_info->name, $vendor->id] : [0, 0];
     }
 }
 
@@ -268,9 +268,9 @@ if (!function_exists('isOnline'))
     {
          $vendor= Vendor::find($user_id);
 
-         $checkStatus =  $vendor->last_activity !== null && $vendor->last_activity > now()->subMinutes(2);
+         $checkStatus = $vendor && $vendor->last_activity !== null && $vendor->last_activity > now()->subMinutes(2);
 
-         return [$checkStatus , date('d F y h:i a' , strtotime($vendor->last_activity))];
+         return [$checkStatus, $vendor ? date('d F y h:i a', strtotime($vendor->last_activity)) : null];
     }
 }
 

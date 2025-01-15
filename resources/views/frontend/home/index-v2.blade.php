@@ -811,7 +811,7 @@ font-weight: 700;}
 
                   <li class="nav-item active">
                     <button class="nav-link car-button removeFilter  car_condition font-type tab-category"
-                     data-image = "newbanner.png" data-id="24" data-bs-toggle="tab" data-cars-filter="1"
+                     data-image = "newbannercar.jpg" data-id="24" data-bs-toggle="tab" data-cars-filter="1"
                       data-bs-target="#all" type="button" style="color:#1D86F5">
 
                       <i class="fas fa-car fa-fw me-2" style="color:#1D86F5"></i>
@@ -1005,20 +1005,21 @@ font-weight: 700;}
     </div>
   </div>
   <!-- latest add section start -->
-    @if($car_contents->count() > 0 )
+  @if($car_contents->count() > 0)
+
 
     <section class="product-area pt-40 pb-20 us_recent_pro" style="border-radius:0px;box-shadow: 0px 0px 0px;margin-bottom: 1rem;">
       <div class="container-fluid">
             <div class="section-title title-inline mb-sm-30 mb-20" >
                   <h2 class="title  text-mobile " >
-                    Recent Ads
+                    All Ads
                   </h2>
                       <!-- <a href="ads?sort=new" class="fw-bold" style="font-size: 27px; text-decoration: none;color:#1D86F5;font-size:20px;">See All ></a> -->
                     <a href="ads?type=list" class="fw-bold" style="font-size: 27px; text-decoration: none;color:#1D86F5;font-size:20px;">See All ></a>
           </div>
       </div>
       <div class="d-flex align-items-center justify-content-center position-relative">
-            <div class="w-100 gap-2 gap-md-3 d-flex align-items-center justify-content-center"
+            <div class="w-100 gap-2 gap-md-6 d-flex align-items-center justify-content-center"
             style="overflow-x: auto; white-space: nowrap;  " id="recent_all_ads">
             @include('frontend/home/recent-ads-copy', ['car_contents' => $car_contents])
 

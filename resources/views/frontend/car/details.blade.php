@@ -1008,7 +1008,6 @@ Thanks</textarea>
                                 </div>
                         </div>
                         @endif
-<!-- end of milage and  -->
 
                             <div class="col-12 mt-3">
                             <div class="alert alert-success" role="alert" id="alertSuccess" style="display:none;">
@@ -2067,31 +2066,44 @@ Thanks</textarea>
                           @endif
 
                         </div>
-                        <div style="display: flex;flex-wrap: wrap;">
-                        @if ($car->vendor->phone_verified == 1)
-                              <span class="phone_verified" style="font-size: 12px;">
-                                  <i class="fa fa-check-circle" style="color: #4caf50;"></i> Phone Verified
+                        <div style="display: ruby; align-items: center;">
+                          @if ($car->vendor->phone_verified == 1)
+                              <span class="phone_verified" style="font-size: 12px; display: flex; align-items: center; margin-right: 10px;">
+                                  <i class="fa fa-check-circle" style="color: #4caf50; margin-right: 5px;"></i> Phone Verified
                               </span>
                           @endif
+                          <div class="widget-form card" style="position: relative; border: 1px solid #ccc; border-radius: 5px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); ">
+                              <span class="verification-info" style="display: flex; align-items: center;">
+                                  <i class="fa fa-info-circle" style="color: #4caf50; cursor: pointer; font-size: 14px;"></i>
+                                  <div class="popup-content" style="display: none; position: absolute; transform: translateX(-27%); background-color: white; border: 1px solid #ccc; padding: 20px; z-index: 10; width: 310px; height: auto; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border-radius: 5px; overflow: visible;margin-bottom:40px;">
+                                      <strong style="text-align: center; display: block; margin-bottom: 10px;">Understanding Phone Number Verification:</strong>
+                                      <span style="color: #4caf50; display: block; margin-top: 5px;">Green Verification:</span>
+                                      A green checkmark means the phone number is registered in the Isle of Man.<br>
+                                      <span style="color: orange; display: block; margin-top: 5px;">Orange Verification:</span>
+                                      An orange checkmark means the phone number is verified but not registered in the Isle of Man.<br>
+                                  </div>
+                              </span>
+                          </div>
                         </div>
-                        <span class="verification-info" style="position: relative; display: inline-block;">
-                                <span style="font-size:12px;">                                <i class="fa fa-info-circle" style="color: #4caf50; cursor: pointer;"></i>
-                                Verification information</span>
-                                <div class="popup-content" style="display: none;  background-color: white; border: 1px solid #ccc; padding: 15px; z-index: 10; width: 250px; left: 40%; transform: translateX(-50%); box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border-radius: 5px; max-height: 200px; overflow-y: auto;bottom:5px;">
-                                    <strong style="text-align: center; display: block;margin-top: 20px;">Understanding Phone Number Verification:</strong>
-                                    <span style="color: #4caf50; display: block; margin-top: 5px;">Green Verification:</span> A green checkmark means the phone number is registered in the Isle of Man.<br>
-                                    <span style="color: orange; display: block; margin-top: 5px;">Orange Verification:</span> An orange checkmark means the phone number is verified but not registered in the Isle of Man.<br><br>
-                                </div>
-                            </span>
-                            <script>
-                                document.querySelector('.verification-info').addEventListener('mouseenter', function() {
-                                    this.querySelector('.popup-content').style.display = 'block';
-                                });
-                                document.querySelector('.verification-info').addEventListener('mouseleave', function() {
-                                    this.querySelector('.popup-content').style.display = 'none';
-                                });
-                            </script>
+                          <script>
+                              const verificationInfo = document.querySelector('.verification-info');
 
+                              verificationInfo.addEventListener('mouseenter', function () {
+                                  this.querySelector('.popup-content').style.display = 'block';
+                              });
+
+                              verificationInfo.addEventListener('mouseleave', function () {
+                                  this.querySelector('.popup-content').style.display = 'none';
+                              });
+                          </script>
+                          <style>
+                              @media screen and (max-width: 768px) {
+                                  .popup-content {
+                                      overflow-y: scroll !important;
+                                      max-height: 200px;
+                                  }
+                              }
+                          </style>
 
                         @if(!empty($review_data) &&  $review_data['total_reviews'] > 0 && $review_data['total_ratings'] > 0)
                             <div class="rating-container">
@@ -2153,17 +2165,17 @@ Thanks</textarea>
 
                 @if($car->phone_text == 1)
                 <a href="tel:{{$car->vendor->country_code.$car->vendor->phone}}"
-   id="userphonebutton"
-   onclick="handlePhoneClick({{@$car->id}}, this)"
-   class="btn btn-md btn-outline w-100 showLoader mb-3 us_button_st
-          @if($car->phone_text == 1 && $car->message_center == 0) us_sing_doub
-          @else sticky-button @endif"
-   data-phone_number="{{$car->vendor->country_code.$car->vendor->phone}}">
-    <span class="original_text">Show Phone Number</span>
-    <span class="mobile_icon" style="display:none;">
-        <i class="fa fa-phone fa-rotate-90"></i>
-    </span>
-</a>
+                id="userphonebutton"
+                onclick="handlePhoneClick({{@$car->id}}, this)"
+                class="btn btn-md btn-outline w-100 showLoader mb-3 us_button_st
+                        @if($car->phone_text == 1 && $car->message_center == 0) us_sing_doub
+                        @else sticky-button @endif"
+                data-phone_number="{{$car->vendor->country_code.$car->vendor->phone}}">
+                  <span class="original_text">Show Phone Number</span>
+                  <span class="mobile_icon" style="display:none;">
+                      <i class="fa fa-phone fa-rotate-90"></i>
+                  </span>
+              </a>
 
 <script>
     function handlePhoneClick(carId, element) {
@@ -2332,8 +2344,6 @@ Thanks</textarea>
         </div>
     </div>
 </div>
-
-            <!-- widget product -->
             <div class="widget widget-product card">
               <h5 class="title pb-0">
                 <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#products">
@@ -2566,8 +2576,6 @@ Thanks</textarea>
         </div>
       </div>
     </div>
-
-
   <!-- Listing-single-area start -->
 
 @endsection

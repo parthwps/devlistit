@@ -96,7 +96,7 @@
                             @else
                             {{ strpos($vendor->phone, '7624') === 0 ? '0' . $vendor->phone : $vendor->phone }}
                             @php
-                                    $isIsleOfMan = Str::startsWith($vendor->phone, '07624') || Str::startsWith($vendor->phone, '7624');
+                                    $isIsleOfMan = Str::startsWith($vendor->phone, '07624') || Str::startsWith($vendor->phone, '7624') || Str::startsWith($vendor->phone, '01624');
                                     // Check if the phone starts with 07624
                                 @endphp
 

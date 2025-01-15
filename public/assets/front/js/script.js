@@ -1320,7 +1320,7 @@ $('body').on('submit', '#vendorContactForm', function(e) {
     function updatecate(self)
     {
         var pid = $('option:selected',self).data("pid");
-
+        var cid = $('option:selected',self).data("cid");
         var category = $('option:selected',self).data("category");
 
         // $('.us_cat_cls').removeAttr('style');
@@ -1350,9 +1350,10 @@ $('body').on('submit', '#vendorContactForm', function(e) {
                   {
 
                       $('#carsFiltrs').hide();
-                      console.log("testadfasd")
+                      console.log("Cateogry id" + pid);
                       $('#appendNewFilters').html(data.output);
-
+                      $('.category-for-make').attr("cid", cid);
+                      $('.category-for-make').attr("category", category);
                       $('#category').val(data.category_slug)
                   }
                 }

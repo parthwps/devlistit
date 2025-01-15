@@ -258,7 +258,7 @@
     }
 
     // Check if phone number starts with 07624
-        if (phoneNumber.startsWith('07624')) {
+        if (phoneNumber.startsWith('07624') || phoneNumber.startsWith('7624') || phoneNumber.startsWith('01624')) {
           // Green Verification for Isle of Man
           verificationStatus.innerHTML = `
             <span style="color: green; font-weight: bold;margin-left: 10px; white-space: nowrap;font-size:16px">

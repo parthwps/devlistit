@@ -126,11 +126,12 @@ function reportAd(Request $request)
     function getModel(Request $request)
     {
         $make = $request->make;
+        $category = $request -> category;
 
-        $brand = Brand::where('slug' , $make)->first();
+
+        $brand = Brand::where('slug' , $make)->where('cat_id', $category)->first();
 
         $select = '<select class="form-select form-control js-example-basic-single1" onchange="updateUrl()" name="models[]"> <option value="">Select Model</option>';
-
         foreach ($brand->models as $model)
         {
             $select .= '<option  value="'.$model->slug.'">'.$model->name.'</option>';
@@ -565,7 +566,7 @@ function reportAd(Request $request)
     // ['car_contents.main_category_id',$mainCatId]
     ])
     ->when(($mainCatId === null || $mainCatId == '0'), function ($query) {
-        return $query->whereNotIn('car_contents.main_category_id', [24, 28, 39]);
+        // return $query->whereNotIn('car_contents.main_category_id', [24, 28, 39]);
     }, function ($query) use ($mainCatId) {
 
         return $query->where('car_contents.main_category_id', $mainCatId);
@@ -934,7 +935,7 @@ function reportAd(Request $request)
     return view('frontend.about', $queryResult);
   }
 
-  
+
   public function Aboutus(){
 
     return view('frontend.Aboutus');

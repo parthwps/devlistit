@@ -73,9 +73,10 @@
                             @foreach ($collection as $item)
                             @php
                                 $carDetail = App\Models\Car::find($item->ad_id);
+                                $userMessages = $item->messages()->where('message_to', Auth::guard('vendor')->user()->id)->get();
                             @endphp
 
-                            @if($carDetail)
+                            @if($carDetail && $userMessages->isNotEmpty())
                             <tr style="padding:10px; cursor:pointer;" >
 
                             <td class="" style=" padding-right: 0px !important;padding-left: 10px !important;" >
@@ -88,50 +89,41 @@
                                   @endif
                               </td>
 
+                              <td style="padding-left: 10px !important;" onclick="window.location.href='{{ route('vendor.support_tickets.message', $item->id) }}'">
 
-                            </td>
-                              <td   style="padding-left: 10px !important;"  onclick="window.location.href='{{ route('vendor.support_tickets.message', $item->id) }}'">
-
-                                <h5  class="us_mrgn_td" >
+                                <h5 class="us_mrgn_td">
                                  @php
                                   $vedr = addUserName($item->user_id , $item->admin_id);
                                  @endphp
                                      <span style="font-size: 15px;">  {{$vedr[0] }}</span>
-                                  <span class="us_timings"> {{date('d F h:i a' , strtotime($item->messages()->latest()->first()->created_at))}} </span>
+                                  <span class="us_timings"> {{date('d F h:i a' , strtotime($userMessages->last()->created_at))}} </span>
                                     </h5>
                                       <div>
                                       <a class="" href="{{ route('vendor.support_tickets.message', $item->id) }}" class="dropdown-item" style="font-weight: bold;color: gray;font-size: 13px;">
 
-                                        @if(isOnline($vedr[1])[0] )
+                                        @if(isOnline($vedr[1])[0])
                                             <i class="fa fa-circle" aria-hidden="true" title="online" style="margin-right: 5px;font-size: 12px;color: #08c27d;"></i>
                                         @else
-                                            <i class="fa fa-circle" aria-hidden="true" title="offline" style="margin-right: 5px;font-size: 12px;color: gray;" ></i>
+                                            <i class="fa fa-circle" aria-hidden="true" title="offline" style="margin-right: 5px;font-size: 12px;color: gray;"></i>
                                         @endif
 
                                         {{$item->subject}}
 
-                                        @if($item->messages->where('message_seen' , 0)->where('message_to' , Auth::guard('vendor')->user()->id )->count() > 0)
-                                            <span style="background: #ca00ca;
-                                            color: white;
-                                            padding: 1px 10px 3px;
-                                            border-radius: 10px;
-                                            font-family: sans-serif;
-                                            margin-left: 5px;"> new </span>
+                                        @if($userMessages->where('message_seen', 0)->count() > 0)
+                                            <span style="background: #ca00ca; color: white; padding: 1px 10px 3px; border-radius: 10px; font-family: sans-serif; margin-left: 5px;"> new </span>
                                         @endif
                                     </a>
-
                                      </div>
-                                <div class="us_mrgn_btm_td"  style="margin-top: 3px;">
-                                {!!$item->messages()->latest()->first()->reply ?? 'No messages found' !!}  <br>
-
+                                <div class="us_mrgn_btm_td" style="margin-top: 3px;">
+                                {!! $userMessages->last()->reply ?? 'No messages found' !!}  <br>
                                 </div>
                               </td>
 
-                              <td  class="us_hide_td" onclick="window.location.href='{{ route('vendor.support_tickets.message', $item->id) }}'" >
-                               @if($carDetail->is_sold == 1 || $carDetail->status == 2 )
+                              <td class="us_hide_td" onclick="window.location.href='{{ route('vendor.support_tickets.message', $item->id) }}'" >
+                               @if($carDetail->is_sold == 1 || $carDetail->status == 2)
                                <a href="{{ route('vendor.support_tickets.message', $item->id) }}" style="color: orange;font-size: 17px;">Sold</a>
                                @else
-                                <a href="{{ route('vendor.support_tickets.message', $item->id) }}" style="color: #3838c1;" > Reply <i class="fa fa-paper-plane" aria-hidden="true"></i></a>
+                                <a href="{{ route('vendor.support_tickets.message', $item->id) }}" style="color: #3838c1;"> Reply <i class="fa fa-paper-plane" aria-hidden="true"></i></a>
                                @endif
                               </td>
                             </tr>

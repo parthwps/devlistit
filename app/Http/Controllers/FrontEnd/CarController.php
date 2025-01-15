@@ -1175,7 +1175,7 @@ class CarController extends Controller
 
         $information['engine_power'] = Car::select('power')->whereNotNull('power')->where('status', 1)->orderBy('power','ASC')->get()->unique('power')->values()->pluck('power');
 
-        $information['road_taxes'] = 
+        $information['road_taxes'] =
             [
                 150 => __('Up to £150'),
                 200 => __('Up to £200'),
@@ -1390,7 +1390,7 @@ class CarController extends Controller
 
             $information['engine_power'] = Car::select('power')->whereNotNull('power')->where('status', 1)->orderBy('power','ASC')->get()->unique('power')->values()->pluck('power');
 
-            $information['road_taxes'] = 
+            $information['road_taxes'] =
             [
                 150 => __('Up to £150'),
                 200 => __('Up to £200'),
