@@ -2058,49 +2058,53 @@ Thanks</textarea>
                           @endif
 
                         @endif
-                        <div style="display: flex;flex-wrap: wrap;">
+                        <div style="display: flex; flex-wrap: wrap; align-items: center;">
                           @if($car->vendor->email_verified_at) <!-- Check if email is verified -->
                               <span class="email-verified" style="font-size: 12px;">
                                   <i class="fa fa-check-circle" style="color: #4caf50;"></i> Email Verified
                               </span>
                           @endif
 
-                        </div>
-                        <div style="display: ruby; align-items: center;">
                           @if ($car->vendor->phone_verified == 1)
                               <span class="phone_verified" style="font-size: 12px; display: flex; align-items: center; margin-right: 10px;">
                                   <i class="fa fa-check-circle" style="color: #4caf50; margin-right: 5px;"></i> Phone Verified
                               </span>
                           @endif
-                          <div class="widget-form card" style="position: relative; border: 1px solid #ccc; border-radius: 5px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); ">
-                              <span class="verification-info" style="display: flex; align-items: center;">
-                                  <i class="fa fa-info-circle" style="color: #4caf50; cursor: pointer; font-size: 14px;"></i>
-                                  <div class="popup-content" style="display: none; position: absolute; transform: translateX(-27%); background-color: white; border: 1px solid #ccc; padding: 20px; z-index: 10; width: 310px; height: auto; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border-radius: 5px; overflow: visible;margin-bottom:40px;">
-                                      <strong style="text-align: center; display: block; margin-bottom: 10px;">Understanding Phone Number Verification:</strong>
+
+                              <span class="verification-info" style="display: flex; align-items: center; cursor: pointer; position: relative;">
+                                  <i class="fa fa-info-circle" style="color: #4caf50; font-size: 14px;"></i>
+                                  <div class="popup-content" style="display: none; position: absolute;transform: translateX(-72%); background-color: white; border: 1px solid #ccc; padding: 20px; z-index: 10; width: 302px; height: auto; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border-radius: 5px; overflow: visible; ">
+                                      <strong style="text-align: center; display: block; margin-bottom: 10px;">Verification:</strong><br>
                                       <span style="color: #4caf50; display: block; margin-top: 5px;">Green Verification:</span>
-                                      A green checkmark means the phone number is registered in the Isle of Man.<br>
+                                      A green checkmark means the phone number is registered in the Isle of Man.<br><br>
                                       <span style="color: orange; display: block; margin-top: 5px;">Orange Verification:</span>
                                       An orange checkmark means the phone number is verified but not registered in the Isle of Man.<br>
+                                      <span style="color: red; display: block; margin-top: 5px;"></span>
+                                      <br><br><br>
                                   </div>
                               </span>
-                          </div>
                         </div>
-                          <script>
-                              const verificationInfo = document.querySelector('.verification-info');
+                        <script>
+                            const verificationInfo = document.querySelector('.verification-info');
+                            if (verificationInfo) {
+                                const popupContent = verificationInfo.querySelector('.popup-content');
 
-                              verificationInfo.addEventListener('mouseenter', function () {
-                                  this.querySelector('.popup-content').style.display = 'block';
-                              });
+                                verificationInfo.addEventListener('mouseenter', function () {
+                                    popupContent.style.display = 'block';
+                                });
 
-                              verificationInfo.addEventListener('mouseleave', function () {
-                                  this.querySelector('.popup-content').style.display = 'none';
-                              });
-                          </script>
+                                verificationInfo.addEventListener('mouseleave', function () {
+                                    popupContent.style.display = 'none';
+                                });
+                            }
+                        </script>
                           <style>
                               @media screen and (max-width: 768px) {
                                   .popup-content {
-                                      overflow-y: scroll !important;
-                                      max-height: 200px;
+                                      overflow-y: auto !important;
+                                      max-height: 90vh;
+                                      width: 90%;
+                                      margin: auto;
                                   }
                               }
                           </style>

@@ -126,15 +126,18 @@ function reportAd(Request $request)
     function getModel(Request $request)
     {
         $make = $request->make;
-        $category = $request -> category;
+        $category = $request->category;
 
-
-        $brand = Brand::where('slug' , $make)->where('cat_id', $category)->first();
+        // If category is empty, fetch all models for the selected make
+        if (empty($category)) {
+            $brand = Brand::where('slug', $make)->first();
+        } else {
+            $brand = Brand::where('slug', $make)->where('cat_id', $category)->first();
+        }
 
         $select = '<select class="form-select form-control js-example-basic-single1" onchange="updateUrl()" name="models[]"> <option value="">Select Model</option>';
-        foreach ($brand->models as $model)
-        {
-            $select .= '<option  value="'.$model->slug.'">'.$model->name.'</option>';
+        foreach ($brand->models as $model) {
+            $select .= '<option value="' . $model->slug . '">' . $model->name . '</option>';
         }
 
         $select .= '</select>';

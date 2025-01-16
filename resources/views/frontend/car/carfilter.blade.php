@@ -27,8 +27,8 @@
                                 <input type="hidden" name="page" value="1" id="pageno">
                                 <input type="hidden" name="request_type" value="by_default" id="request_type">
                                 <div class="list-group list-group-flush">
-                                    <select class="form-select form-control js-example-basic-single1 kp-category1"
-                                        onchange="updatecate(this)" name="category">
+                                    <select class="form-select  form-control js-example-basic-single1 kp-category1"
+                                       id="mycategory" onchange="updatecate(this)" name="category">
                                         <option value="">{{ __('Categories') }}</option>
                                         @foreach ($categories as $categoryValue)
                                             <option value="{{ $categoryValue->slug }}"
@@ -38,6 +38,16 @@
                                                 {{ $categoryValue->name }}</option>
                                         @endforeach
                                     </select>
+                                    <script>
+                                    $(document).ready(function() {
+                                        $('#mycategory').select2({
+                                            placeholder: " select a Category",
+                                            allowClear: true
+                                        }).on('select2:open', function() {
+                                            $('.select2-search__field').attr('placeholder', 'Search Categories...');
+                                        });
+                                    });
+                                </script>
                                 </div>
                             </div>
                         </div>
@@ -263,7 +273,7 @@
 
                                             <select
                                                 class="form-select form-control js-example-basic-single1 kp-category2"
-                                                onchange="updatecate(this)" name="category">
+                                                id="mycategory3" onchange="updatecate(this)" name="category">
                                                 <option value="">{{ __('Categories') }}</option>
                                                 @foreach ($categories as $categoryValue)
                                                     <option value="{{ $categoryValue->slug }}"
@@ -274,10 +284,19 @@
                                                     </option>
                                                 @endforeach
                                             </select>
+                                            <script>
+                                            $(document).ready(function() {
+                                                $('#mycategory3').select2({
+                                                    placeholder: " select a Category",
+                                                    allowClear: true
+                                                })
+                                            });
+                                </script>
                                         @else
+                                                
                                             <select
                                                 class="form-select form-control js-example-basic-single1 kp-category3"
-                                                onchange="updatecate(this)" name="category">
+                                                id="mycategory3" onchange="updatecate(this)" name="category">
                                                 <option value="">{{ __('Categories') }}</option>
                                                 @foreach ($categories as $categoryValue)
                                                     <option value="{{ $categoryValue->slug }}"
@@ -288,7 +307,18 @@
                                                     </option>
                                                 @endforeach
                                             </select>
+                                        
                                         @endif
+                                        <script>
+                                    $(document).ready(function() {
+                                        $('#mycategory3').select2({
+                                            placeholder: " select a Category",
+                                            allowClear: true
+                                        }).on('select2:open', function() {
+                                            $('.select2-search__field').attr('placeholder', 'Search Categories...');
+                                        });
+                                    });
+                                </script>
                                     </div>
                                 </div>
                             </div>
@@ -494,8 +524,8 @@
                                     }
                                 @endphp
                                 <span class="category-for-make" style="display: none;"></span>
-                                <select class="form-select form-control js-example-basic-single1 makeclickable"
-                                    onchange="updateUrl(); checkEnableAddButton()" name="brands[]">
+                                <select class="form-control js-example-basic-single1 makeclickable"
+                                   id="mymake" onchange="updateUrl(); checkEnableAddButton()" name="brands[]">
                                     <option value="">{{ __('All Makes') }}</option>
                                     <option disabled>-- Popular Brands --</option>
                                     @foreach ($brands->sortBy('name') as $brand)
@@ -512,6 +542,16 @@
                                             {{ $brand->name }}</option>
                                     @endforeach
                                 </select>
+                                <script>
+                                    $(document).ready(function() {
+                                        $('#mymake').select2({
+                                            placeholder: " select a Make",
+                                            allowClear: true
+                                        }).on('select2:open', function() {
+                                            $('.select2-search__field').attr('placeholder', 'Search Makes...');
+                                        });
+                                    });
+                                </script>
                             </ul>
                             @if ($category_filters && in_array('model', $category_filters))
                                 <div class="widget widget-ratings p-0 mb-20">
@@ -520,15 +560,26 @@
                                         <div class="accordion-body  mt-20">
                                             <ul class="list-group custom-checkbox" id="appendModels">
                                                 <select class="form-select form-control js-example-basic-single1"
-                                                    onchange="updateUrl(); checkEnableAddButton()" name="models[]">
+                                                   id="mymade" onchange="updateUrl(); checkEnableAddButton()" name="models[]">
                                                     <option value="">{{ __('Select Model') }}</option>
+                                                    
                                                 </select>
+                                                <script>
+                                    $(document).ready(function() {
+                                        $('#mymade').select2({
+                                            placeholder: " select a Model",
+                                            allowClear: true
+                                        }).on('select2:open', function() {
+                                            $('.select2-search__field').attr('placeholder', 'Search Models...');
+                                        });
+                                    });
+                                </script>
                                             </ul>
                                         </div>
                                     </div>
                                     <br />
                                     <button type="submit"
-                                        class="btn btn-light d-flex align-items-center justify-content-center border rounded-2"
+                                        class="btn btn-light d-flex align-items-center justify-content-center border rounded-4"
                                         id="mergeButton" onclick="mergeData()" style="width: 100%;">
                                         <i class="fas fa-plus me-2"></i> <!-- Font Awesome plus icon -->
                                         {{ __('Add another') }}
@@ -617,112 +668,6 @@
                     </div>
                 </div>
             @endif
-            {{-- @if ($category_filters && in_array('make', $category_filters))
-
-              <div class="widget widget-ratings p-0 mb-20">
-                  <h5 class="title">
-                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#ratings"
-                            aria-expanded="true" aria-controls="ratings">
-                      {{ __('Makes / Models') }}
-                    </button>
-                  </h5>
-                  <div id="ratings" class="collapse show">
-                    <div class="accordion-body scroll-y mt-20">
-                      <ul class="list-group custom-checkbox">
-                        @php
-                            if (!empty(request()->input('brands'))) {
-                                $selected_brands = [];
-                                if (is_array(request()->input('brands'))) {
-                                    $selected_brands = request()->input('brands');
-                                } else {
-                                    array_push($selected_brands, request()->input('brands'));
-                                }
-                            } else {
-                                $selected_brands = [];
-                            }
-                        @endphp
-
-                      <select class="form-select form-control js-example-basic-single1 makeclickable"
-                              onchange="updateUrl()" name="brands[]">
-
-                              <option value="">{{ __('All Makes') }}</option>
-                              <option disabled>-- Popular Brands --</option>
-                          @foreach ($brands->sortBy('name') as $brand)
-                              <option value="{{ $brand->slug }}" {{ $category_filters && in_array($brand->slug, $selected_brands) ? 'selected' : '' }} >{{ $brand->name }}</option>
-                          @endforeach
-
-                              <option disabled>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-- Other Makes --</option>
-                          @foreach ($otherBrands as $brand)
-                              <option value="{{ $brand->slug }}" {{ $category_filters && in_array($brand->slug, $selected_brands) ? 'selected' : '' }} >{{ $brand->name }}</option>
-                          @endforeach
-
-                      </select>
-                      </ul>
-                      @if ($category_filters && in_array('model', $category_filters))
-
-                      <div class="widget widget-ratings p-0 mb-20">
-                            <h5 class="title">
-
-                            </h5>
-
-                            <div id="models" class="collapse show">
-                              <div class="accordion-body scroll-y mt-20">
-                                <ul class="list-group custom-checkbox" id="appendModels">
-
-                                    <select class="form-select form-control js-example-basic-single1" onchange="updateUrl()"
-                                            name="models[]">
-                                      <option value="">{{ __('Select Model') }}</option>
-                                     </select>
-
-                                </ul>
-                              </div>
-                            </div><br/>
-                            <button type="button" class="btn btn-light d-flex align-items-center justify-content-center border rounded-2"
-                            id="mergeButton" onclick="mergeData()" style="width: 100%;">
-                          <i class="fas fa-plus me-2"></i> <!-- Font Awesome plus icon -->
-                        {{ __('Add another') }}
-                        </button>
-                        <script>
-                            function mergeData() {
-                                var selectedBrands = $('select[name="brands[]"]').val();
-                                var selectedModels = $('select[name="models[]"]').val();
-                                console.log('Selected Brands:', selectedBrands);
-                                console.log('Selected Models:', selectedModels);
-                            }
-                        </script>
-                          </div>
-                      <hr/>
-                  @endif
-                    </div>
-                  </div>
-                </div>
-          @endif --}}
-            {{--
-          @if ($category_filters && in_array('model', $category_filters))
-
-              <div class="widget widget-ratings p-0 mb-20">
-                    <h5 class="title">
-                      <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                              data-bs-target="#models" aria-expanded="true" aria-controls="models">
-                        {{ __('Models') }}
-                      </button>
-                    </h5>
-
-                    <div id="models" class="collapse show">
-                      <div class="accordion-body scroll-y mt-20">
-                        <ul class="list-group custom-checkbox" id="appendModels">
-
-                            <select class="form-select form-control js-example-basic-single1" onchange="updateUrl()"
-                                    name="models[]">
-                              <option value="">{{ __('Select Model') }}</option>
-                             </select>
-
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-              <hr/>
-          @endif --}}
 
             @if ($category_filters && in_array('year', $category_filters))
 
@@ -811,6 +756,7 @@
                                                 background-color: #f7f7f7;
                                                 border: 1px solid black;
                                                 padding: 10px;
+                                                border-radius:20px;
                                             }
 
                                             .kp.active {
@@ -1771,6 +1717,9 @@
     {{--        <button type="button"  class="us_btn_close bg-primary text-white px-3 py-3 w-100 d-block d-sm-none" data-bs-dismiss="offcanvas" data-bs-target="#widgetOffcanvas" aria-label="Close">Show Ads <span class="total_counter_with_category2">{{ $total_cars ?? '-' }}</span> {{ 1 > 1 ? __('Ads') : __('Results') }}</button> --}}
     {{--      </div> --}}
 </div>
+
+<link rel="stylesheet" href="{{ asset('assets/css/select2.min.css') }}">
+<script type="text/javascript" src="{{ asset('assets/js/select2.min.js') }}"></script>
 
 
 <script>
