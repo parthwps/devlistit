@@ -50,7 +50,6 @@ class CarController extends Controller
     public function index(Request $request)
     {
 
-
         if ($request->filled('category') && $request->category == 'all') {
             // Clear all request data
             $request->replace([]);
@@ -261,17 +260,16 @@ class CarController extends Controller
 
 
         $brandIds = [];
+        $carModels = [];
+        $b_ids = [];
         if ($request->filled('brands'))
         {
             $brands = $request->brands;
-
             if(empty($brands[0]))
             {
                $brands =  Brand::where('status' , 1)->where('language_id', $language->id)->pluck('slug');
                $brands = json_decode($brands , true);
             }
-
-            $b_ids = [];
 
             if (is_array($brands)) {
                 foreach ($brands as $brand) {
@@ -290,7 +288,17 @@ class CarController extends Controller
                     array_push($b_ids, $brand_car_contents->id);
                 }
             }
-
+            
+            $selected_bIds = $b_ids;
+            $selectedBrands = Brand::where(['language_id' => $language->id])
+            ->whereIn('slug',$request->selected_brands ?? [])->get(['id'])->pluck('id');
+            foreach ($selectedBrands as $key => $brandValue) {
+                if(in_array($brandValue,haystack: $selected_bIds)){
+                    $brandKey = array_search($brandValue,$selected_bIds);
+                    unset($selected_bIds[$brandKey]);
+                }
+            }
+            
             $contents = CarContent::where('language_id', $language->id)
                 ->whereIn('brand_id', $b_ids)
                 ->get()
@@ -300,6 +308,13 @@ class CarController extends Controller
                     array_push($brandIds, $content);
                 }
             }
+            if($request->filled('make-change')){
+                $carModels = CarModel::where(['language_id' => $language->id])
+                ->whereIn('brand_id',$selected_bIds)
+                ->where('status', 1)
+                ->get();
+            }
+            $information['carModels'] = $carModels;
         }
         //echo "<pre>";
         //print_r($brandIds);
@@ -307,22 +322,20 @@ class CarController extends Controller
         $modelIds = [];
 
         if ($request->filled('models')) {
-
-          //  print_r($request->models); exit;
             if(($request->models[0]!="")) {
             $models = $request->models;
             $m_ids = [];
             if (is_array($models)) {
                 foreach ($models as $model) {
-                    $model_car_contents = CarModel::where([['language_id', $language->id], ['slug', $model] ,  ['brand_id', $brand_car_contents->id ]])->where('status', 1)->first();
+                    $model_car_contents = CarModel::where([['language_id', $language->id], ['slug', $model]])
+                    ->whereIn('brand_id',$b_ids)->where('status', 1)->first();
                     if (!in_array($model_car_contents->id, $m_ids)) {
                         array_push($m_ids, $model_car_contents->id);
                     }
                 }
             } else {
-
-
-                $model_car_contents = CarModel::where([['language_id', $language->id], ['slug', $models] ,  ['brand_id', $brand_car_contents->id ]])->where('status', 1)->first();
+                $model_car_contents = CarModel::where([['language_id', $language->id], ['slug', $models]])
+                ->whereIn('brand_id',$b_ids)->where('status', 1)->first();
                 if (!in_array($model_car_contents->id, $m_ids)) {
                     array_push($m_ids, $model_car_contents->id);
                 }
@@ -1281,10 +1294,9 @@ class CarController extends Controller
                  }
 
                 //  return response()->json($information['car_contents']);
-
                 $HTMLVIEW = view('frontend.car.cars_list_ajax', $information)->render();
 
-                return response()->json(['countHeading' => $countHeading , 'html_view' => $HTMLVIEW ]);
+                return response()->json(['countHeading' => $countHeading , 'html_view' => $HTMLVIEW,'carModels' => $carModels,'makeChange' => $request->filled('make-change') ]);
             }
             else
             {

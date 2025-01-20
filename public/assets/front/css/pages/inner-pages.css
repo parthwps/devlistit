@@ -103,7 +103,7 @@
 }
 .widget-area .scroll-y {
   padding-top: 0;
-  max-height: 245px;
+  max-height: 300px;
   overflow-x: hidden;
   overflow-y: auto;
 }
@@ -1454,4 +1454,7 @@ Authentication CSS
 .terms-condition-area ul {
   -webkit-padding-start: 20px;
           padding-inline-start: 20px;
+}
+.select2-selection__choice{
+    display: inline-block !important;
 }
