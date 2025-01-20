@@ -8,7 +8,9 @@
     @endphp
 
     @if (!empty($filters) && $category->brands()->count() == 0 && $category->id != 24)
-
+        <div class="filter-apply-section">
+            <button type="button" class="btn btn-primary btn-apply-filter">{{ __('Apply') }}</button>
+        </div>
         <div class="widget widget-select p-0 mb-20">
             <h5 class="title">
                 <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#select"
@@ -328,7 +330,6 @@
             </div>
 
         @endif
-
         <span @if (empty(request()->category)) style="display:none;" @endif id="carsFiltrs">
 
 
@@ -497,9 +498,14 @@
               });
           });
       });
-
+                
               </script> --}}
             {{-- <hr/> --}}
+            @if($category_filters)
+            <div class="filter-apply-section">
+                <button type="button" class="btn btn-primary btn-apply-filter">{{ __('Apply') }}</button>
+            </div>
+            @endif
             @if ($category_filters && in_array('make', $category_filters))
                 <div class="widget widget-ratings p-0 mb-20">
                     <h5 class="title">

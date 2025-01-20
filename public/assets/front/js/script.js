@@ -1,6 +1,7 @@
 !(function($) {
     "use strict";
-
+    let updateUrlParam1 = null;
+    let updateUrlParam2 = null;
     /*============================================
         Mobile menu
     ============================================*/
@@ -1363,8 +1364,14 @@ $('body').on('submit', '#vendorContactForm', function(e) {
         loadBreadCrum(pid , category)
     }
 
-    function updateUrl(request_type = 1,category = null)
+    function updateUrl(request_type = 1,category = null, is_clicked = false)
     {
+        if($(window).width() < 992 && !is_clicked && category != 'make-change'){
+            updateUrlParam1 = request_type;
+            updateUrlParam2 = category;
+            return;
+        }
+        
         if(request_type == 1 )
         {
             $('#pageno').val('1')
@@ -1536,6 +1543,11 @@ $('body').on('submit', '#vendorContactForm', function(e) {
         $('.car-make').trigger('change');
     });
 
+    $(document).on('click','.btn-apply-filter',function(){
+        updateUrl(updateUrlParam1,updateUrlParam2,true);
+        $('.us_btn_close').trigger('click');
+    });
+
     //this function used for recents adds accordingly selected tabs
     $(document).ready(function() {
 
@@ -1598,7 +1610,7 @@ $('body').on('submit', '#vendorContactForm', function(e) {
         e.preventDefault();
         var url = $(this).attr('href');
         var pageNum = $(this).text();
-        $('#pageno').val(pageNum)
+        $('#pageno').val(pageNum)        
         updateUrl(0)
     });
 
@@ -1742,4 +1754,4 @@ $('.body-type-filter .form-check-input, .colour-filter .form-check-input').on('c
         $formCheck.removeClass('checked'); // Remove the class when unchecked
     }
 });
-updateUrl();
+updateUrl(1,null,true);
