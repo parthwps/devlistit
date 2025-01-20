@@ -1338,12 +1338,11 @@ font-size: 20px !important;
 
 
   if (sessionStorage.getItem('tabCategory')) {
-
     if (sessionStorage.getItem('tabCategory') == 'all'){
-        updateUrl(1,'all');
+        updateUrl(1,'all',true);
         // updateUrl(1);
     }else{
-        updateUrl(1,sessionStorage.getItem('tabCategory'));
+        updateUrl(1,sessionStorage.getItem('tabCategory'),true);
     }
 
   }else{

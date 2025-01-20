@@ -8,7 +8,9 @@
     @endphp
 
     @if (!empty($filters) && $category->brands()->count() == 0 && $category->id != 24)
-
+        <div class="filter-apply-section">
+            <button type="button" class="btn btn-primary btn-apply-filter">{{ __('Apply') }}</button>
+        </div>
         <div class="widget widget-select p-0 mb-20">
             <h5 class="title">
                 <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#select"
@@ -328,7 +330,6 @@
             </div>
 
         @endif
-
         <span @if (empty(request()->category)) style="display:none;" @endif id="carsFiltrs">
 
 
@@ -497,9 +498,14 @@
               });
           });
       });
-
+                
               </script> --}}
             {{-- <hr/> --}}
+            @if($category_filters)
+            <div class="filter-apply-section">
+                <button type="button" class="btn btn-primary btn-apply-filter">{{ __('Apply') }}</button>
+            </div>
+            @endif
             @if ($category_filters && in_array('make', $category_filters))
                 <div class="widget widget-ratings p-0 mb-20">
                     <h5 class="title">
@@ -523,9 +529,9 @@
                                         $selected_brands = [];
                                     }
                                 @endphp
-                                <span class="category-for-make" style="display: none;"></span>
-                                <select class="form-control js-example-basic-single1 makeclickable"
-                                   id="mymake" onchange="updateUrl(); checkEnableAddButton()" name="brands[]">
+                                <div class="select-filter-list mb-3">
+                                </div>
+                                <select class="form-control js-example-basic-single1 car-make" onchange="updateUrl(1,'make-change');" name="brands[]" data-placeholder="{{ __('Select Make') }}">
                                     <option value="">{{ __('All Makes') }}</option>
                                     <option disabled>-- Popular Brands --</option>
                                     @foreach ($brands->sortBy('name') as $brand)
@@ -533,9 +539,7 @@
                                             {{ $category_filters && in_array($brand->slug, $selected_brands) ? 'selected' : '' }}>
                                             {{ $brand->name }}</option>
                                     @endforeach
-                                    <option disabled>
-                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--
-                                        Other Makes --</option>
+                                    <option disabled>-- Other Makes --</option>
                                     @foreach ($otherBrands as $brand)
                                         <option value="{{ $brand->slug }}"
                                             {{ $category_filters && in_array($brand->slug, $selected_brands) ? 'selected' : '' }}>
@@ -544,11 +548,8 @@
                                 </select>
                                 <script>
                                     $(document).ready(function() {
-                                        $('#mymake').select2({
-                                            placeholder: " select a Make",
+                                        $('.car-make').select2({
                                             allowClear: true
-                                        }).on('select2:open', function() {
-                                            $('.select2-search__field').attr('placeholder', 'Search Makes...');
                                         });
                                     });
                                 </script>
@@ -558,109 +559,19 @@
                                     <h5 class="title"></h5>
                                     <div id="models" class="collapse show">
                                         <div class="accordion-body  mt-20">
-                                            <ul class="list-group custom-checkbox" id="appendModels">
-                                                <select class="form-select form-control js-example-basic-single1"
-                                                   id="mymade" onchange="updateUrl(); checkEnableAddButton()" name="models[]">
+                                            <ul class="list-group custom-checkbox">
+                                                <select class="car-models form-select form-control js-example-basic-single1" onchange="updateUrl();" name="models[]" data-placeholder="{{ __('Select Model') }}" multiple>
                                                     <option value="">{{ __('Select Model') }}</option>
-                                                    
                                                 </select>
-                                                <script>
-                                    $(document).ready(function() {
-                                        $('#mymade').select2({
-                                            placeholder: " select a Model",
-                                            allowClear: true
-                                        }).on('select2:open', function() {
-                                            $('.select2-search__field').attr('placeholder', 'Search Models...');
-                                        });
-                                    });
-                                </script>
                                             </ul>
                                         </div>
                                     </div>
                                     <br />
-                                    <button type="submit"
-                                        class="btn btn-light d-flex align-items-center justify-content-center border rounded-4"
-                                        id="mergeButton" onclick="mergeData()" style="width: 100%;">
-                                        <i class="fas fa-plus me-2"></i> <!-- Font Awesome plus icon -->
+                                    <button type="button"
+                                        class="btn btn-light d-flex align-items-center justify-content-center border rounded-4 add-another-filter" style="width: 100%;">
+                                            <i class="fas fa-plus me-2"></i> <!-- Font Awesome plus icon -->
                                         {{ __('Add another') }}
                                     </button>
-                                    <script>
-                                        let mergedEntries = [];
-
-                                        function mergeData() {
-                                            // Retrieve selected brand and model values
-                                            const selectedBrand = $('select[name="brands[]"]').val();
-                                            const selectedModel = $('select[name="models[]"]').val();
-
-                                            if (selectedBrand && selectedModel) {
-                                                const newEntry = selectedBrand + " - " + selectedModel;
-
-                                                // Check for duplicates
-                                                if (!mergedEntries.includes(newEntry)) {
-                                                    // Add the new entry to the array
-                                                    mergedEntries.push(newEntry);
-
-                                                    // Update the UI
-                                                    updateUI();
-
-                                                    // Clear the current selections
-                                                    $('select[name="brands[]"]').val('');
-                                                    $('select[name="models[]"]').val('');
-
-                                                    // Update the button state
-                                                    checkEnableAddButton();
-                                                } else {
-
-                                                    toastr.error('This entry already exists!');
-                                                }
-                                            } else {
-                                                toastr.error('Please select both a brand and a model!');
-                                            }
-                                        }
-
-                                        function updateUI() {
-                                            // Clear the current list
-                                            $('#appendModels').empty();
-
-                                            // Populate the list with merged entries
-                                            mergedEntries.forEach(entry => {
-                                                $('#appendModels').append(`
-                                                  <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                      ${entry}
-                                                      <button class="btn btn-danger btn-sm" onclick="removeEntry('${entry}')">X</button>
-                                                  </li>
-                                              `);
-                                            });
-                                        }
-
-                                        function removeEntry(entryToRemove) {
-                                            // Remove the entry from the array
-                                            mergedEntries = mergedEntries.filter(entry => entry !== entryToRemove);
-
-                                            // Update the UI
-                                            updateUI();
-
-                                            // Update the button state
-                                            checkEnableAddButton();
-                                        }
-
-                                        function checkEnableAddButton() {
-                                            const selectedBrand = $('select[name="brands[]"]').val();
-                                            const selectedModel = $('select[name="models[]"]').val();
-
-                                            // Enable or disable the merge button based on selections
-                                            // if (selectedBrand && selectedModel) {
-                                            //     $('#mergeButton').prop('disabled', false);
-                                            // } else {
-                                            //     $('#mergeButton').prop('disabled', true);
-                                            // }
-                                        }
-
-                                        // Initialize button state
-                                        $(document).ready(function() {
-                                            checkEnableAddButton();
-                                        });
-                                    </script>
                                 </div>
                                 <hr />
                             @endif
@@ -866,7 +777,7 @@
                             <div class="row">
                                 <div class="col-12">
                                     <div class="form-group" style="padding:10px 0px;">
-                                        <div class="col-6 float-start custom_col" float-start>
+                                        <div class="col-6 float-start custom_col">
                                             <select class="form-select form-control js-example-basic-single1"
                                                 onchange="updateUrl()" id="mileage_min" name="mileage_min">
                                                 <option value="">{{ __('Min ') }}</option>

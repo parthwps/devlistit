@@ -1,6 +1,7 @@
 !(function($) {
     "use strict";
-
+    let updateUrlParam1 = null;
+    let updateUrlParam2 = null;
     /*============================================
         Mobile menu
     ============================================*/
@@ -1363,9 +1364,14 @@ $('body').on('submit', '#vendorContactForm', function(e) {
         loadBreadCrum(pid , category)
     }
 
-    function updateUrl(request_type = 1,category = null)
+    function updateUrl(request_type = 1,category = null, is_clicked = false)
     {
-      console.log("test121");
+        if($(window).width() < 992 && !is_clicked && category != 'make-change'){
+            updateUrlParam1 = request_type;
+            updateUrlParam2 = category;
+            return;
+        }
+        
         if(request_type == 1 )
         {
             $('#pageno').val('1')
@@ -1373,8 +1379,11 @@ $('body').on('submit', '#vendorContactForm', function(e) {
 
         var formData = $('#searchForm').serializeArray();
         var queryParams = [];
+        if(category === 'make-change'){
+            formData.push({name: 'make-change', value: true});
+        }
 
-        if (category !== null && category !== '')
+        if (category !== null && category !== '' && category !== 'make-change')
         {
             formData.forEach(function(item) {
                 if (item.name === 'category') {
@@ -1420,18 +1429,29 @@ $('body').on('submit', '#vendorContactForm', function(e) {
                 newUrl += '?' + queryString;
             }
 
-
+            //console.log(newUrl);
+           // return;
             $.ajax({
                 type: 'GET',
                 url: newUrl,
                 dataType:'json',
                 success:function(data)
                 {
-                  console.log(document.getElementById('ajaxListing'));
+
+                    let optionHtml = '<option value="">Select Model</option>';
+                    if(typeof(data.carModels) != 'undefined' && data.makeChange){
+                        $.each(data.carModels, function (index,value) { 
+                            optionHtml += `<option value="${value.slug}">${value.name}</option>`;
+                        });
+                        $('.car-models').html(optionHtml);
+                    }
+                    if($('.car-models').length){
+                        initSelect2Element('.car-models');
+                    }
+
+
                     $('#ajaxListing').html(data.html_view);
-                    console.log(document.getElementById('ajaxListing'));
                     $('#total_counter_with_category').html(data.countHeading);
-                    console.log("tets11afdsa");
                     jQuery('.total_counter_with_category2').text(data.countHeading.match(/\d+/)[0]);
                     // $('.us_btn_close').click();
                     if (categoryField.value !== null && categoryField.value == 'cars-&-motors' || categoryField.value == 'all' ) {
@@ -1448,7 +1468,7 @@ $('body').on('submit', '#vendorContactForm', function(e) {
                     $('#total_counter_with_category').css('display','');
                     $('.main-skeleton-container').hide();//dataloader for grid view
                     $('.skeleton').hide();//dataloader for list view
-
+                    
                     setTimeout(function(){
                         $('#ajaxListing').css('display','');
                     },500);
@@ -1468,7 +1488,65 @@ $('body').on('submit', '#vendorContactForm', function(e) {
         }
     }
 
+    function initSelect2Element(selector){
+        $(selector).select2({
+            allowClear: true
+        });
+    }
 
+    $(document).on('click','.add-another-filter',function(){
+        if($('.car-make').val()){
+            let html = '';
+            let carMake = $('.car-make').val();
+            let carModels = $('.car-models').val();
+            
+            if(carModels.length){
+                let additionalModelText = carModels.length > 1 ? ` (+${carModels.length - 1})` : "";
+                let valueHtml = '';
+                $.each(carModels, function (index, value) { 
+                    valueHtml += '<input type="hidden" value="'+value+'" name="models[]">';
+                    $(".car-models option[value='"+ value + "']").attr('disabled', true); 
+                });
+                html += `<div class="filter-item mt-1">
+                        <span>${$(".car-make option:selected").text()} - ${$('.car-models option:selected').first().text()}${additionalModelText}</span> <span class="ms-2 remove-filter-item" role="button"><i class="fa fa-times text-danger"></i></span>
+                        <input type="hidden" name="brands[]" value="${carMake}">
+                        <input type="hidden" name="selected_brands[]" value="${carMake}">
+                        ${valueHtml}
+                    </div>`;
+                $('.select-filter-list').append(html);
+                $(".car-make option[value='"+ carMake + "']").attr('disabled', true); 
+                $(".car-models option").remove();
+                $('.car-make').val('').select2();
+                $('.car-models').val('').select2();
+            }
+            else{
+                html += `<div class="filter-item mt-1">
+                            <span>${$(".car-make option:selected").text()} - (All Models)</span> <span class="ms-2 remove-filter-item" role="button"><i class="fa fa-times text-danger"></i></span>
+                            <input type="hidden" name="brands[]" value="${carMake}">
+                            <input type="hidden" name="selected_brands[]" value="${carMake}">
+                        </div>`;
+                $('.select-filter-list').append(html);
+                $('.car-make').val('').select2();
+                $(".car-make option[value='"+ carMake + "']").attr('disabled', true); 
+            }
+
+
+        }else{
+            toastr.error('Please select make of the car.');
+        }
+    });
+
+    $(document).on('click','.remove-filter-item',function(){
+        let selectedMake = $(this).parent().find('input[name="brands[]"]').val();
+        $(".car-make option[value='"+ selectedMake + "']").attr('disabled', false);
+        $(this).parent().remove();
+        $('.car-make').trigger('change');
+    });
+
+    $(document).on('click','.btn-apply-filter',function(){
+        updateUrl(updateUrlParam1,updateUrlParam2,true);
+        $('.us_btn_close').trigger('click');
+    });
 
     //this function used for recents adds accordingly selected tabs
     $(document).ready(function() {
@@ -1532,7 +1610,7 @@ $('body').on('submit', '#vendorContactForm', function(e) {
         e.preventDefault();
         var url = $(this).attr('href');
         var pageNum = $(this).text();
-        $('#pageno').val(pageNum)
+        $('#pageno').val(pageNum)        
         updateUrl(0)
     });
 
@@ -1676,4 +1754,4 @@ $('.body-type-filter .form-check-input, .colour-filter .form-check-input').on('c
         $formCheck.removeClass('checked'); // Remove the class when unchecked
     }
 });
-updateUrl();
+updateUrl(1,null,true);

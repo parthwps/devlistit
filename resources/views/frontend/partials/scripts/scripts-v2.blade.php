@@ -1193,29 +1193,6 @@
             });
 
         });
-
-
-
-        $(document).on('change', '.makeclickable', function() {
-            $.ajax({
-                type: 'GET',
-                url: "{{ route('frontend.getmodels') }}",
-                data: {
-                    make: $(this).val(),
-                    category: $('.category-for-make').attr('cid')
-                },
-                success: function(data) {
-                    $('#appendModels').html(data);
-                    $('.js-example-basic-single1').select2();
-                },
-                error: function(xhr, status, error) {
-                    console.error(xhr.responseText);
-                }
-            });
-        });
-
-
-
     });
 
 

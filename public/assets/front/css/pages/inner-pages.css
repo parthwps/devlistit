@@ -103,7 +103,7 @@
 }
 .widget-area .scroll-y {
   padding-top: 0;
-  max-height: 245px;
+  max-height: 300px;
   overflow-x: hidden;
   overflow-y: auto;
 }
@@ -1455,3 +1455,23 @@ Authentication CSS
   -webkit-padding-start: 20px;
           padding-inline-start: 20px;
 }
+.select2-selection__choice{
+    display: inline-block !important;
+}
+.filter-apply-section{
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+    left: 0;
+    border-radius: 0;
+    display: none;
+}
+.filter-apply-section button{
+    width: 100%;
+    border-radius: 0;
+}
+@media (max-width: 992px) {
+    .filter-apply-section{
+        display: block;
+    }
+  }
