@@ -44,17 +44,10 @@
 {{-- push notification js --}}
 <script src="{{ asset('assets/js/push-notification.js') }}"></script>
 <!-- Main script JS -->
-<script src="{{ asset('assets/front/js/script.js?v=0.927') }}"></script>
-
-<script src="{{ asset('assets/js/jquery.min.js') }}"></script>
-<!-- Popper JS -->
-<script src="{{ asset('assets/js/popper.min.js') }}"></script>
-<!-- Bootstrap JS -->
-<script src="{{ asset('assets/js/bootstrap.min.js') }}"></script>
 {{-- whatsapp js --}}
 <script src="{{ asset('assets/js/floating-whatsapp.js') }}"></script>
 <script src="{{ asset('assets/js/select2.min.js') }}"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="{{ asset('assets/front/js/script.js?v=0.927') }}"></script>
 
 
 
