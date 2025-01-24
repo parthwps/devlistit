@@ -43,7 +43,7 @@
                                     <script>
                                     $(document).ready(function() {
                                         $('#mycategory').select2({
-                                            placeholder: " select a Category",
+                                            placeholder: " Select a Category",
                                             allowClear: true
                                         }).on('select2:open', function() {
                                             $('.select2-search__field').attr('placeholder', 'Search Categories...');
@@ -289,7 +289,7 @@
                                             <script>
                                             $(document).ready(function() {
                                                 $('#mycategory3').select2({
-                                                    placeholder: " select a Category",
+                                                    placeholder: " Select a Category",
                                                     allowClear: true
                                                 })
                                             });
@@ -314,7 +314,7 @@
                                         <script>
                                     $(document).ready(function() {
                                         $('#mycategory3').select2({
-                                            placeholder: " select a Category",
+                                            placeholder: "Select a Category",
                                             allowClear: true
                                         }).on('select2:open', function() {
                                             $('.select2-search__field').attr('placeholder', 'Search Categories...');

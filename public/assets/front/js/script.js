@@ -1447,6 +1447,15 @@ $('body').on('submit', '#vendorContactForm', function(e) {
                     }
                     if($('.car-models').length){
                         initSelect2Element('.car-models');
+                        // Add dropdown toggle icon
+                        $('.car-models').next('.select2').find('.select2-selection').append('<span class="select2-selection__arrow"><i class="fas fa-plus"></i></span>');
+                        
+                        // Toggle icon on dropdown open/close
+                        $('.car-models').on('select2:open', function() {
+                            $(this).next('.select2').find('.fa-plus').removeClass('fa-plus').addClass('fa-minus');
+                        }).on('select2:close', function() {
+                            $(this).next('.select2').find('.fa-minus').removeClass('fa-minus').addClass('fa-plus');
+                        });
                     }
 
 
